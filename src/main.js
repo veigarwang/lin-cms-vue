@@ -22,6 +22,7 @@ import '@/assets/styles/realize/element-variables.scss'
 
 Vue.config.productionTip = false
 
+
 Vue.use(ElementUI)
 
 Vue.component(CollapseTransition.name, CollapseTransition)

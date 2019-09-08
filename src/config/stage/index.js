@@ -1,6 +1,7 @@
 import adminConfig from './admin'
 import bookConfig from './book' // 引入图书管理路由文件
 import pluginsConfig from './plugins'
+import blogConfig from './blog'
 import Utils from '@/lin/utils/util'
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -37,6 +38,7 @@ let homeRouter = [
   },
   bookConfig,
   adminConfig,
+  blogConfig,
 ]
 
 const plugins = [...pluginsConfig]
@@ -80,12 +82,17 @@ const deepReduceName = (target) => {
     return
   }
   if (typeof target === 'object') {
-    if (typeof target.name !== 'symbol') {
-      // eslint-disable-next-line no-param-reassign
+    // if (typeof target.name !== 'symbol') {
+    //   // eslint-disable-next-line no-param-reassign
+    //   target.name = target.name || Utils.getRandomStr()
+    //   // eslint-disable-next-line no-param-reassign
+    //   target.name = Symbol(target.name)
+    // }
+
+    if (!target.name) {
       target.name = target.name || Utils.getRandomStr()
-      // eslint-disable-next-line no-param-reassign
-      target.name = Symbol(target.name)
     }
+
 
     if (Array.isArray(target.children)) {
       target.children.forEach((item) => {

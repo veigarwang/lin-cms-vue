@@ -74,7 +74,6 @@ Utils.getRandomStr = (n = 6) => {
   return str
 }
 
-
 function getTypeOf(obj) {
   const { toString } = Object.prototype
   const map = {
@@ -160,7 +159,7 @@ Utils.sortByOrder = (source = []) => {
 
     // 确保整数
     source[i].order = Math.floor(order)
-    
+
     // 插入临时数组
     insertItem(source[i], tmp)
   }

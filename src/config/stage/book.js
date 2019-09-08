@@ -20,7 +20,7 @@ const bookRouter = {
     {
       title: '图书列表',
       type: 'view',
-      name: 'bookAdd',
+      name: 'bookList',
       route: '/book/list',
       filePath: 'views/book/BookList.vue',
       inNav: true,
