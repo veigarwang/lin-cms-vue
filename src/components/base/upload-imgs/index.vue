@@ -663,7 +663,6 @@ export default {
      * 获取当前组件数据
      */
     async getValue() {
-      debugger;
       const { itemList, isStable, min } = this;
 
       // 检查是否有不符合要求的空项
@@ -698,6 +697,7 @@ export default {
       // 检查是否有上传失败的图像
       // 如果有失败的上传, 则返回错误
       if (imgInfoList.some(item => !item)) {
+        this.$message.error(`检查是否存在上传失败的图像`);
         return false;
       }
 

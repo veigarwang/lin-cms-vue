@@ -130,7 +130,7 @@ export default {
           this.thumbnailPreview.length = 0;
           this.thumbnailPreview.push({
             id: res.id,
-            display: res.thumbnail,
+            display: res.thumbnail_display,
             src: res.thumbnail,
             imgId: res.id
           });
@@ -143,10 +143,11 @@ export default {
     async submitForm(formName) {
       try {
         var thumbnail = await this.$refs["thumbnail"].getValue();
-        debugger;
-        if (thumbnail.length > 0) {
-          this.form.thumbnail = thumbnail[0].src;
-        }
+
+        if (thumbnail.length == 0 || thumbnail == false) return;
+
+        this.form.thumbnail = thumbnail[0].src;
+
         if (this.id == 0) {
           const res = await articleApi.addArticle(this.form);
           if (res.error_code === 0) {
