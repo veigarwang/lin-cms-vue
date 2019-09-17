@@ -36,7 +36,6 @@
                     ref="thumbnail"
                     :multiple="false"
                     :value="thumbnailPreview"
-                    :min-num="1"
                     :max-num="1"
                   />
                 </el-form-item>
@@ -86,10 +85,11 @@ export default {
         content: "",
         editor: 0,
         excerpt: "",
-        f_id: 0,
+        classify_id: 0,
         is_audit: true,
         is_new: true,
         is_stickie: true,
+        author: "",
         keywords: "",
         nick_name: null,
         point_quantity: 0,
@@ -128,12 +128,14 @@ export default {
         articleApi.getArticle(this.id).then(res => {
           this.form = res;
           this.thumbnailPreview.length = 0;
-          this.thumbnailPreview.push({
-            id: res.id,
-            display: res.thumbnail_display,
-            src: res.thumbnail,
-            imgId: res.id
-          });
+          if (res.thumbnail) {
+            this.thumbnailPreview.push({
+              id: res.id,
+              display: res.thumbnail_display,
+              src: res.thumbnail,
+              imgId: res.id
+            });
+          }
         });
       } else {
         this.title = "添加随笔";
@@ -143,21 +145,22 @@ export default {
     async submitForm(formName) {
       try {
         var thumbnail = await this.$refs["thumbnail"].getValue();
+        if (thumbnail.length > 0) {
+          this.form.thumbnail = thumbnail[0].src;
+        } else {
+          this.form.thumbnail = "";
+        }
 
-        if (thumbnail.length == 0 || thumbnail == false) return;
-
-        this.form.thumbnail = thumbnail[0].src;
-
-        if (this.id == 0) {
+        if (this.id) {
+          const res = await articleApi.editArticle(this.id, this.form);
+          if (res.error_code === 0) {
+            this.$message.success(`${res.msg}`);
+          }
+        } else {
           const res = await articleApi.addArticle(this.form);
           if (res.error_code === 0) {
             this.$message.success(`${res.msg}`);
             this.resetForm(formName);
-          }
-        } else {
-          const res = await articleApi.editArticle(this.id, this.form);
-          if (res.error_code === 0) {
-            this.$message.success(`${res.msg}`);
           }
         }
       } catch (error) {
@@ -167,6 +170,8 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.form.content = "";
+      this.form.id = 0;
+      this.$refs["thumbnail"].clear();
     }
   }
 };

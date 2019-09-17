@@ -59,7 +59,7 @@
       class="pagination"
       v-if="pagination"
       background
-       layout="prev, pager, next, jumper"
+      layout="prev, pager, next, jumper"
       :page-size="pagination.pageSize ? pagination.pageSize: 10 "
       :total="pagination.pageTotal ? pagination.pageTotal : null "
       @current-change="currentChange"

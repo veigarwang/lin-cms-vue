@@ -1,4 +1,3 @@
-
 import {
   post,
   get,
@@ -35,9 +34,9 @@ class Article {
   }
 
   async getArticles(pagesParmas) {
-    const res = await get('v1/article/',pagesParmas)
+    const res = await get('v1/article/', pagesParmas)
     return res
   }
 }
 
-export default new Article()
+export default new Article();
