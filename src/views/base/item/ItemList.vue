@@ -4,8 +4,25 @@
       <div class="header-left">
         <div class="title">字典列表</div>
       </div>
+
       <div class="header-right">
         <div style="margin-left:30px">
+          <el-select
+            size="medium"
+            filterable
+            v-model="typeCode"
+            :disabled="types.length === 0"
+            placeholder="请选择分组"
+            @change="handleChange"
+            style="margin-right:30px"
+          >
+            <el-option
+              v-for="(item,index) in types"
+              :key="index"
+              :label="item.full_name"
+              :value="item.type_code"
+            ></el-option>
+          </el-select>
           <el-button
             type="primary"
             icon="el-icon-edit"
@@ -66,7 +83,7 @@
             <el-input size="medium" clearable v-model="form.item_name"></el-input>
           </el-form-item>
           <el-form-item label="排序码" prop="sort_code">
-            <el-input size="medium" clearable v-model="form.sort_code"></el-input>
+            <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -82,7 +99,7 @@
 import baseApi from "@/models/base";
 import LinTable from "@/components/base/table/lin-table";
 import { setTimeout } from "timers";
-
+import Vue from "vue";
 export default {
   components: { LinTable },
   inject: ["eventBus"],
@@ -111,7 +128,8 @@ export default {
         item_code: [{ required: true, message: "请输入编码", trigger: "blur" }],
         item_name: [{ required: true, message: "请输入名称", trigger: "blur" }]
       },
-      types: []
+      types: [],
+      typeCode: ""
     };
   },
   methods: {
@@ -126,7 +144,7 @@ export default {
       try {
         this.loading = true;
         res = await baseApi.getItems({
-          typeCode: "tag"
+          typeCode: this.typeCode
         });
         setTimeout(() => {
           this.loading = false;
@@ -157,7 +175,6 @@ export default {
           res = await baseApi.deleteItem(val.row.id);
         } catch (e) {
           this.loading = false;
-          console.log(e);
         }
         if (res.error_code === 0) {
           this.loading = false;
@@ -222,22 +239,42 @@ export default {
       this.$refs[formName].resetFields();
     },
     async refresh() {
-      await this.getBaseItems();
       this.types = await baseApi.getTypes();
+      await this.getBaseItems();
+    },
+    // 下拉框选择分组
+    async handleChange() {
+      this.currentPage = 1;
+      this.loading = true;
+      await this.getBaseItems();
+      this.loading = false;
     }
   },
   async created() {
     this.tableColumn = [
       { prop: "item_code", label: "编码" },
       { prop: "item_name", label: "名称" },
-      { prop: "sort_code", label: "排序码" }
+      { prop: "sort_code", label: "排序码" },
+      {
+        prop: "create_time",
+        label: "创建时间",
+        scope: "create_time",
+        formatter: function(row, column) {
+          console.log(column);
+          return Vue.filter("filterTimeYmdHms")(column);
+        }
+      }
     ];
     this.operate = [
       { name: "编辑", func: "handleEdit", type: "primary" },
       { name: "删除", func: "handleDelete", type: "danger" }
     ];
-    await this.getBaseItems();
+
     this.types = await baseApi.getTypes();
+    if (this.types && this.types.length > 0) {
+      this.typeCode = this.types[0].type_code;
+    }
+    await this.getBaseItems();
   },
   beforeDestroy() {}
 };

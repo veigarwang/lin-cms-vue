@@ -34,7 +34,7 @@
       >
         <template slot-scope="scope">
           <template v-if="item.formatter">
-            <div v-html="item.formatter(scope.row)" />
+            <div v-html="item.formatter(scope.row,scope.row[item.prop])" />
           </template>
           <template v-else>
             <div>{{ scope.row[item.prop] }}</div>

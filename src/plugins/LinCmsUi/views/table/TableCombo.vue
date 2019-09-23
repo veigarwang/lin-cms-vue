@@ -1,17 +1,17 @@
 <template>
   <!-- 列表页面 -->
   <div class="tableSample">
-      <div class="header">
-        <div class="header-left">
-          <p class="title">豆瓣电影TOP250</p>
-        </div>
-        <div class="header-right">
-          <lin-search @query="onQueryChange" placeholder="请输入电影名"/>
-          <div style="margin-left:30px">
-            <el-button type="primary" @click="dialogTableVisible=!dialogTableVisible">列操作</el-button>
-          </div>
+    <div class="header">
+      <div class="header-left">
+        <p class="title">豆瓣电影TOP250</p>
+      </div>
+      <div class="header-right">
+        <lin-search @query="onQueryChange" placeholder="请输入电影名" />
+        <div style="margin-left:30px">
+          <el-button type="primary" @click="dialogTableVisible=!dialogTableVisible">列操作</el-button>
         </div>
       </div>
+    </div>
     <div class="table-main">
       <el-dialog top="5vh" width="60%" :visible.sync="dialogTableVisible">
         <!-- 定制列 -->
@@ -55,7 +55,7 @@
         <el-table-column type="expand">
           <template slot-scope="props">
             <div class="summary">
-              <img :src="props.row.thumb" alt>
+              <img :src="props.row.thumb" alt />
               <el-form label-position="left" inline class="demo-table-expand">
                 <el-form-item label="电影名">
                   <span>{{ props.row.title }}</span>
@@ -80,7 +80,7 @@
                 class="sort-input"
                 v-model="props.row.sorting"
                 @blur="handleSort(props.row.sorting, props.row)"
-              >
+              />
             </template>
           </el-table-column>
           <!-- 正常表单列 -->
@@ -171,25 +171,27 @@
         ></el-pagination>
       </div>
     </div>
-    <source-code link="https://github.com/TaleLin/lin-cms-vue/blob/master/src/plugins/LinCmsUi/views/table/TableCombo.vue"></source-code>
+    <source-code
+      link="https://github.com/TaleLin/lin-cms-vue/blob/master/src/plugins/LinCmsUi/views/table/TableCombo.vue"
+    ></source-code>
   </div>
 </template>
 
 <script>
-import LinSearch from '@/components/base/search/lin-search'
-import { tableColumn } from './data'
-import movie from '../../models/movie.js'
+import LinSearch from "@/components/base/search/lin-search";
+import { tableColumn } from "./data";
+import movie from "../../models/movie.js";
 
 export default {
   components: {
-    LinSearch,
+    LinSearch
   },
   data() {
     return {
       tableData: [],
       loading: false,
       Hidden: true, // 默认隐藏自定义排序列
-      searchKeyword: '',
+      searchKeyword: "",
       // 定制列相关
       checkList: [],
       filterTableColumn: [],
@@ -202,166 +204,166 @@ export default {
       dialogTableVisible: false,
       fixedLeftList: [],
       fixedRightList: [],
-      value: '',
+      value: "",
       // 单元格编辑相关
       editRow: 0,
-      showTooltip: true,
-    }
+      showTooltip: true
+    };
   },
   computed: {},
   created() {
     // 获取数据
-    this._getTableData((this.currentPage - 1) * this.pageCount, this.pageCount)
-    this.tableColumn = tableColumn
+    this._getTableData((this.currentPage - 1) * this.pageCount, this.pageCount);
+    this.tableColumn = tableColumn;
     // 操作栏
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary' },
-      { name: '删除', func: 'handleDelete', type: 'danger' },
-    ]
+      { name: "编辑", func: "handleEdit", type: "primary" },
+      { name: "删除", func: "handleDelete", type: "danger" }
+    ];
     // 定制列
-    this.tempCheckList = tableColumn.map(v => v.label).slice()
-    this.checkList = tableColumn.map(v => v.label)
+    this.tempCheckList = tableColumn.map(v => v.label).slice();
+    this.checkList = tableColumn.map(v => v.label);
     this.filterTableColumn = tableColumn.filter(
-      v => this.checkList.indexOf(v.label) > -1,
-    )
+      v => this.checkList.indexOf(v.label) > -1
+    );
   },
   methods: {
     // 获取数据
     _getTableData(start, count) {
-      const res = movie.getTop250(start, count)
-      res.map((item) => {
-        const temp = item
-        temp.editFlag = false
-        return ''
-      })
-      this.tableData = [...res]
+      const res = movie.getTop250(start, count);
+      res.map(item => {
+        const temp = item;
+        temp.editFlag = false;
+        return "";
+      });
+      this.tableData = [...res];
     },
 
     rowClick(val) {
-      console.log(val)
+      console.log(val);
     },
 
     // 定制列
     handleChange() {
       this.filterTableColumn = tableColumn.filter(
-        v => this.checkList.indexOf(v.label) > -1,
-      )
+        v => this.checkList.indexOf(v.label) > -1
+      );
     },
     showRowOperateModal() {},
 
     // 变更排序
     handleSort(val, rowData) {
-      console.log('rowData', rowData)
+      console.log("rowData", rowData);
       this.$message({
-        type: 'success',
-        message: `排序已更改为：${val}`,
-      })
+        type: "success",
+        message: `排序已更改为：${val}`
+      });
     },
 
     // 推荐
     handleRecommend(val, rowData) {
-      this.loading = true
-      console.log(val, rowData)
+      this.loading = true;
+      console.log(val, rowData);
       if (val) {
         setTimeout(() => {
-          this.loading = false
+          this.loading = false;
           this.$message({
-            type: 'success',
-            message: '推荐成功',
-          })
-        }, 1000)
+            type: "success",
+            message: "推荐成功"
+          });
+        }, 1000);
       } else {
         setTimeout(() => {
-          this.loading = false
+          this.loading = false;
           this.$message({
-            type: 'success',
-            message: '取消推荐',
-          })
-        }, 1000)
+            type: "success",
+            message: "取消推荐"
+          });
+        }, 1000);
       }
     },
 
     expandChange(row, expandedRows) {
-      console.log(row, expandedRows)
+      console.log(row, expandedRows);
     },
 
     // 单元格编辑
     handleCellEdit(row) {
       row.editFlag = true; // eslint-disable-line
-      this.$set(this.filterTableColumn[7], 'width', 200)
-      this.tempEditRemark = row.remark
-      this.editRow++
+      this.$set(this.filterTableColumn[7], "width", 200);
+      this.tempEditRemark = row.remark;
+      this.editRow++;
     },
     handleCellSave(row) {
       row.editFlag = false; // eslint-disable-line
       setTimeout(() => {
-        this.editRow--
+        this.editRow--;
         this.$message({
-          type: 'success',
-          message: '修改成功',
-        })
-      }, 1000)
+          type: "success",
+          message: "修改成功"
+        });
+      }, 1000);
     },
     handleCellCancel(row) {
       row.editFlag = false; // eslint-disable-line
-      console.log(this.tempEditRemark)
+      console.log(this.tempEditRemark);
       row.remark = this.tempEditRemark; // eslint-disable-line
-      this.editRow--
+      this.editRow--;
     },
 
     // 切换分页
     async handleCurrentChange(val) {
-      this.currentPage = val
-      this.loading = true
+      this.currentPage = val;
+      this.loading = true;
       setTimeout(() => {
         this._getTableData(
           (this.currentPage - 1) * this.pageCount,
-          this.pageCount,
-        )
-        this.loading = false
-      }, 1000)
+          this.pageCount
+        );
+        this.loading = false;
+      }, 1000);
     },
 
     // 操作列
     buttonMethods(func, index, row) {
-      const self = this
-      const { methods } = this.$options
-      methods[func](self, index, row)
+      const self = this;
+      const { methods } = this.$options;
+      methods[func](self, index, row);
     },
     handleEdit(self, index, row) {
-      self.handleCellEdit(row)
-      console.log(index, row)
+      self.handleCellEdit(row);
+      console.log(index, row);
     },
     handleDelete(self, index, val) {
-      console.log(val)
+      console.log(val);
       self
-        .$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+        .$confirm("此操作将永久删除该信息, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         })
         .then(async () => {
           self.loading = true; // eslint-disable-line
           setTimeout(() => {
-            self.tableData.splice(index, 1)
+            self.tableData.splice(index, 1);
             self.loading = false; // eslint-disable-line
-          }, 1000)
-        })
+          }, 1000);
+        });
     },
 
     // 搜索
     onQueryChange(query) {
-      this.searchKeyword = query.trim()
+      this.searchKeyword = query.trim();
       if (!query) {
-        this._getTableData(0, 20)
-        return
+        this._getTableData(0, 20);
+        return;
       }
-      this.loading = true
+      this.loading = true;
       setTimeout(() => {
-        this.loading = false
-        this.tableData = movie.getDataByQuery(this.searchKeyword)
-      }, 1000)
-    },
+        this.loading = false;
+        this.tableData = movie.getDataByQuery(this.searchKeyword);
+      }, 1000);
+    }
   },
 
   watch: {
@@ -369,24 +371,24 @@ export default {
     fixedLeftList() {
       this.filterTableColumn.map((item, index) => {
         if (this.fixedLeftList.indexOf(item.label) > -1) {
-          this.$set(this.filterTableColumn[index], 'fixed', 'left')
+          this.$set(this.filterTableColumn[index], "fixed", "left");
         } else if (this.fixedRightList.indexOf(item.label) === -1) {
-          this.$set(this.filterTableColumn[index], 'fixed', false)
+          this.$set(this.filterTableColumn[index], "fixed", false);
         }
-        return ''
-      })
-      console.log(this.filterTableColumn)
+        return "";
+      });
+      console.log(this.filterTableColumn);
     },
     fixedRightList() {
       this.filterTableColumn.map((item, index) => {
         if (this.fixedRightList.indexOf(item.label) > -1) {
-          this.$set(this.filterTableColumn[index], 'fixed', 'right')
+          this.$set(this.filterTableColumn[index], "fixed", "right");
         } else if (this.fixedLeftList.indexOf(item.label) === -1) {
-          this.$set(this.filterTableColumn[index], 'fixed', false)
+          this.$set(this.filterTableColumn[index], "fixed", false);
         }
-        return ''
-      })
-      console.log(this.filterTableColumn)
+        return "";
+      });
+      console.log(this.filterTableColumn);
     },
     editRow() {
       if (this.filterTableColumn[7]) {
@@ -394,10 +396,10 @@ export default {
           ? this.$set(this.filterTableColumn[7], "width", 200) // eslint-disable-line
           : null; // eslint-disable-line
       }
-      return ''
-    },
-  },
-}
+      return "";
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
