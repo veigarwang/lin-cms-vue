@@ -7,22 +7,6 @@
 
       <div class="header-right">
         <div style="margin-left:30px">
-          <el-select
-            size="medium"
-            filterable
-            v-model="typeCode"
-            :disabled="types.length === 0"
-            placeholder="请选择分组"
-            @change="handleChange"
-            style="margin-right:30px"
-          >
-            <el-option
-              v-for="(item,index) in types"
-              :key="index"
-              :label="item.full_name"
-              :value="item.type_code"
-            ></el-option>
-          </el-select>
           <el-button
             type="primary"
             icon="el-icon-edit"
@@ -32,7 +16,7 @@
               this.form= {
               }
             }"
-          >新增字典</el-button>
+          >新增类别</el-button>
           <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
         </div>
       </div>
@@ -47,7 +31,6 @@
       v-loading="loading"
     ></lin-table>
     <!--表格结束-->
-
     <el-dialog :append-to-body="true" :before-close="handleClose" :visible.sync="dialogFormVisible">
       <div style="margin-top:-25px;">
         <el-form
@@ -60,27 +43,11 @@
           :rules="rules"
           style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
         >
-          <el-form-item label="类别" prop="base_type_id">
-            <el-select
-              size="medium"
-              filterable
-              v-model="form.base_type_id"
-              :disabled="types.length === 0"
-              placeholder="请选择分组"
-            >
-              <el-option
-                v-for="item in types"
-                :key="item.id"
-                :label="item.full_name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
+          <el-form-item label="类别编码" prop="type_code">
+            <el-input size="medium" clearable v-model="form.type_code"></el-input>
           </el-form-item>
-          <el-form-item label="编码" prop="item_code">
-            <el-input size="medium" clearable v-model="form.item_code"></el-input>
-          </el-form-item>
-          <el-form-item label="名称" prop="item_name">
-            <el-input size="medium" clearable v-model="form.item_name"></el-input>
+          <el-form-item label="类别名称" prop="full_name">
+            <el-input size="medium" clearable v-model="form.full_name"></el-input>
           </el-form-item>
           <el-form-item label="排序码" prop="sort_code">
             <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
@@ -115,21 +82,19 @@ export default {
       loading: false,
       form: {
         // 表单信息
-        item_code: "",
-        item_name: "",
-        sort_code: 0,
-        base_type_id: ""
+        type_code: "",
+        full_name: "",
+        sort_code: 0
       },
       rules: {
         // 表单验证规则
-        base_type_id: [
-          { required: true, message: "请选择类别名称", trigger: "blur" }
+        type_code: [
+          { required: true, message: "请输入类别编码", trigger: "blur" }
         ],
-        item_code: [{ required: true, message: "请输入编码", trigger: "blur" }],
-        item_name: [{ required: true, message: "请输入名称", trigger: "blur" }]
-      },
-      types: [],
-      typeCode: ""
+        full_name: [
+          { required: true, message: "请输入类别名称", trigger: "blur" }
+        ]
+      }
     };
   },
   methods: {
@@ -139,13 +104,11 @@ export default {
       done();
     },
     // 根据分组 刷新/获取分组内的用户
-    async getBaseItems() {
+    async getBaseTypes() {
       let res;
       try {
         this.loading = true;
-        res = await baseApi.getItems({
-          typeCode: this.typeCode
-        });
+        res = await baseApi.getTypes({});
         setTimeout(() => {
           this.loading = false;
         }, 500);
@@ -158,76 +121,44 @@ export default {
       var rowData = val.row;
       this.id = val.row.id;
       this.dialogFormVisible = true;
-      this.form.base_type_id = rowData.base_type_id;
-      this.form.item_code = rowData.item_code;
-      this.form.item_name = rowData.item_name;
-      this.form.sort_code = rowData.sort_code;
+      Object.assign(this.form, rowData);
     },
     handleDelete(val) {
-      let res;
       this.$confirm("此操作将永久删除该字典项, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        try {
-          this.loading = true;
-          res = await baseApi.deleteItem(val.row.id);
-        } catch (e) {
+        this.loading = true;
+        await baseApi.deleteType(val.row.id).finally(() => {
           this.loading = false;
-        }
-        if (res.error_code === 0) {
-          this.loading = false;
-          await this.getBaseItems();
+        });
 
-          this.$message({
-            type: "success",
-            message: `${res.msg}`
-          });
-        } else {
-          this.loading = false;
-          this.$message.error(`${res.msg}`);
-        }
+        await this.getBaseTypes();
+        this.$message({
+          type: "success",
+          message: `${res.msg}`
+        });
       });
+    },
+    async submitForm() {
+      if (this.id === 0) {
+        return await baseApi.addType(this.form);
+      } else {
+        return await baseApi.editType(this.id, this.form);
+      }
     },
     async confirmEdit(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          let res;
-          if (this.id === 0) {
-            try {
-              this.loading = true;
-              res = await baseApi.addItem(this.form);
-            } catch (e) {
-              this.loading = false;
-            }
-            if (res.error_code === 0) {
-              this.loading = false;
-              this.$message.success(`${res.msg}`);
-              this.resetForm(formName);
-              this.dialogFormVisible = false;
-              await this.getBaseItems();
-            } else {
-              this.loading = false;
-              this.$message.error(`${res.msg}`);
-            }
-          } else {
-            try {
-              this.loading = true;
-              res = await baseApi.editItem(this.id, this.form);
-            } catch (e) {
-              this.loading = false;
-            }
-            if (res.error_code === 0) {
-              this.loading = false;
-              this.$message.success(`${res.msg}`);
-              this.dialogFormVisible = false;
-              await this.getBaseItems();
-            } else {
-              this.loading = false;
-              this.$message.error(`${res.msg}`);
-            }
-          }
+          this.loading = true;
+
+          let res = await this.submitForm().finally(() => {
+            this.loading = false;
+          });
+          this.dialogFormVisible = false;
+          await this.getBaseTypes();
+          this.$message.success(`${res.msg}`);
         } else {
           this.$message.error("请填写正确的信息");
         }
@@ -237,21 +168,20 @@ export default {
       this.$refs[formName].resetFields();
     },
     async refresh() {
-      this.types = await baseApi.getTypes();
-      await this.getBaseItems();
+      await this.getBaseTypes();
     },
     // 下拉框选择分组
     async handleChange() {
       this.currentPage = 1;
       this.loading = true;
-      await this.getBaseItems();
+      await this.getBaseTypes();
       this.loading = false;
     }
   },
   async created() {
     this.tableColumn = [
-      { prop: "item_code", label: "编码" },
-      { prop: "item_name", label: "名称" },
+      { prop: "type_code", label: "编码" },
+      { prop: "full_name", label: "名称" },
       { prop: "sort_code", label: "排序码" },
       {
         prop: "create_time",
@@ -267,11 +197,7 @@ export default {
       { name: "删除", func: "handleDelete", type: "danger" }
     ];
 
-    this.types = await baseApi.getTypes();
-    if (this.types && this.types.length > 0) {
-      this.typeCode = this.types[0].type_code;
-    }
-    await this.getBaseItems();
+    await this.getBaseTypes();
   },
   beforeDestroy() {}
 };
