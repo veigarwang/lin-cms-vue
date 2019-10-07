@@ -172,7 +172,8 @@ export default {
     buttonMethods(func, index, row) {
       const _this = this;
       const { methods } = this.$options;
-      methods[func](_this, index, row);
+      // methods[func](_this, index, row);
+      _this.$emit(func, { index, row });
     },
     // 行内编辑
     handleEdit(_this, index, row) {
@@ -231,6 +232,7 @@ export default {
         return;
       }
       this.currentOldRow = row;
+      this.$emit("row-click", row);
     },
     // 切换当前页
     currentChange(page) {

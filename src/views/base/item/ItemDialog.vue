@@ -85,6 +85,7 @@ export default {
           sort_code: 0,
           base_type_id: ""
         });
+        this.id = 0;
       }
       this.dialogFormVisible = true;
     },

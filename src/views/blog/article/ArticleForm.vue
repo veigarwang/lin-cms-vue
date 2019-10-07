@@ -3,7 +3,7 @@
     <div class="title">{{title}}</div>
     <div class="wrap">
       <el-row>
-        <el-col :lg="20" :md="20" :sm="24" :xs="24">
+        <el-col :lg="24" :md="24" :sm="24" :xs="24">
           <el-form :model="form" status-icon ref="form" label-width="100px" @submit.native.prevent>
             <el-row>
               <el-col :lg="12">
@@ -14,6 +14,62 @@
               <el-col :lg="12">
                 <el-form-item label="作者" prop="author">
                   <el-input size="medium" v-model="form.author" placeholder="请填写作者"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :lg="6">
+                <el-form-item label="分类专栏" prop="classify_id">
+                  <el-select
+                    size="medium"
+                    filterable
+                    v-model="form.classify_id"
+                    :disabled="types.length === 0"
+                    placeholder="请选择分类专栏"
+                  >
+                    <el-option
+                      v-for="item in types"
+                      :key="item.id"
+                      :label="item.item_name"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :lg="6">
+                <el-form-item label="随笔类型" prop="excerpt">
+                  <el-select
+                    v-model="form.article_type"
+                    filterable
+                    default-first-option
+                    placeholder="请选择随笔类型"
+                  >
+                    <el-option
+                      v-for="item in article_types"
+                      :key="Number(item.item_code)"
+                      :label="item.item_name"
+                      :value="Number(item.item_code)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :lg="12">
+                <el-form-item label="标签" prop="source">
+                  <el-select
+                    style="width:100%;"
+                    v-model="form.tag_ids"
+                    multiple
+                    filterable
+                    default-first-option
+                    placeholder="请选择标签"
+                  >
+                    <el-option
+                      v-for="item in tags"
+                      :key="item.id"
+                      :label="item.item_name"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -70,17 +126,18 @@
 
 <script>
 import articleApi from "@/models/article";
+import baseApi from "@/models/base";
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import UploadImgs from "@/components/base/upload-imgs";
 
 export default {
+  name: "ArticleForm",
   data() {
     return {
       title: "添加随笔",
       form: {
         archive: "",
-        article_type: "",
         comment_quantity: 0,
         content: "",
         editor: 0,
@@ -99,9 +156,13 @@ export default {
         title: "",
         type_code: null,
         type_name: null,
-        view_hits: 0
+        view_hits: 0,
+        article_type: 0
       },
-      thumbnailPreview: []
+      thumbnailPreview: [],
+      types: [],
+      tags: [],
+      article_types: []
     };
   },
   components: {
@@ -110,6 +171,17 @@ export default {
   },
   mounted() {
     this.setForm();
+  },
+  async created() {
+    this.types = await baseApi.getItems({
+      typeCode: "Article.Classify"
+    });
+    this.tags = await baseApi.getItems({
+      typeCode: "Article.Tag"
+    });
+    this.article_types = await baseApi.getItems({
+      typeCode: "Article.Type"
+    });
   },
   watch: {
     $route(to, from) {
