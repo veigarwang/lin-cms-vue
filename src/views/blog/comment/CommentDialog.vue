@@ -11,29 +11,29 @@
         style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
       >
         <el-form-item label="昵称" prop="au_name">
-          <el-input size="medium" v-model="form.au_name"></el-input>
+          <el-input size="medium" v-model="form.au_name" readonly></el-input>
         </el-form-item>
         <el-form-item label="邮件" prop="au_email">
-          <el-input size="medium" v-model="form.au_email"></el-input>
+          <el-input size="medium" v-model="form.au_email" readonly></el-input>
         </el-form-item>
         <el-form-item label="评论内容" prop="text">
-          <el-input size="medium" v-model="form.text"></el-input>
+          <el-input size="medium" v-model="form.text" readonly></el-input>
         </el-form-item>
         <el-form-item label="ip" prop="ip">
-          <el-input size="medium" v-model="form.ip"></el-input>
+          <el-input size="medium" v-model="form.ip" readonly></el-input>
         </el-form-item>
         <el-form-item label="User-Agent" prop="agent">
-          <el-input size="medium" v-model="form.agent"></el-input>
+          <el-input size="medium" v-model="form.agent" readonly></el-input>
         </el-form-item>
         <el-form-item label="系统" prop="system">
-          <el-input size="medium" v-model="form.system"></el-input>
+          <el-input size="medium" v-model="form.system" readonly></el-input>
         </el-form-item>
         <el-form-item label="主机名" prop="user_host">
-          <el-input size="medium" v-model="form.user_host"></el-input>
+          <el-input size="medium" v-model="form.user_host" readonly></el-input>
         </el-form-item>
         <el-form-item label="状态" prop="is_audited">
-          <el-radio v-model="form.is_audited" label="true">审核通过</el-radio>
-          <el-radio v-model="form.is_audited" label="false">拉黑</el-radio>
+          <el-radio v-model="form.is_audited" :label="true">审核通过</el-radio>
+          <el-radio v-model="form.is_audited" :label="false">拉黑</el-radio>
           <!-- <el-input size="medium" v-model="form.is_audited"></el-input> -->
         </el-form-item>
       </el-form>
