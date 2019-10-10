@@ -4,7 +4,6 @@ const LinCmsUiRouter = {
   title: "UI",
   type: "folder",
   icon: "iconfont icon-jiemiansheji",
-  filePath: "views/LinCmsUi/",
   order: null,
   inNav: true,
   children: [

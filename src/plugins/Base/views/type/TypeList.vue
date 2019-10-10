@@ -7,34 +7,18 @@
 
       <div class="header-right">
         <div style="margin-left:30px">
-          <el-select
-            size="medium"
-            filterable
-            v-model="typeCode"
-            :disabled="types.length === 0"
-            placeholder="请选择分组"
-            @change="handleChange"
-            style="margin-right:30px"
-          >
-            <el-option
-              v-for="(item,index) in types"
-              :key="index"
-              :label="item.full_name"
-              :value="item.type_code"
-            ></el-option>
-          </el-select>
           <el-button
             type="primary"
             icon="el-icon-edit"
             @click="()=>{
-               this.$refs['dialogForm'].show();
+             this.$refs['dialogForm'].show();
             }"
-          >新增字典</el-button>
+          >新增类别</el-button>
           <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
         </div>
       </div>
     </div>
-    <!-- 表格 -->
+    <!-- 表格开始 -->
     <lin-table
       :tableColumn="tableColumn"
       :tableData="tableData"
@@ -45,43 +29,41 @@
     ></lin-table>
     <!--表格结束-->
 
-    <item-dialog ref="dialogForm" @ok="refresh"></item-dialog>
+    <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
   </div>
 </template>
 
 <script>
-import baseApi from "@/models/base";
+import baseApi from "../../models/base";
 import LinTable from "@/components/base/table/lin-table";
-import ItemDialog from "./ItemDialog";
 import Vue from "vue";
+import TypeDialog from "./TypeDialog";
 export default {
-  components: { LinTable, ItemDialog },
+  components: { LinTable, TypeDialog },
   inject: ["eventBus"],
   data() {
     return {
+      id: 0, // id
       refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
-      loading: false,
-      types: [],
-      typeCode: ""
+      loading: false
     };
   },
   methods: {
     // 根据分组 刷新/获取分组内的用户
-    async getBaseItems() {
+    async getBaseTypes() {
       let res;
       try {
         this.loading = true;
-        res = await baseApi.getItems({
-          typeCode: this.typeCode
-        });
+
+        res = await baseApi.getTypes({});
         setTimeout(() => {
           this.loading = false;
+          this.tableData = res;
         }, 500);
-        this.tableData = res;
       } catch (e) {
         this.loading = false;
       }
@@ -90,48 +72,33 @@ export default {
       this.$refs["dialogForm"].show(val.row);
     },
     handleDelete(val) {
-      let res;
       this.$confirm("此操作将永久删除该字典项, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        try {
-          this.loading = true;
-          res = await baseApi.deleteItem(val.row.id);
-        } catch (e) {
-          this.loading = false;
-        }
-        if (res.error_code === 0) {
-          this.loading = false;
-          await this.getBaseItems();
+        this.loading = true;
 
-          this.$message({
-            type: "success",
-            message: `${res.msg}`
-          });
-        } else {
+        let res = await baseApi.deleteType(val.row.id).finally(() => {
           this.loading = false;
-          this.$message.error(`${res.msg}`);
-        }
+        });
+
+        await this.refresh();
+
+        this.$message({
+          type: "success",
+          message: `${res.msg}`
+        });
       });
     },
     async refresh() {
-      this.types = await baseApi.getTypes();
-      await this.getBaseItems();
-    },
-    // 下拉框选择分组
-    async handleChange() {
-      this.currentPage = 1;
-      this.loading = true;
-      await this.getBaseItems();
-      this.loading = false;
+      await this.getBaseTypes();
     }
   },
   async created() {
     this.tableColumn = [
-      { prop: "item_code", label: "编码" },
-      { prop: "item_name", label: "名称" },
+      { prop: "type_code", label: "编码" },
+      { prop: "full_name", label: "名称" },
       { prop: "sort_code", label: "排序码" },
       {
         prop: "create_time",
@@ -146,12 +113,7 @@ export default {
       { name: "编辑", func: "handleEdit", type: "primary" },
       { name: "删除", func: "handleDelete", type: "danger" }
     ];
-
-    this.types = await baseApi.getTypes();
-    if (this.types && this.types.length > 0) {
-      this.typeCode = this.types[0].type_code;
-    }
-    await this.getBaseItems();
+    await this.getBaseTypes();
   },
   beforeDestroy() {}
 };

@@ -125,11 +125,11 @@
 </template>
 
 <script>
-import articleApi from "@/models/article";
-import baseApi from "@/models/base";
+import baseApi from "@/plugins/Base/models/base";
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import UploadImgs from "@/components/base/upload-imgs";
+import articleApi from "../../models/article";
 
 export default {
   name: "ArticleForm",

@@ -140,16 +140,16 @@ _axios.interceptors.response.use(
         return;
       }
       // 处理 API 异常
-      // if (error_code === 10000 || error_code === 10100) {
-      //   debugger;
-      //   setTimeout(() => {
-      //     store.dispatch("loginOut");
-      //     const { origin } = window.location;
-      //     window.location.href = origin;
-      //   }, 1500);
-      //   resolve(null);
-      //   return;
-      // }
+      if (error_code === 10000 || error_code === 10100) {
+        debugger;
+        setTimeout(() => {
+          store.dispatch("loginOut");
+          const { origin } = window.location;
+          window.location.href = origin;
+        }, 1500);
+        resolve(null);
+        return;
+      }
       // 令牌相关，刷新令牌
       if (error_code === 10040 || error_code === 10050) {
         // TODO: 重试一次，待优化

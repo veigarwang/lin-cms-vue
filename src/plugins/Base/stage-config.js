@@ -13,7 +13,7 @@ const baseRouter = {
       type: "view",
       name: "ItemList",
       route: "/base/item",
-      filePath: "views/base/item/ItemList.vue",
+      filePath: "plugins/Base/views/item/ItemList.vue",
       inNav: true
     },
     {
@@ -22,7 +22,7 @@ const baseRouter = {
       type: "view",
       name: "TypeList",
       route: "/base/type",
-      filePath: "views/base/type/TypeList.vue",
+      filePath: "plugins/Base/views/type/TypeList.vue",
       inNav: true
     }
   ]

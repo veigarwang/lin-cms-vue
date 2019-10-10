@@ -4,6 +4,7 @@ const blogRouter = {
   title: "博客管理",
   type: "folder", // 类型: folder, tab, view
   icon: "iconfont icon-tushuguanli",
+  filePath: "views/Blog/",
   order: null,
   inNav: true,
   children: [
@@ -19,7 +20,7 @@ const blogRouter = {
           type: "view",
           name: "articleFormAdd",
           route: "/article/form",
-          filePath: "views/blog/article/ArticleForm.vue",
+          filePath: "plugins/Blog/views/article/ArticleForm.vue",
           inNav: true,
           icon: "iconfont icon-tushuguanli"
         },
@@ -28,7 +29,7 @@ const blogRouter = {
           type: "view",
           name: "articleFormEdit",
           route: "/article/form/:id",
-          filePath: "views/blog/article/ArticleForm.vue",
+          filePath: "plugins/Blog/views/article/ArticleForm.vue",
           inNav: false,
           icon: "iconfont icon-tushuguanli"
         },
@@ -37,7 +38,7 @@ const blogRouter = {
           type: "view",
           name: "articleList",
           route: "/article/list",
-          filePath: "views/blog/article/ArticleList.vue",
+          filePath: "plugins/Blog/views/article/ArticleList.vue",
           inNav: true,
           icon: "iconfont icon-tushuguanli"
         }
@@ -48,7 +49,16 @@ const blogRouter = {
       title: "评论管理",
       type: "view",
       route: "/comment/list",
-      filePath: "views/blog/comment/CommentList.vue",
+      filePath: "plugins/Blog/views/comment/CommentList.vue",
+      inNav: true,
+      icon: "iconfont icon-tushuguanli"
+    },
+    {
+      name: "BlogHome",
+      title: "博客首页",
+      type: "view",
+      route: "/blog/home",
+      filePath: "plugins/Blog/views/home/Index.vue",
       inNav: true,
       icon: "iconfont icon-tushuguanli"
     }

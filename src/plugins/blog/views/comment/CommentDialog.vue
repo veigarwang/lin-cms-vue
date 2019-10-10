@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import commentApi from "@/models/comment";
 
 export default {
   name: "CommentDialog",

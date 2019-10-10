@@ -1,89 +1,85 @@
-import adminConfig from './admin'
-import bookConfig from './book' // 引入图书管理路由文件
-import pluginsConfig from './plugins'
-import blogConfig from './blog'
-import baseRouter from './base'
-import Utils from '@/lin/utils/util'
+import adminConfig from "./admin";
+import bookConfig from "./book"; // 引入图书管理路由文件
+import pluginsConfig from "./plugins";
+import Utils from "@/lin/utils/util";
 
 // eslint-disable-next-line import/no-mutable-exports
 let homeRouter = [
   {
-    title: '林间有风',
-    type: 'view',
-    name: Symbol('about'),
-    route: '/about',
-    filePath: 'views/about/About.vue',
+    title: "林间有风",
+    type: "view",
+    name: Symbol("about"),
+    route: "/about",
+    filePath: "views/about/About.vue",
     inNav: true,
-    icon: 'iconfont icon-iconset0103',
-    order: 0,
+    icon: "iconfont icon-iconset0103",
+    order: 0
   },
   {
-    title: '日志管理',
-    type: 'view',
-    name: Symbol('log'),
-    route: '/log',
-    filePath: 'views/log/Log.vue',
+    title: "日志管理",
+    type: "view",
+    name: Symbol("log"),
+    route: "/log",
+    filePath: "views/log/Log.vue",
     inNav: true,
-    icon: 'iconfont icon-rizhiguanli',
+    icon: "iconfont icon-rizhiguanli",
     order: 1,
-    right: ['查询所有日志'],
+    right: ["查询所有日志"]
   },
   {
-    title: '404',
-    type: 'view',
-    name: Symbol('404'),
-    route: '/404',
-    filePath: 'views/error-page/404.vue',
+    title: "404",
+    type: "view",
+    name: Symbol("404"),
+    route: "/404",
+    filePath: "views/error-page/404.vue",
     inNav: false,
-    icon: 'iconfont icon-rizhiguanli',
+    icon: "iconfont icon-rizhiguanli"
   },
   bookConfig,
-  adminConfig,
-  blogConfig,
-  baseRouter
-]
+  adminConfig
+];
 
-const plugins = [...pluginsConfig]
+const plugins = [...pluginsConfig];
 
 // 筛除已经被添加的插件
 function filterPlugin(data) {
   if (plugins.length === 0) {
-    return
+    return;
   }
   if (Array.isArray(data)) {
-    data.forEach((item) => {
-      filterPlugin(item)
-    })
+    data.forEach(item => {
+      filterPlugin(item);
+    });
   } else {
-    const findResult = plugins.findIndex(item => (data === item))
+    const findResult = plugins.findIndex(item => data === item);
     if (findResult >= 0) {
-      plugins.splice(findResult, 1)
+      plugins.splice(findResult, 1);
     }
     if (data.children) {
-      filterPlugin(data.children)
+      filterPlugin(data.children);
     }
   }
 }
 
-filterPlugin(homeRouter)
+filterPlugin(homeRouter);
 
-homeRouter = homeRouter.concat(plugins)
+homeRouter = homeRouter.concat(plugins);
 
 // 处理顺序
-homeRouter = Utils.sortByOrder(homeRouter)
+homeRouter = Utils.sortByOrder(homeRouter);
 
 // 使用 Symbol 处理 name 字段, 保证唯一性
-const deepReduceName = (target) => {
+const deepReduceName = target => {
   if (Array.isArray(target)) {
-    target.forEach((item) => {
-      if (typeof item !== 'object') {
-        return
+    target.forEach(item => {
+      if (typeof item !== "object") {
+        return;
       }
-      deepReduceName(item)
-    })
-    return
+      deepReduceName(item);
+    });
+    return;
   }
-  if (typeof target === 'object') {
+  if (typeof target === "object") {
     // if (typeof target.name !== 'symbol') {
     //   // eslint-disable-next-line no-param-reassign
     //   target.name = target.name || Utils.getRandomStr()
@@ -92,21 +88,20 @@ const deepReduceName = (target) => {
     // }
 
     if (!target.name) {
-      target.name = target.name || Utils.getRandomStr()
+      target.name = target.name || Utils.getRandomStr();
     }
-
 
     if (Array.isArray(target.children)) {
-      target.children.forEach((item) => {
-        if (typeof item !== 'object') {
-          return
+      target.children.forEach(item => {
+        if (typeof item !== "object") {
+          return;
         }
-        deepReduceName(item)
-      })
+        deepReduceName(item);
+      });
     }
   }
-}
+};
 
-deepReduceName(homeRouter)
+deepReduceName(homeRouter);
 
-export default homeRouter
+export default homeRouter;
