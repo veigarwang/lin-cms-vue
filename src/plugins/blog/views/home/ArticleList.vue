@@ -2,44 +2,42 @@
   <div class="article">
     <div class="article-list">
       <div class="article-item">
-        <img class="article-thumb" src="@/assets/img/about/open-source.jpg" alt />
+        <img class="article-thumb" :src="data.thumbnail_display" alt />
         <div class="article-detail">
           <div class="info-row">
             <ul class="meta-list">
               <li class="item username clickable">
-                <a href>tinycoder</a>
+                <a :href="'/blog/detail/'+data.id">{{data.author}}</a>
               </li>
-              <li class="item">一天前</li>
-              <li class="item">
-                <a class="tag">ECMAScript 6</a>
-                <a class="tag">JavaScript</a>
-              </li>
+              <li class="item">{{data.time_span}}</li>
+              <!-- <li class="item" v-for="(tag,index) in data.tags" v-bind:key="index">
+                <a class="tag">{{tag}}</a>
+              </li>-->
             </ul>
           </div>
           <div class="info-row title-row">
-            <p class="article-detail-title">How to Contribute to Open Source?</p>
+            <p class="article-detail-title" @click="toArticle">{{data.title}}</p>
           </div>
-          <div class="info-row article-detail-content">
-            Whether you just made your first open source contribution, or you’re looking for new ways to contribute, we hope you’re inspired to take action.
-            Even if your contribution wasn’t accepted, don’t forget to say thanks when a maintainer put effort into helping you.
-            Open source is made by people like you: one issue, pull request, comment, or high-five at a time.
-          </div>
+          <div class="info-row article-detail-content">{{data.excerpt}}</div>
           <div class="info-row">
             <div class="article-tool">
               <ul class="article-about">
                 <li>
                   <a href>
-                    <i class="iconfont icon-shoucang"></i>37
+                    <i class="iconfont icon-shoucang"></i>
+                    {{data.point_quantity}}
                   </a>
                 </li>
                 <li>
                   <a href>
-                    <i class="iconfont icon-pinglun"></i>2384
+                    <i class="iconfont icon-pinglun"></i>
+                    {{data.comment_quantity}}
                   </a>
                 </li>
                 <li>
                   <a href>
                     <i class="iconfont icon-fenxiang"></i>
+                    {{data.view_hits}}
                   </a>
                 </li>
               </ul>
@@ -60,11 +58,44 @@ export default {
   props: {
     data: {
       type: Object,
-      default: {}
+      default: () => {
+        return {
+          classify_id: 7,
+          classify_name: null,
+          time_span: "1周前",
+          is_new: false,
+          title: "学习spring-boot",
+          keywords: "spring-boot",
+          source: "",
+          excerpt:
+            "## springboot \n\n- annotation注解\n\n1. @RestController=@Controller+@ResponseBody是在RESTful Web服务中，基于sprinboot 2.0首选方法。",
+          view_hits: 0,
+          comment_quantity: 0,
+          point_quantity: 0,
+          thumbnail: "2019/10/03/8e7da70d-def1-4b5f-a927-c8f5419ffed0.jpeg",
+          thumbnail_display:
+            "https://localhost:5001/assets/2019/10/03/8e7da70d-def1-4b5f-a927-c8f5419ffed0.jpeg",
+          is_audit: true,
+          recommend: true,
+          is_stickie: true,
+          archive: "2019年10月",
+          article_type: 0,
+          editor: 0,
+          create_user_id: 7,
+          create_time: 1570080313087.0,
+          author: "admin",
+          tag_ids: [2, 3, 1],
+          id: 3
+        };
+      }
     }
   },
   mounted() {},
-  methods: {}
+  methods: {
+    toArticle() {
+      this.$router.push({ path: "/post/" + this.data.id });
+    }
+  }
 };
 </script>
 

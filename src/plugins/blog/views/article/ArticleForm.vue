@@ -1,19 +1,28 @@
 <template>
-  <div class="container">
-    <div class="title">{{title}}</div>
+  <div class>
+    <sticky-top>
+      <div class="title">
+        <span>{{title[this.id==0?0:1]}}</span>
+        <span class="back" @click="back">
+          <i class="iconfont icon-fanhui"></i> 返回
+        </span>
+      </div>
+    </sticky-top>
     <div class="wrap">
       <el-row>
         <el-col :lg="24" :md="24" :sm="24" :xs="24">
-          <el-form :model="form" status-icon ref="form" label-width="100px" @submit.native.prevent>
+          <el-form
+            :rules="rules"
+            :model="form"
+            status-icon
+            ref="form"
+            label-width="100px"
+            @submit.native.prevent
+          >
             <el-row>
               <el-col :lg="12">
                 <el-form-item label="标题" prop="title">
                   <el-input size="medium" v-model="form.title" placeholder="请填写标题"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :lg="12">
-                <el-form-item label="作者" prop="author">
-                  <el-input size="medium" v-model="form.author" placeholder="请填写作者"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -24,13 +33,13 @@
                     size="medium"
                     filterable
                     v-model="form.classify_id"
-                    :disabled="types.length === 0"
+                    :disabled="classifys.length === 0"
                     placeholder="请选择分类专栏"
                   >
                     <el-option
-                      v-for="item in types"
+                      v-for="item in classifys"
                       :key="item.id"
-                      :label="item.item_name"
+                      :label="item.classify_name"
                       :value="item.id"
                     ></el-option>
                   </el-select>
@@ -55,18 +64,22 @@
               </el-col>
               <el-col :lg="12">
                 <el-form-item label="标签" prop="source">
+                  <!--
+                    remote
+                  :remote-method="remoteMethod"-->
                   <el-select
                     style="width:100%;"
                     v-model="form.tag_ids"
                     multiple
                     filterable
+                    :loading="loading"
                     default-first-option
-                    placeholder="请选择标签"
+                    placeholder="添加一个标签"
                   >
                     <el-option
                       v-for="item in tags"
                       :key="item.id"
-                      :label="item.item_name"
+                      :label="item.tag_name"
                       :value="item.id"
                     ></el-option>
                   </el-select>
@@ -114,7 +127,7 @@
               </el-col>
             </el-row>
             <el-form-item class="submit">
-              <el-button type="primary" @click="submitForm('form')">保 存</el-button>
+              <el-button type="primary" @click="confirmEdit('form')">保 存</el-button>
               <el-button @click="resetForm('form')">重 置</el-button>
             </el-form-item>
           </el-form>
@@ -130,12 +143,14 @@ import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import UploadImgs from "@/components/base/upload-imgs";
 import articleApi from "../../models/article";
+import classifyApi from "../../models/classify";
+import tagApi from "../../models/tag";
 
 export default {
   name: "ArticleForm",
   data() {
     return {
-      title: "添加随笔",
+      title: ["添加随笔", "编辑随笔"],
       form: {
         archive: "",
         comment_quantity: 0,
@@ -160,10 +175,20 @@ export default {
         article_type: 0
       },
       thumbnailPreview: [],
-      types: [],
+      classifys: [],
       tags: [],
-      article_types: []
+      article_types: [],
+      loading: false,
+      rules: {
+        // 表单验证规则
+        title: [{ required: true, message: "请输入标题", trigger: "blur" }]
+      }
     };
+  },
+  props: {
+    id: {
+      type: Number
+    }
   },
   components: {
     mavonEditor,
@@ -173,30 +198,38 @@ export default {
     this.setForm();
   },
   async created() {
-    this.types = await baseApi.getItems({
-      typeCode: "Article.Classify"
-    });
-    this.tags = await baseApi.getItems({
-      typeCode: "Article.Tag"
-    });
+    this.classifys = await classifyApi.getClassifys();
     this.article_types = await baseApi.getItems({
       typeCode: "Article.Type"
     });
+    let tags = await tagApi.getTags();
+    this.tags = tags.collection;
   },
-  watch: {
-    $route(to, from) {
-      this.setForm();
-    }
-  },
-  computed: {
-    id() {
-      return this.$route.params.id;
-    }
-  },
+  // watch: {
+  //   $route(to, from) {
+  //     this.setForm();
+  //   }
+  // },
+  // computed: {
+  //   id() {
+  //     return this.$route.params.id;
+  //   }
+  // },
   methods: {
+    async remoteMethod(query) {
+      if (query !== "") {
+        this.loading = true;
+        let tags = await tagApi.getTags({
+          tagName: query
+        });
+        this.loading = false;
+        this.tags = tags.collection;
+      } else {
+        this.tags = [];
+      }
+    },
     setForm() {
       if (this.id) {
-        this.title = "编辑随笔";
         articleApi.getArticle(this.id).then(res => {
           this.form = res;
           this.thumbnailPreview.length = 0;
@@ -208,42 +241,46 @@ export default {
               imgId: res.id
             });
           }
+          // this.tags = res.tags;
         });
       } else {
-        this.title = "添加随笔";
         this.resetForm("form");
       }
     },
-    async submitForm(formName) {
-      try {
-        var thumbnail = await this.$refs["thumbnail"].getValue();
-        if (thumbnail.length > 0) {
-          this.form.thumbnail = thumbnail[0].src;
-        } else {
-          this.form.thumbnail = "";
-        }
-
-        if (this.id) {
-          const res = await articleApi.editArticle(this.id, this.form);
-          if (res.error_code === 0) {
-            this.$message.success(`${res.msg}`);
-          }
-        } else {
-          const res = await articleApi.addArticle(this.form);
-          if (res.error_code === 0) {
-            this.$message.success(`${res.msg}`);
-            this.resetForm(formName);
-          }
-        }
-      } catch (error) {
-        console.log(error);
+    async submitForm() {
+      if (this.id === 0) {
+        return await articleApi.addArticle(this.form);
+      } else {
+        return await articleApi.editArticle(this.id, this.form);
       }
+    },
+    async confirmEdit(formName) {
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          var thumbnail = await this.$refs["thumbnail"].getValue();
+          if (thumbnail.length > 0) {
+            this.form.thumbnail = thumbnail[0].src;
+          } else {
+            this.form.thumbnail = "";
+          }
+          const res = await this.submitForm();
+          if (res.error_code === 0) {
+            this.$message.success(`${res.msg}`);
+            this.$emit("editClose");
+          }
+        } else {
+          this.$message.error("请填写正确的信息");
+        }
+      });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.form.content = "";
       this.form.id = 0;
       this.$refs["thumbnail"].clear();
+    },
+    back() {
+      this.$emit("editClose");
     }
   }
 };
@@ -259,6 +296,11 @@ export default {
     font-weight: 500;
     text-indent: 40px;
     border-bottom: 1px solid #dae1ec;
+    .back {
+      float: right;
+      margin-right: 40px;
+      cursor: pointer;
+    }
   }
 
   .wrap {

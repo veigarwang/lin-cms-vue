@@ -1,38 +1,45 @@
 <template>
   <div class="log">
     <sticky-top>
-    <div class="log-header">
-      <div class="header-left">
-        <p class="title">日志信息</p>
+      <div class="log-header">
+        <div class="header-left">
+          <p class="title">日志信息</p>
+        </div>
+        <div class="header-right" v-auth="'搜索日志'">
+          <lin-search @query="onQueryChange" ref="searchKeyword" />
+          <el-dropdown
+            size="medium"
+            style="margin: 0 10px;"
+            @command="handleCommand"
+            v-auth="'查询日志记录的用户'"
+          >
+            <el-button size="medium">
+              {{searchUser ? searchUser : '全部人员'}}
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
+              <el-dropdown-item
+                icon="el-icon-user-solid"
+                v-for="(user, index) in users"
+                :key="index"
+                :command="[user]"
+              >{{user}}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
+        </div>
       </div>
-      <div class="header-right" v-auth="'搜索日志'">
-        <lin-search @query="onQueryChange" ref="searchKeyword" />
-        <el-dropdown  size="medium" style="margin: 0 10px;" @command="handleCommand" v-auth="'查询日志记录的用户'">
-          <el-button  size="medium">
-            {{searchUser ? searchUser : '全部人员'}}
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
-            <el-dropdown-item
-              icon="el-icon-user-solid"
-              v-for="(user, index) in users"
-              :key="index"
-              :command="[user]">{{user}}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date">
-        </lin-date-picker>
-      </div>
-    </div>
-    <el-divider v-if="!keyword"></el-divider>
+      <el-divider v-if="!keyword"></el-divider>
     </sticky-top>
     <transition name="fade">
       <div class="search" v-if="keyword">
         <p class="search-tip">
-          搜索“<span class="search-keyword">{{keyword}}</span>”，
-          找到 <span class="search-num">{{totalCount}}</span> 条日志信息</p>
+          搜索“
+          <span class="search-keyword">{{keyword}}</span>”，
+          找到
+          <span class="search-num">{{totalCount}}</span> 条日志信息
+        </p>
         <button class="search-back" @click="backInit">返回全部日志</button>
       </div>
     </transition>
@@ -61,207 +68,207 @@
           <span>{{totalCount === 0 ? '暂无数据' : '没有更多数据了'}}</span>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import log from 'lin/models/log'
-import { searchLogKeyword } from 'lin/utils/search'
-import LinSearch from '@/components/base/search/lin-search'
-import LinDatePicker from '@/components/base/date-picker/lin-date-picker'
+import { mapGetters } from "vuex";
+import log from "lin/models/log";
+import { searchLogKeyword } from "lin/utils/search";
+import LinSearch from "@/components/base/search/lin-search";
+import LinDatePicker from "@/components/base/date-picker/lin-date-picker";
 
 export default {
   components: {
     LinSearch,
-    LinDatePicker,
+    LinDatePicker
   },
   data() {
     return {
       log: null,
-      value: '',
+      value: "",
       logs: [],
       users: [],
-      searchUser: '',
+      searchUser: "",
       more: false,
       loading: false,
       finished: false,
       isSearch: false,
       error: false,
-      searchKeyword: '',
+      searchKeyword: "",
       searchDate: [],
       keyword: null,
-      totalCount: 0,
-    }
+      totalCount: 0
+    };
   },
   computed: {
-    ...mapGetters(['auths', 'user']),
+    ...mapGetters(["auths", "user"])
   },
   async created() {
-    this.loading = true
-    await this.initPage()
-    this.loading = false
+    this.loading = true;
+    await this.initPage();
+    this.loading = false;
   },
   watch: {
     // 用户搜索
     searchUser(user) {
-      this.keyword = user
+      this.keyword = user;
       if (this.searchKeyword) {
-        this.keyword = `${user} ${this.searchKeyword}`
+        this.keyword = `${user} ${this.searchKeyword}`;
       }
       if (this.searchDate.length) {
-        this.keyword = `${user} ${this.searchKeyword} ${this.searchDate}`
+        this.keyword = `${user} ${this.searchKeyword} ${this.searchDate}`;
       }
-      this.searchPage()
+      this.searchPage();
     },
     // 关键字搜索
     searchKeyword(newVal) {
       if (newVal) {
-        this.keyword = newVal
+        this.keyword = newVal;
         if (this.searchUser) {
-          this.keyword = `${this.searchUser} ${newVal}`
+          this.keyword = `${this.searchUser} ${newVal}`;
         }
         if (this.searchDate.length) {
-          this.keyword = `${this.searchUser} ${newVal} ${this.searchDate}`
+          this.keyword = `${this.searchUser} ${newVal} ${this.searchDate}`;
         }
       } else {
-        this.keyword = ''
+        this.keyword = "";
         if (this.searchUser) {
-          this.keyword = `${this.searchUser}`
+          this.keyword = `${this.searchUser}`;
         }
         if (this.searchDate.length) {
-          this.keyword = `${this.searchUser} ${this.searchDate}`
+          this.keyword = `${this.searchUser} ${this.searchDate}`;
         }
-        this.$refs.searchKeyword.clear()
+        this.$refs.searchKeyword.clear();
       }
-      this.searchPage()
+      this.searchPage();
     },
     // 日期搜索
     searchDate(newDate) {
       if (newDate && newDate.length) {
-        this.keyword = `${newDate[0]}至${newDate[1]}`
+        this.keyword = `${newDate[0]}至${newDate[1]}`;
         if (this.searchUser) {
-          this.keyword = `${this.searchUser} ${newDate[0]}至${newDate[1]}`
+          this.keyword = `${this.searchUser} ${newDate[0]}至${newDate[1]}`;
         }
         if (this.searchKeyword) {
-          this.keyword = `${this.searchUser} ${this.searchKeyword} ${newDate[0]}至${newDate[1]}`
+          this.keyword = `${this.searchUser} ${this.searchKeyword} ${
+            newDate[0]
+          }至${newDate[1]}`;
         }
       } else {
-        this.keyword = ''
-        this.isSearch = false
+        this.keyword = "";
+        this.isSearch = false;
         if (this.searchUser) {
-          this.keyword = `${this.searchUser}`
+          this.keyword = `${this.searchUser}`;
         }
         if (this.searchKeyword) {
-          this.keyword = `${this.searchUser} ${this.searchKeyword}`
+          this.keyword = `${this.searchUser} ${this.searchKeyword}`;
         }
-        this.$refs.searchDate.clear()
+        this.$refs.searchDate.clear();
       }
-      this.searchPage()
-    },
+      this.searchPage();
+    }
   },
   methods: {
     // 下拉框
     handleCommand(user) {
-      this.searchUser = user[0] // eslint-disable-line
+      this.searchUser = user[0]; // eslint-disable-line
     },
     // 页面初始化
     async initPage() {
       try {
-        if (this.user.isSuper || this.auths.includes('查询日志记录的用户')) {
-          this.users = await log.getLoggedUsers({})
+        if (this.user.isSuper || this.auths.includes("查询日志记录的用户")) {
+          this.users = await log.getLoggedUsers({});
         }
-        const res = await log.getLogs({ page: 0 })
-        this.logs = res.collection
+        const res = await log.getLogs({ page: 0 });
+        this.logs = res.collection;
       } catch (err) {
-        console.error(err)
+        console.error(err);
       }
     },
     // 条件检索
     async searchPage() {
-      this.totalCount = 0
-      this.logs = []
-      this.loading = true
-      this.finished = false
-      const name = this.searchUser === '全部人员' ? '' : this.searchUser
+      this.totalCount = 0;
+      this.logs = [];
+      this.loading = true;
+      this.finished = false;
+      const name = this.searchUser === "全部人员" ? "" : this.searchUser;
       const res = await log.searchLogs({
         page: 0, // 初始化
         keyword: this.searchKeyword,
         name,
         start: this.searchDate[0],
-        end: this.searchDate[1],
-      })
+        end: this.searchDate[1]
+      });
       if (res) {
-        let logs = res.collection
-        this.totalCount = res.total_nums
+        let logs = res.collection;
+        this.totalCount = res.total_nums;
         if (this.searchKeyword) {
-          logs = await searchLogKeyword(this.searchKeyword, logs)
+          logs = await searchLogKeyword(this.searchKeyword, logs);
         }
-        this.logs = logs
+        this.logs = logs;
       } else {
-        this.finished = true
+        this.finished = true;
       }
-      this.isSearch = true
-      this.loading = false
+      this.isSearch = true;
+      this.loading = false;
     },
     // 下一页
     async nextPage() {
-      this.more = true
-      let res
+      this.more = true;
+      let res;
       if (this.isSearch) {
-        res = await log.moreSearchPage()
+        res = await log.moreSearchPage();
       } else {
-        res = await log.moreLogPage()
+        res = await log.moreLogPage();
       }
       if (res) {
-        let moreLogs = res.collection
+        let moreLogs = res.collection;
         if (this.isSearch && this.searchKeyword) {
-          moreLogs = await searchLogKeyword(this.searchKeyword, moreLogs)
+          moreLogs = await searchLogKeyword(this.searchKeyword, moreLogs);
         }
-        this.logs = this.logs.concat(moreLogs)
+        this.logs = this.logs.concat(moreLogs);
       } else {
-        this.finished = true
+        this.finished = true;
       }
-      this.more = false
+      this.more = false;
     },
     searchByUser(user) {
-      this.searchUser = user
+      this.searchUser = user;
     },
     onQueryChange(query) {
       // 处理带空格的情况
-      this.searchKeyword = query.trim()
+      this.searchKeyword = query.trim();
     },
     handleDateChange(date) {
-      this.searchDate = date
+      this.searchDate = date;
     },
     // 清空检索
     async backInit() {
-      this.searchUser = ''
-      this.searchKeyword = ''
-      this.searchDate = []
-      this.keyword = ''
-      this.logs = []
-      this.isSearch = false
-      this.loading = true
-      await this.initPage()
-      this.loading = false
-    },
+      this.searchUser = "";
+      this.searchKeyword = "";
+      this.searchDate = [];
+      this.keyword = "";
+      this.logs = [];
+      this.isSearch = false;
+      this.loading = true;
+      await this.initPage();
+      this.loading = false;
+    }
   },
   destroyed() {
-    log.init()
-  },
-}
+    log.init();
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 .log /deep/ .el-button {
-  padding-top:10px;
-  padding-bottom:10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .log {
-
   .log-header {
     display: flex;
     justify-content: space-between;
@@ -296,7 +303,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top:24px;
+    margin-top: 24px;
 
     .search-tip {
       margin-left: 40px;

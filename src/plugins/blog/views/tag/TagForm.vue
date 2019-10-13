@@ -1,0 +1,168 @@
+<template>
+  <div class="container">
+    <div class="title">
+      <span>{{title[this.id==0?0:1]}}</span>
+      <span class="back" @click="back">
+        <i class="iconfont icon-fanhui"></i> 返回
+      </span>
+    </div>
+    <div class="wrap">
+      <el-row>
+        <el-col :lg="16" :md="20" :sm="24" :xs="24">
+          <el-form
+            status-icon
+            ref="form"
+            label-width="120px"
+            :model="form"
+            label-position="labelPosition"
+            :rules="rules"
+            style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
+          >
+            <el-form-item label="标签名称" prop="tag_name">
+              <el-input size="medium" clearable v-model="form.tag_name"></el-input>
+            </el-form-item>
+            <el-form-item label="别名" prop="alias">
+              <el-input size="medium" clearable v-model="form.alias"></el-input>
+            </el-form-item>
+            <el-form-item label="封面" prop="thumbnail">
+              <upload-imgs
+                ref="thumbnail"
+                :multiple="false"
+                :value="thumbnailPreview"
+                :max-num="1"
+              />
+            </el-form-item>
+            <el-form-item class="submit">
+              <el-button type="primary" @click="confirmEdit('form')">保 存</el-button>
+              <el-button @click="resetForm('form')">重 置</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
+    </div>
+  </div>
+</template>
+
+<script>
+import tagApi from "../../models/tag";
+import UploadImgs from "@/components/base/upload-imgs";
+export default {
+  name: "TagForm",
+  components: { UploadImgs },
+  props: {
+    id: {
+      type: Number,
+      default: 0
+    }
+  },
+  data() {
+    return {
+      title: ["新增标签", "编辑标签"],
+      loading: false,
+      form: {
+        // 表单信息
+        tag_name: "",
+        alias: "",
+        thumbnail: ""
+      },
+
+      thumbnailPreview: [],
+      rules: {
+        // 表单验证规则
+        tag_name: [{ required: true, message: "请输入标签", trigger: "blur" }],
+        thumbnail: [{ required: true, message: "请上传封面", trigger: "blur" }]
+      }
+    };
+  },
+  async mounted() {
+    this.show(this.id);
+  },
+  methods: {
+    async show(id) {
+      if (id != 0) {
+        var tag = await tagApi.getTag(id);
+        this.form = tag;
+        this.thumbnailPreview.length = 0;
+        if (tag.thumbnail) {
+          this.thumbnailPreview.push({
+            id: tag.id,
+            display: tag.thumbnail_display,
+            src: tag.thumbnail,
+            imgId: tag.id
+          });
+        }
+      } else {
+        Object.assign(this.form, {
+          tag_name: "",
+          alias: ""
+        });
+      }
+    },
+    async submitForm() {
+      if (this.id === 0) {
+        return await tagApi.addTag(this.form);
+      } else {
+        return await tagApi.editTag(this.id, this.form);
+      }
+    },
+    async confirmEdit(formName) {
+      var thumbnail = await this.$refs["thumbnail"].getValue();
+      if (thumbnail.length > 0) {
+        this.form.thumbnail = thumbnail[0].src;
+      } else {
+        this.form.thumbnail = "";
+      }
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          let res;
+          this.loading = true;
+
+          res = await this.submitForm().finally(() => {
+            this.loading = false;
+          });
+
+          this.$message.success(`${res.msg}`);
+          this.$emit("editClose");
+        } else {
+          this.$message.error("请填写正确的信息");
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    back() {
+      this.$emit("editClose");
+    }
+  },
+  async created() {}
+};
+</script>
+
+
+<style lang="scss" scoped>
+.container {
+  .title {
+    height: 59px;
+    line-height: 59px;
+    color: $parent-title-color;
+    font-size: 16px;
+    font-weight: 500;
+    text-indent: 40px;
+    border-bottom: 1px solid #dae1ec;
+    .back {
+      float: right;
+      margin-right: 40px;
+      cursor: pointer;
+    }
+  }
+
+  .wrap {
+    padding: 20px;
+  }
+
+  .submit {
+    float: left;
+  }
+}
+</style>

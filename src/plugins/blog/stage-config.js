@@ -10,39 +10,41 @@ const blogRouter = {
   children: [
     {
       name: null,
+      title: "标签管理",
+      type: "view",
+      name: "TagList",
+      route: "/cms/tag/list",
+      filePath: "plugins/Blog/views/tag/TagList.vue",
+      inNav: true
+    },
+    {
+      name: null,
+      title: "专栏管理",
+      type: "view",
+      name: "ClassifyList",
+      route: "/cms/classify/list",
+      filePath: "plugins/Blog/views/classify/ClassifyList.vue",
+      inNav: true
+    },
+    {
+      name: null,
       title: "随笔管理",
-      type: "folder", // 取 route 为默认加载页
-      icon: "iconfont icon-huiyuanguanli",
+      type: "view",
+      name: "CmsArticleList",
+      route: "/cms/article/list",
+      filePath: "plugins/Blog/views/article/CmsArticleList.vue",
       inNav: true,
-      children: [
-        {
-          title: "添加随笔",
-          type: "view",
-          name: "articleFormAdd",
-          route: "/article/form",
-          filePath: "plugins/Blog/views/article/ArticleForm.vue",
-          inNav: true,
-          icon: "iconfont icon-tushuguanli"
-        },
-        {
-          title: "编辑随笔",
-          type: "view",
-          name: "articleFormEdit",
-          route: "/article/form/:id",
-          filePath: "plugins/Blog/views/article/ArticleForm.vue",
-          inNav: false,
-          icon: "iconfont icon-tushuguanli"
-        },
-        {
-          title: "随笔列表",
-          type: "view",
-          name: "articleList",
-          route: "/article/list",
-          filePath: "plugins/Blog/views/article/ArticleList.vue",
-          inNav: true,
-          icon: "iconfont icon-tushuguanli"
-        }
-      ]
+      icon: "iconfont icon-tushuguanli"
+    },
+    {
+      name: null,
+      title: "我的随笔",
+      type: "view",
+      name: "ArticleList",
+      route: "/article/list",
+      filePath: "plugins/Blog/views/article/ArticleList.vue",
+      inNav: true,
+      icon: "iconfont icon-tushuguanli"
     },
     {
       name: "CommentList",
@@ -61,6 +63,14 @@ const blogRouter = {
       filePath: "plugins/Blog/views/home/Index.vue",
       inNav: true,
       icon: "iconfont icon-tushuguanli"
+    },
+    {
+      title: "博客详情页",
+      type: "view",
+      name: "ArticleDetail",
+      route: "/post/:id",
+      filePath: "plugins/Blog/views/home/ArticleDetail.vue",
+      inNav: false
     }
   ]
 };

@@ -33,8 +33,12 @@
         :width="item.width ? item.width : ''"
       >
         <template slot-scope="scope">
-          <template v-if="item.formatter">
-            <div v-html="item.formatter(scope.row,scope.row[item.prop])" />
+          <!-- solt 自定义列-->
+          <template v-if="item.customRender">
+            <div v-html="item.customRender(scope.row,scope.row[item.prop])" />
+          </template>
+          <template v-else-if="item.scopedSlots&&item.scopedSlots.customRender">
+            <slot :name="item.scopedSlots.customRender" :row="scope.row" />
           </template>
           <template v-else>
             <div>{{ scope.row[item.prop] }}</div>
