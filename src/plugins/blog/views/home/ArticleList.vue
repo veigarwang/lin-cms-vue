@@ -1,48 +1,54 @@
 <template>
   <div class="article">
     <div class="article-list">
-      <div class="article-item">
-        <img class="article-thumb" :src="data.thumbnail_display" alt />
-        <div class="article-detail">
-          <div class="info-row">
-            <ul class="meta-list">
-              <li class="item username clickable">
-                <a :href="'/blog/detail/'+data.id">{{data.author}}</a>
-              </li>
-              <li class="item">{{data.time_span}}</li>
-              <!-- <li class="item" v-for="(tag,index) in data.tags" v-bind:key="index">
-                <a class="tag">{{tag}}</a>
-              </li>-->
-            </ul>
-          </div>
-          <div class="info-row title-row">
-            <p class="article-detail-title" @click="toArticle">{{data.title}}</p>
-          </div>
-          <div class="info-row article-detail-content">{{data.excerpt}}</div>
-          <div class="info-row">
-            <div class="article-tool">
-              <ul class="article-about">
-                <li>
-                  <a href>
-                    <i class="iconfont icon-shoucang"></i>
-                    {{data.point_quantity}}
-                  </a>
+      <div class="article-item" v-for="item in dataSource" v-bind:key="item.id">
+        <div class="article-list-item-extra-wrap">
+          <div class="article-detail">
+            <div class="info-row">
+              <ul class="meta-list">
+                <li class="item username clickable">
+                  <a :href="'/blog/detail/'+item.id">{{item.author}}</a>
                 </li>
-                <li>
-                  <a href>
-                    <i class="iconfont icon-pinglun"></i>
-                    {{data.comment_quantity}}
-                  </a>
-                </li>
-                <li>
-                  <a href>
-                    <i class="iconfont icon-fenxiang"></i>
-                    {{data.view_hits}}
-                  </a>
+                <li class="item">{{item.time_span}}</li>
+                <li class="item" v-for="(tag,index) in item.tags" v-bind:key="index">
+                  <a class="tag">{{tag.tag_name}}</a>
                 </li>
               </ul>
             </div>
+            <div class="info-row title-row">
+              <!-- 需要注意这里加/# -->
+              <a class="article-detail-title" :href="`/#/post/${item.id}`">{{item.title}}</a>
+              <!-- <a class="article-detail-title" @click="()=>toArticle(item)">{{item.title}}</a> -->
+            </div>
+            <div class="info-row article-detail-content">{{item.excerpt}}</div>
+            <div class="info-row">
+              <div class="article-tool">
+                <ul class="article-about">
+                  <li>
+                    <a href>
+                      <i class="el-icon-star-off"></i>
+                      <!-- <i class="iconfont icon-shoucang"></i> -->
+                      <span class="count">{{item.point_quantity}}</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href>
+                      <i class="el-icon-s-comment"></i>
+                      <span class="count">{{item.comment_quantity}}</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href>
+                      <!-- <i class="iconfont icon-fenxiang"></i> -->
+                      <i class="el-icon-view"></i>
+                      <span class="count">{{item.view_hits}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
+          <img class="article-thumb" :src="item.thumbnail_display" alt />
         </div>
       </div>
     </div>
@@ -56,44 +62,17 @@ export default {
     return {};
   },
   props: {
-    data: {
-      type: Object,
+    dataSource: {
+      type: Array,
       default: () => {
-        return {
-          classify_id: 7,
-          classify_name: null,
-          time_span: "1周前",
-          is_new: false,
-          title: "学习spring-boot",
-          keywords: "spring-boot",
-          source: "",
-          excerpt:
-            "## springboot \n\n- annotation注解\n\n1. @RestController=@Controller+@ResponseBody是在RESTful Web服务中，基于sprinboot 2.0首选方法。",
-          view_hits: 0,
-          comment_quantity: 0,
-          point_quantity: 0,
-          thumbnail: "2019/10/03/8e7da70d-def1-4b5f-a927-c8f5419ffed0.jpeg",
-          thumbnail_display:
-            "https://localhost:5001/assets/2019/10/03/8e7da70d-def1-4b5f-a927-c8f5419ffed0.jpeg",
-          is_audit: true,
-          recommend: true,
-          is_stickie: true,
-          archive: "2019年10月",
-          article_type: 0,
-          editor: 0,
-          create_user_id: 7,
-          create_time: 1570080313087.0,
-          author: "admin",
-          tag_ids: [2, 3, 1],
-          id: 3
-        };
+        return [];
       }
     }
   },
   mounted() {},
   methods: {
-    toArticle() {
-      this.$router.push({ path: "/post/" + this.data.id });
+    toArticle(item) {
+      this.$router.push({ name: "ArticleDetail", params: { id: item.id } });
     }
   }
 };
@@ -112,101 +91,117 @@ export default {
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
-
-      .article-thumb {
-        cursor: pointer;
-        width: 120px;
-        height: 120px;
-        border-radius: 8px;
-        margin-right: 30px;
-      }
-      .article-detail {
-        flex: 1;
-
-        .article-detail-title {
-          cursor: pointer;
-          height: 22px;
-          font-size: 18px;
-          font-weight: 600;
-          color: rgba(69, 82, 107, 1);
-          line-height: 22px;
-        }
-        .article-detail-title:hover {
-          text-decoration: underline;
-        }
-        .article-detail-content {
-          margin-bottom: 10px;
-          font-size: 14px;
-          font-weight: 400;
-          color: rgba(140, 152, 174, 1);
-          line-height: 22px;
-        }
-      }
-      .title-row {
-        margin: 0.5rem 0 1rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .info-row {
+      border-bottom: 1px solid rgba(178, 186, 194, 0.15);
+      padding: 1.5rem 2rem;
+      .article-list-item-extra-wrap {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        font-size: 12px;
-        line-height: 17px;
-        color: #808da3;
-        .meta-list {
+        align-items: center;
+        width: 100%;
+        .article-thumb {
+          flex: 0 0 auto;
+          margin-left: 2rem;
+          background-color: #fff;
+          cursor: pointer;
+          width: 150px;
+          height: 100px;
+          border-radius: 8px;
+          margin-right: 30px;
+        }
+        .article-detail {
+          flex: 1 1 auto;
           display: flex;
-          align-items: baseline;
-          white-space: nowrap;
-          .item.clickable:hover {
-            color: #007fff;
+          flex-direction: column;
+          justify-content: center;
+          min-width: 0;
+          .article-detail-title {
+            cursor: pointer;
+            height: 22px;
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(69, 82, 107, 1);
+            line-height: 22px;
           }
-          .item.username {
+          .article-detail-title:hover {
+            text-decoration: underline;
+          }
+          .article-detail-content {
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(140, 152, 174, 1);
+            line-height: 22px;
+          }
+        }
+        .title-row {
+          margin: 0.5rem 0 1rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .info-row {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          font-size: 12px;
+          line-height: 17px;
+          color: #808da3;
+          .meta-list {
             display: flex;
             align-items: baseline;
-          }
-          .item:not(:last-child)::after {
-            content: "·";
-            color: rgb(178, 186, 194);
-            margin: 0px 0.4em;
-          }
-          .item a.tag:not(:last-child):after {
-            content: "/";
-            margin: 0 0.2em;
-            color: #b2bac2;
-          }
-          .item .tag:hover {
-            color: #007fff;
-          }
-        }
-
-        .article-tool {
-          ul.article-about {
-            display: inline-flex;
             white-space: nowrap;
-            li {
-              height: 1.8rem;
-              font-size: 1.083rem;
-              line-height: 1;
-              white-space: nowrap;
+            .item.clickable:hover {
+              color: #007fff;
+            }
+            .item.username {
+              display: flex;
+              align-items: baseline;
+            }
+            .item:not(:last-child)::after {
+              content: "·";
+              color: rgb(178, 186, 194);
+              margin: 0px 0.4em;
+            }
+            .item a.tag:not(:last-child):after {
+              content: "/";
+              margin: 0 0.2em;
               color: #b2bac2;
-              border-radius: 1px;
-              border: 1px solid #edeeef;
-              cursor: pointer;
-              a {
-                display: flex;
-                align-items: center;
-                padding: 0 0.8rem;
-                height: 100%;
-                color: inherit;
+            }
+            .item .tag:hover {
+              color: #007fff;
+            }
+          }
+
+          .article-tool {
+            ul.article-about {
+              display: inline-flex;
+              white-space: nowrap;
+              li {
+                height: 1.8rem;
+                font-size: 1.083rem;
+                line-height: 1;
+                white-space: nowrap;
+                color: #b2bac2;
+                border-radius: 1px;
+                border: 1px solid #edeeef;
+                cursor: pointer;
+                a {
+                  display: flex;
+                  align-items: center;
+                  padding: 0 0.8rem;
+                  height: 100%;
+                  color: inherit;
+                  .count {
+                    color: #b2bac2;
+                    margin-left: 0.2em;
+                  }
+                }
               }
-            }
-            li:hover {
-              background-color: #f7f8fa;
-            }
-            .iconfont {
-              margin-right: 0.2em;
+              li:hover {
+                background-color: #f7f8fa;
+              }
+              .iconfont {
+                margin-right: 0.2em;
+              }
             }
           }
         }
