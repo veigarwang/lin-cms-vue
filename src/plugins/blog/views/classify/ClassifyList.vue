@@ -8,6 +8,7 @@
       <div class="header-right">
         <div style="margin-left:30px">
           <el-button
+            v-auth="'新增标签'"
             type="primary"
             icon="el-icon-edit"
             @click="()=>{
@@ -122,8 +123,8 @@ export default {
       }
     ];
     this.operate = [
-      { name: "编辑", func: "handleEdit", type: "primary" },
-      { name: "删除", func: "handleDelete", type: "danger" }
+      { name: "编辑", func: "handleEdit", type: "primary", auth: "编辑标签" },
+      { name: "删除", func: "handleDelete", type: "danger", auth: "删除标签" }
     ];
 
     await this.getClassifys();
