@@ -34,14 +34,14 @@ export default {
         count: this.pagination.pageSize,
         page: currentPage
       });
-      let collection = [...res.collection];
+      let items = [...res.items];
 
-      if (collection.length == 0) {
+      if (items.length == 0) {
         $state.complete();
       } else {
-        this.dataSource = this.dataSource.concat(collection);
+        this.dataSource = this.dataSource.concat(items);
         this.pagination.currentPage += 1;
-        this.pagination.pageTotal = res.total_nums;
+        this.pagination.pageTotal = res.total;
 
         $state.loaded();
       }

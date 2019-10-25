@@ -82,8 +82,8 @@ export default {
           count: this.pagination.pageSize,
           page: currentPage
         });
-        this.tableData = [...res.collection];
-        this.pagination.pageTotal = res.total_nums;
+        this.tableData = [...res.items];
+        this.pagination.pageTotal = res.total;
         setTimeout(() => {
           this.loading = false;
         }, 500);
@@ -164,8 +164,8 @@ export default {
       }
     ];
     this.operate = [
-      { name: "编辑", func: "handleEdit", type: "primary" },
-      { name: "删除", func: "handleDelete", type: "danger" }
+      { name: "编辑", func: "handleEdit", type: "primary", auth: "编辑标签" },
+      { name: "删除", func: "handleDelete", type: "danger", auth: "删除标签" }
     ];
 
     await this.getTags();

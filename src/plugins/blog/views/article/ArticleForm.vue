@@ -203,7 +203,7 @@ export default {
       typeCode: "Article.Type"
     });
     let tags = await tagApi.getTags();
-    this.tags = tags.collection;
+    this.tags = tags.items;
   },
   // watch: {
   //   $route(to, from) {
@@ -223,7 +223,7 @@ export default {
           tagName: query
         });
         this.loading = false;
-        this.tags = tags.collection;
+        this.tags = tags.items;
       } else {
         this.tags = [];
       }

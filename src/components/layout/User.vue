@@ -16,10 +16,22 @@
             </label>
           </div>
           <div class="text">
-            <div class="username">{{ nickname }}</div>
-            <div class="desc">{{ title }}</div>
+            <div class="username" @click="changeNickname" v-if="!nicknameChanged">{{ nickname }}</div>
+            <el-input
+              placeholder="请输入内容"
+              size="small"
+              v-else
+              v-model="nickname"
+              ref="input"
+              @blur="blur"
+            ></el-input>
           </div>
           <img src="../../assets/img/user/corner.png" class="corner" />
+          <div class="info">
+            <div class="username">{{ username }}</div>
+            <div class="mid">|</div>
+            <div class="desc">{{ groupName }}</div>
+          </div>
         </div>
         <ul class="dropdown-box">
           <li class="password" @click="changePassword">
@@ -148,8 +160,11 @@ export default {
       }
     };
     return {
-      nickname: null,
+      username: null,
       dialogFormVisible: false,
+      nicknameChanged: false,
+      nickname: null,
+      groupName: null,
       form: {
         old_password: "",
         new_password: "",
@@ -183,13 +198,6 @@ export default {
     };
   },
   computed: {
-    title() {
-      const { isSuper } = this.user || {};
-      if (isSuper) {
-        return "超级管理员";
-      }
-      return "管理员";
-    },
     ...mapGetters(["user"])
   },
   watch: {
@@ -261,7 +269,7 @@ export default {
 
       return this.$axios({
         method: "post",
-        url: "/cms/file/",
+        url: "/cms/file",
         data: {
           file
         }
@@ -304,9 +312,50 @@ export default {
           });
       });
     },
+    changeNickname() {
+      this.nicknameChanged = true;
+      setTimeout(() => {
+        this.$refs.input.focus();
+      }, 200);
+    },
+    async blur() {
+      if (this.nickname) {
+        const { user } = this.$store.state;
+        if (this.nickname !== user.nickname && this.nickname !== "佚名") {
+          this.$axios({
+            method: "put",
+            url: "/cms/user",
+            data: {
+              nickname: this.nickname
+            },
+            params: {
+              showBackend: true
+            }
+          })
+            .then(res => {
+              if (res.error_code === 0) {
+                this.$message({
+                  type: "success",
+                  message: "更新昵称成功"
+                });
+                // 触发重新获取用户信息
+                return User.getInformation();
+              }
+              this.nickname = user.nickname;
+            })
+            .then(res => {
+              // eslint-disable-line
+              this.setUserAndState(res);
+            });
+        }
+      }
+      this.nicknameChanged = false;
+    },
     init() {
       const { user } = this.$store.state;
-      this.nickname = user ? user.nickname : "未登录";
+      this.username = user ? user.username : "未登录";
+      this.groupName = user.groupName ? user.groupName : "超级管理员";
+      this.nickname = user && user.nickname ? user.nickname : "佚名";
     },
     changePassword() {
       this.dialogFormVisible = true;
@@ -378,6 +427,7 @@ export default {
 
 .user {
   height: 40px;
+
   .el-dropdown-link {
     cursor: pointer;
 
@@ -464,11 +514,27 @@ export default {
       .username {
         margin-bottom: 10px;
         font-size: 16px;
+        cursor: pointer;
       }
 
       .desc {
         font-size: 14px;
         color: rgba(222, 226, 230, 1);
+      }
+    }
+
+    .info {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      display: flex;
+      color: #fff;
+      font-size: 14px;
+      height: 20px;
+      line-height: 20px;
+
+      .mid {
+        padding: 0 5px;
       }
     }
   }

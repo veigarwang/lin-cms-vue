@@ -485,7 +485,7 @@ export default {
       });
       return this.$axios({
         method: "post",
-        url: "/cms/file/",
+        url: "/cms/file",
         data
       })
         .then(res => {

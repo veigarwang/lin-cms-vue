@@ -67,7 +67,7 @@ export default {
       showEdit: false,
       refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
-      // total_nums: 0, // 分组内的用户总数
+      // total: 0, // 分组内的用户总数
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
@@ -98,8 +98,8 @@ export default {
         setTimeout(() => {
           this.loading = false;
         }, 500);
-        this.tableData = [...res.collection];
-        this.pagination.pageTotal = res.total_nums;
+        this.tableData = [...res.items];
+        this.pagination.pageTotal = res.total;
       } catch (e) {
         this.loading = false;
         console.log(e);
