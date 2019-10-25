@@ -9,11 +9,7 @@
   <a href="#简介">简介</a>&nbsp;|&nbsp;<a href="#快速上手">快速上手</a>&nbsp;|&nbsp;<a href="#版本日志">版本日志</a>
 </p>
 
-<<<<<<< HEAD
-![](https://img.shields.io/badge/版本-0.2.0-3963bc.svg)
-=======
 ![](https://img.shields.io/badge/版本-0.2.1-3963bc.svg)
->>>>>>> ada6a21ce486ad379f613a7ab1094567debca350
 ![](https://img.shields.io/badge/node-8.11.0+-3963bc.svg)
 ![](https://img.shields.io/badge/脚手架-vuecli3-3963bc.svg)
 ![](https://img.shields.io/badge/license-MIT-3963bc.svg)
@@ -101,9 +97,6 @@ QQ群搜索：林间有风 或 643205479
 
 ## 版本日志
 
-<<<<<<< HEAD
-最新版本 `0.2.0`
-=======
 最新版本 `0.2.1`
 
 ### 0.2.1
@@ -115,17 +108,13 @@ QQ群搜索：林间有风 或 643205479
 5. `C` 登录用户名字段由 nickname -> username，同时新增 nickname 为昵称字段，可以更新昵称(需后端同步修改)
 6. `U` 优化了一些移动端适配
 7. `C` 列表信息字段由 collection -> items, total -> total, 增加 count、page、total_page字段（需后端同步修改）
->>>>>>> ada6a21ce486ad379f613a7ab1094567debca350
 
 ### 0.2.0
 
 1. `A` 新增图像上传、图像预览、富文本等自定义组件
 2. `A` 新增 lin-cms-ui 多个基础组件
-<<<<<<< HEAD
-=======
 最新版本 `0.1.0-beta.3`
 =======
->>>>>>> ada6a21ce486ad379f613a7ab1094567debca350
 
 ### 0.1.0-beta.3
 
