@@ -153,7 +153,7 @@ export default {
 
     this.operate = [
       { name: "查看", func: "handleDetail", type: "primary" },
-      { name: "删除", func: "handleDelete", type: "danger" }
+      { name: "删除", func: "handleDelete", type: "danger", auth: "删除评论" }
     ];
   },
   beforeDestroy() {}

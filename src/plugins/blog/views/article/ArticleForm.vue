@@ -157,14 +157,14 @@ export default {
         content: "",
         editor: 0,
         excerpt: "",
-        classify_id: 0,
+        classify_id: null,
         is_audit: true,
         is_new: true,
         is_stickie: true,
         author: "",
         keywords: "",
         nick_name: null,
-        point_quantity: 0,
+        likes_quantity: 0,
         recommend: true,
         source: "",
         thumbnail: "",
@@ -187,7 +187,7 @@ export default {
   },
   props: {
     id: {
-      type: Number
+      type: String
     }
   },
   components: {
@@ -248,10 +248,10 @@ export default {
       }
     },
     async submitForm() {
-      if (this.id === 0) {
-        return await articleApi.addArticle(this.form);
-      } else {
+      if (this.id) {
         return await articleApi.editArticle(this.id, this.form);
+      } else {
+        return await articleApi.addArticle(this.form);
       }
     },
     async confirmEdit(formName) {
@@ -276,7 +276,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.form.content = "";
-      this.form.id = 0;
       this.$refs["thumbnail"].clear();
     },
     back() {

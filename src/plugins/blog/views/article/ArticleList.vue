@@ -17,7 +17,7 @@
             icon="el-icon-edit"
             @click="()=>{
                 this.showEdit = true;
-                this.id = 0;
+                this.id = null;
             }"
           >新增随笔</el-button>
           <el-button type="default" icon="el-icon-search" @click="getArticles">查询</el-button>
@@ -63,7 +63,7 @@ export default {
   inject: ["eventBus"],
   data() {
     return {
-      id: 0,
+      id: null,
       showEdit: false,
       refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
@@ -158,7 +158,7 @@ export default {
       { prop: "title", label: "标题", width: 400 },
       { prop: "author", label: "作者" },
       { prop: "comment_quantity", label: "评论数", width: 100 },
-      { prop: "point_quantity", label: "点赞数", width: 100 },
+      { prop: "likes_quantity", label: "点赞数", width: 100 },
       { prop: "view_hits", label: "阅读数", width: 100 },
       { prop: "time_span", label: "发布时间" },
       {

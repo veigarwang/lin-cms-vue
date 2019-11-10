@@ -146,7 +146,7 @@ export default {
       { prop: "title", label: "标题", width: 400 },
       { prop: "author", label: "作者" },
       { prop: "comment_quantity", label: "评论数", width: 100 },
-      { prop: "point_quantity", label: "点赞数", width: 100 },
+      { prop: "likes_quantity", label: "点赞数", width: 100 },
       { prop: "view_hits", label: "阅读数", width: 100 },
       { prop: "time_span", label: "发布时间" },
       {

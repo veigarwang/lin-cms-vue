@@ -28,7 +28,7 @@
                     <a href>
                       <i class="el-icon-star-off"></i>
                       <!-- <i class="iconfont icon-shoucang"></i> -->
-                      <span class="count">{{item.point_quantity}}</span>
+                      <span class="count">{{item.likes_quantity}}</span>
                     </a>
                   </li>
                   <li>
