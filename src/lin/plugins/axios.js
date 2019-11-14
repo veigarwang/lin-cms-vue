@@ -1,11 +1,10 @@
 // ajax 封装插件, 使用 axios
-import Vue from "vue";
-import axios from "axios";
-import Config from "@/config";
-import ErrorCode from "@/config/error-code";
-import store from "@/store";
-import { getToken } from "@/lin/utils/token";
-import User from "@/lin/models/user";
+import Vue from 'vue'
+import axios from 'axios'
+import Config from '@/config'
+import ErrorCode from '@/config/error-code'
+import store from '@/store'
+import { getToken, saveAccessToken } from '@/lin/utils/token'
 
 const config = {
   baseURL: Config.baseURL || process.env.apiUrl || "",
@@ -25,67 +24,65 @@ const config = {
 // 创建请求实例
 const _axios = axios.create(config);
 
-_axios.interceptors.request.use(
-  originConfig => {
-    const reqConfig = { ...originConfig };
+_axios.interceptors.request.use((originConfig) => {
+  // 有 API 请求重新计时
+  Vue.prototype.$_lin_jump()
 
-    // step1: 容错处理
-    if (!reqConfig.url) {
-      /* eslint-disable-next-line */
-      console.error("request need url");
-      throw new Error({
-        source: "axiosInterceptors",
-        message: "request need url"
-      });
+  const reqConfig = { ...originConfig }
+
+  // step1: 容错处理
+  if (!reqConfig.url) {
+    console.error("request need url");
+    throw new Error({
+      source: "axiosInterceptors",
+      message: "request need url"
+    });
+  }
+
+  if (!reqConfig.method) {
+    // 默认使用 get 请求
+    reqConfig.method = "get";
+  }
+  // 大小写容错
+  reqConfig.method = reqConfig.method.toLowerCase();
+
+  // 检测是否包含文件类型, 若包含则进行 formData 封装
+  let hasFile = false
+  Object.keys(reqConfig.data).forEach((key) => {
+    if (typeof reqConfig.data[key] === 'object') {
+      const item = reqConfig.data[key]
+      if (item instanceof FileList || item instanceof File || item instanceof Blob) {
+        hasFile = true
+      }
     }
 
-    if (!reqConfig.method) {
-      // 默认使用 get 请求
-      reqConfig.method = "get";
-    }
-    // 大小写容错
-    reqConfig.method = reqConfig.method.toLowerCase();
-
-    // 参数容错
-    if (reqConfig.method === "get") {
-      if (!reqConfig.params) {
-        // 防止字段用错
-        reqConfig.params = reqConfig.data || {};
-      }
-    } else if (reqConfig.method === "post") {
-      if (!reqConfig.data) {
-        // 防止字段用错
-        reqConfig.data = reqConfig.params || {};
-      }
-
-      // 检测是否包含文件类型, 若包含则进行 formData 封装
-      // 检查子项是否有 Object 类型, 若有则字符串化
-      let hasFile = false;
-      Object.keys(reqConfig.data).forEach(key => {
-        if (typeof reqConfig.data[key] === "object") {
-          const item = reqConfig.data[key];
-          if (
-            item instanceof FileList ||
-            item instanceof File ||
-            item instanceof Blob
-          ) {
-            hasFile = true;
-          } else if (
-            Object.prototype.toString.call(item) === "[object Object]"
-          ) {
-            reqConfig.data[key] = JSON.stringify(reqConfig.data[key]);
-          }
+    // 检测是否包含文件类型, 若包含则进行 formData 封装
+    // 检查子项是否有 Object 类型, 若有则字符串化
+    let hasFile = false;
+    Object.keys(reqConfig.data).forEach(key => {
+      if (typeof reqConfig.data[key] === "object") {
+        const item = reqConfig.data[key];
+        if (
+          item instanceof FileList ||
+          item instanceof File ||
+          item instanceof Blob
+        ) {
+          hasFile = true;
+        } else if (
+          Object.prototype.toString.call(item) === "[object Object]"
+        ) {
+          reqConfig.data[key] = JSON.stringify(reqConfig.data[key]);
         }
-      });
-
-      // 检测到存在文件使用 FormData 提交数据
-      if (hasFile) {
-        const formData = new FormData();
-        Object.keys(reqConfig.data).forEach(key => {
-          formData.append(key, reqConfig.data[key]);
-        });
-        reqConfig.data = formData;
       }
+    });
+
+    // 检测到存在文件使用 FormData 提交数据
+    if (hasFile) {
+      const formData = new FormData();
+      Object.keys(reqConfig.data).forEach(key => {
+        formData.append(key, reqConfig.data[key]);
+      });
+      reqConfig.data = formData;
     } else {
       // TODO: 其他类型请求数据格式处理
       /* eslint-disable-next-line */
@@ -108,10 +105,11 @@ _axios.interceptors.request.use(
     }
     return reqConfig;
   },
-  error => {
-    Promise.reject(error);
-  }
-);
+    error => {
+      Promise.reject(error);
+    }
+  );
+});
 
 // Add a response interceptor
 _axios.interceptors.response.use(
@@ -121,18 +119,17 @@ _axios.interceptors.response.use(
     if (res.status.toString().charAt(0) === "2") {
       return res.data;
     }
-    return new Promise(async (resolve, reject) => {
-      const { params, url } = res.config;
-
-      // refresh_token 异常，直接登出
-      if (error_code === 10000 || error_code === 10100) {
-        setTimeout(() => {
-          store.dispatch("loginOut");
-          const { origin } = window.location;
-          window.location.href = origin;
-        }, 1500);
-        resolve(null);
-        return;
+    // 令牌相关，刷新令牌
+    if (error_code === 10040 || error_code === 10050) {
+      const cache = {}
+      if (cache.url !== url) {
+        cache.url = url
+        const refreshResult = await _axios('cms/user/refresh')
+        saveAccessToken(refreshResult.access_token)
+        // 将上次失败请求重发
+        const result = await _axios(res.config)
+        resolve(result)
+        return
       }
       // 令牌相关，刷新令牌
       if (error_code === 10040 || error_code === 10050) {
@@ -174,24 +171,8 @@ _axios.interceptors.response.use(
         });
         reject(null);
       }
-    });
-  },
-  error => {
-    if (!error.response) {
-      Vue.prototype.$notify({
-        title: "Network Error",
-        dangerouslyUseHTMLString: true,
-        message: '<strong class="my-notify">请检查 API 是否异常</strong>'
-      });
-      console.log("error", error);
     }
-    Vue.prototype.$message({
-      message,
-      type: "error"
-    });
-    resolve(res.data);
-  }
-),
+  },
   error => {
     if (!error.response) {
       Vue.prototype.$notify({
@@ -213,11 +194,9 @@ _axios.interceptors.response.use(
       });
     }
     return Promise.reject(error);
-  };
+  });
 
-// eslint-disable-next-line
-Plugin.install = function(Vue, options) {
-  // eslint-disable-next-line
+Plugin.install = function (Vue, options) {
   Vue.axios = _axios;
   window.axios = _axios;
   Object.defineProperties(Vue.prototype, {
