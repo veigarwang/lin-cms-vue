@@ -48,76 +48,49 @@
 </template>
 
 <script>
-import book from "@/models/book";
+import book from '@/models/book'
 
 export default {
   props: {
     editBookID: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {
       loading: false,
       form: {
-        title: "",
-        author: "",
-        summary: "",
-        image: ""
-      }
-    };
+        title: '',
+        author: '',
+        summary: '',
+        image: '',
+      },
+    }
   },
   async mounted() {
-    this.loading = true;
-    this.form = await book.getBook(this.editBookID);
-    this.loading = false;
+    this.loading = true
+    this.form = await book.getBook(this.editBookID)
+    this.loading = false
   },
   methods: {
     async submitForm() {
-      const res = await book.editBook(this.editBookID, this.form);
+      const res = await book.editBook(this.editBookID, this.form)
       if (res.error_code === 0) {
-        this.$message.success(`${res.msg}`);
-        this.$emit("editClose");
+        this.$message.success(`${res.msg}`)
+        this.$emit('editClose')
       }
     },
     // 重置表单
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     back() {
-      this.$emit("editClose");
-    }
-  }
-};
+      this.$emit('editClose')
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-.el-divider--horizontal {
-  margin: 0;
-}
-
-.container {
-  .title {
-    height: 59px;
-    line-height: 59px;
-    color: $parent-title-color;
-    font-size: 16px;
-    font-weight: 500;
-    text-indent: 40px;
-
-    .back {
-      float: right;
-      margin-right: 40px;
-      cursor: pointer;
-    }
-  }
-
-  .wrap {
-    padding: 20px;
-  }
-
-  .submit {
-    float: left;
-  }
-}
+@import '@/assets/styles/form.scss';
 </style>

@@ -21,19 +21,8 @@
               :rules="rules"
               style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
             >
-              <el-form-item label="标签名称" prop="tag_name">
-                <el-input size="medium" clearable v-model="form.tag_name"></el-input>
-              </el-form-item>
-              <el-form-item label="别名" prop="alias">
-                <el-input size="medium" clearable v-model="form.alias"></el-input>
-              </el-form-item>
-              <el-form-item label="状态" prop="status">
-                <el-switch
-                  v-model="form.status"
-                  active-color="#13ce66"
-                  active-text="启用"
-                  inactive-text="禁用"
-                ></el-switch>
+              <el-form-item label="专栏名称" prop="classify_name">
+                <el-input size="medium" clearable v-model="form.classify_name"></el-input>
               </el-form-item>
               <el-form-item label="封面" prop="thumbnail">
                 <upload-imgs
@@ -42,6 +31,9 @@
                   :value="thumbnailPreview"
                   :max-num="1"
                 />
+              </el-form-item>
+              <el-form-item label="排序码" prop="sort_code">
+                <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
               </el-form-item>
               <el-form-item class="submit">
                 <el-button type="primary" @click="confirmEdit('form')">保 存</el-button>
@@ -56,10 +48,10 @@
 </template>
 
 <script>
-import tagApi from '../../models/tag'
+import classifyApi from '../../models/classify'
 import UploadImgs from '@/components/base/upload-imgs'
 export default {
-  name: 'TagForm',
+  name: 'ClassifyForm',
   components: { UploadImgs },
   props: {
     id: {
@@ -68,18 +60,19 @@ export default {
   },
   data() {
     return {
-      title: ['新增标签', '编辑标签'],
+      title: ['新增分类专栏', '编辑分类专栏'],
       loading: false,
-      // 表单信息
       form: {
-        tag_name: '',
-        alias: '',
+        classify_name: '',
         thumbnail: '',
+        sort_code: 0,
       },
+
       thumbnailPreview: [],
-      // 表单验证规则
       rules: {
-        tag_name: [{ required: true, message: '请输入标签', trigger: 'blur' }],
+        classify_name: [
+          { required: true, message: '请输入名称', trigger: 'blur' },
+        ],
         thumbnail: [{ required: true, message: '请上传封面', trigger: 'blur' }],
       },
     }
@@ -90,29 +83,28 @@ export default {
   methods: {
     async show(id) {
       if (id != 0) {
-        var tag = await tagApi.getTag(id)
-        this.form = tag
+        var classify = await classifyApi.getClassify(id)
+        this.form = classify
         this.thumbnailPreview.length = 0
-        if (tag.thumbnail) {
+        if (classify.thumbnail) {
           this.thumbnailPreview.push({
-            id: tag.id,
-            display: tag.thumbnail_display,
-            src: tag.thumbnail,
-            imgId: tag.id,
+            id: classify.id,
+            display: classify.thumbnail_display,
+            src: classify.thumbnail,
+            imgId: classify.id,
           })
         }
       } else {
         Object.assign(this.form, {
-          tag_name: '',
-          alias: '',
+          classify_name: '',
         })
       }
     },
     async submitForm() {
       if (this.id === 0) {
-        return await tagApi.addTag(this.form)
+        return await classifyApi.addClassify(this.form)
       } else {
-        return await tagApi.editTag(this.id, this.form)
+        return await classifyApi.editClassify(this.id, this.form)
       }
     },
     async confirmEdit(formName) {
@@ -122,6 +114,7 @@ export default {
       } else {
         this.form.thumbnail = ''
       }
+
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           let res
@@ -148,7 +141,6 @@ export default {
   async created() {},
 }
 </script>
-
 
 <style lang="scss" scoped>
 @import '@/assets/styles/form.scss';

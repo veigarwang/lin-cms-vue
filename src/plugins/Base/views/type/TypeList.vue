@@ -1,32 +1,33 @@
 <template>
-  <div class="container">
-    <div class="header">
-      <div class="header-left">
-        <div class="title">字典列表</div>
-      </div>
-
-      <div class="header-right">
-        <div style="margin-left:30px">
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            @click="()=>{
+  <div>
+    <div class="container">
+      <div class="header">
+        <div class="header-left">
+          <div class="title">字典列表</div>
+        </div>
+        <div class="header-right">
+          <div style="margin-left:30px">
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              @click="()=>{
              this.$refs['dialogForm'].show();
             }"
-          >新增类别</el-button>
-          <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+            >新增类别</el-button>
+            <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+          </div>
         </div>
       </div>
+      <!-- 表格开始 -->
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        v-loading="loading"
+      ></lin-table>
     </div>
-    <!-- 表格开始 -->
-    <lin-table
-      :tableColumn="tableColumn"
-      :tableData="tableData"
-      :operate="operate"
-      @handleEdit="handleEdit"
-      @handleDelete="handleDelete"
-      v-loading="loading"
-    ></lin-table>
     <!--表格结束-->
 
     <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
@@ -34,13 +35,13 @@
 </template>
 
 <script>
-import baseApi from "../../models/base";
-import LinTable from "@/components/base/table/lin-table";
-import Vue from "vue";
-import TypeDialog from "./TypeDialog";
+import baseApi from '../../models/base'
+import LinTable from '@/components/base/table/lin-table'
+import Vue from 'vue'
+import TypeDialog from './TypeDialog'
 export default {
   components: { LinTable, TypeDialog },
-  inject: ["eventBus"],
+  inject: ['eventBus'],
   data() {
     return {
       id: 0, // id
@@ -49,97 +50,76 @@ export default {
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
-      loading: false
-    };
+      loading: false,
+    }
   },
   methods: {
     // 根据分组 刷新/获取分组内的用户
     async getBaseTypes() {
-      let res;
+      let res
       try {
-        this.loading = true;
+        this.loading = true
 
-        res = await baseApi.getTypes({});
+        res = await baseApi.getTypes({})
         setTimeout(() => {
-          this.loading = false;
-          this.tableData = res;
-        }, 500);
+          this.loading = false
+          this.tableData = res
+        }, 500)
       } catch (e) {
-        this.loading = false;
+        this.loading = false
       }
     },
     async handleEdit(val) {
-      this.$refs["dialogForm"].show(val.row);
+      this.$refs['dialogForm'].show(val.row)
     },
     handleDelete(val) {
-      this.$confirm("此操作将永久删除该字典项, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('此操作将永久删除该字典项, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
       }).then(async () => {
-        this.loading = true;
+        this.loading = true
 
         let res = await baseApi.deleteType(val.row.id).finally(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
 
-        await this.refresh();
+        await this.refresh()
 
         this.$message({
-          type: "success",
-          message: `${res.msg}`
-        });
-      });
+          type: 'success',
+          message: `${res.msg}`,
+        })
+      })
     },
     async refresh() {
-      await this.getBaseTypes();
-    }
+      await this.getBaseTypes()
+    },
   },
   async created() {
     this.tableColumn = [
-      { prop: "type_code", label: "编码" },
-      { prop: "full_name", label: "名称" },
-      { prop: "sort_code", label: "排序码" },
+      { prop: 'type_code', label: '编码' },
+      { prop: 'full_name', label: '名称' },
+      { prop: 'sort_code', label: '排序码' },
       {
-        prop: "create_time",
-        label: "创建时间",
-        scope: "create_time",
+        prop: 'create_time',
+        label: '创建时间',
+        scope: 'create_time',
         formatter: function(row, column) {
-          return Vue.filter("filterTimeYmdHms")(column);
-        }
-      }
-    ];
+          return Vue.filter('filterTimeYmdHms')(column)
+        },
+      },
+    ]
     this.operate = [
-      { name: "编辑", func: "handleEdit", type: "primary" },
-      { name: "删除", func: "handleDelete", type: "danger" }
-    ];
-    await this.getBaseTypes();
+      { name: '编辑', func: 'handleEdit', type: 'primary' },
+      { name: '删除', func: 'handleDelete', type: 'danger' },
+    ]
+    await this.getBaseTypes()
   },
-  beforeDestroy() {}
-};
+  beforeDestroy() {},
+}
 </script>
 
 <style lang="scss" scoped>
-.container {
-  padding: 0 30px;
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .title {
-      height: 59px;
-      line-height: 59px;
-      color: $parent-title-color;
-      font-size: 16px;
-      font-weight: 500;
-    }
-  }
-}
-
-.info {
-  margin-left: -55px;
-  margin-bottom: -30px;
-}
+@import '@/assets/styles/list.scss';
 </style>

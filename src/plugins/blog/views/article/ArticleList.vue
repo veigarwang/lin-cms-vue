@@ -41,26 +41,26 @@
 </template>
 
 <script>
-import LinTable from "@/components/base/table/lin-table";
-import articleApi from "../../models/article";
-import ArticleForm from "./ArticleForm";
+import LinTable from '@/components/base/table/lin-table'
+import articleApi from '../../models/article'
+import ArticleForm from './ArticleForm'
 
 function format_str() {
   for (var i = 1; i < arguments.length; i++) {
-    var exp = new RegExp("\\{" + (i - 1) + "\\}", "gm");
-    arguments[0] = arguments[0].replace(exp, arguments[i]);
+    var exp = new RegExp('\\{' + (i - 1) + '\\}', 'gm')
+    arguments[0] = arguments[0].replace(exp, arguments[i])
   }
-  return arguments[0];
+  return arguments[0]
 }
 
 function image_preview_dialog(url) {
-  console.log(url);
+  console.log(url)
 }
 
 export default {
-  name: "articleList",
+  name: 'articleList',
   components: { LinTable, ArticleForm },
-  inject: ["eventBus"],
+  inject: ['eventBus'],
   data() {
     return {
       id: null,
@@ -71,52 +71,52 @@ export default {
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
-      activeTab: "修改信息",
+      activeTab: '修改信息',
       loading: false,
       pagination: {
         pageSize: 10,
         pageTotal: 0,
         currentPage: 1, // 默认获取第一页的数据
-        title: ""
-      }
-    };
+        title: '',
+      },
+    }
   },
   methods: {
     editClose() {
-      this.showEdit = false;
-      this.getArticles();
+      this.showEdit = false
+      this.getArticles()
     },
     async getArticles() {
-      let res;
-      const currentPage = this.pagination.currentPage - 1;
+      let res
+      const currentPage = this.pagination.currentPage - 1
       try {
-        this.loading = true;
+        this.loading = true
         res = await articleApi.getArticles({
           count: this.pagination.pageSize,
-          page: currentPage
-        });
+          page: currentPage,
+        })
         setTimeout(() => {
-          this.loading = false;
-        }, 500);
-        this.tableData = [...res.items];
-        this.pagination.pageTotal = res.total;
+          this.loading = false
+        }, 500)
+        this.tableData = [...res.items]
+        this.pagination.pageTotal = res.total
       } catch (e) {
-        this.loading = false;
-        console.log(e);
+        this.loading = false
+        console.log(e)
       }
     },
     async handleEdit(val) {
-      this.editIndex = val.index;
-      let selectedData;
+      this.editIndex = val.index
+      let selectedData
       // 单击 编辑按键
       if (val.index >= 0) {
-        selectedData = val.row;
+        selectedData = val.row
       } else {
         // 单击 table row
-        selectedData = val;
+        selectedData = val
       }
-      this.showEdit = true;
-      this.id = selectedData.id;
+      this.showEdit = true
+      this.id = selectedData.id
       // this.$router.push({
       //   name: "articleFormEdit",
       //   params: { id: selectedData.id }
@@ -124,132 +124,99 @@ export default {
     },
     // 切换table页
     async handleCurrentChange(val) {
-      this.pagination.currentPage = val;
-      this.loading = true;
-      await this.getArticles();
-      this.loading = false;
+      this.pagination.currentPage = val
+      this.loading = true
+      await this.getArticles()
+      this.loading = false
     },
     handleDelete(val) {
-      let res;
-      this.$confirm("此操作将永久删除该随笔, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      let res
+      this.$confirm('此操作将永久删除该随笔, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
       }).then(async () => {
-        this.loading = true;
-        res = await articleApi.deleteArticle(val.row.id);
-        this.loading = false;
+        this.loading = true
+        res = await articleApi.deleteArticle(val.row.id)
+        this.loading = false
 
         this.$message({
-          type: "success",
-          message: `${res.msg}`
-        });
-        await this.getArticles();
-      });
+          type: 'success',
+          message: `${res.msg}`,
+        })
+        await this.getArticles()
+      })
     },
     // 双击 table ro
     rowClick(row) {
-      this.handleEdit(row);
-    }
+      this.handleEdit(row)
+    },
   },
   async created() {
-    await this.getArticles();
+    await this.getArticles()
     this.tableColumn = [
-      { prop: "title", label: "标题", width: 400 },
-      { prop: "author", label: "作者" },
-      { prop: "comment_quantity", label: "评论数", width: 100 },
-      { prop: "likes_quantity", label: "点赞数", width: 100 },
-      { prop: "view_hits", label: "阅读数", width: 100 },
-      { prop: "time_span", label: "发布时间" },
+      { prop: 'title', label: '标题', width: 400 },
+      { prop: 'author', label: '作者' },
+      { prop: 'comment_quantity', label: '评论数', width: 100 },
+      { prop: 'likes_quantity', label: '点赞数', width: 100 },
+      { prop: 'view_hits', label: '阅读数', width: 100 },
+      { prop: 'time_span', label: '发布时间' },
       {
-        prop: "id",
-        label: "状态",
+        prop: 'id',
+        label: '状态',
         customRender: function(row, column) {
           var isaudit = format_str(
             '<i title="{0}" class="el-icon-{1}"></i>',
-            row.is_audit ? "已审核" : "未审核",
-            row.is_audit ? "check" : "close"
-          );
+            row.is_audit ? '已审核' : '未审核',
+            row.is_audit ? 'check' : 'close'
+          )
 
           var isremd = format_str(
             '<i  style="margin-left:10px;" title="{0}" class="el-icon-{1}"></i>',
-            row.is_stickie ? "置顶" : "未置顶",
-            row.is_stickie ? "top" : "bottom"
-          );
+            row.is_stickie ? '置顶' : '未置顶',
+            row.is_stickie ? 'top' : 'bottom'
+          )
 
           var isstickie = format_str(
             '<i  style="margin-left:10px;" title="{0}" class="el-icon-{1}"></i>',
-            row.recommend ? "推荐" : "未推荐",
-            row.recommend ? "thumb" : "ice-cream-square"
-          );
-          return isaudit + isremd + isstickie;
-        }
+            row.recommend ? '推荐' : '未推荐',
+            row.recommend ? 'thumb' : 'ice-cream-square'
+          )
+          return isaudit + isremd + isstickie
+        },
       },
       {
-        prop: "is_audit",
-        label: "关键字/来源/摘要/缩略图",
+        prop: 'is_audit',
+        label: '关键字/来源/摘要/缩略图',
         customRender: function(row, column) {
           var d = format_str(
             '<i class="el-icon-{0}"></i><i class="el-icon-{1}" style="margin-left:10px;"></i><i class="el-icon-{2}" style="margin-left:10px;"></i>',
-            row.keywords ? "check" : "close",
-            row.source ? "check" : "close",
-            row.excerpt ? "check" : "close"
-          );
+            row.keywords ? 'check' : 'close',
+            row.source ? 'check' : 'close',
+            row.excerpt ? 'check' : 'close'
+          )
           if (row.thumbnail) {
             var thumurl = format_str(
               '<i class="el-icon-picture"  style="margin-left:10px;"></i>',
               row.thumbnail
-            );
-            d += thumurl;
+            )
+            d += thumurl
           }
-          return d;
-        }
-      }
-    ]; // 设置表头信息
+          return d
+        },
+      },
+    ] // 设置表头信息
 
     this.operate = [
-      { name: "原文", func: "handleDetail", type: "default" },
-      { name: "编辑", func: "handleEdit", type: "primary" },
-      { name: "删除", func: "handleDelete", type: "danger" }
-    ];
+      { name: '原文', func: 'handleDetail', type: 'default' },
+      { name: '编辑', func: 'handleEdit', type: 'primary' },
+      { name: '删除', func: 'handleDelete', type: 'danger' },
+    ]
   },
-  beforeDestroy() {}
-};
+  beforeDestroy() {},
+}
 </script>
 
 <style lang="scss" scoped>
-.container {
-  padding: 0 30px;
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .header-left {
-      float: left;
-
-      .title {
-        height: 59px;
-        line-height: 59px;
-        color: #4c76af;
-        font-size: 16px;
-        font-weight: 500;
-      }
-    }
-
-    .header-right {
-      float: right;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-
-  .pagination {
-    display: flex;
-    justify-content: flex-end;
-    margin: 20px;
-  }
-}
+@import '@/assets/styles/list.scss';
 </style>

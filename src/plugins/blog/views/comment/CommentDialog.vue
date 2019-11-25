@@ -10,27 +10,13 @@
         label-position="labelPosition"
         style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
       >
-        <el-form-item label="昵称" prop="au_name">
-          <el-input size="medium" v-model="form.au_name" readonly></el-input>
-        </el-form-item>
-        <el-form-item label="邮件" prop="au_email">
+        <el-form-item label="用户" prop="au_email">
           <el-input size="medium" v-model="form.au_email" readonly></el-input>
         </el-form-item>
         <el-form-item label="评论内容" prop="text">
           <el-input size="medium" v-model="form.text" readonly></el-input>
         </el-form-item>
-        <el-form-item label="ip" prop="ip">
-          <el-input size="medium" v-model="form.ip" readonly></el-input>
-        </el-form-item>
-        <el-form-item label="User-Agent" prop="agent">
-          <el-input size="medium" v-model="form.agent" readonly></el-input>
-        </el-form-item>
-        <el-form-item label="系统" prop="system">
-          <el-input size="medium" v-model="form.system" readonly></el-input>
-        </el-form-item>
-        <el-form-item label="主机名" prop="user_host">
-          <el-input size="medium" v-model="form.user_host" readonly></el-input>
-        </el-form-item>
+
         <el-form-item label="状态" prop="is_audited">
           <el-radio v-model="form.is_audited" :label="true">审核通过</el-radio>
           <el-radio v-model="form.is_audited" :label="false">拉黑</el-radio>
@@ -45,41 +31,30 @@
 </template>
 
 <script>
-
 export default {
-  name: "CommentDialog",
+  name: 'CommentDialog',
   data() {
     return {
       id: 0, // id
       dialogFormVisible: false, // 控制弹窗显示
       loading: false,
       form: {
-        agent: "",
-        article_id: 0,
-        au_email: "",
-        au_name: "",
-        avatar: "",
-        geo_position: "",
-        ip: ":",
+        avatar: '',
         is_audited: true,
-        p_id: 0,
-        p_name: "",
-        system: "",
-        text: "",
-        user_host: ""
-      }
-    };
+        text: '',
+      },
+    }
   },
   methods: {
     show(record) {
-      Object.assign(this.form, record);
-      this.dialogFormVisible = true;
+      Object.assign(this.form, record)
+      this.dialogFormVisible = true
     },
     handleClose() {
-      this.dialogFormVisible = false;
-    }
-  }
-};
+      this.dialogFormVisible = false
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
