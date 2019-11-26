@@ -14,6 +14,8 @@
         @handleDelete="handleDelete"
         @row-click="rowClick"
         v-loading="loading"
+        :pagination="pagination"
+        @currentChange="handleCurrentChange"
       ></lin-table>
     </div>
 
@@ -42,11 +44,14 @@ export default {
       operate: [],
       showEdit: false,
       editBookID: 1,
+      pagination: {
+        pageSize: 10,
+        pageTotal: 0,
+        currentPage: 1, // 默认获取第一页的数据
+      },
     }
   },
   async created() {
-    this.loading = true
-    await this.getBooks()
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       {
@@ -56,14 +61,27 @@ export default {
         auth: '删除图书',
       },
     ]
-    this.loading = false
+    await this.getBooks()
   },
   methods: {
+    // 切换table页
+    async handleCurrentChange(val) {
+      this.pagination.currentPage = val
+      await this.getBooks()
+    },
     async getBooks() {
+      const currentPage = this.pagination.currentPage - 1
       try {
-        const books = await book.getBooks()
-        this.tableData = books
+        this.loading = true
+        let res = await book.getBooks({
+          count: this.pagination.pageSize,
+          page: currentPage,
+        })
+        this.loading = false
+        this.tableData = [...res.items]
+        this.pagination.pageTotal = res.total
       } catch (error) {
+        this.loading = false
         if (error.error_code === 10020) {
           this.tableData = []
         }

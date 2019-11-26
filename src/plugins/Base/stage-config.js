@@ -18,7 +18,7 @@ const baseRouter = {
     },
     {
       name: null,
-      title: "类别管理",
+      title: "字典类别管理",
       type: "view",
       name: "TypeList",
       route: "/base/type",

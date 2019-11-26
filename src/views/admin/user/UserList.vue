@@ -106,6 +106,7 @@ export default {
       form: {
         // 表单信息
         username: '',
+        nickname: '',
         password: '',
         confirm_password: '',
         email: '',
@@ -158,6 +159,7 @@ export default {
       }
       this.id = selectedData.id
       this.form.username = selectedData.username
+      this.form.nickname = selectedData.nickname
       this.form.email = selectedData.email
       this.form.group_id = selectedData.group_id
       this.dialogFormVisible = true

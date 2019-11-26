@@ -1,7 +1,7 @@
 const blogRouter = {
   route: null,
   name: null,
-  title: "博客管理",
+  title: "工作台",
   type: "folder", // 类型: folder, tab, view
   icon: "iconfont icon-tushuguanli",
   filePath: "views/Blog/",
@@ -15,7 +15,8 @@ const blogRouter = {
       name: "TagList",
       route: "/cms/tag/list",
       filePath: "plugins/Blog/views/tag/TagList.vue",
-      inNav: true
+      inNav: true,
+      right: ["所有标签"]
     },
     {
       name: null,
@@ -34,7 +35,8 @@ const blogRouter = {
       route: "/cms/article/list",
       filePath: "plugins/Blog/views/article/CmsArticleList.vue",
       inNav: true,
-      icon: "iconfont icon-tushuguanli"
+      icon: "iconfont icon-tushuguanli",
+      right: ["审核随笔", "删除随笔"]
     },
     {
       name: null,
@@ -53,7 +55,8 @@ const blogRouter = {
       route: "/comment/list",
       filePath: "plugins/Blog/views/comment/CommentList.vue",
       inNav: true,
-      icon: "iconfont icon-tushuguanli"
+      icon: "iconfont icon-tushuguanli",
+      right: ["评论列表"]
     },
     {
       name: "BlogHome",

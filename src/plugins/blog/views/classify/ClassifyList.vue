@@ -66,7 +66,7 @@ export default {
       let res
       try {
         this.loading = true
-        res = await classifyApi.getClassifys({})
+        res = await classifyApi.getClassifys()
         setTimeout(() => {
           this.loading = false
         }, 500)

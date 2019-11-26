@@ -10,6 +10,7 @@
             <el-button
               type="primary"
               icon="el-icon-edit"
+              v-auth="'新增字典类别'"
               @click="()=>{
              this.$refs['dialogForm'].show();
             }"
@@ -111,8 +112,18 @@ export default {
       },
     ]
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary' },
-      { name: '删除', func: 'handleDelete', type: 'danger' },
+      {
+        name: '编辑',
+        func: 'handleEdit',
+        type: 'primary',
+        auth: '编辑字典类别',
+      },
+      {
+        name: '删除',
+        func: 'handleDelete',
+        type: 'danger',
+        auth: '删除字典类别',
+      },
     ]
     await this.getBaseTypes()
   },

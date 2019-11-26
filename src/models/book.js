@@ -34,8 +34,8 @@ class Book {
     return res
   }
 
-  async getBooks() {
-    const res = await get('v1/book', { handleError: true })
+  async getBooks(params) {
+    const res = await get('v1/book', params)
     return res
   }
 }

@@ -81,9 +81,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
   "lint-staged": {
     "*.{js,vue}": [
       "vue-cli-service lint",
