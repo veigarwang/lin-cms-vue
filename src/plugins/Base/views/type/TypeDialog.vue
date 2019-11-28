@@ -29,9 +29,9 @@
   </el-dialog>
 </template>
 <script>
-import baseApi from "../../models/base";
+import baseApi from '../../models/base'
 export default {
-  name: "TypeDialog",
+  name: 'TypeDialog',
   data() {
     return {
       id: 0, // id
@@ -39,71 +39,71 @@ export default {
       loading: false,
       form: {
         // 表单信息
-        type_code: "",
-        full_name: "",
-        sort_code: 0
+        type_code: '',
+        full_name: '',
+        sort_code: 0,
       },
       rules: {
         // 表单验证规则
         type_code: [
-          { required: true, message: "请输入类别编码", trigger: "blur" }
+          { required: true, message: '请输入类别编码', trigger: 'blur' },
         ],
         full_name: [
-          { required: true, message: "请输入类别名称", trigger: "blur" }
-        ]
-      }
-    };
+          { required: true, message: '请输入类别名称', trigger: 'blur' },
+        ],
+      },
+    }
   },
   methods: {
     show(record) {
       if (record) {
-        Object.assign(this.form, record);
-        this.id = record.id;
+        Object.assign(this.form, record)
+        this.id = record.id
       } else {
         Object.assign(this.form, {
-          type_code: "",
-          full_name: "",
-          sort_code: 0
-        });
+          type_code: '',
+          full_name: '',
+          sort_code: 0,
+        })
       }
-      this.dialogFormVisible = true;
+      this.dialogFormVisible = true
     },
     // 弹框 右上角 X
     handleClose(done) {
-      this.dialogFormVisible = false;
-      done();
+      this.dialogFormVisible = false
+      done()
     },
     async submitForm() {
       if (this.id === 0) {
-        return await baseApi.addType(this.form);
+        return await baseApi.addType(this.form)
       } else {
-        return await baseApi.editType(this.id, this.form);
+        return await baseApi.editType(this.id, this.form)
       }
     },
     async confirmEdit(formName) {
-      this.$refs[formName].validate(async valid => {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
 
           let res = await this.submitForm().finally(() => {
-            this.loading = false;
-          });
-          this.dialogFormVisible = false;
-          this.$message.success(`${res.msg}`);
-          this.resetForm(formName);
-          this.$emit("ok");
+            this.loading = false
+          })
+          this.dialogFormVisible = false
+          this.$message.success(`${res.msg}`)
+          this.resetForm(formName)
+          this.$emit('ok')
         } else {
-          this.$message.error("请填写正确的信息");
+          this.$message.error('请填写正确的信息')
         }
-      });
+      })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
-    }
+      this.$refs[formName].resetFields()
+    },
   },
   async created() {},
-  beforeDestroy() {}
-};
+  beforeDestroy() {},
+}
 </script>
 <style scoped>
 </style>

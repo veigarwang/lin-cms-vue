@@ -23,8 +23,8 @@
         :pagination="pagination"
         @currentChange="handleCurrentChange"
       >
-        <template v-slot:is_audited="scope">
-          <el-tag size="medium" v-if="scope.row.is_audited==true" type="success">审核通过</el-tag>
+        <template v-slot:is_audit="scope">
+          <el-tag size="medium" v-if="scope.row.is_audit==true" type="success">审核通过</el-tag>
           <el-tag size="medium" v-else type="danger">拉黑</el-tag>
         </template>
         <template v-slot:userinfo="scope">
@@ -50,7 +50,7 @@ export default {
   inject: ['eventBus'],
   data() {
     return {
-      id: 0, // 用户id
+      id: 0, // id
       refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
       // total: 0, // 分组内的用户总数
@@ -162,10 +162,10 @@ export default {
       },
       { prop: 'text', label: '评论内容', width: 400 },
       {
-        prop: 'is_audited',
+        prop: 'is_audit',
         label: '状态',
         width: 100,
-        scopedSlots: { customRender: 'is_audited' },
+        scopedSlots: { customRender: 'is_audit' },
       },
       {
         prop: 'create_time',

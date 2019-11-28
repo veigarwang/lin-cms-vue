@@ -19,7 +19,7 @@ class Comment {
   }
 
   async editComment(id, info) {
-    const res = await put(`v1/comment/${id}`, info);
+    const res = await put(`v1/comment/${id}?is_audit=${info}`);
     return res;
   }
 

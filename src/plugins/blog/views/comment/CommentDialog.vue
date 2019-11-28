@@ -10,27 +10,30 @@
         label-position="labelPosition"
         style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
       >
-        <el-form-item label="用户" prop="au_email">
-          <el-input size="medium" v-model="form.au_email" readonly></el-input>
+        <el-form-item label="用户" prop="nickname">
+          <span>{{form.user_info.nickname}}</span>
         </el-form-item>
         <el-form-item label="评论内容" prop="text">
-          <el-input size="medium" v-model="form.text" readonly></el-input>
+          <span v-html="text"></span>
         </el-form-item>
 
-        <el-form-item label="状态" prop="is_audited">
-          <el-radio v-model="form.is_audited" :label="true">审核通过</el-radio>
-          <el-radio v-model="form.is_audited" :label="false">拉黑</el-radio>
-          <!-- <el-input size="medium" v-model="form.is_audited"></el-input> -->
+        <el-form-item label="状态" prop="is_audit">
+          <el-radio v-model="form.is_audit" :label="true">审核通过</el-radio>
+          <el-radio v-model="form.is_audit" :label="false">拉黑</el-radio>
+          <!-- <el-input size="medium" v-model="form.is_audit"></el-input> -->
         </el-form-item>
       </el-form>
     </div>
     <div slot="footer" class="dialog-footer" style="padding-left:5px;">
-      <el-button type="primary" @click="handleClose">关闭</el-button>
+      <el-button type="primary" @click="confirmEdit('form')">确 定</el-button>
+      <el-button type="default" @click="handleClose">关闭</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+import commentApi from '../../models/comment'
+import Utils from '@/lin/utils/util'
 export default {
   name: 'CommentDialog',
   data() {
@@ -40,15 +43,39 @@ export default {
       loading: false,
       form: {
         avatar: '',
-        is_audited: true,
+        is_audit: true,
         text: '',
       },
     }
+  },
+  computed: {
+    text() {
+      return Utils.formatHtml(Utils.formatHyperLink(this.form.text))
+    },
   },
   methods: {
     show(record) {
       Object.assign(this.form, record)
       this.dialogFormVisible = true
+    },
+
+    async confirmEdit(formName) {
+      this.$refs[formName].validate(async (valid) => {
+        if (valid) {
+          this.loading = true
+          let res = await commentApi
+            .editComment(this.id, this.form.is_audit)
+            .finally(() => {
+              this.loading = false
+            })
+          this.dialogFormVisible = false
+          this.$message.success(`${res.msg}`)
+          this.resetForm(formName)
+          this.$emit('ok')
+        } else {
+          this.$message.error('请填写正确的信息')
+        }
+      })
     },
     handleClose() {
       this.dialogFormVisible = false
@@ -58,23 +85,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  .title {
-    height: 59px;
-    line-height: 59px;
-    color: $parent-title-color;
-    font-size: 16px;
-    font-weight: 500;
-    text-indent: 40px;
-    border-bottom: 1px solid #dae1ec;
-  }
-
-  .wrap {
-    padding: 20px;
-  }
-
-  .submit {
-    float: left;
-  }
-}
 </style>
