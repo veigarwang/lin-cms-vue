@@ -3,12 +3,17 @@
     <div class="container">
       <div class="header">
         <div class="header-left">
-          <div class="title">随笔列表</div>
+          <div class="title">评论管理</div>
         </div>
         <div class="header-right">
-          <div style="margin-left:30px">
-            <el-button type="default" icon="el-icon-search" @click="getComments">刷新</el-button>
-          </div>
+          <el-input
+            clearable
+            size="medium"
+            style="margin-right:10px;"
+            v-model="pagination.text"
+            placeholder="评论内容"
+          ></el-input>
+          <el-button type="default" icon="el-icon-search" @click="getComments">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->
@@ -34,7 +39,7 @@
         </template>
       </lin-table>
     </div>
-    <comment-dialog ref="dialogForm"></comment-dialog>
+    <comment-dialog ref="dialogForm" @ok="getComments"></comment-dialog>
   </div>
 </template>
 
@@ -53,41 +58,36 @@ export default {
       id: 0, // id
       refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
-      // total: 0, // 分组内的用户总数
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
       dialogFormVisible: false, // 控制弹窗显示
-      selectGroup: '', // 选中的分组Id
-      groups: [], // 所有分组
-      group_id: undefined,
       activeTab: '修改信息',
       loading: false,
       pagination: {
         pageSize: 10,
         pageTotal: 0,
         currentPage: 1, // 默认获取第一页的数据
+        text: '',
       },
     }
   },
   methods: {
-    // 根据分组 刷新/获取分组内的用户
     async getComments() {
       let res
       const currentPage = this.pagination.currentPage - 1
-      try {
-        this.loading = true
-        res = await commentApi.getComments({
+      this.loading = true
+      res = await commentApi
+        .getComments({
           count: this.pagination.pageSize,
           page: currentPage,
+          text: this.pagination.text,
         })
-        this.loading = false
-        this.tableData = [...res.items]
-        this.pagination.pageTotal = res.total
-      } catch (e) {
-        this.loading = false
-        console.log(e)
-      }
+        .finally((r) => {
+          this.loading = false
+        })
+      this.tableData = [...res.items]
+      this.pagination.pageTotal = res.total
     },
     buttonMethods(func, index, row) {
       console.log(func, index, row)

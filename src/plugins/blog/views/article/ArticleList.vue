@@ -7,6 +7,7 @@
         </div>
         <div class="header-right">
           <el-input
+            clearable
             size="medium"
             style="margin-right:10px;"
             v-model="pagination.title"
@@ -67,7 +68,6 @@ export default {
       showEdit: false,
       refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
-      // total: 0, // 分组内的用户总数
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区

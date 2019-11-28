@@ -38,10 +38,10 @@ export default {
   name: 'CommentDialog',
   data() {
     return {
-      id: 0, // id
       dialogFormVisible: false, // 控制弹窗显示
       loading: false,
       form: {
+        id: 0,
         avatar: '',
         is_audit: true,
         text: '',
@@ -64,13 +64,12 @@ export default {
         if (valid) {
           this.loading = true
           let res = await commentApi
-            .editComment(this.id, this.form.is_audit)
+            .editComment(this.form.id, this.form.is_audit)
             .finally(() => {
               this.loading = false
             })
           this.dialogFormVisible = false
           this.$message.success(`${res.msg}`)
-          this.resetForm(formName)
           this.$emit('ok')
         } else {
           this.$message.error('请填写正确的信息')
