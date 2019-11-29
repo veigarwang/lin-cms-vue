@@ -3,24 +3,15 @@
     <div class="container" v-if="!showEdit">
       <div class="header">
         <div class="header-left">
-          <div class="title">我的随笔</div>
+          <div class="title">随笔列表管理</div>
         </div>
         <div class="header-right">
           <el-input
-            clearable
             size="medium"
             style="margin-right:10px;"
             v-model="pagination.title"
             placeholder="标题"
           ></el-input>
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            @click="()=>{
-                this.showEdit = true;
-                this.id = null;
-            }"
-          >新增随笔</el-button>
           <el-button type="default" icon="el-icon-search" @click="getArticles">查询</el-button>
         </div>
       </div>
@@ -64,10 +55,11 @@ export default {
   inject: ['eventBus'],
   data() {
     return {
-      id: null,
+      id: 0,
       showEdit: false,
       refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
+      // total: 0, // 分组内的用户总数
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
@@ -91,7 +83,7 @@ export default {
       const currentPage = this.pagination.currentPage - 1
       try {
         this.loading = true
-        res = await articleApi.getArticles({
+        res = await articleApi.getAllArticles({
           count: this.pagination.pageSize,
           page: currentPage,
         })
@@ -116,11 +108,7 @@ export default {
         selectedData = val
       }
       this.showEdit = true
-      this.id = selectedData.id
-      // this.$router.push({
-      //   name: "articleFormEdit",
-      //   params: { id: selectedData.id }
-      // });
+      this.id = val.row.id
     },
     // 切换table页
     async handleCurrentChange(val) {
@@ -137,7 +125,7 @@ export default {
         type: 'warning',
       }).then(async () => {
         this.loading = true
-        res = await articleApi.deleteArticle(val.row.id)
+        res = await articleApi.deleteCmsArticle(val.row.id)
         this.loading = false
 
         this.$message({
@@ -209,7 +197,7 @@ export default {
 
     this.operate = [
       { name: '原文', func: 'handleDetail', type: 'default' },
-      { name: '编辑', func: 'handleEdit', type: 'primary' },
+      { name: '审核', func: 'handleEdit', type: 'primary' },
       { name: '删除', func: 'handleDelete', type: 'danger' },
     ]
   },
@@ -218,5 +206,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/list.scss';
+.container {
+  padding: 0 30px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-left {
+      float: left;
+
+      .title {
+        height: 59px;
+        line-height: 59px;
+        color: #4c76af;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+
+    .header-right {
+      float: right;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
+  }
+}
 </style>

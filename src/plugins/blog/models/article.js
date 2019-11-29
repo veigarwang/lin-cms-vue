@@ -23,6 +23,12 @@ class Article {
     return res;
   }
 
+  async auditArticle(id, is_audit) {
+    const res = await put(`v1/article/${id}?is_audit=${is_audit}`);
+    return res;
+  }
+
+
   async deleteArticle(id) {
     const res = await _delete(`v1/article/${id}`);
     return res;

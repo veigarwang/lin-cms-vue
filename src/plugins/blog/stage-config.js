@@ -10,6 +10,15 @@ const blogRouter = {
   children: [
     {
       name: null,
+      title: "专栏管理",
+      type: "view",
+      name: "ClassifyList",
+      route: "/cms/classify/list",
+      filePath: "plugins/Blog/views/classify/ClassifyList.vue",
+      inNav: true
+    },
+    {
+      name: null,
       title: "标签管理",
       type: "view",
       name: "TagList",
@@ -20,33 +29,14 @@ const blogRouter = {
     },
     {
       name: null,
-      title: "专栏管理",
-      type: "view",
-      name: "ClassifyList",
-      route: "/cms/classify/list",
-      filePath: "plugins/Blog/views/classify/ClassifyList.vue",
-      inNav: true
-    },
-    {
-      name: null,
       title: "随笔管理",
       type: "view",
-      name: "CmsArticleList",
+      name: "ArticleList",
       route: "/cms/article/list",
-      filePath: "plugins/Blog/views/article/CmsArticleList.vue",
+      filePath: "plugins/Blog/views/article/ArticleList.vue",
       inNav: true,
       icon: "iconfont icon-tushuguanli",
       right: ["审核随笔", "删除随笔"]
-    },
-    {
-      name: null,
-      title: "我的随笔",
-      type: "view",
-      name: "ArticleList",
-      route: "/article/list",
-      filePath: "plugins/Blog/views/article/ArticleList.vue",
-      inNav: true,
-      icon: "iconfont icon-tushuguanli"
     },
     {
       name: "CommentList",
@@ -57,15 +47,6 @@ const blogRouter = {
       inNav: true,
       icon: "iconfont icon-tushuguanli",
       right: ["评论列表"]
-    },
-    {
-      name: "BlogHome",
-      title: "博客首页",
-      type: "view",
-      route: "/blog/home",
-      filePath: "plugins/Blog/views/home/Index.vue",
-      inNav: true,
-      icon: "iconfont icon-tushuguanli"
     },
     {
       title: "博客详情页",

@@ -7,18 +7,13 @@
         </div>
 
         <div class="header-right">
-          <div style="margin-left:30px">
-            <el-button
-              v-auth="'新增分类专栏'"
-              type="primary"
-              icon="el-icon-edit"
-              @click="()=>{
-                this.showEdit = true;
-                this.id = 0;
-            }"
-            >新增分类专栏</el-button>
-            <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
-          </div>
+          <el-input
+            size="medium"
+            style="margin-right:10px;"
+            v-model="pagination.classify_name"
+            placeholder="分类专栏"
+          ></el-input>
+          <el-button type="default" icon="el-icon-search" @click="refresh">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->
@@ -29,6 +24,8 @@
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
         v-loading="loading"
+        :pagination="pagination"
+        @currentChange="handleCurrentChange"
       >
         <template v-slot:thumbnail_display="scope">
           <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
@@ -53,31 +50,45 @@ export default {
     return {
       id: 0,
       showEdit: false,
-      refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
       loading: false,
+      pagination: {
+        pageSize: 10,
+        pageTotal: 0,
+        currentPage: 1, // 默认获取第一页的数据
+        classify_name: '',
+      },
     }
   },
   methods: {
     async getClassifys() {
-      let res
-      try {
-        this.loading = true
-        res = await classifyApi.getClassifys()
-        setTimeout(() => {
+      this.loading = true
+      const currentPage = this.pagination.currentPage - 1
+      let res = await classifyApi
+        .getClassifys({
+          count: this.pagination.pageSize,
+          page: currentPage,
+          classify_name: this.pagination.classify_name,
+        })
+        .finally((r) => {
           this.loading = false
-        }, 500)
-        this.tableData = res
-      } catch (e) {
-        this.loading = false
-      }
+        })
+      this.tableData = [...res.items]
+      this.pagination.pageTotal = res.total
     },
     async handleEdit(val) {
       this.showEdit = true
       this.id = val.row.id
+    },
+    // 切换table页
+    async handleCurrentChange(val) {
+      this.pagination.currentPage = val
+      this.loading = true
+      await this.getTags()
+      this.loading = false
     },
     handleDelete(val) {
       let res
@@ -141,7 +152,6 @@ export default {
       },
     ]
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary', auth: '编辑标签' },
       { name: '删除', func: 'handleDelete', type: 'danger', auth: '删除标签' },
     ]
 

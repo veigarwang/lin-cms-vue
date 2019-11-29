@@ -59,7 +59,6 @@ export default {
     return {
       id: 0,
       showEdit: false,
-      refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
@@ -73,28 +72,23 @@ export default {
   },
   methods: {
     async getTags() {
-      let res
       const currentPage = this.pagination.currentPage - 1
-      try {
-        this.loading = true
-        res = await tagApi.getTags({
+      this.loading = true
+      let res = await tagApi
+        .getTags({
           count: this.pagination.pageSize,
           page: currentPage,
         })
-        this.tableData = [...res.items]
-        this.pagination.pageTotal = res.total
-        setTimeout(() => {
+        .finally((r) => {
           this.loading = false
-        }, 500)
-      } catch (e) {
-        this.loading = false
-      }
+        })
+      this.tableData = [...res.items]
+      this.pagination.pageTotal = res.total
     },
     async handleEdit(val) {
       this.showEdit = true
       this.id = val.row.id
     },
-    // 切换table页
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true

@@ -164,7 +164,6 @@ export default {
       {
         prop: 'is_audit',
         label: '状态',
-        width: 100,
         scopedSlots: { customRender: 'is_audit' },
       },
       {

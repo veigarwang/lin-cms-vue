@@ -24,7 +24,7 @@ class Comment {
   }
 
   async delectComment(id) {
-    const res = await _delete(`v1/comment/${id}`);
+    const res = await _delete(`v1/comment/cms/${id}`);
     return res;
   }
 
