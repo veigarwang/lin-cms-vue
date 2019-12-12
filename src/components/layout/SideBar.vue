@@ -1,10 +1,10 @@
 <template>
   <div class="app-sidebar">
     <div class="logo" v-if="!elMenuCollapse">
-      <img src="../../assets/img/logo.png" alt />
+      <img src="/assets/img/logo.png" alt />
     </div>
     <div class="mobile-logo" v-else>
-      <img src="../../assets/img/mobile-logo.png" alt />
+      <img src="/assets/img/mobile-logo.png" alt />
     </div>
     <div style="margin-bottom:50px">
       <div v-if="showSidebarSearch" style="margin-top: 15px">
@@ -35,7 +35,7 @@
         text-color="rgba(196,201,210,1)"
         active-text-color="#1890ff"
       >
-        <template v-for="(item) in sideBarList">
+        <template v-for="item in sideBarList">
           <el-submenu
             class="subMenuContent"
             v-if="item.children"
@@ -46,11 +46,11 @@
             <template slot="title">
               <i v-if="!filterIcon(item.icon)" :class="item.icon"></i>
               <img v-else :src="item.icon" class="imgIcon" />
-              <span slot="title">{{item.title}}</span>
+              <span slot="title">{{ item.title }}</span>
             </template>
 
             <!-- 二级菜单 -->
-            <template v-for="(subItem) in item.children">
+            <template v-for="subItem in item.children">
               <el-submenu
                 v-if="subItem.children"
                 :key="idMap[subItem.name]"
@@ -59,12 +59,12 @@
               >
                 <template slot="title">
                   <i class="iconfont icon-erjizhibiao"></i>
-                  <span slot="title" class="two-folder">{{subItem.title}}</span>
+                  <span slot="title" class="two-folder">{{ subItem.title }}</span>
                 </template>
 
                 <!-- 三级菜单 -->
                 <router-link
-                  v-for="(grandchildItem) in subItem.children"
+                  v-for="grandchildItem in subItem.children"
                   :key="idMap[grandchildItem.name]"
                   :to="grandchildItem.path"
                   class="circle third"
@@ -73,7 +73,7 @@
                     :index="idMap[grandchildItem.name]"
                     style="padding-left: 80px;"
                     class="subMenuContent"
-                  >{{grandchildItem.title}}</el-menu-item>
+                  >{{ grandchildItem.title }}</el-menu-item>
                 </router-link>
               </el-submenu>
               <!-- 二级else -->
@@ -82,7 +82,7 @@
                   :index="idMap[subItem.name]"
                   style="padding-left: 60px;"
                   class="subMenuContent"
-                >{{subItem.title}}</el-menu-item>
+                >{{ subItem.title }}</el-menu-item>
               </router-link>
             </template>
           </el-submenu>
@@ -97,7 +97,7 @@
           >
             <i v-if="!filterIcon(item.icon)" :class="item.icon"></i>
             <img v-else :src="item.icon" class="imgIcon" />
-            <span slot="title">{{item.title}}</span>
+            <span slot="title">{{ item.title }}</span>
           </el-menu-item>
         </template>
       </el-menu>
@@ -106,151 +106,148 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Utils from "@/lin/utils/util";
-import Config from "../../config/index";
+import { mapGetters } from 'vuex'
+import Utils from '@/lin/utils/util'
+import Config from '../../config/index'
 
 export default {
   data() {
     return {
-      sidebar: "",
+      sidebar: '',
       groups: [],
       showSidebarSearch: Config.showSidebarSearch,
-      showSearchList: false
-    };
+      showSearchList: false,
+    }
   },
-  inject: ["eventBus"],
+  inject: ['eventBus'],
   props: {
     isPhone: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isCollapse: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   created() {},
   mounted() {
-    this.eventBus.$on("removeSidebarSearch", () => {
-      this.showSidebarSearch = false;
-    });
-    this.eventBus.$on("showSidebarSearch", () => {
+    this.eventBus.$on('removeSidebarSearch', () => {
+      this.showSidebarSearch = false
+    })
+    this.eventBus.$on('showSidebarSearch', () => {
       if (Config.showSidebarSearch) {
-        this.showSidebarSearch = true;
+        this.showSidebarSearch = true
       }
-    });
+    })
   },
   methods: {
     goto(path) {
       this.$router.push({
-        path
-      });
+        path,
+      })
     },
     filterIcon(icon) {
-      return icon.indexOf("/") !== -1;
+      return icon.indexOf('/') !== -1
     },
     handleChange(val) {
-      this.groups = [];
-      this.sidebar = "";
-      this.showSearchList = false;
-      this.$router.push(val);
+      this.groups = []
+      this.sidebar = ''
+      this.showSearchList = false
+      this.$router.push(val)
     },
     toSearch() {
-      this.showSearchList = true;
+      this.showSearchList = true
       setTimeout(() => {
-        this.$refs.searchInput.focus();
-      }, 200);
+        this.$refs.searchInput.focus()
+      }, 200)
     },
     search(val) {
       // if (!val) {
       //   this.showSearchList = false
       //   return
       // }
-      this.groups = [];
+      this.groups = []
 
       // 深度遍历配置树, 摘取叶子节点作为路由部分
       function deepTravel(config, fuc) {
         if (Array.isArray(config)) {
           config.forEach(subConfig => {
-            deepTravel(subConfig, fuc);
-          });
+            deepTravel(subConfig, fuc)
+          })
         } else if (config.children) {
           config.children.forEach(subConfig => {
-            deepTravel(subConfig, fuc);
-          });
+            deepTravel(subConfig, fuc)
+          })
         } else {
-          fuc(config);
+          fuc(config)
         }
       }
 
       deepTravel(this.sideBarList, viewConfig => {
         // 构造舞台view路由
         if (viewConfig.title.includes(val)) {
-          const viewRouter = {};
-          viewRouter.path = viewConfig.path;
-          viewRouter.title = viewConfig.title;
-          viewRouter.key = Math.random();
-          this.groups.push(viewRouter);
+          const viewRouter = {}
+          viewRouter.path = viewConfig.path
+          viewRouter.title = viewConfig.title
+          viewRouter.key = Math.random()
+          this.groups.push(viewRouter)
         }
-      });
-    }
+      })
+    },
   },
   computed: {
     elMenuCollapse() {
       if (this.isPhone) {
-        return false;
+        return false
       }
 
-      return this.isCollapse;
+      return this.isCollapse
     },
     // 根据当前路由设置激活侧边栏
     defaultActive() {
       for (let i = this.stageInfo.length - 1; i >= 0; i -= 1) {
         if (this.idMap[this.stageInfo[i].name]) {
-          return this.idMap[this.stageInfo[i].name];
+          return this.idMap[this.stageInfo[i].name]
         }
       }
-      return "";
+      return ''
     },
     stageInfo() {
-      return this.$store.getters.getStageInfo(this.$route.name);
+      return this.$store.getters.getStageInfo(this.$route.name)
     },
     // 由于index不支持symbol格式, 因此使用 idMap 进行映射
     idMap() {
-      const { sideBarList } = this;
-      const mapData = {};
+      const { sideBarList } = this
+      const mapData = {}
       const deepTravel = (obj, fuc) => {
         if (Array.isArray(obj)) {
           obj.forEach(item => {
-            deepTravel(item, fuc);
-          });
-          return;
+            deepTravel(item, fuc)
+          })
+          return
         }
         if (obj && obj.children) {
-          fuc(obj);
-          deepTravel(obj.children, fuc);
-          return;
+          fuc(obj)
+          deepTravel(obj.children, fuc)
+          return
         }
         if (obj.name) {
-          fuc(obj);
+          fuc(obj)
         }
-      };
+      }
       deepTravel(sideBarList, item => {
-        mapData[item.name] = item.name.toString();
-        // mapData[item.name] = Utils.getRandomStr();
-      });
+        mapData[item.name] = Utils.getRandomStr()
+      })
 
-      return mapData;
+      return mapData
     },
     imgSrc() {
-      return this.elMenuCollapse === false
-        ? "../../assets/img/left-logo.png"
-        : "../../assets/img/logo.png";
+      return this.elMenuCollapse === false ? './assets/img/left-logo.png' : '/assets/img/logo.png'
     },
-    ...mapGetters(["sideBarList"])
-  }
-};
+    ...mapGetters(['sideBarList']),
+  },
+}
 </script>
 
 <style lang="scss" scoped>

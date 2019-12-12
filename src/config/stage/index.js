@@ -24,7 +24,7 @@ let homeRouter = [
     inNav: true,
     icon: "iconfont icon-rizhiguanli",
     order: 1,
-    right: ["查询所有日志"]
+    permission: ['查询所有日志'],
   },
   {
     title: "404",
@@ -48,10 +48,10 @@ function filterPlugin(data) {
   }
   if (Array.isArray(data)) {
     data.forEach(item => {
-      filterPlugin(item);
-    });
+      filterPlugin(item)
+    })
   } else {
-    const findResult = plugins.findIndex(item => data === item);
+    const findResult = plugins.findIndex(item => data === item)
     if (findResult >= 0) {
       plugins.splice(findResult, 1);
     }
@@ -72,8 +72,8 @@ homeRouter = Utils.sortByOrder(homeRouter);
 const deepReduceName = target => {
   if (Array.isArray(target)) {
     target.forEach(item => {
-      if (typeof item !== "object") {
-        return;
+      if (typeof item !== 'object') {
+        return
       }
       deepReduceName(item);
     });
@@ -93,8 +93,8 @@ const deepReduceName = target => {
 
     if (Array.isArray(target.children)) {
       target.children.forEach(item => {
-        if (typeof item !== "object") {
-          return;
+        if (typeof item !== 'object') {
+          return
         }
         deepReduceName(item);
       });

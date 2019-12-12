@@ -26,13 +26,14 @@
         :label="item.label"
         :show-overflow-tooltip="true"
         :filters="item.filters ? item.filters : null"
-        :filter-method="item.filterMethod ? item.filterMethod: null"
-        :column-key="item.filterMethod ? item.prop: null"
+        :filter-method="item.filterMethod ? item.filterMethod : null"
+        :column-key="item.filterMethod ? item.prop : null"
+        :formatter="item.formatter ? item.formatter : null"
         :sortable="item.sortable ? item.sortable : false"
         :fixed="item.fixed ? item.fixed : false"
         :width="item.width ? item.width : ''"
       >
-        <template slot-scope="scope">
+       <template slot-scope="scope">
           <!-- solt 自定义列-->
           <template v-if="item.customRender">
             <div v-html="item.customRender(scope.row,scope.row[item.prop])" />
@@ -45,10 +46,10 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column v-if="operate.length > 0" label="操作" fixed="right" width="195">
+      <el-table-column v-if="operate.length > 0" label="操作" fixed="right" width="175">
         <template slot-scope="scope">
           <el-button
-            v-for="(item,index) in operate"
+            v-for="(item, index) in operate"
             :type="item.type"
             plain
             :key="index"
@@ -190,7 +191,7 @@ export default {
     // 多选-选中checkbox
     toggleSelection(rows, flag) {
       if (rows) {
-        rows.forEach((row) => {
+        rows.forEach(row => {
           this.$refs.linTable.toggleRowSelection(row, flag)
         })
       } else {
@@ -243,17 +244,14 @@ export default {
       const currentSelectedData = []
       this.oldVal = []
       this.currentPage = page
-      this.selectedTableData = JSON.parse(
-        sessionStorage.getItem('selectedTableData')
-      )
+      this.selectedTableData = JSON.parse(sessionStorage.getItem('selectedTableData'))
       this.currentData = this.tableData.filter(
-        (item, index) =>
-          index >= (this.currentPage - 1) * this.pagination.pageSize &&
-          index < this.currentPage * this.pagination.pageSize
+        (item, index) => index >= (this.currentPage - 1) * this.pagination.pageSize
+          && index < this.currentPage * this.pagination.pageSize,
       ) // eslint-disable-line
       this.$emit('currentChange', page)
       // 已选中的数据打勾
-      this.selectedTableData.forEach((item) => {
+      this.selectedTableData.forEach(item => {
         for (let i = 0; i < this.currentData.length; i++) {
           if (this.currentData[i].key === item.key) {
             // 切换页码重新计算oldVal
@@ -348,8 +346,7 @@ export default {
   },
   watch: {
     fixedLeftList: {
-      handler(val, oldVal) {
-        // eslint-disable-line
+      handler() {
         this.filterTableColumn.map((item, index) => {
           if (this.fixedLeftList.indexOf(item.label) > -1) {
             this.$set(this.filterTableColumn[index], 'fixed', 'left')
@@ -364,7 +361,6 @@ export default {
     },
     fixedRightList: {
       handler(val, oldVal) {
-        // eslint-disable-line
         this.filterTableColumn.map((item, index) => {
           if (this.fixedRightList.indexOf(item.label) > -1) {
             this.$set(this.filterTableColumn[index], 'fixed', 'right')
@@ -380,9 +376,7 @@ export default {
     customColumn: {
       handler(val) {
         if (val.length > 1) {
-          this.filterTableColumn = this.tableColumn.filter(
-            (v) => val.indexOf(v.label) > -1
-          )
+          this.filterTableColumn = this.tableColumn.filter(v => val.indexOf(v.label) > -1)
         }
       },
       deep: true,
@@ -405,9 +399,7 @@ export default {
       handler() {
         // 如果一开始没有传要展示的列 就默认全展示
         if (this.customColumn.length > 1) {
-          this.filterTableColumn = this.tableColumn.filter(
-            (v) => this.customColumn.indexOf(v.label) > -1
-          )
+          this.filterTableColumn = this.tableColumn.filter(v => this.customColumn.indexOf(v.label) > -1)
         } else {
           this.filterTableColumn = this.tableColumn
         }

@@ -1,5 +1,5 @@
-import * as types from "./mutation-types";
-import { removeToken } from "@/lin/utils/token";
+import * as types from './mutation-types'
+import { removeToken } from '@/lin/utils/token'
 
 export default {
   setUserAndState({ commit }, user) {
@@ -15,7 +15,7 @@ export default {
   },
 
   readMessage({ commit }, message) {
-    commit(types.REMOVE_UNREAD_MESSAGE, message.id);
-    commit(types.ADD_READED_MESSAGE, message);
-  }
-};
+    commit(types.REMOVE_UNREAD_MESSAGE, message.id)
+    commit(types.ADD_READED_MESSAGE, message)
+  },
+}

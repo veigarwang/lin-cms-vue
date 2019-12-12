@@ -42,6 +42,20 @@
           autocomplete="off"
         ></el-input>
       </el-form-item>
+      <el-form-item
+        v-if="pageType === 'add'"
+        label="确认密码"
+        prop="confirm_password"
+        label-position="top"
+      >
+        <el-input
+          size="medium"
+          clearable
+          type="password"
+          v-model="form.confirm_password"
+          autocomplete="off"
+        ></el-input>
+      </el-form-item>
       <el-form-item v-if="pageType !== 'password'" label="选择分组">
         <el-select
           size="medium"
@@ -52,9 +66,6 @@
         >
           <el-option v-for="item in groups" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
-        <!-- <el-radio-group v-model="form.group_id" label-position="top" class="user-info">
-              <el-radio :label="item.id" v-for="(item, index) in groups" :key="index">{{item.name}}</el-radio>
-        </el-radio-group>-->
       </el-form-item>
       <el-form-item v-show="submit" class="submit">
         <el-button type="primary" @click="submitForm('form')">保 存</el-button>
@@ -157,12 +168,10 @@ export default {
             message: '请输入昵称',
           },
         ],
-        password: [
-          { validator: validatePassword, trigger: 'blur', required: true },
-        ],
-        confirm_password: [
-          { validator: validatePassword2, trigger: 'blur', required: true },
-        ],
+        password: [{ validator: validatePassword, trigger: 'blur', required: true }],
+        confirm_password: [{ validator: validatePassword2, trigger: 'blur', required: true }],
+        password: [{ validator: validatePassword, trigger: 'blur', required: true }],
+        confirm_password: [{ validator: validatePassword2, trigger: 'blur', required: true }],
         email: [
           {
             type: 'email',
@@ -176,8 +185,7 @@ export default {
   methods: {
     // 提交表单
     async submitForm(formName) {
-      this.$refs[formName].validate(async (valid) => {
-        // eslint-disable-line
+      this.$refs[formName].validate(async valid => {
         if (valid) {
           // 新增用户
           let res
@@ -198,22 +206,14 @@ export default {
             }
           } else {
             // 更新用户信息
-            if (
-              this.form.email === this.info.email &&
-              this.form.group_id === this.info.group_id &&
-              this.form.nickname === this.info.nickname
-            ) {
+            if (this.form.email === this.info.email && this.form.group_id === this.info.group_id) {
               this.$emit('handleInfoResult', false)
               return
             }
             try {
               this.loading = true
-              res = await Admin.updateOneUser(
-                this.form.email,
-                this.form.group_id,
-                this.form.nickname,
-                this.id
-              )
+              res = await Admin.updateOneUser(this.form.email, this.form.group_id, this.form.nickname, this.id)
+              res = await Admin.updateOneUser(this.form.email, this.form.group_id, this.id)
             } catch (e) {
               this.loading = false
               console.log(e)

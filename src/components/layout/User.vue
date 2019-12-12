@@ -35,13 +35,9 @@
         </div>
         <ul class="dropdown-box">
           <li class="password" @click="changePassword">
-            <i class="iconfont icon-weibaoxitongshangchuanlogo-"></i>
-            <span>修改登录密码</span>
+            <i class="iconfont icon-weibaoxitongshangchuanlogo-"></i> <span>修改登录密码</span>
           </li>
-          <li class="account" @click="outLogin">
-            <i class="iconfont icon-tuichu"></i>
-            <span>退出账户</span>
-          </li>
+          <li class="account" @click="outLogin"><i class="iconfont icon-tuichu"></i> <span>退出账户</span></li>
         </ul>
       </el-dropdown-menu>
     </el-dropdown>
@@ -171,15 +167,9 @@ export default {
         confirm_password: ""
       },
       rules: {
-        old_password: [
-          { validator: oldPassword, trigger: "blur", required: true }
-        ],
-        new_password: [
-          { validator: validatePassword, trigger: "blur", required: true }
-        ],
-        confirm_password: [
-          { validator: validatePassword2, trigger: "blur", required: true }
-        ]
+        old_password: [{ validator: oldPassword, trigger: 'blur', required: true }],
+        new_password: [{ validator: validatePassword, trigger: 'blur', required: true }],
+        confirm_password: [{ validator: validatePassword2, trigger: 'blur', required: true }],
       },
       cropRule: {
         width,
@@ -271,8 +261,8 @@ export default {
         method: "post",
         url: "/cms/file",
         data: {
-          file
-        }
+          file,
+        },
       }).then(res => {
         // 清空输入框
         this.clearFileInput(this.$refs.avatarInput);
@@ -288,29 +278,29 @@ export default {
           method: "put",
           url: "/cms/user/avatar",
           data: {
-            avatar: res[0].path
-          }
+            avatar: res[0].path,
+          },
         })
-          .then(res => {
+          .then(putRes => {
             // eslint-disable-line
-            if (res.error_code === 0) {
+            if (putRes.error_code === 0) {
               this.$message({
-                type: "success",
-                message: "更新头像成功"
-              });
-              this.cropVisible = false;
+                type: 'success',
+                message: '更新头像成功',
+              })
+              this.cropVisible = false
               // 触发重新获取用户信息
-              return User.getInformation();
+              return User.getInformation()
             }
-            return Promise.reject(new Error("更新头像失败"));
+            return Promise.reject(new Error('更新头像失败'))
           })
-          .then(res => {
+          .then(infoRes => {
             // eslint-disable-line
             // 尝试获取当前用户信息
-            const user = res;
-            this.setUserAndState(user);
-          });
-      });
+            const user = infoRes
+            this.setUserAndState(user)
+          })
+      })
     },
     changeNickname() {
       this.nicknameChanged = true;
@@ -329,24 +319,23 @@ export default {
               nickname: this.nickname
             },
             params: {
-              showBackend: true
-            }
+              showBackend: true,
+            },
           })
             .then(res => {
               if (res.error_code === 0) {
                 this.$message({
-                  type: "success",
-                  message: "更新昵称成功"
-                });
+                  type: 'success',
+                  message: '更新昵称成功',
+                })
                 // 触发重新获取用户信息
-                return User.getInformation();
+                return User.getInformation()
               }
-              this.nickname = user.nickname;
+              this.nickname = user.nickname
             })
             .then(res => {
-              // eslint-disable-line
-              this.setUserAndState(res);
-            });
+              this.setUserAndState(res)
+            })
         }
       }
       this.nicknameChanged = false;
@@ -383,7 +372,6 @@ export default {
         return;
       }
       this.$refs[formName].validate(async valid => {
-        // eslint-disable-line
         if (valid) {
           const res = await User.updatePassword(this.form);
           if (res.error_code === 0) {
@@ -408,7 +396,6 @@ export default {
       this.$refs[formName].resetFields();
     },
     clearFileInput(ele) {
-      // eslint-disable-next-line
       ele.value = "";
     }
   }
@@ -450,7 +437,7 @@ export default {
   border: none;
 
   .user-info {
-    background-image: url("../../assets/img/user/user-bg.png");
+    background-image: url('../../assets/img/user/user-bg.png');
     background-size: 100% 100%;
     transform: translateY(-10px);
     border-top-left-radius: 4px;

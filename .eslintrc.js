@@ -3,8 +3,8 @@ module.exports = {
   env: {
     node: true
   },
-  plugins: ["vue"],
-  extends: ["plugin:vue/essential", "@vue/airbnb"],
+  plugins: ['vue'],
+  extends: ['plugin:vue/essential', '@vue/airbnb'],
   rules: {
     "linebreak-style": [0, "error", "windows"],
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
@@ -14,19 +14,26 @@ module.exports = {
     // 'import/no-duplicates': 0,
     "no-underscore-dangle": 0, // 无下划线
     camelcase: 0, // 变量可以用下划线
-    semi: ["error", "never"], // 无分号
-    "no-plusplus": 0, // 禁止使用++，--
+    semi: ['error', 'never'], // 无分号
+    'no-extra-semi': 0, // 和prettier冲突
+    'no-plusplus': 0, // 禁止使用++，--
     // 'no-tabs': [o],
-    "guard-for-in": 0,
-    "max-len": ["error", { code: 200 }],
-    "no-restricted-syntax": 0,
-    "import/no-extraneous-dependencies": [
-      "error",
-      { devDependencies: ["script/**/*.js"] }
+    'guard-for-in': 0,
+    'max-len': ['error', { code: 200 }],
+    'no-restricted-syntax': 0,
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['script/**/*.js'] }],
+    'no-restricted-syntax': 0,
+    'class-methods-use-this': 'off',
+    'consistent-return': 'off',
+    'arrow-parens': ['error', 'as-needed'],
+    'object-curly-newline': [
+      'error',
+      {
+        ImportDeclaration: 'never',
+      },
     ],
-    "no-restricted-syntax": 0,
-    "class-methods-use-this": "off",
-    "consistent-return": "off"
+    'comma-dangle': ['error', 'only-multiline'],
+    'no-param-reassign': ['error', { props: false }],
   },
   parserOptions: {
     parser: "babel-eslint"

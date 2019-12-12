@@ -10,9 +10,9 @@ function checkAddZone(num) {
 const globalFilter = {
   filterAddress(value) {
     // 过滤地址
-    if (!value) return value;
-    const obj = value;
-    return `${obj.provinceName}${obj.cityName}${obj.countyName} ${obj.detailInfo}`;
+    if (!value) return value
+    const obj = value
+    return `${obj.provinceName}${obj.cityName}${obj.countyName} ${obj.detailInfo}`
   },
 
   filterTime(value) {
