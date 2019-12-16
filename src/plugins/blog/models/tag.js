@@ -16,6 +16,12 @@ class Tag {
     return res;
   }
 
+  async correctTagCount(id) {
+    const res = await put(`v1/tag/correct/${id}`);
+    return res;
+  }
+
+
   async deleteTag(id) {
     const res = await _delete(`v1/tag/${id}`);
     return res;
