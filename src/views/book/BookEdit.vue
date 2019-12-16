@@ -7,14 +7,6 @@
     <div class="wrap">
       <el-row>
         <el-col :lg="16" :md="20" :sm="24" :xs="24">
-          <el-form
-            :model="form"
-            status-icon
-            ref="form"
-            label-width="100px"
-            v-loading="loading"
-            @submit.native.prevent
-          >
           <el-form :model="form" status-icon ref="form" label-width="100px" v-loading="loading" @submit.native.prevent>
             <el-form-item label="书名" prop="title">
               <el-input size="medium" v-model="form.title" placeholder="请填写书名"></el-input>

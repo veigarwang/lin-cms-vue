@@ -33,7 +33,7 @@
         :fixed="item.fixed ? item.fixed : false"
         :width="item.width ? item.width : ''"
       >
-       <template slot-scope="scope">
+        <template slot-scope="scope">
           <!-- solt 自定义列-->
           <template v-if="item.customRender">
             <div v-html="item.customRender(scope.row,scope.row[item.prop])" />
@@ -46,7 +46,7 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column v-if="operate.length > 0" label="操作" fixed="right" width="175">
+      <el-table-column v-if="operate.length > 0" label="操作" fixed="right" :width="operateWidth">
         <template slot-scope="scope">
           <el-button
             v-for="(item, index) in operate"
@@ -87,6 +87,10 @@ export default {
       // 表格数据
       type: Array,
       default: () => [],
+    },
+    operateWidth: {
+      type: [String, Number],
+      default: 175,
     },
     operate: {
       // 自定义按键及绑定方法
@@ -200,7 +204,7 @@ export default {
     },
     // 全选-取消全选
     selectAll(val) {
-      this.oldKey = val.map((item) => item.key)
+      this.oldKey = val.map(item => item.key)
     },
     // 单选
     handleCurrentChange(val, oldVal) {
@@ -216,18 +220,13 @@ export default {
         const data = this.oldVal.concat(row)
         this.handleSelectionChange(data)
         // 选中checkbox
-        this.toggleSelection(
-          this.currentData.filter((item) => item.key === row.key)
-        )
+        this.toggleSelection(this.currentData.filter(item => item.key === row.key))
         // 取消选中
       } else {
-        this.oldKey = this.oldKey.filter((item) => item !== row.key)
-        const data = this.oldVal.filter((item) => item.key !== row.key)
+        this.oldKey = this.oldKey.filter(item => item !== row.key)
+        const data = this.oldVal.filter(item => item.key !== row.key)
         this.handleSelectionChange(data)
-        this.toggleSelection(
-          this.currentData.filter((item) => item.key === row.key),
-          false
-        )
+        this.toggleSelection(this.currentData.filter(item => item.key === row.key), false)
       }
       // 选中-单选
       if (this.currentOldRow && this.currentOldRow.key === row.key) {
@@ -246,8 +245,9 @@ export default {
       this.currentPage = page
       this.selectedTableData = JSON.parse(sessionStorage.getItem('selectedTableData'))
       this.currentData = this.tableData.filter(
-        (item, index) => index >= (this.currentPage - 1) * this.pagination.pageSize
-          && index < this.currentPage * this.pagination.pageSize,
+        (item, index) =>
+          index >= (this.currentPage - 1) * this.pagination.pageSize &&
+          index < this.currentPage * this.pagination.pageSize,
       ) // eslint-disable-line
       this.$emit('currentChange', page)
       // 已选中的数据打勾
@@ -269,39 +269,29 @@ export default {
     },
     // checkbox触发函数
     handleSelectionChange(val) {
-      const valKeys = val.map((item) => item.key)
-      const oldValKeys = this.oldVal.map((item) => item.key)
-      this.selectedTableData = JSON.parse(
-        sessionStorage.getItem('selectedTableData')
-      )
+      const valKeys = val.map(item => item.key)
+      const oldValKeys = this.oldVal.map(item => item.key)
+      this.selectedTableData = JSON.parse(sessionStorage.getItem('selectedTableData'))
       // 一条数据都没选中
       if (this.selectedTableData.length === 0) {
         this.selectedTableData = this.selectedTableData.concat(val)
         this.$emit('selection-change', this.selectedTableData)
         this.oldVal = [...val]
-        sessionStorage.setItem(
-          'selectedTableData',
-          JSON.stringify(this.selectedTableData)
-        )
+        sessionStorage.setItem('selectedTableData', JSON.stringify(this.selectedTableData))
         return
       }
       // 判断是选中数据还是取消选中
       if (valKeys.length < oldValKeys.length) {
-        const delKey = oldValKeys.filter((item) => !valKeys.includes(item))
-        this.selectedTableData = this.selectedTableData.filter(
-          (item) => !delKey.includes(item.key)
-        )
+        const delKey = oldValKeys.filter(item => !valKeys.includes(item))
+        this.selectedTableData = this.selectedTableData.filter(item => !delKey.includes(item.key))
         this.$emit('selection-change', this.selectedTableData)
       } else {
-        const addKey = valKeys.filter((item) => !oldValKeys.includes(item))
-        const addVal = val.filter((item) => addKey.includes(item.key))
+        const addKey = valKeys.filter(item => !oldValKeys.includes(item))
+        const addVal = val.filter(item => addKey.includes(item.key))
         this.selectedTableData = this.selectedTableData.concat(addVal)
         this.$emit('selection-change', this.selectedTableData)
       }
-      sessionStorage.setItem(
-        'selectedTableData',
-        JSON.stringify(this.selectedTableData)
-      )
+      sessionStorage.setItem('selectedTableData', JSON.stringify(this.selectedTableData))
       this.oldVal = [...val]
     },
     // 拖拽
@@ -385,9 +375,7 @@ export default {
       handler() {
         // 传了分页配置
         if (this.pagination && this.pagination.pageSize) {
-          this.currentData = this.tableData.filter(
-            (item, index) => index < this.pagination.pageSize
-          )
+          this.currentData = this.tableData.filter((item, index) => index < this.pagination.pageSize)
         } else {
           this.currentData = this.tableData
         }

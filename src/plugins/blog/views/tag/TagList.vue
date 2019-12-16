@@ -26,8 +26,10 @@
         :tableColumn="tableColumn"
         :tableData="tableData"
         :operate="operate"
+        :operateWidth="230"
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
+        @handleCorrect="handleCorrect"
         v-loading="loading"
         :pagination="pagination"
         @currentChange="handleCurrentChange"
@@ -79,7 +81,7 @@ export default {
           count: this.pagination.pageSize,
           page: currentPage,
         })
-        .finally((r) => {
+        .finally(r => {
           this.loading = false
         })
       this.tableData = [...res.items]
@@ -136,11 +138,16 @@ export default {
       this.showEdit = false
       await this.getTags()
     },
+    async handleCorrect(val) {
+      await tagApi.correctTagCount(val.row.id)
+      await this.getTags()
+    },
   },
   async created() {
     this.tableColumn = [
       { prop: 'tag_name', label: '名称' },
       { prop: 'alias', label: '别名' },
+      { prop: 'article_count', label: '文章数量', width: '100' },
       {
         prop: 'status',
         label: '状态',
@@ -163,6 +170,7 @@ export default {
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary', auth: '编辑标签' },
       { name: '删除', func: 'handleDelete', type: 'danger', auth: '删除标签' },
+      { name: '校正数量', func: 'handleCorrect', type: 'default', auth: '校正文章数量' },
     ]
 
     await this.getTags()
