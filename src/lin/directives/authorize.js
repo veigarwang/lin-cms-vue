@@ -19,9 +19,7 @@ Vue.directive('auth', {
     let auth
     let type
     if (Object.prototype.toString.call(binding.value) === '[object Object]') {
-      // eslint-disable-next-line prefer-destructuring
       auth = binding.value.auth
-      // eslint-disable-next-line prefer-destructuring
       type = binding.value.type
     } else {
       auth = binding.value

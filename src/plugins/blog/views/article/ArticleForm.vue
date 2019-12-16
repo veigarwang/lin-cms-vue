@@ -25,15 +25,22 @@
                     <el-input size="medium" v-model="form.title" disabled="disabled"></el-input>
                   </el-form-item>
                 </el-col>
+
+                <el-col :lg="12">
+                  <el-form-item label prop="title">
+                    <el-link
+                      type="primary"
+                      :href="`${USER_URL}post/${form.id}`"
+                      v-if="form.id!=null"
+                      target="_blank"
+                    >查看随笔</el-link>
+                  </el-form-item>
+                </el-col>
               </el-row>
               <el-row>
                 <el-col :lg="6">
                   <el-form-item label="分类专栏" prop="classify_id">
-                    <el-input
-                      size="medium"
-                      v-model="form.classify.classify_name"
-                      disabled="disabled"
-                    ></el-input>
+                    <span>{{form.classify_name}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :lg="6">
@@ -58,10 +65,9 @@
                       filterable
                       :loading="loading"
                       default-first-option
-                      placeholder="添加一个标签"
                     >
                       <el-option
-                        v-for="item in tags"
+                        v-for="item in form.tags"
                         :key="item.id"
                         :label="item.tag_name"
                         :value="item.id"
@@ -162,13 +168,14 @@ export default {
       title: ['添加随笔', '审核随笔'],
       form: {
         is_audit: true,
-        classify: {},
+        classify_name: '',
+        tags: [],
       },
       thumbnailPreview: [],
       classifys: [],
-      tags: [],
       article_types: [],
       loading: false,
+      USER_URL: process.env.VUE_APP_USER_URL,
     }
   },
   props: {
@@ -180,32 +187,33 @@ export default {
     mavonEditor,
     UploadImgs,
   },
-  mounted() {
-    this.setForm()
+  async mounted() {
+    await this.setForm()
   },
   async created() {
     this.classifys = await classifyApi.getClassifys()
     this.article_types = await baseApi.getItems({
       typeCode: 'Article.Type',
     })
-    let tags = await tagApi.getTags()
-    this.tags = tags.items
   },
   methods: {
-    setForm() {
+    async setForm() {
       if (this.id) {
-        articleApi.getArticle(this.id).then((res) => {
-          this.form = res
-          this.thumbnailPreview.length = 0
-          if (res.thumbnail) {
-            this.thumbnailPreview.push({
-              id: res.id,
-              display: res.thumbnail_display,
-              src: res.thumbnail,
-              imgId: res.id,
-            })
-          }
-        })
+        let res = await articleApi.getArticle(this.id)
+        if (res.classify != null) {
+          res.classify_name = res.classify.classify_name
+        }
+        this.form = res
+
+        this.thumbnailPreview.length = 0
+        if (res.thumbnail) {
+          this.thumbnailPreview.push({
+            id: res.id,
+            display: res.thumbnail_display,
+            src: res.thumbnail,
+            imgId: res.id,
+          })
+        }
       }
     },
     async confirmEdit(formName) {

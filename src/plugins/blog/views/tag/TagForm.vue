@@ -61,13 +61,10 @@ import UploadImgs from '@/components/base/upload-imgs'
 export default {
   name: 'TagForm',
   components: { UploadImgs },
-  props: {
-    id: {
-      type: [String, Number],
-    },
-  },
+  props: {},
   data() {
     return {
+      id: '0',
       title: ['新增标签', '编辑标签'],
       loading: false,
       // 表单信息
@@ -84,11 +81,9 @@ export default {
       },
     }
   },
-  async mounted() {
-    this.show(this.id)
-  },
   methods: {
     async show(id) {
+      this.id = id
       if (id != 0) {
         var tag = await tagApi.getTag(id)
         this.form = tag
@@ -109,7 +104,7 @@ export default {
       }
     },
     async submitForm() {
-      if (this.id === 0) {
+      if (this.id == 0) {
         return await tagApi.addTag(this.form)
       } else {
         return await tagApi.editTag(this.id, this.form)
@@ -122,7 +117,7 @@ export default {
       } else {
         this.form.thumbnail = ''
       }
-      this.$refs[formName].validate(async (valid) => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
           let res
           this.loading = true

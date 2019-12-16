@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { post, get, put, _delete } from '@/lin/plugins/axios'
 
 export default class Admin {

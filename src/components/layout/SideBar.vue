@@ -237,7 +237,8 @@ export default {
         }
       }
       deepTravel(sideBarList, item => {
-        mapData[item.name] = Utils.getRandomStr()
+        mapData[item.name] = item.name.toString()
+        // mapData[item.name] = Utils.getRandomStr()
       })
 
       return mapData

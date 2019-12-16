@@ -160,7 +160,7 @@ export default {
         label: '用户',
         scopedSlots: { customRender: 'userinfo' },
       },
-      { prop: 'text', label: '评论内容', width: 400 },
+      { prop: 'text', label: '评论内容', width: 700 },
       {
         prop: 'is_audit',
         label: '状态',

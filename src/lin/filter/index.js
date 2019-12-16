@@ -41,7 +41,7 @@ const globalFilter = {
     const m = `0${date.getMonth() + 1}`;
     const d = `0${date.getDate()}`;
     const hh = date.getHours();
-    const mm = `${date.getMinutes()}`;
+    const mm = date.getMinutes() <= 9 ? `0${date.getMinutes()}` : `${date.getMinutes()}`;
     const ss =
       date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
     const val = `${y}-${m.substring(m.length - 2, m.length)}-${d.substring(

@@ -58,8 +58,6 @@ export default {
       id: 0,
       showEdit: false,
       refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
-      editIndex: null, // 编辑的行
-      // total: 0, // 分组内的用户总数
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
@@ -87,9 +85,7 @@ export default {
           count: this.pagination.pageSize,
           page: currentPage,
         })
-        setTimeout(() => {
-          this.loading = false
-        }, 500)
+        this.loading = false
         this.tableData = [...res.items]
         this.pagination.pageTotal = res.total
       } catch (e) {
@@ -98,7 +94,7 @@ export default {
       }
     },
     async handleEdit(val) {
-      this.editIndex = val.index
+      console.log(val)
       let selectedData
       // 单击 编辑按键
       if (val.index >= 0) {
@@ -108,7 +104,7 @@ export default {
         selectedData = val
       }
       this.showEdit = true
-      this.id = val.row.id
+      this.id = selectedData.id
     },
     // 切换table页
     async handleCurrentChange(val) {
@@ -144,31 +140,30 @@ export default {
     await this.getArticles()
     this.tableColumn = [
       { prop: 'title', label: '标题', width: 400 },
-      { prop: 'author', label: '作者' },
-      { prop: 'comment_quantity', label: '评论数', width: 100 },
-      { prop: 'likes_quantity', label: '点赞数', width: 100 },
-      { prop: 'view_hits', label: '阅读数', width: 100 },
-      { prop: 'time_span', label: '发布时间' },
+      { prop: 'comment_quantity', label: '评论数', width: 70 },
+      { prop: 'likes_quantity', label: '点赞数', width: 70 },
+      { prop: 'view_hits', label: '阅读数', width: 70 },
+      { prop: 'time_span', label: '发布时间', width: 170 },
       {
         prop: 'id',
         label: '状态',
         customRender: function(row, column) {
           var isaudit = format_str(
             '<i title="{0}" class="el-icon-{1}"></i>',
-            row.is_audit ? '已审核' : '未审核',
-            row.is_audit ? 'check' : 'close'
+            row.is_audit ? '已审核' : '拉黑',
+            row.is_audit ? 'check' : 'close',
           )
 
           var isremd = format_str(
             '<i  style="margin-left:10px;" title="{0}" class="el-icon-{1}"></i>',
             row.is_stickie ? '置顶' : '未置顶',
-            row.is_stickie ? 'top' : 'bottom'
+            row.is_stickie ? 'top' : 'bottom',
           )
 
           var isstickie = format_str(
             '<i  style="margin-left:10px;" title="{0}" class="el-icon-{1}"></i>',
             row.recommend ? '推荐' : '未推荐',
-            row.recommend ? 'thumb' : 'ice-cream-square'
+            row.recommend ? 'thumb' : 'ice-cream-square',
           )
           return isaudit + isremd + isstickie
         },
@@ -181,13 +176,10 @@ export default {
             '<i class="el-icon-{0}"></i><i class="el-icon-{1}" style="margin-left:10px;"></i><i class="el-icon-{2}" style="margin-left:10px;"></i>',
             row.keywords ? 'check' : 'close',
             row.source ? 'check' : 'close',
-            row.excerpt ? 'check' : 'close'
+            row.excerpt ? 'check' : 'close',
           )
           if (row.thumbnail) {
-            var thumurl = format_str(
-              '<i class="el-icon-picture"  style="margin-left:10px;"></i>',
-              row.thumbnail
-            )
+            var thumurl = format_str('<i class="el-icon-picture"  style="margin-left:10px;"></i>', row.thumbnail)
             d += thumurl
           }
           return d
@@ -196,7 +188,6 @@ export default {
     ] // 设置表头信息
 
     this.operate = [
-      { name: '原文', func: 'handleDetail', type: 'default' },
       { name: '审核', func: 'handleEdit', type: 'primary' },
       { name: '删除', func: 'handleDelete', type: 'danger' },
     ]

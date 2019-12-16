@@ -24,7 +24,7 @@ class Article {
   }
 
   async auditArticle(id, is_audit) {
-    const res = await put(`v1/article/${id}?is_audit=${is_audit}`);
+    const res = await put(`v1/article/audit/${id}?is_audit=${is_audit}`);
     return res;
   }
 

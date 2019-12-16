@@ -31,7 +31,7 @@ const LinCmsUiRouter = {
         {
           title: 'Link 文字链接',
           type: 'view',
-          name: 'LinCmsUiButton',
+          name: 'LinCmsUiLink',
           route: '/lin-cms-ui/basic/link',
           filePath: 'plugins/LinCmsUi/views/basic/link/Link.vue',
           inNav: true,
