@@ -33,7 +33,6 @@ _axios.interceptors.request.use(
 
     // step1: 容错处理
     if (!reqConfig.url) {
-      /* eslint-disable-next-line */
       console.error('request need url')
       throw new Error({
         source: 'axiosInterceptors',
@@ -81,21 +80,18 @@ _axios.interceptors.request.use(
       }
     } else {
       // TODO: 其他类型请求数据格式处理
-      /* eslint-disable-next-line */
       console.warn(`其他请求类型: ${reqConfig.method}, 暂无自动处理`)
     }
     // step2: auth 处理
     if (reqConfig.url === 'cms/user/refresh') {
       const refreshToken = getToken('refresh_token')
       if (refreshToken) {
-        // eslint-disable-next-line no-param-reassign
         reqConfig.headers.Authorization = refreshToken
       }
     } else {
       // 有access_token
       const accessToken = getToken('access_token')
       if (accessToken) {
-        // eslint-disable-next-line no-param-reassign
         reqConfig.headers.Authorization = accessToken
       }
     }
@@ -109,7 +105,7 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   async res => {
-    let { error_code, msg } = res.data // eslint-disable-line
+    let { error_code, msg } = res.data
     let message = '' // 错误提示
     if (res.status.toString().charAt(0) === '2') {
       return res.data
@@ -147,20 +143,30 @@ _axios.interceptors.response.use(
       }
       console.log('msg', msg)
       // 本次请求添加 params 参数：showBackend 为 true, 弹出后端返回错误信息
-      if (params && params.showBackend) {
-        message = msg
+      //  && params.showBackend 这个好像也更奇怪
+      if (params && msg) {
+        if (typeof msg == "string") {
+          message = msg;
+        } else {
+          Object.keys(msg).forEach(function (key) {
+            msg[key].forEach(m => {
+              message += m + ";"
+            })
+          });
+        }
       } else {
         // 弹出前端自定义错误信息
         const errorArr = Object.entries(ErrorCode).filter(v => v[0] === error_code.toString())
         // 匹配到前端自定义的错误码
         if (errorArr.length > 0) {
           if (errorArr[0][1] !== '') {
-            message = errorArr[0][1] // eslint-disable-line
+            message = errorArr[0][1]
           } else {
             message = ErrorCode['777']
           }
         }
       }
+
       Vue.prototype.$message({
         message,
         type: 'error',

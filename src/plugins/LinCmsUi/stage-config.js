@@ -7,6 +7,7 @@ const LinCmsUiRouter = {
   filePath: 'views/LinCmsUi/',
   order: null,
   inNav: true,
+  hidden: true,
   children: [
     {
       title: 'Basic',

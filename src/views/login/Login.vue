@@ -32,8 +32,8 @@ export default {
       throttleLogin: null, // 节流登录
       form: {
         username: "super",
-        password: "123456",
-        confirm_password: "123456",
+        password: "123qwe",
+        confirm_password: "123qwe",
         email: "2285901508@qq.com"
       }
     };

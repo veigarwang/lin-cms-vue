@@ -7,6 +7,7 @@ const CustomRouter = {
   filePath: 'views/custom/',
   order: null,
   inNav: true,
+  hidden: true,
   children: [
     {
       title: 'upload 图像上传',
