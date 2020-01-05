@@ -1,6 +1,13 @@
 <template>
   <div class="container">
-    <div class="title">分组列表信息</div>
+    <div class="header">
+      <div class="header-left">
+        <div class="title">分组列表信息</div>
+      </div>
+      <div class="header-right">
+        <el-button type="default" icon="el-icon-search" @click="getAllGroups">刷新</el-button>
+      </div>
+    </div>
     <lin-table
       :tableColumn="tableColumn"
       :tableData="tableData"
@@ -9,8 +16,7 @@
       @handleDelete="handleDelete"
       @row-click="rowClick"
       v-loading="loading"
-    >
-    </lin-table>
+    ></lin-table>
     <el-dialog
       :append-to-body="true"
       :visible.sync="dialogFormVisible"
@@ -47,8 +53,7 @@
               @updateCacheAuths="updateCacheAuths"
               @updateAllAuths="updateAllAuths"
               style="margin-right:-30px;margin-left:-25px;margin-bottom:-10px;"
-            >
-            </group-auths>
+            ></group-auths>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -278,17 +283,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  padding: 0 30px;
+@import '@/assets/styles/list.scss';
 
-  .title {
-    height: 59px;
-    line-height: 59px;
-    color: $parent-title-color;
-    font-size: 16px;
-    font-weight: 500;
-  }
-}
 .groupListInfoDialog /deep/ .el-dialog__footer {
   text-align: left;
   padding-left: 30px;

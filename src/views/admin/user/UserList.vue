@@ -1,23 +1,31 @@
 <template>
   <div class="container">
     <div class="header">
-      <div class="title">用户列表</div>
+      <div class="header-left">
+        <div class="title">用户列表</div>
+      </div>
       <!-- 分组选择下拉框 -->
-      <el-select
-        size="medium"
-        filterable
-        v-model="group_id"
-        placeholder="请选择分组"
-        @change="handleChange"
-        clearable
-      >
-        <el-option
-          v-for="(group, index) in groups"
-          :key="index"
-          :label="group.name"
-          :value="group.id"
-        ></el-option>
-      </el-select>
+      <div class="header-right">
+        <div style="margin-left:30px">
+          <el-select
+            size="medium"
+            filterable
+            v-model="group_id"
+            placeholder="请选择分组"
+            @change="handleChange"
+            clearable
+            style="margin-right:30px"
+          >
+            <el-option
+              v-for="(group, index) in groups"
+              :key="index"
+              :label="group.name"
+              :value="group.id"
+            ></el-option>
+          </el-select>
+          <el-button type="default" icon="el-icon-search" @click="getAdminUsers">刷新</el-button>
+        </div>
+      </div>
     </div>
     <!-- 表格 -->
     <lin-table
@@ -83,7 +91,7 @@ import Admin from '@/lin/models/admin'
 import LinTable from '@/components/base/table/lin-table'
 import UserInfo from './UserInfo'
 import UserPassword from './UserPassword'
-
+import Vue from 'vue'
 export default {
   components: { LinTable, UserInfo, UserPassword },
   inject: ['eventBus'],
@@ -126,7 +134,7 @@ export default {
           group_id: this.group_id,
           count: this.pageCount,
           page: currentPage,
-        }) // eslint-disable-line
+        })
         this.loading = false
         this.tableData = [...res.items]
         this.total = res.total
@@ -273,7 +281,16 @@ export default {
     this.tableColumn = [
       { prop: 'username', label: '用户名' },
       { prop: 'nickname', label: '昵称' },
+      { prop: 'email', label: '邮箱' },
       { prop: 'group_name', label: '所属分组' },
+      {
+        prop: 'create_time',
+        label: '创建时间',
+        scope: 'create_time',
+        customRender: function(row, column) {
+          return Vue.filter('filterTimeYmdHms')(column)
+        },
+      },
     ] // 设置表头信息
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
@@ -288,29 +305,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  padding: 0 30px;
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .title {
-      height: 59px;
-      line-height: 59px;
-      color: $parent-title-color;
-      font-size: 16px;
-      font-weight: 500;
-    }
-  }
-
-  .pagination {
-    display: flex;
-    justify-content: flex-end;
-    margin: 20px;
-  }
-}
+@import '@/assets/styles/list.scss';
 
 .info {
   margin-left: -55px;

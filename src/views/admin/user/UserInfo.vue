@@ -42,20 +42,6 @@
           autocomplete="off"
         ></el-input>
       </el-form-item>
-      <el-form-item
-        v-if="pageType === 'add'"
-        label="确认密码"
-        prop="confirm_password"
-        label-position="top"
-      >
-        <el-input
-          size="medium"
-          clearable
-          type="password"
-          v-model="form.confirm_password"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
       <el-form-item v-if="pageType !== 'password'" label="选择分组">
         <el-select
           size="medium"

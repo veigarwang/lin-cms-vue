@@ -205,7 +205,7 @@ $--font-path: "~element-ui/lib/theme-chalk/fonts";
   border: none !important;
 }
 
-.el-radio__input.is-checked + .el-radio__label {
+.el-radio__input.is-checked+.el-radio__label {
   color: $theme;
 }
 
@@ -249,13 +249,16 @@ $--font-path: "~element-ui/lib/theme-chalk/fonts";
   border: 1px solid $theme;
   color: #fff;
 }
+
 .el-input .el-input--suffix {
   background: $theme;
   color: #fff;
+
   input::placeholder {
     color: #fff;
   }
 }
+
 // table
 .el-table {
   border-top: 1px solid $table-border-color;
@@ -281,7 +284,7 @@ $--font-path: "~element-ui/lib/theme-chalk/fonts";
   display: flex;
   margin-top: 2px;
   margin-bottom: 2px;
-  padding-left: 20px;
+  // padding-left: 20px;
 }
 
 .el-table thead tr th .cell {
@@ -318,11 +321,11 @@ thead tr {
   background: #fff;
 }
 
-.el-table__body tr.current-row > td,
-.el-table__body tr.hover-row.current-row > td,
-.el-table__body tr.hover-row.el-table__row--striped.current-row > td,
-.el-table__body tr.hover-row.el-table__row--striped > td,
-.el-table__body tr.hover-row > td {
+.el-table__body tr.current-row>td,
+.el-table__body tr.hover-row.current-row>td,
+.el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.el-table__body tr.hover-row.el-table__row--striped>td,
+.el-table__body tr.hover-row>td {
   background-color: #ecf5ff;
 }
 
@@ -331,12 +334,14 @@ thead tr {
   font-size: 18px;
   top: -5px;
 }
+
 // el-dialog
 .el-dialog__title {
   color: $parent-title-color;
   font-size: 16px;
   font-weight: 500;
 }
+
 // tab
 .el-tabs__item.is-active {
   color: $theme;
@@ -388,6 +393,7 @@ thead tr {
     }
 
     &.third {
+
       // 3级
       .el-menu-item {
         position: relative;
@@ -558,6 +564,7 @@ thead tr {
 }
 
 .el-menu--collapse {
+
   // margin-left: -2px;
   .el-submenu.is-active {
     .el-submenu__title {
@@ -623,7 +630,8 @@ thead tr {
 .el-link.is-underline:hover:after {
   border-bottom: 1px solid $--link-default-active-color;
 }
-.el-link [class*="el-icon-"] + span {
+
+.el-link [class*="el-icon-"]+span {
   margin-left: 4px;
 }
 
@@ -643,26 +651,31 @@ thead tr {
   color: $--link-disabled-font-color;
 }
 
-$typeMap: (
-  primary: #3963bc,
+$typeMap: (primary: #3963bc,
   success: #00c292,
   danger: #e46a76,
   warning: #ffbe4d,
-  info: #8c98ae
-);
+  info: #8c98ae);
+
 .el-link {
-  @each $type, $primaryColor in $typeMap {
+
+  @each $type,
+  $primaryColor in $typeMap {
     &.el-link--#{$type} {
       color: $primaryColor;
+
       &:hover {
         color: mix($primaryColor, $--color-white, 80%);
       }
+
       &:after {
         border-color: $primaryColor;
       }
+
       @include when(disabled) {
         color: mix($primaryColor, $--color-white, 50%);
       }
+
       @include when(underline) {
         &:hover:after {
           border-color: $primaryColor;
@@ -814,10 +827,12 @@ $typeMap: (
   @include m(info) {
     background-color: #ecf1ff;
     border-color: #97b8ff;
+
     .el-message__content {
       color: #3963bc;
     }
   }
+
   & .el-icon-info {
     color: #3963bc;
   }
@@ -827,6 +842,7 @@ $typeMap: (
 @include b(notification) {
   border: 1px solid #97b8ff;
   background-color: #ecf1ff;
+
   @include e(title) {
     color: #3963bc;
   }
@@ -834,6 +850,7 @@ $typeMap: (
   @include e(content) {
     color: #3963bc;
   }
+
   .el-icon-info {
     color: #3963bc;
   }
@@ -843,9 +860,11 @@ $typeMap: (
 @include b(select) {
   .el-tag {
     background-color: #3963bc !important;
+
     &--info {
       color: white;
     }
+
     &__close.el-icon-close {
       background-color: #3963bc;
       right: -7px;

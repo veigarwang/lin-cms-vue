@@ -161,6 +161,9 @@ class Log {
     this.increseSpage()
     return this.searchLogs({ next: true })
   }
+  async getUserAndVisits() {
+    return await get('cms/log/visitis')
+  }
 }
 
 export default new Log({})
