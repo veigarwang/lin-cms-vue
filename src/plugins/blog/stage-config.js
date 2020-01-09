@@ -19,6 +19,16 @@ const blogRouter = {
     },
     {
       name: null,
+      title: "技术频道",
+      type: "view",
+      name: "ChannelList",
+      route: "/cms/channel/list",
+      filePath: "plugins/Blog/views/channel/ChannelList.vue",
+      inNav: true,
+      right: ["技术频道"]
+    },
+    {
+      name: null,
       title: "标签管理",
       type: "view",
       name: "TagList",

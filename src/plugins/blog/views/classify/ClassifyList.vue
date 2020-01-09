@@ -73,7 +73,7 @@ export default {
           page: currentPage,
           classify_name: this.pagination.classify_name,
         })
-        .finally((r) => {
+        .finally(r => {
           this.loading = false
         })
       this.tableData = [...res.items]
@@ -87,7 +87,7 @@ export default {
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
-      await this.getTags()
+      await this.getClassifys()
       this.loading = false
     },
     handleDelete(val) {
@@ -151,9 +151,7 @@ export default {
         },
       },
     ]
-    this.operate = [
-      { name: '删除', func: 'handleDelete', type: 'danger', auth: '删除标签' },
-    ]
+    this.operate = [{ name: '删除', func: 'handleDelete', type: 'danger', auth: '删除标签' }]
 
     await this.getClassifys()
   },
