@@ -42,6 +42,14 @@
           <el-tag size="small" v-if="scope.row.status==true" type="success">启用</el-tag>
           <el-tag size="small" v-else type="danger">禁用</el-tag>
         </template>
+        <template v-slot:tags="scope">
+          <el-tag
+            size="small"
+            v-for="(tag,index) in scope.row.tags"
+            v-bind:key="index"
+            type="success"
+          >{{tag.tag_name}}</el-tag>
+        </template>
         <template v-slot:thumbnail_display="scope">
           <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
         </template>
@@ -172,6 +180,11 @@ export default {
         prop: 'status',
         label: '状态',
         scopedSlots: { customRender: 'status' },
+      },
+      {
+        prop: 'tags',
+        label: '标签',
+        scopedSlots: { customRender: 'tags' },
       },
     ]
     this.operate = [

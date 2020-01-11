@@ -64,7 +64,6 @@ export default {
   props: {},
   data() {
     return {
-      id: '0',
       title: ['新增标签', '编辑标签'],
       loading: false,
       // 表单信息
@@ -72,6 +71,7 @@ export default {
         tag_name: '',
         alias: '',
         thumbnail: '',
+        status: true,
       },
       thumbnailPreview: [],
       // 表单验证规则
@@ -81,11 +81,18 @@ export default {
       },
     }
   },
+  props: {
+    id: {
+      type: [String, Number],
+    },
+  },
+  async created() {
+    this.show()
+  },
   methods: {
-    async show(id) {
-      this.id = id
-      if (id != 0) {
-        var tag = await tagApi.getTag(id)
+    async show() {
+      if (this.id != 0) {
+        var tag = await tagApi.getTag(this.id)
         this.form = tag
         this.thumbnailPreview.length = 0
         if (tag.thumbnail) {
@@ -100,6 +107,7 @@ export default {
         Object.assign(this.form, {
           tag_name: '',
           alias: '',
+          status: true,
         })
       }
     },
@@ -140,7 +148,6 @@ export default {
       this.$emit('editClose')
     },
   },
-  async created() {},
 }
 </script>
 

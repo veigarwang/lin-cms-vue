@@ -3,7 +3,9 @@
     <div class="lin-title">Tag 标签</div>
     <div class="lin-wrap-ui">
       <el-card style="margin-bottom:50px;">
-        <div slot="header"><span>基础用法</span></div>
+        <div slot="header">
+          <span>基础用法</span>
+        </div>
         <el-row>
           <div>
             <el-tag>标签一</el-tag>
@@ -20,12 +22,18 @@
         </el-collapse>
       </el-card>
       <el-card style="margin-bottom:50px;">
-        <div slot="header"><span>可移除标签</span></div>
+        <div slot="header">
+          <span>可移除标签</span>
+        </div>
         <el-row>
           <div>
-            <el-tag v-for="tag in tags" :key="tag.name" closable @close="handleCloseTag(tag)" :type="tag.type">
-              {{ tag.name }}
-            </el-tag>
+            <el-tag
+              v-for="tag in tags"
+              :key="tag.name"
+              closable
+              @close="handleCloseTag(tag)"
+              :type="tag.type"
+            >{{ tag.name }}</el-tag>
           </div>
         </el-row>
         <el-collapse class="test" style="color:red;">
@@ -35,7 +43,9 @@
         </el-collapse>
       </el-card>
       <el-card style="margin-bottom:50px;">
-        <div slot="header"><span>动态编辑标签</span></div>
+        <div slot="header">
+          <span>动态编辑标签</span>
+        </div>
         <el-row>
           <div>
             <el-tag
@@ -44,9 +54,7 @@
               closable
               :disable-transitions="false"
               @close="handleClose(tag)"
-            >
-              {{ tag }}
-            </el-tag>
+            >{{ tag }}</el-tag>
             <el-input
               class="input-new-tag"
               v-model="inputValue"
@@ -55,8 +63,7 @@
               size="small"
               @keyup.enter.native="handleInputConfirm"
               @blur="handleInputConfirm"
-            >
-            </el-input>
+            ></el-input>
             <i v-else class="el-icon-circle-plus button-new-tag" @click="showInput"></i>
             <!-- <el-button  class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button> -->
           </div>
@@ -69,7 +76,9 @@
       </el-card>
 
       <el-card style="margin-bottom:50px;">
-        <div slot="header"><span>不同尺寸</span></div>
+        <div slot="header">
+          <span>不同尺寸</span>
+        </div>
         <el-row>
           <div>
             <el-tag closable>默认标签</el-tag>
@@ -81,6 +90,47 @@
         <el-collapse>
           <el-collapse-item title="查看代码" name="2">
             <div style="white-space: pre-wrap;">{{ size }}</div>
+          </el-collapse-item>
+        </el-collapse>
+      </el-card>
+
+      <el-card style="margin-bottom:50px;">
+        <div slot="header">
+          <span>不同主题</span>
+        </div>
+        <el-row>
+          <div>
+            <el-tag
+              v-for="item in tags"
+              :key="item.name"
+              :type="item.type"
+              effect="dark"
+            >{{ item.name }}</el-tag>
+          </div>
+        </el-row>
+        <el-row style="margin-top:10px;">
+          <div>
+            <el-tag
+              v-for="item in tags"
+              :key="item.name"
+              :type="item.type"
+              effect="plain"
+            >{{ item.name }}</el-tag>
+          </div>
+        </el-row>
+        <el-row style="margin-top:10px;">
+          <div>
+            <el-tag
+              v-for="item in tags"
+              :key="item.name"
+              :type="item.type"
+              effect="light"
+            >{{ item.name }}</el-tag>
+          </div>
+        </el-row>
+        <el-collapse>
+          <el-collapse-item title="查看代码" name="2">
+            <div style="white-space: pre-wrap;">{{ effect }}</div>
           </el-collapse-item>
         </el-collapse>
       </el-card>
@@ -98,7 +148,7 @@ export default {
       inputVisible: false,
       inputValue: '',
       tags: [
-        { name: '标签一', type: '' },
+        { name: '标签一', type: 'primary' },
         { name: '标签二', type: 'success' },
         { name: '标签三', type: 'info' },
         { name: '标签四', type: 'warning' },
@@ -221,6 +271,36 @@ export default {
             <el-tag size="small" closable>小型标签</el-tag>
             <el-tag size="mini" closable>超小标签</el-tag>
             `,
+      effect: `<el-card style="margin-bottom:50px;">
+        <div slot="header">
+          <span>不同主题</span>
+        </div>
+        <el-row style="margin-bottom:10px;">
+          <div>
+            <el-tag
+              v-for="item in tags"
+              :key="item.name"
+              :type="item.type"
+              effect="dark"
+            >{{ item.name }}</el-tag>
+          </div>
+        </el-row>
+        <el-row>
+          <div>
+            <el-tag
+              v-for="item in tags"
+              :key="item.name"
+              :type="item.type"
+              effect="plain"
+            >{{ item.name }}</el-tag>
+          </div>
+        </el-row>
+        <el-collapse>
+          <el-collapse-item title="查看代码" name="2">
+            <div style="white-space: pre-wrap;">{{ effect }}</div>
+          </el-collapse-item>
+        </el-collapse>
+      </el-card>`,
     }
   },
   // 计算属性设置

@@ -129,17 +129,18 @@ export default {
   methods: {
     async show() {
       if (this.id != 0) {
-        var channel = await channelApi.getChannel(this.id)
-        this.form = channel
+        var res = await channelApi.getChannel(this.id)
+        this.form = res
         this.thumbnailPreview.length = 0
-        if (channel.thumbnail) {
+        if (res.thumbnail) {
           this.thumbnailPreview.push({
-            id: channel.id,
-            display: channel.thumbnail_display,
-            src: channel.thumbnail,
-            imgId: channel.id,
+            id: res.id,
+            display: res.thumbnail_display,
+            src: res.thumbnail,
+            imgId: res.id,
           })
         }
+        this.tags = res.tags
       } else {
         Object.assign(this.form, {
           channel_name: '',

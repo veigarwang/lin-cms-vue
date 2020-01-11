@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container" v-show="!showEdit">
+    <div class="container" v-if="!showEdit">
       <div class="header">
         <div class="header-left">
           <div class="title">标签管理</div>
@@ -14,7 +14,7 @@
               v-auth="'新增标签'"
               @click="()=>{
                 this.showEdit = true;
-                this.$refs['tagForm'].show(0);
+                this.id=0;
             }"
             >新增标签</el-button>
             <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
@@ -44,7 +44,7 @@
       </lin-table>
       <!--表格结束-->
     </div>
-    <tag-form v-show="showEdit" ref="tagForm" @editClose="editClose"></tag-form>
+    <tag-form v-else :id="id" ref="tagForm" @editClose="editClose"></tag-form>
   </div>
 </template>
 
@@ -59,6 +59,7 @@ export default {
   inject: ['eventBus'],
   data() {
     return {
+      id: 0,
       showEdit: false,
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
@@ -89,7 +90,6 @@ export default {
     async handleEdit(val) {
       this.showEdit = true
       this.id = val.row.id
-      // this.$refs['tagForm'].show(val.row.id)
     },
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
