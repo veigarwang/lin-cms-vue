@@ -71,6 +71,15 @@ const adminRouter = {
         },
       ],
     },
+    {
+      route: '/admin/setting/list',
+      type: 'view',
+      name: 'settingList',
+      inNav: true,
+      filePath: 'views/admin/setting/SettingList.vue',
+      title: '设置管理',
+      permission: ['得到所有设置'],
+    },
   ],
 }
 
