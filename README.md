@@ -33,13 +33,24 @@ C#:[lin-cms-dotnetcore](https://github.com/luoyunchong/lin-cms-dotnetcore)
 
 PHP[lin-cms-tp5](https://github.com/ChenJinchuang/lin-cms-tp5)
 
-### 文档地址
+## 开源
+- 后端接口 [https://github.com/luoyunchong/lin-cms-dotnetcore](https://github.com/luoyunchong/lin-cms-dotnetcore)
+- 管理后台UI [https://github.com/luoyunchong/lin-cms-vue](https://github.com/luoyunchong/lin-cms-vue)
+- 前端UI[https://github.com/luoyunchong/lin-cms-vvlog](https://github.com/luoyunchong/lin-cms-vvlog)
 
-[http://doc.cms.7yue.pro/](http://doc.cms.7yue.pro/)
+## 线上 Demo
+- API的swagger地址 [http://47.106.80.39:7000/swagger/index.html](http://47.106.80.39:7000/swagger/index.html)
+- 用户端 lin-cms-vvlog [http://47.106.80.39:8080/index](http://47.106.80.39:8080/index) 
+  - 普通用户：710277267@qq.com
+  - 密码：123qwe
 
-### 线上 Demo
+- 管理员 lin-cms-vue [http://47.106.80.39:8081/#/](http://47.106.80.39:8081/#/)
+  - 管理员： admin
+  - 密码：123qwe
 
-[http://face.cms.7yue.pro/](http://face.cms.7yue.pro/)
+## 线上文档地址(完善中)
+- [https://luoyunchong.github.io/vuepress-docs/dotnetcore/lin-cms/](https://luoyunchong.github.io/vuepress-docs/dotnetcore/lin-cms/)
+- [https://igeekfan.gitee.io/vuepress-docs/dotnetcore/lin-cms/](https://igeekfan.gitee.io/vuepress-docs/dotnetcore/lin-cms/)
 
 ### 案例
 
