@@ -24,6 +24,9 @@
               <el-form-item label="标签名称" prop="tag_name">
                 <el-input size="medium" clearable v-model="form.tag_name"></el-input>
               </el-form-item>
+              <el-form-item label="备注" prop="remark">
+                <el-input size="medium" clearable v-model="form.remark"></el-input>
+              </el-form-item>
               <el-form-item label="别名" prop="alias">
                 <el-input size="medium" clearable v-model="form.alias"></el-input>
               </el-form-item>

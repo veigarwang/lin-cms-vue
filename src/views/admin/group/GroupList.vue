@@ -16,7 +16,12 @@
       @handleDelete="handleDelete"
       @row-click="rowClick"
       v-loading="loading"
-    ></lin-table>
+    >
+      <template v-slot:is_static="scope">
+        <el-tag size="medium" v-if="scope.row.is_static==true" type="success">是</el-tag>
+        <el-tag size="medium" v-else type="danger">否</el-tag>
+      </template>
+    </lin-table>
     <el-dialog
       :append-to-body="true"
       :visible.sync="dialogFormVisible"
@@ -268,7 +273,15 @@ export default {
   },
   async created() {
     await this.getAllGroups()
-    this.tableColumn = [{ prop: 'name', label: '名称' }, { prop: 'info', label: '信息' }] // 设置表头信息
+    this.tableColumn = [
+      { prop: 'name', label: '名称' },
+      { prop: 'info', label: '信息' },
+      {
+        prop: 'is_static',
+        label: '静态权限组',
+        scopedSlots: { customRender: 'is_static' },
+      },
+    ] // 设置表头信息
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       { name: '删除', func: 'handleDelete', type: 'danger' },

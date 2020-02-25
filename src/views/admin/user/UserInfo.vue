@@ -50,7 +50,7 @@
           :disabled="groups.length === 0"
           placeholder="请选择分组"
         >
-          <el-option v-for="item in groups" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          <el-option v-for="item in groups" :key="item.id" :label="item.info" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item v-show="submit" class="submit">

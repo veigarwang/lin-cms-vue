@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import baseApi from "../../models/base";
+import baseApi from '../../models/base'
 export default {
-  name: "ItemDialog",
+  name: 'ItemDialog',
   components: {},
   data() {
     return {
@@ -57,76 +57,74 @@ export default {
       loading: false,
       form: {
         // 表单信息
-        item_code: "",
-        item_name: "",
+        item_code: '',
+        item_name: '',
         sort_code: 0,
-        base_type_id: ""
+        base_type_id: '',
       },
       rules: {
         // 表单验证规则
-        base_type_id: [
-          { required: true, message: "请选择类别名称", trigger: "blur" }
-        ],
-        item_code: [{ required: true, message: "请输入编码", trigger: "blur" }],
-        item_name: [{ required: true, message: "请输入名称", trigger: "blur" }]
+        base_type_id: [{ required: true, message: '请选择类别名称', trigger: 'blur' }],
+        item_code: [{ required: true, message: '请输入编码', trigger: 'blur' }],
+        item_name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
       },
-      types: []
-    };
+      types: [],
+    }
   },
   methods: {
     show(record) {
       if (record) {
-        Object.assign(this.form, record);
-        this.id = record.id;
+        Object.assign(this.form, record)
+        this.id = record.id
       } else {
         Object.assign(this.form, {
-          item_code: "",
-          item_name: "",
+          item_code: '',
+          item_name: '',
           sort_code: 0,
-          base_type_id: ""
-        });
-        this.id = 0;
+          base_type_id: '',
+        })
+        this.id = 0
       }
-      this.dialogFormVisible = true;
+      this.dialogFormVisible = true
     },
     // 弹框 右上角 X
     handleClose(done) {
-      this.dialogFormVisible = false;
-      done();
+      this.dialogFormVisible = false
+      done()
     },
     async submitForm() {
       if (this.id === 0) {
-        return await baseApi.addItem(this.form);
+        return await baseApi.addItem(this.form)
       } else {
-        return await baseApi.editItem(this.id, this.form);
+        return await baseApi.editItem(this.id, this.form)
       }
     },
     async confirmEdit(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          let res;
-          this.loading = true;
+          let res
+          this.loading = true
 
           res = await this.submitForm().finally(() => {
-            this.loading = false;
-          });
+            this.loading = false
+          })
 
-          this.$message.success(`${res.msg}`);
-          this.dialogFormVisible = false;
-          this.$emit("ok");
+          this.$message.success(`${res.msg}`)
+          this.dialogFormVisible = false
+          this.$emit('ok')
         } else {
-          this.$message.error("请填写正确的信息");
+          this.$message.error('请填写正确的信息')
         }
-      });
+      })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
-    }
+      this.$refs[formName].resetFields()
+    },
   },
   async created() {
-    this.types = await baseApi.getTypes();
-  }
-};
+    this.types = await baseApi.getTypes()
+  },
+}
 </script>
 
 <style lang="scss" scoped>
