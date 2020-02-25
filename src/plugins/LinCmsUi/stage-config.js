@@ -17,7 +17,7 @@ const LinCmsUiRouter = {
       filePath: 'plugins/LinCmsUi/views/basic/',
       inNav: true,
       icon: 'iconfont icon-jiemiansheji',
-      right: null,
+      permission: null,
       children: [
         {
           title: 'Button 按钮',
@@ -27,7 +27,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/basic/button/Button.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Link 文字链接',
@@ -37,7 +37,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/basic/link/Link.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Icon 图标',
@@ -47,7 +47,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/basic/icon/Icon.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
       ],
     },
@@ -59,7 +59,7 @@ const LinCmsUiRouter = {
       filePath: 'plugins/LinCmsUi/views/data/',
       inNav: true,
       icon: 'iconfont icon-jiemiansheji',
-      right: null,
+      permission: null,
       children: [
         {
           title: 'Pagination 分页',
@@ -69,7 +69,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/data/pagination/Pagination.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Progress 进度条',
@@ -79,7 +79,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/data/progress/Progress.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Badge 标记',
@@ -89,7 +89,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/data/badge/Badge.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Tag 标签',
@@ -99,7 +99,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/data/tag/Tag.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
       ],
     },
@@ -111,7 +111,7 @@ const LinCmsUiRouter = {
       filePath: 'plugins/LinCmsUi/views/navigation/',
       inNav: true,
       icon: 'iconfont icon-jiemiansheji',
-      right: null,
+      permission: null,
       children: [
         {
           title: 'Tabs 标签页',
@@ -121,7 +121,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/navigation/tab/Tab.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Breadcrumb 面包屑',
@@ -131,7 +131,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/navigation/Breadcrumb.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Dropdown 下拉菜单',
@@ -141,7 +141,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/navigation/Dropdown.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Steps 步骤条',
@@ -151,7 +151,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/navigation/Steps.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
       ],
     },
@@ -163,7 +163,7 @@ const LinCmsUiRouter = {
       filePath: 'plugins/LinCmsUi/views/table/',
       inNav: true,
       icon: 'iconfont icon-jiemiansheji',
-      right: null,
+      permission: null,
       children: [
         {
           title: '基础示例',
@@ -193,7 +193,7 @@ const LinCmsUiRouter = {
       filePath: 'plugins/LinCmsUi/views/form/',
       inNav: true,
       icon: 'iconfont icon-jiemiansheji',
-      right: null,
+      permission: null,
       children: [
         {
           title: 'Input',
@@ -248,7 +248,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/form/switch/Switch.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Rate 评分',
@@ -258,7 +258,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/form/rate/Rate.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'TimePicker 时间选择器',
@@ -268,7 +268,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/form/TimePicker.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'DateTimePicker 日期时间选择器',
@@ -278,7 +278,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/form/DateTimePicker.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'DatePicker 日期选择器',
@@ -288,7 +288,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/form/DatePicker.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Cascader 级联选择器',
@@ -298,7 +298,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/form/Cascader.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Slider 滑块',
@@ -308,7 +308,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/form/Slider.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
       ],
     },
@@ -320,7 +320,7 @@ const LinCmsUiRouter = {
       filePath: 'plugins/LinCmsUi/views/notice/',
       inNav: true,
       icon: 'iconfont icon-jiemiansheji',
-      right: null,
+      permission: null,
       children: [
         {
           title: 'Alert 警告',
@@ -368,7 +368,7 @@ const LinCmsUiRouter = {
       filePath: 'plugins/LinCmsUi/views/others/',
       inNav: true,
       icon: 'iconfont icon-jiemiansheji',
-      right: null,
+      permission: null,
       children: [
         {
           title: 'Dialog 对话框',
@@ -378,7 +378,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/other/Dialog.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
         {
           title: 'Timeline 时间线',
@@ -388,7 +388,7 @@ const LinCmsUiRouter = {
           filePath: 'plugins/LinCmsUi/views/other/Timeline.vue',
           inNav: true,
           icon: 'iconfont icon-jiemiansheji',
-          right: null,
+          permission: null,
         },
       ],
     },

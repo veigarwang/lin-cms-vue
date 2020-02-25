@@ -2,7 +2,9 @@
   <div>
     <!-- 列表页面 -->
     <div class="container" v-if="!showEdit">
-      <div class="header"><div class="title">图书列表</div></div>
+      <div class="header">
+        <div class="title">图书列表</div>
+      </div>
       <!-- 表格 -->
       <lin-table
         :tableColumn="tableColumn"
@@ -56,7 +58,7 @@ export default {
         name: '删除',
         func: 'handleDelete',
         type: 'danger',
-        auth: '删除图书',
+        permission: '删除图书',
       },
     ]
     await this.getBooks()
@@ -80,8 +82,7 @@ export default {
         this.tableData = [...res.items]
         this.pagination.pageTotal = res.total
       } catch (error) {
-        this.loading = false
-        if (error.error_code === 10020) {
+        if (error.code === 10020) {
           this.tableData = []
         }
       }
@@ -98,11 +99,11 @@ export default {
         type: 'warning',
       }).then(async () => {
         const res = await book.delectBook(val.row.id)
-        if (res.error_code === 0) {
+        if (res.code < window.SUCCESS_CODE) {
           this.getBooks()
           this.$message({
             type: 'success',
-            message: `${res.msg}`,
+            message: `${res.message}`,
           })
         }
       })

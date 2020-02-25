@@ -10,7 +10,7 @@
             <el-button
               type="primary"
               icon="el-icon-edit"
-              v-auth="'新增设置'"
+              v-permission="'新增设置'"
               @click="()=>{
                 this.showEdit = true;
                 this.id=0;

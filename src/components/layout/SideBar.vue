@@ -287,14 +287,14 @@ export default {
     z-index: 99;
 
     img {
-      width: 110px;
+      width: 120px;
       transition: all 0.3s linear;
     }
   }
 
   .mobile-logo {
     width: 64px;
-    height: 72px;
+    height: 86px;
     display: flex;
     justify-content: center;
     align-items: center;

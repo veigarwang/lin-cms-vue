@@ -40,12 +40,12 @@ function IterationDelateMenuChildren(arr) {
   return arr
 }
 
-function permissionShaking(stageConfig, auths, currentUser) {
+function permissionShaking(stageConfig, permissions, currentUser) {
   // eslint-disable-line
   const shookConfig = stageConfig.filter(route => {
-    if (Util.hasPermission(auths, route, currentUser)) {
+    if (Util.hasPermission(permissions, route, currentUser)) {
       if (route.children && route.children.length) {
-        route.children = permissionShaking(route.children, auths, currentUser) // eslint-disable-line
+        route.children = permissionShaking(route.children, permissions, currentUser) // eslint-disable-line
       }
       return true
     }
@@ -55,10 +55,10 @@ function permissionShaking(stageConfig, auths, currentUser) {
 }
 
 // 获取有权限的舞台配置
-export const authStageConfig = state => {
-  const { stageConfig, auths, user } = state // eslint-disable-line
+export const permissionStageConfig = state => {
+  const { stageConfig, permissions, user } = state // eslint-disable-line
   const tempStageConfig = Util.deepClone(stageConfig)
-  const shookConfig = permissionShaking(tempStageConfig, auths, user)
+  const shookConfig = permissionShaking(tempStageConfig, permissions, user)
 
   // 设置舞台缓存
   const list = {}
@@ -72,7 +72,7 @@ export const authStageConfig = state => {
 // 获取侧边栏配置
 export const sideBarList = (state, getter) => {
   const { sideBarLevel } = state // eslint-disable-line
-  const { authStageConfig } = getter // eslint-disable-line
+  const { permissionStageConfig } = getter // eslint-disable-line
 
   function deepGetSideBar(target, level = 3) {
     // 集合节点处理
@@ -138,7 +138,7 @@ export const sideBarList = (state, getter) => {
     return null
   }
 
-  const sideBar = deepGetSideBar(authStageConfig, sideBarLevel)
+  const sideBar = deepGetSideBar(permissionStageConfig, sideBarLevel)
   return sideBar
 }
 
@@ -159,7 +159,7 @@ export const getStageByRoute = () => {
 
 export const stageList = () => stageMap
 
-export const auths = state => state.auths
+export const permissions = state => state.permissions
 
 export const getStageInfo = state => {
   const { stageConfig } = state

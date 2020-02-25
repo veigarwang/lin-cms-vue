@@ -1,52 +1,19 @@
-import { post, get, put } from '@/lin/plugins/axios'
+import _axios, { post, get, put } from '@/lin/plugins/axios'
 import { saveTokens } from '../utils/token'
-
-const SUPER_VALUE = 2
-const ACTIVE_VALUE = 1
+import store from '@/store'
 
 export default class User {
-  // 当前用户是否在激活状态
-  isActive = null
-
-  // 邮箱
-  email = null
-
-  // 权限分组id
-  groupId = null
-
-  // 用户名
-  username = null
-
-  // 是否为超级管理员
-  isSuper = null
-
-  // 拥有的权限
-  auths = []
-
-  // 昵称
-  nickname = null
-
-  // 分组名称
-  groupName = null
-
-  constructor(active, email, groupId, username, _super, avatar, auths, nickname, groupName) {
-    this.isActive = active === ACTIVE_VALUE
-    this.email = email
-    this.groupId = groupId
-    this.username = username
-    this.avatar = avatar
-    this.isSuper = _super === SUPER_VALUE
-    this.auths = auths || []
-    this.nickname = nickname
-    this.groupName = groupName
-  }
-
   /**
    * 分配用户
    * @param {object} data 注册信息
    */
   static register(data) {
-    return post('cms/user', data, { handleError: true })
+    return _axios({
+      method: 'post',
+      url: 'cms/user/register',
+      data,
+      handleError: true,
+    })
   }
 
   /**
@@ -68,35 +35,17 @@ export default class User {
    */
   static async getInformation() {
     const info = await get('cms/user/information')
-    return new User(
-      info.active,
-      info.email,
-      info.group_id,
-      info.username,
-      info.admin,
-      info.avatar,
-      info.auths,
-      info.nickname,
-      info.group_name,
-    )
+    const storeUser = store.getters.user === null ? {} : store.getters.user
+    return Object.assign({ ...storeUser }, info)
   }
 
   /**
    * 获取当前用户信息和所拥有的权限
    */
-  static async getAuths() {
-    const info = await get('cms/user/auths')
-    return new User(
-      info.active,
-      info.email,
-      info.group_id,
-      info.username,
-      info.admin,
-      info.avatar,
-      info.auths,
-      info.nickname,
-      info.group_name,
-    )
+  static async getPermissions() {
+    const info = await get('cms/user/permissions')
+    const storeUser = store.getters.user === null ? {} : store.getters.user
+    return Object.assign({ ...storeUser }, info)
   }
 
   /**

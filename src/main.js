@@ -2,10 +2,11 @@ import "@babel/polyfill";
 import Vue from "vue";
 import ElementUI from "element-ui";
 
-import "@/lin/mixin";
-import "@/lin/filter";
-import "@/lin/plugins";
-import "@/lin/directives";
+import '@/config/global'
+import '@/lin/mixin'
+import '@/lin/filter'
+import '@/lin/plugins'
+import '@/lin/directives'
 
 import CollapseTransition from "element-ui/lib/transitions/collapse-transition";
 import router from "@/router";

@@ -17,7 +17,7 @@
           <el-button
             type="primary"
             icon="el-icon-edit"
-            v-auth="'新增技术频道'"
+            v-permission="'新增技术频道'"
             @click="()=>{
                 showEdit = true;
                 this.id=0;

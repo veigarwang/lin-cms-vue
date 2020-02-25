@@ -1,8 +1,12 @@
 <template>
   <div class="login">
-    <div class="team-name hidden-sm-and-down"><img src="@/assets/img/login/team-name.png" alt="logo" /></div>
+    <div class="team-name hidden-sm-and-down">
+      <img src="@/assets/img/login/team-name.png" alt="logo" />
+    </div>
     <div class="form-box" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0)">
-      <div class="title"><h1 title="Lin">Lin CMS</h1></div>
+      <div class="title">
+        <h1 title="Lin">Lin CMS</h1>
+      </div>
       <form class="login-form" autocomplete="off" @submit.prevent="throttleLogin()">
         <div class="form-item nickname">
           <span class="icon account-icon"></span>
@@ -19,77 +23,59 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
-import User from "@/lin/models/user";
-import Utils from "@/lin/utils/util";
+import { mapActions, mapMutations } from 'vuex'
+import User from '@/lin/models/user'
+import Utils from '@/lin/utils/util'
 
 export default {
-  name: "login",
+  name: 'login',
   data() {
     return {
       loading: false, // 加载动画
       wait: 2000, // 2000ms之内不能重复发起请求
       throttleLogin: null, // 节流登录
       form: {
-        username: "super",
-        password: "123qwe",
-        confirm_password: "123qwe",
-        email: "2285901508@qq.com"
-      }
-    };
+        username: 'root',
+        password: '123456',
+      },
+    }
   },
   methods: {
     async login() {
-      const { username, password } = this.form;
+      const { username, password } = this.form
       try {
-        this.loading = true;
-        await User.getToken(username, password);
-        await this.getInformation();
-        this.loading = false;
-        this.$router.push("/about");
-        this.$message.success("登录成功");
+        this.loading = true
+        await User.getToken(username, password)
+        await this.getInformation()
+        this.loading = false
+        this.$router.push('/about')
+        this.$message.success('登录成功')
       } catch (e) {
-        this.loading = false;
-        console.log(e);
+        this.loading = false
+        console.log(e)
       }
     },
     async getInformation() {
       try {
         // 尝试获取当前用户信息
-        const user = await User.getAuths();
-        this.setUserAndState(user);
-        this.setUserAuths(user.auths);
+        const user = await User.getPermissions()
+        this.setUserAndState(user)
+        this.setUserPermissions(user.permissions)
       } catch (e) {
-        console.log(e);
+        console.log(e)
       }
     },
-    async register() {
-      const obj = {
-        data: {
-          username: this.username,
-          password: this.password,
-          confirm_password: this.confirm_password,
-          email: this.email
-        }
-      };
-      try {
-        await User.register(obj);
-        this.$message.success("注册成功！");
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    ...mapActions(["setUserAndState"]),
+    ...mapActions(['setUserAndState']),
     ...mapMutations({
-      setUserAuths: "SET_USER_AUTHS"
-    })
+      setUserPermissions: 'SET_USER_PERMISSIONS',
+    }),
   },
   created() {
     // 节流登录
-    this.throttleLogin = Utils.throttle(this.login, this.wait);
+    this.throttleLogin = Utils.throttle(this.login, this.wait)
   },
-  components: {}
-};
+  components: {},
+}
 </script>
 
 <style lang="scss">

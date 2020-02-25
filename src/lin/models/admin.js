@@ -30,8 +30,8 @@ export default class Admin {
     }
   }
 
-  static getAllAuths() {
-    return get('cms/admin/authority')
+  static getAllPermissions() {
+    return get('cms/admin/permission')
   }
 
   static async getAdminUsers({ group_id, count = this.uCount, page = this.uPag }) {
@@ -61,7 +61,7 @@ export default class Admin {
     return this.getAdminUsers({})
   }
 
-  async getGroupsWithAuths({ count = this.uCount, page = this.uPag }) {
+  async getGroupsWithPermissions({ count = this.uCount, page = this.uPag }) {
     const res = await get('cms/admin/groups', {
       count,
       page,
@@ -71,12 +71,12 @@ export default class Admin {
 
   async nextGroupsPage() {
     await this.increseGpage()
-    return this.getGroupsWithAuths({})
+    return this.getGroupsWithPermissions({})
   }
 
   async preGroupsPage() {
     await this.decreseGpage()
-    return this.getGroupsWithAuths({})
+    return this.getGroupsWithPermissions({})
   }
 
   static async getAllGroups() {
@@ -89,11 +89,11 @@ export default class Admin {
     return group
   }
 
-  static async createOneGroup(name, info, auths) {
+  static async createOneGroup(name, info, permission_ids) {
     const res = await post('cms/admin/group', {
       name,
       info,
-      auths,
+      permission_ids,
     })
     return res
   }
@@ -117,7 +117,7 @@ export default class Admin {
   }
 
   static async updateOneUser(email, group_id, nickname, id) {
-    const res = await put(`cms/admin/${id}`, {
+    const res = await put(`cms/admin/user/${id}`, {
       email,
       group_id,
       nickname
@@ -125,26 +125,26 @@ export default class Admin {
     return res
   }
 
-  static async dispatchAuths(group_id, auths) {
-    const res = await post('cms/admin/dispatch/patch', {
+  static async dispatchPermissions(group_id, permission_ids) {
+    const res = await post('cms/admin/permission/dispatch/batch', {
       group_id,
-      auths,
+      permission_ids,
     })
     return res
   }
 
   static async changePassword(new_password, confirm_password, id) {
-    const res = await put(`cms/admin/password/${id}`, {
+    const res = await put(`cms/admin/user/${id}/password`, {
       new_password,
       confirm_password,
     })
     return res
   }
 
-  static async removeAuths(group_id, auths) {
-    const res = await post('cms/admin/remove', {
+  static async removePermissions(group_id, permission_ids) {
+    const res = await post('cms/admin/permission/remove', {
       group_id,
-      auths,
+      permission_ids,
     })
     return res
   }

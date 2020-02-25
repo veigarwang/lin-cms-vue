@@ -9,6 +9,9 @@
             <div class="link">
               <a href="http://www.7yue.pro" target="_blank">http://www.7yue.pro</a>
             </div>
+            <div class="link">
+              <a href="https://www.talelin.com" target="_blank">https://talelin.com</a>
+            </div>
           </div>
         </div>
         <img class="welcome-bg" src="../../assets/img/about/header-bg.png" alt />

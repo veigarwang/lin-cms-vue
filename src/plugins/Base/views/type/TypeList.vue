@@ -10,7 +10,7 @@
             <el-button
               type="primary"
               icon="el-icon-edit"
-              v-auth="'新增字典类别'"
+              v-permission="'新增字典类别'"
               @click="()=>{
              this.$refs['dialogForm'].show();
             }"

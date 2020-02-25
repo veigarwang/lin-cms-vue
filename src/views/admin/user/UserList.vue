@@ -118,7 +118,7 @@ export default {
         password: '',
         confirm_password: '',
         email: '',
-        group_id: '',
+        group_ids: [],
       },
       loading: false,
     }
@@ -136,7 +136,7 @@ export default {
           page: currentPage,
         })
         this.loading = false
-        this.tableData = [...res.items]
+        this.tableData = this.shuffleList(res.items)
         this.total = res.total
       } catch (e) {
         this.loading = false
@@ -169,7 +169,7 @@ export default {
       this.form.username = selectedData.username
       this.form.nickname = selectedData.nickname
       this.form.email = selectedData.email
-      this.form.group_id = selectedData.group_id
+      this.form.group_ids = selectedData.groups
       this.dialogFormVisible = true
     },
     // 下拉框选择分组
@@ -200,7 +200,7 @@ export default {
           this.loading = false
           console.log(e)
         }
-        if (res.error_code === 0) {
+        if (res.code < window.SUCCESS_CODE) {
           this.loading = false
           if (this.total % this.pageCount === 1 && this.currentPage !== 1) {
             // 判断删除的是不是每一页的最后一条数据
@@ -209,11 +209,11 @@ export default {
           await this.getAdminUsers()
           this.$message({
             type: 'success',
-            message: `${res.msg}`,
+            message: `${res.message}`,
           })
         } else {
           this.loading = false
-          this.$message.error(`${res.msg}`)
+          this.$message.error(`${res.message}`)
         }
       })
     },
@@ -274,6 +274,18 @@ export default {
         })
       }
     },
+    shuffleList(users) {
+      const list = []
+      users.forEach(element => {
+        const groups = []
+        element.groups.forEach(item => {
+          groups.push(item.name)
+        })
+        element.groupNames = groups.join(',')
+        list.push(element)
+      })
+      return list
+    },
   },
   async created() {
     await this.getAdminUsers()
@@ -282,7 +294,7 @@ export default {
       { prop: 'username', label: '用户名' },
       { prop: 'nickname', label: '昵称' },
       { prop: 'email', label: '邮箱' },
-      { prop: 'group_name', label: '所属分组' },
+      { prop: 'groupNames', label: '所属分组' },
       {
         prop: 'create_time',
         label: '创建时间',

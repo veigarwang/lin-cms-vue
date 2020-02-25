@@ -54,12 +54,12 @@ export default {
     async submitForm(formName) {
       try {
         const res = await book.addBook(this.form)
-        if (res.error_code === 0) {
-          this.$message.success(`${res.msg}`)
+        if (res.code < window.SUCCESS_CODE) {
+          this.$message.success(`${res.message}`)
           this.resetForm(formName)
         }
       } catch (error) {
-        this.$message.error(error.data.msg)
+        this.$message.error('图书添加失败，请检测填写信息')
         console.log(error)
       }
     },

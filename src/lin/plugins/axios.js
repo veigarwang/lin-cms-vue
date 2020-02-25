@@ -82,7 +82,7 @@ _axios.interceptors.request.use(
       // TODO: 其他类型请求数据格式处理
       console.warn(`其他请求类型: ${reqConfig.method}, 暂无自动处理`)
     }
-    // step2: auth 处理
+    // step2: permission 处理
     if (reqConfig.url === 'cms/user/refresh') {
       const refreshToken = getToken('refresh_token')
       if (refreshToken) {
@@ -105,26 +105,25 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   async res => {
-    let { error_code, msg } = res.data
-    let message = '' // 错误提示
+    console.log('res--------', res)
+    let { code, msg } = res.data // eslint-disable-line
     if (res.status.toString().charAt(0) === '2') {
       return res.data
     }
     return new Promise(async (resolve, reject) => {
-      const { params, url } = res.config
+      const { url } = res.config
 
       // refresh_token 异常，直接登出
-      if (error_code === 10000 || error_code === 10100) {
+      if (code === 10000 || code === 10100) {
         setTimeout(() => {
           store.dispatch('loginOut')
           const { origin } = window.location
           window.location.href = origin
         }, 1500)
-        resolve(null)
-        return
+        return resolve(null)
       }
       // 令牌相关，刷新令牌
-      if (error_code === 10040 || error_code === 10050) {
+      if (code === 10040 || code === 10041 || code === 10050 || code === 10051) {
         const cache = {}
         if (cache.url !== url) {
           cache.url = url
@@ -132,43 +131,28 @@ _axios.interceptors.response.use(
           saveAccessToken(refreshResult.access_token)
           // 将上次失败请求重发
           const result = await _axios(res.config)
-          resolve(result)
-          return
+          return resolve(result)
         }
       }
-      // 本次请求添加 params 参数：handleError 为 true，用户自己try catch，框架不做处理
-      if (params && params.handleError) {
-        reject(res)
-        return
+      // 如果本次请求添加了 handleError: true，用户自己try catch，框架不做处理
+      if (res.config.handleError) {
+        return reject(res)
       }
-      console.log('msg', msg)
-      // 本次请求添加 params 参数：showBackend 为 true, 弹出后端返回错误信息
-      //  && params.showBackend 这个好像也更奇怪
-      if (params && msg) {
-        if (typeof msg == "string") {
-          message = msg;
-        } else {
-          Object.keys(msg).forEach(function (key) {
-            msg[key].forEach(m => {
-              message += m + ";"
-            })
-          });
-        }
-      } else {
+      console.log('message', msg)
+      // 如果本次请求添加了 showBackend: true, 弹出后端返回错误信息
+      if (Config.useFrontEndErrorMsg && !res.config.showBackend) {
         // 弹出前端自定义错误信息
-        const errorArr = Object.entries(ErrorCode).filter(v => v[0] === error_code.toString())
+        const errorArr = Object.entries(ErrorCode).filter(v => v[0] === code.toString())
         // 匹配到前端自定义的错误码
-        if (errorArr.length > 0) {
-          if (errorArr[0][1] !== '') {
-            message = errorArr[0][1]
-          } else {
-            message = ErrorCode['777']
-          }
+        if (errorArr.length > 0 && errorArr[0][1] !== '') {
+          msg = errorArr[0][1]
+        } else {
+          msg = ErrorCode['777']
         }
       }
 
       Vue.prototype.$message({
-        message,
+        message: msg,
         type: 'error',
       })
       reject()
