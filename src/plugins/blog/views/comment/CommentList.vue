@@ -127,7 +127,7 @@ export default {
           this.loading = false
           console.log(e)
         }
-        if (res.error_code === 0) {
+        if (res.code === 0) {
           this.loading = false
           if (
             this.pagination.pageTotal % this.pagination.pageSize === 1 &&
@@ -139,11 +139,11 @@ export default {
           await this.getComments()
           this.$message({
             type: 'success',
-            message: `${res.msg}`,
+            message: `${res.message}`,
           })
         } else {
           this.loading = false
-          this.$message.error(`${res.msg}`)
+          this.$message.error(`${res.message}`)
         }
       })
     },

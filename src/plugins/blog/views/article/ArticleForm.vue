@@ -218,8 +218,8 @@ export default {
     },
     async confirmEdit(formName) {
       const res = await articleApi.auditArticle(this.id, this.form.is_audit)
-      if (res.error_code === 0) {
-        this.$message.success(`${res.msg}`)
+      if (res.code === 0) {
+        this.$message.success(`${res.message}`)
         this.$emit('editClose')
       }
     },

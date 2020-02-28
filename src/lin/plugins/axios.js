@@ -106,7 +106,7 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
   async res => {
     console.log('res--------', res)
-    let { code, msg } = res.data // eslint-disable-line
+    let { code, message } = res.data // eslint-disable-line
     if (res.status.toString().charAt(0) === '2') {
       return res.data
     }
@@ -138,21 +138,21 @@ _axios.interceptors.response.use(
       if (res.config.handleError) {
         return reject(res)
       }
-      console.log('message', msg)
+      console.log('message', message)
       // 如果本次请求添加了 showBackend: true, 弹出后端返回错误信息
       if (Config.useFrontEndErrorMsg && !res.config.showBackend) {
         // 弹出前端自定义错误信息
         const errorArr = Object.entries(ErrorCode).filter(v => v[0] === code.toString())
         // 匹配到前端自定义的错误码
         if (errorArr.length > 0 && errorArr[0][1] !== '') {
-          msg = errorArr[0][1]
+          message = errorArr[0][1]
         } else {
-          msg = ErrorCode['777']
+          message = ErrorCode['777']
         }
       }
 
       Vue.prototype.$message({
-        message: msg,
+        message: message,
         type: 'error',
       })
       reject()

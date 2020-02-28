@@ -109,7 +109,7 @@ export default {
             this.loading = false
           })
 
-          this.$message.success(`${res.msg}`)
+          this.$message.success(`${res.message}`)
           this.dialogFormVisible = false
           this.$emit('ok')
         } else {

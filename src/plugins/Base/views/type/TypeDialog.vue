@@ -89,7 +89,7 @@ export default {
             this.loading = false
           })
           this.dialogFormVisible = false
-          this.$message.success(`${res.msg}`)
+          this.$message.success(`${res.message}`)
           this.resetForm(formName)
           this.$emit('ok')
         } else {

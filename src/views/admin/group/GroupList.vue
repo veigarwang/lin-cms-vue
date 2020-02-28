@@ -194,13 +194,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await Admin.deleteOneGroup(val.row.id)
-        } catch (e) {
+        this.loading = true
+        res = await Admin.deleteOneGroup(val.row.id).finally(r => {
           this.loading = false
-          console.log(e)
-        }
+        })
+        console.log(res)
         if (res.code < window.SUCCESS_CODE) {
           await this.getAllGroups()
           this.$message({

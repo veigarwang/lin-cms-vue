@@ -224,7 +224,7 @@ export default {
             }
             try {
               this.loading = true
-              res = await Admin.updateOneUser(this.form.email, this.form.group_id, this.form.nickname, this.id)
+              res = await Admin.updateOneUser(this.form.email, this.form.group_ids, this.form.nickname, this.id)
             } catch (e) {
               this.loading = false
               console.log(e)
@@ -255,6 +255,7 @@ export default {
     },
     setInfo() {
       this.form.username = this.info.username
+      this.form.nickname = this.info.nickname
       this.form.email = this.info.email
       const temp = []
       this.info.group_ids.forEach(item => {

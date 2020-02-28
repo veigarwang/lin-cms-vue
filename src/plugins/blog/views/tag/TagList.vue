@@ -110,17 +110,17 @@ export default {
         } catch (e) {
           this.loading = false
         }
-        if (res.error_code === 0) {
+        if (res.code === 0) {
           this.loading = false
           await this.getTags()
 
           this.$message({
             type: 'success',
-            message: `${res.msg}`,
+            message: `${res.message}`,
           })
         } else {
           this.loading = false
-          this.$message.error(`${res.msg}`)
+          this.$message.error(`${res.message}`)
         }
       })
     },

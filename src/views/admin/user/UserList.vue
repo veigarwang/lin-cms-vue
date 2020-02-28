@@ -200,6 +200,7 @@ export default {
           this.loading = false
           console.log(e)
         }
+        debugger
         if (res.code < window.SUCCESS_CODE) {
           this.loading = false
           if (this.total % this.pageCount === 1 && this.currentPage !== 1) {
