@@ -21,7 +21,7 @@
               <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
               <el-dropdown-item
                 icon="el-icon-user-solid"
-                v-for="(user, index) in users.items"
+                v-for="(user, index) in users"
                 :key="index"
                 :command="[user]"
               >{{ user }}</el-dropdown-item>
@@ -173,7 +173,7 @@ export default {
   methods: {
     // 下拉框
     handleCommand(user) {
-      this.searchUser = user[0] // eslint-disable-line
+      this.searchUser = user[0]
     },
     // 页面初始化
     async initPage() {

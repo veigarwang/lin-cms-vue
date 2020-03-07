@@ -12,8 +12,8 @@ let homeRouter = [
     route: "/about",
     filePath: "views/about/About.vue",
     inNav: true,
-    icon: "iconfont icon-iconset0103",
-    order: 0
+    icon: 'iconfont icon-iconset0103',
+    order: 1,
   },
   {
     title: "日志管理",
@@ -22,8 +22,8 @@ let homeRouter = [
     route: "/log",
     filePath: "views/log/Log.vue",
     inNav: true,
-    icon: "iconfont icon-rizhiguanli",
-    order: 1,
+    icon: 'iconfont icon-rizhiguanli',
+    order: 2,
     permission: ['查询所有日志'],
   },
   {
