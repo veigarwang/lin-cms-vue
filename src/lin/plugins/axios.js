@@ -155,7 +155,7 @@ _axios.interceptors.response.use(
         message: message,
         type: 'error',
       })
-      reject()
+      reject(null)
     })
   },
   error => {

@@ -130,6 +130,11 @@ export default {
     async show() {
       if (this.id != 0) {
         var res = await channelApi.getChannel(this.id)
+        var tag_ids = []
+        res.tags.forEach(item => {
+          tag_ids.push(item.id)
+        })
+        res.tag_ids = tag_ids
         this.form = res
         this.thumbnailPreview.length = 0
         if (res.thumbnail) {
