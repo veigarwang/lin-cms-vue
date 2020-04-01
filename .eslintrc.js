@@ -35,6 +35,7 @@ module.exports = {
     ],
     'comma-dangle': ['error', 'only-multiline'],
     'no-param-reassign': ['error', { props: false }],
+    'max-len': 0,
   },
   parserOptions: {
     parser: "babel-eslint"

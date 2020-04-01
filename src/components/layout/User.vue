@@ -355,8 +355,8 @@ export default {
       done()
     },
     outLogin() {
-      this.loginOut()
       window.location.reload(true)
+      this.loginOut()
     },
     submitForm(formName) {
       if (this.form.old_password === '' && this.form.new_password === '' && this.form.confirm_password === '') {

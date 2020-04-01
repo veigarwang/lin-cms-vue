@@ -8,10 +8,11 @@ import '@/lin/filter'
 import '@/lin/plugins'
 import '@/lin/directives'
 
-import CollapseTransition from "element-ui/lib/transitions/collapse-transition";
-import router from "@/router";
-import store from "@/store";
-import App from "@/App.vue";
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
+import LinNotify from '@/components/notify'
+import router from '@/router'
+import store from '@/store'
+import App from '@/App.vue'
 
 import StickyTop from "@/components/base/sticky-top/sticky-top";
 import LIcon from "@/components/base/icon/lin-icon";
@@ -23,7 +24,12 @@ import "element-ui/lib/theme-chalk/display.css";
 
 Vue.config.productionTip = false;
 
-Vue.use(ElementUI);
+Vue.use(ElementUI)
+Vue.use(LinNotify, {
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 3000,
+})
 
 Vue.component(CollapseTransition.name, CollapseTransition);
 
@@ -32,7 +38,6 @@ Vue.component("sticky-top", StickyTop);
 Vue.component("l-icon", LIcon);
 Vue.component("source-code", SourceCode);
 
-/* eslint no-unused-vars: 0 */
 const AppInstance = new Vue({
   router,
   store,
