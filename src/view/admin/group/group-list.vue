@@ -1,13 +1,7 @@
+  
 <template>
   <div class="container">
-    <div class="header">
-      <div class="header-left">
-        <div class="title">分组列表信息</div>
-      </div>
-      <div class="header-right">
-        <el-button type="default" icon="el-icon-search" @click="getAllGroups">刷新</el-button>
-      </div>
-    </div>
+    <div class="title">分组列表信息</div>
     <lin-table
       :tableColumn="tableColumn"
       :tableData="tableData"
@@ -17,12 +11,7 @@
       @handleDelete="handleDelete"
       @row-click="rowClick"
       v-loading="loading"
-    >
-      <template v-slot:is_static="scope">
-        <el-tag size="medium" v-if="scope.row.is_static==true" type="success">是</el-tag>
-        <el-tag size="medium" v-else type="danger">否</el-tag>
-      </template>
-    </lin-table>
+    ></lin-table>
     <el-dialog
       title="分组信息"
       :append-to-body="true"
@@ -31,38 +20,6 @@
       class="groupListInfoDialog"
     >
       <div style="margin-top:-25px;">
-        <el-tabs v-model="activeTab" @tab-click="handleClick">
-          <el-tab-pane label="修改信息" name="修改信息" style="margin-top:10px;">
-            <el-form
-              status-icon
-              v-if="dialogFormVisible"
-              ref="form"
-              label-width="120px"
-              :model="form"
-              label-position="labelPosition"
-              :rules="rules"
-              style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
-            >
-              <el-form-item label="分组名称" prop="name">
-                <el-input size="medium" clearable v-model="form.name"></el-input>
-              </el-form-item>
-              <el-form-item label="分组描述" prop="info">
-                <el-input size="medium" clearable v-model="form.info"></el-input>
-              </el-form-item>
-            </el-form>
-          </el-tab-pane>
-          <el-tab-pane label="配置权限" name="配置权限" style="margin-top:10px;">
-            <group-permissions
-              v-if="dialogFormVisible"
-              :id="id"
-              ref="groupPermissions"
-              @updatePermissions="updatePermissions"
-              @getCacheAuthIds="getCacheAuthIds"
-              @updateAllPermissions="updateAllPermissions"
-              style="margin-right:-30px;margin-left:-25px;margin-bottom:-10px;"
-            ></group-permissions>
-          </el-tab-pane>
-        </el-tabs>
         <el-form
           status-icon
           v-if="dialogFormVisible"
@@ -92,7 +49,6 @@
 <script>
 import Admin from '@/lin/model/admin'
 import LinTable from '@/component/base/table/lin-table'
-
 export default {
   components: {
     LinTable,
@@ -191,11 +147,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        this.loading = true
-        res = await Admin.deleteOneGroup(val.row.id).finally(r => {
+        try {
+          this.loading = true
+          res = await Admin.deleteOneGroup(val.row.id)
+        } catch (e) {
           this.loading = false
           console.log(e)
-        })
+        }
         if (res.code < window.MAX_SUCCESS_CODE) {
           await this.getAllGroups()
           this.$message({
@@ -235,11 +193,6 @@ export default {
     this.tableColumn = [
       { prop: 'name', label: '名称' },
       { prop: 'info', label: '信息' },
-      {
-        prop: 'is_static',
-        label: '静态权限组',
-        scopedSlots: { customRender: 'is_static' },
-      },
     ] // 设置表头信息
     this.operate = [
       { name: '信息', func: 'handleEdit', type: 'primary' },
@@ -256,8 +209,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/list.scss';
-
+.container {
+  padding: 0 30px;
+  .title {
+    height: 59px;
+    line-height: 59px;
+    color: $parent-title-color;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
 .groupListInfoDialog /deep/ .el-dialog__footer {
   text-align: left;
   padding-left: 30px;
@@ -265,7 +226,6 @@ export default {
 .groupListInfoDialog /deep/ .el-dialog__header {
   padding-left: 30px;
 }
-
 .groupListInfoDialog /deep/ .el-dialog__body {
   padding: 30px;
 }

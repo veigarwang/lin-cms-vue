@@ -1,5 +1,10 @@
 <template>
-  <el-dialog :append-to-body="true" :before-close="handleClose" :visible.sync="dialogFormVisible">
+  <el-dialog
+    title="字典信息"
+    :append-to-body="true"
+    :before-close="handleClose"
+    :visible.sync="dialogFormVisible"
+  >
     <div style="margin-top:-25px;">
       <el-form
         status-icon

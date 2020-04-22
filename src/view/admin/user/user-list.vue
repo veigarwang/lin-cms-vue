@@ -96,7 +96,7 @@ import Admin from '@/lin/model/admin'
 import LinTable from '@/component/base/table/lin-table'
 import UserInfo from './user-info'
 import UserPassword from './user-password'
-
+import Vue from "vue";
 export default {
   components: { LinTable, UserInfo, UserPassword },
   inject: ['eventBus'],

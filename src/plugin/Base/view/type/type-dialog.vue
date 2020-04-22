@@ -1,5 +1,10 @@
 <template>
-  <el-dialog :append-to-body="true" :before-close="handleClose" :visible.sync="dialogFormVisible">
+  <el-dialog
+    title="字典分类信息"
+    :append-to-body="true"
+    :before-close="handleClose"
+    :visible.sync="dialogFormVisible"
+  >
     <div style="margin-top:-25px;">
       <el-form
         status-icon
@@ -45,12 +50,8 @@ export default {
       },
       rules: {
         // 表单验证规则
-        type_code: [
-          { required: true, message: '请输入类别编码', trigger: 'blur' },
-        ],
-        full_name: [
-          { required: true, message: '请输入类别名称', trigger: 'blur' },
-        ],
+        type_code: [{ required: true, message: '请输入类别编码', trigger: 'blur' }],
+        full_name: [{ required: true, message: '请输入类别名称', trigger: 'blur' }],
       },
     }
   },
@@ -81,7 +82,7 @@ export default {
       }
     },
     async confirmEdit(formName) {
-      this.$refs[formName].validate(async (valid) => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
           this.loading = true
 
