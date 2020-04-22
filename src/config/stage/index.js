@@ -1,26 +1,25 @@
-import adminConfig from "./admin";
-import bookConfig from "./book"; // 引入图书管理路由文件
-import pluginsConfig from "./plugins";
-import Utils from "@/lin/utils/util";
+import adminConfig from './admin'
+import bookConfig from './book' // 引入图书管理路由文件
+import pluginsConfig from './plugin'
+import Utils from '@/lin/util/util'
 
-// eslint-disable-next-line import/no-mutable-exports
 let homeRouter = [
   {
-    title: "林间有风",
-    type: "view",
-    name: Symbol("about"),
-    route: "/about",
-    filePath: "views/about/About.vue",
+    title: '林间有风',
+    type: 'view',
+    name: Symbol('about'),
+    route: '/about',
+    filePath: 'view/about/about.vue',
     inNav: true,
     icon: 'iconfont icon-iconset0103',
     order: 1,
   },
   {
-    title: "日志管理",
-    type: "view",
-    name: Symbol("log"),
-    route: "/log",
-    filePath: "views/log/Log.vue",
+    title: '日志管理',
+    type: 'view',
+    name: Symbol('log'),
+    route: '/log',
+    filePath: 'view/log/log.vue',
     inNav: true,
     icon: 'iconfont icon-rizhiguanli',
     order: 2,
@@ -31,7 +30,7 @@ let homeRouter = [
     type: 'view',
     name: Symbol('center'),
     route: '/center',
-    filePath: 'views/center/Center.vue',
+    filePath: 'view/center/center.vue',
     inNav: false,
     icon: 'iconfont icon-rizhiguanli',
   },
@@ -40,7 +39,7 @@ let homeRouter = [
     type: 'view',
     name: Symbol('404'),
     route: '/404',
-    filePath: 'views/error-page/404.vue',
+    filePath: 'view/error-page/404.vue',
     inNav: false,
     icon: "iconfont icon-rizhiguanli"
   },
