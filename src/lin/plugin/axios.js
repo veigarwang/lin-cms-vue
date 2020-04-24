@@ -105,13 +105,13 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   async res => {
-    let { code, message } = res.data // eslint-disable-line
+    let { code, message } = res.data 
     if (res.status.toString().charAt(0) === '2') {
       return res.data
     }
     return new Promise(async (resolve, reject) => {
       const { url } = res.config
-
+      
       // refresh_token 异常，直接登出
       if (code === 10000 || code === 10100) {
         setTimeout(() => {
