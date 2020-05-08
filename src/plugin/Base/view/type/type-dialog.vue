@@ -61,6 +61,7 @@ export default {
         Object.assign(this.form, record)
         this.id = record.id
       } else {
+        this.id = 0
         Object.assign(this.form, {
           type_code: '',
           full_name: '',

@@ -12,7 +12,7 @@
               icon="el-icon-edit"
               v-permission="'新增字典类别'"
               @click="()=>{
-             this.$refs['dialogForm'].show();
+                 this.$refs['dialogForm'].show(0);
             }"
             >新增类别</el-button>
             <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
@@ -31,7 +31,7 @@
     </div>
     <!--表格结束-->
 
-    <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
+    <type-dialog  ref="dialogForm" @ok="refresh"></type-dialog>
   </div>
 </template>
 
