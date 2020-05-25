@@ -1,0 +1,10 @@
+{
+  "name": "lc-plugin-base",
+  "title": "字典管理",
+  "version": "1.0.0",
+  "_linVersion": "0.0.1-alpha.3",
+  "description": "实现字典管理-字典类别管理",
+  "author": "IGeekFan",
+  "dependencies": {},
+  "devDependencies": {}
+}
