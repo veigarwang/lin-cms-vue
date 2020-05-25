@@ -30,7 +30,7 @@
                   <el-form-item label prop="title">
                     <el-link
                       type="primary"
-                      :href="`${USER_URL}post/${form.id}`"
+                      :href="`${USER_URL}#post/${form.id}`"
                       v-if="form.id!=null"
                       target="_blank"
                     >查看随笔</el-link>
