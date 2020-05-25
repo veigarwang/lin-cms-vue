@@ -2,7 +2,9 @@
   <!-- 列表页面 -->
   <div class="tableSample">
     <div class="header">
-      <div class="header-left"><p class="title">豆瓣电影TOP250</p></div>
+      <div class="header-left">
+        <p class="title">豆瓣电影TOP250</p>
+      </div>
       <div class="header-right">
         <lin-search @query="onQueryChange" placeholder="请输入电影名" />
         <div style="margin-left:30px">
@@ -113,13 +115,19 @@
             <template slot-scope="props">
               <div v-if="!props.row.editFlag" class="table-edit">
                 <div @click="handleEdit(props.row)" class="content">{{ props.row.remark }}</div>
-                <div class="cell-icon" @click="handleCellEdit(props.row)"><i class="el-icon-edit"></i></div>
+                <div class="cell-icon" @click="handleCellEdit(props.row)">
+                  <i class="el-icon-edit"></i>
+                </div>
               </div>
               <div v-else class="table-edit">
                 <el-input v-model="props.row.remark" placeholder></el-input>
                 <div class="cell-icon-edit">
-                  <div class="cell-save" @click="handleCellSave(props.row)"><i class="el-icon-check"></i></div>
-                  <div class="cell-cancel" @click="handleCellCancel(props.row)"><i class="el-icon-close"></i></div>
+                  <div class="cell-save" @click="handleCellSave(props.row)">
+                    <i class="el-icon-check"></i>
+                  </div>
+                  <div class="cell-cancel" @click="handleCellCancel(props.row)">
+                    <i class="el-icon-close"></i>
+                  </div>
                 </div>
               </div>
             </template>
@@ -145,8 +153,7 @@
               size="mini"
               :key="index"
               @click.native.prevent.stop="buttonMethods(item.func, scope.$index, scope.row)"
-              >{{ item.name }}</el-button
-            >
+            >{{ item.name }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -165,7 +172,7 @@
       </div>
     </div>
     <source-code
-      link="https://github.com/TaleLin/lin-cms-vue/blob/master/src/plugins/lin-cms-ui/view/table/TableCombo.vue"
+      link="https://github.com/TaleLin/lin-cms-vue/blob/master/src/plugins/lin-cms-ui/views/table/TableCombo.vue"
     ></source-code>
   </div>
 </template>

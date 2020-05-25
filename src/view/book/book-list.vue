@@ -4,12 +4,12 @@
     <div class="container" v-if="!showEdit">
       <div class="header">
         <div class="title">图书列表</div>
-            <!-- 分组选择下拉框 -->
-      <div class="header-right">
-        <div style="margin-left:30px">
-          <el-button type="default" icon="el-icon-search" @click="getTest">刷新Test</el-button>
+        <!-- 分组选择下拉框 -->
+        <div class="header-right">
+          <div style="margin-left:30px">
+            <el-button type="default" icon="el-icon-search" @click="getTest">刷新Test</el-button>
+          </div>
         </div>
-      </div>
       </div>
       <!-- 表格 -->
       <lin-table
@@ -32,7 +32,6 @@
 
 <script>
 import book from '@/model/book'
-import test from '@/model/test'
 import LinTable from '@/component/base/table/lin-table'
 import BookModify from './book-modify'
 
@@ -120,11 +119,11 @@ export default {
       this.showEdit = false
       this.getBooks()
     },
-   async getTest(){
-      let res= await test.getTest();
+    async getTest() {
+      let res = await test.getTest()
       // console.log(res)
       // this.$message(res);
-    }
+    },
   },
 }
 </script>

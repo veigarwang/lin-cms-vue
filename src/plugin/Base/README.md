@@ -15,18 +15,18 @@
 
 属性:
 
-| Require | Name |  Type  | Default | Desc |
-|:-------:|:----:|:------:|:-------:|:----:|
-|  true   | name | String |   val   | 描述 |
+| Require | Name  |  Type  | Default | Desc  |
+| :-----: | :---: | :----: | :-----: | :---: |
+|  true   | name  | String |   val   | 描述  |
   
 事件:
 
-| Name |   Argument   | Desc |
-|:----:|:------------:|:----:|
-| name | 事件参数描述 | 描述 |
+| Name  |   Argument   | Desc  |
+| :---: | :----------: | :---: |
+| name  | 事件参数描述 | 描述  |
 
 方法:
 
-| Name |   Argument   |   Result   | Desc |
-|:----:|:------------:|:----------:|:----:|
-| name | 方法参数描述 | 返回值描述 | 描述 |
+| Name  |   Argument   |   Result   | Desc  |
+| :---: | :----------: | :--------: | :---: |
+| name  | 方法参数描述 | 返回值描述 | 描述  |

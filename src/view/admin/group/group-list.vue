@@ -1,4 +1,3 @@
-  
 <template>
   <div class="container">
     <div class="title">分组列表信息</div>
@@ -11,7 +10,8 @@
       @handleDelete="handleDelete"
       @row-click="rowClick"
       v-loading="loading"
-    ></lin-table>
+    >
+    </lin-table>
     <el-dialog
       title="分组信息"
       :append-to-body="true"
@@ -49,6 +49,7 @@
 <script>
 import Admin from '@/lin/model/admin'
 import LinTable from '@/component/base/table/lin-table'
+
 export default {
   components: {
     LinTable,
@@ -190,10 +191,7 @@ export default {
   },
   async created() {
     await this.getAllGroups()
-    this.tableColumn = [
-      { prop: 'name', label: '名称' },
-      { prop: 'info', label: '信息' },
-    ] // 设置表头信息
+    this.tableColumn = [{ prop: 'name', label: '名称' }, { prop: 'info', label: '信息' }] // 设置表头信息
     this.operate = [
       { name: '信息', func: 'handleEdit', type: 'primary' },
       { name: '权限', func: 'goToGroupEditPage', type: 'info' },
@@ -211,6 +209,7 @@ export default {
 <style lang="scss" scoped>
 .container {
   padding: 0 30px;
+
   .title {
     height: 59px;
     line-height: 59px;
@@ -226,6 +225,7 @@ export default {
 .groupListInfoDialog /deep/ .el-dialog__header {
   padding-left: 30px;
 }
+
 .groupListInfoDialog /deep/ .el-dialog__body {
   padding: 30px;
 }

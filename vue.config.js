@@ -10,9 +10,9 @@ module.exports = {
   // assetsDir: 'static',
   chainWebpack: config => {
     config.resolve.alias
-      .set("@", resolve("src"))
-      .set("lin", resolve("src/lin"))
-      .set("assets", resolve("src/assets"));
+      .set('@', resolve('src'))
+      .set('lin', resolve('src/lin'))
+      .set('assets', resolve('src/asset'))
     config.module
       .rule("md")
       .test(/\.md$/)

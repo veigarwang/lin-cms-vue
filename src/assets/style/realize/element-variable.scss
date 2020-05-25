@@ -342,6 +342,11 @@ thead tr {
   font-weight: 500;
 }
 
+.el-dialog__headerbtn {
+  font-size: 20px;
+  top: 16px;
+}
+
 // tab
 .el-tabs__item.is-active {
   color: $theme;
@@ -920,13 +925,15 @@ $typeMap: (primary: #3963bc,
 
 /* dialog */
 @include b(dialog) {
-  box-shadow:0px 0px 14px 0px rgba(38,38,38,0.5);
-  border-radius:12px;
+  box-shadow: 0px 0px 14px 0px rgba(38, 38, 38, 0.5);
+  border-radius: 12px;
+
   @include e(header) {
-    border-top-left-radius:12px;
-    border-top-right-radius:12px;
-    background:rgba(206,218,240,1);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    // background:rgba(206,218,240,1);
   }
+
   @include e(title) {
     color: #333333;
   }
