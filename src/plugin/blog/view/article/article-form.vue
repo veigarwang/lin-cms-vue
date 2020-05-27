@@ -153,13 +153,13 @@
 </template>
 
 <script>
-import baseApi from '@/plugin/base/models/base'
+import baseApi from '@/plugin/base/model/base'
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import UploadImgs from '@/component/base/upload-image'
-import articleApi from '../../models/article'
-import classifyApi from '../../models/classify'
-import tagApi from '../../models/tag'
+import articleApi from '../../model/article'
+import classifyApi from '../../model/classify'
+import tagApi from '../../model/tag'
 
 export default {
   name: 'ArticleForm',

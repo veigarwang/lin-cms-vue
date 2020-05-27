@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import baseApi from '../../models/base'
+import baseApi from '../../model/base'
 import LinTable from '@/component/base/table/lin-table'
 import Vue from 'vue'
 import TypeDialog from './type-dialog'

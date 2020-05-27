@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import tagApi from '../../models/tag'
+import tagApi from '../../model/tag'
 import LinTable from '@/component/base/table/lin-table'
 import TagForm from './tag-form'
 import Vue from 'vue'

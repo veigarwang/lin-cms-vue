@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import tagApi from '../../models/tag'
+import tagApi from '../../model/tag'
 import UploadImgs from '@/component/base/upload-image'
 export default {
   name: 'TagForm',
