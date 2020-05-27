@@ -111,7 +111,7 @@ export default {
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
-      await this.getTags()
+      await this.getChannels()
       this.loading = false
     },
     handleDelete(val) {

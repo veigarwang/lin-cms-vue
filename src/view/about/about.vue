@@ -10,15 +10,12 @@
               <a href="https://www.talelin.com" target="_blank">https://talelin.com</a>
             </div>
           </div>
-        </div><<<<<<< HEAD:src/view/about/about.vue
+        </div>
         <img
           class="welcome-bg"
           src="../../assets/image/about/header-bg.png"
           alt
         />
-        =======
-        <img class="welcome-bg" src="../../assets/image/about/header-bg.png" alt />
-        >>>>>>> 142f5e54b2f215ab50de62c05c36e8f9f3601162:src/views/about/About.vue
       </div>
       <div class="lin-info-right">
         <div class="team-detail">

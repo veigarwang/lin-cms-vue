@@ -5,7 +5,6 @@
         <div class="header-left">
           <div class="title">标签管理</div>
         </div>
-
         <div class="header-right">
           <el-input
             size="medium"
