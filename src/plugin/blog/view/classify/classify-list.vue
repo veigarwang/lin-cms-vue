@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import classifyApi from '../../models/classify'
+import classifyApi from '../../model/classify'
 import LinTable from '@/component/base/table/lin-table'
 import ClassifyForm from './classify-form'
 import Vue from 'vue'

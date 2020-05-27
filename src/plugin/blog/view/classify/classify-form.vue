@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import classifyApi from '../../models/classify'
+import classifyApi from '../../model/classify'
 import UploadImgs from '@/component/base/upload-image'
 export default {
   name: 'ClassifyForm',

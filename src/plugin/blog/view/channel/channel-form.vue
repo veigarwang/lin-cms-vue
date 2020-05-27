@@ -82,9 +82,9 @@
 </template>
 
 <script>
-import channelApi from '../../models/channel'
+import channelApi from '../../model/channel'
 import UploadImgs from '@/component/base/upload-image'
-import tagApi from '../../models/tag'
+import tagApi from '../../model/tag'
 
 export default {
   name: 'ChannelForm',

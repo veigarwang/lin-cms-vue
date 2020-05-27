@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import channelApi from '../../models/channel'
+import channelApi from '../../model/channel'
 import LinTable from '@/component/base/table/lin-table'
 import ChannelForm from './channel-form'
 import Vue from 'vue'

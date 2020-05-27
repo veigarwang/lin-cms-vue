@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import commentApi from '../../models/comment'
+import commentApi from '../../model/comment'
 import Utils from '@/lin/util/util'
 export default {
   name: 'CommentDialog',

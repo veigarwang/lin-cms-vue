@@ -34,7 +34,7 @@
   </el-dialog>
 </template>
 <script>
-import baseApi from '../../models/base'
+import baseApi from '../../model/base'
 export default {
   name: 'TypeDialog',
   data() {

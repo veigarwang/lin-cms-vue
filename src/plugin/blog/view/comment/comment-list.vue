@@ -46,7 +46,7 @@
 <script>
 import LinTable from '@/component/base/table/lin-table'
 import CommentDialog from './comment-dialog'
-import commentApi from '../../models/comment'
+import commentApi from '../../model/comment'
 import Vue from 'vue'
 
 export default {

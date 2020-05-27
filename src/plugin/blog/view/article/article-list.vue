@@ -34,7 +34,7 @@
 
 <script>
 import LinTable from '@/component/base/table/lin-table'
-import articleApi from '../../models/article'
+import articleApi from '../../model/article'
 import ArticleForm from './article-form'
 
 function format_str() {

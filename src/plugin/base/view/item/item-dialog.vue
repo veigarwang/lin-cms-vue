@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import baseApi from '../../models/base'
+import baseApi from '../../model/base'
 export default {
   name: 'ItemDialog',
   components: {},
