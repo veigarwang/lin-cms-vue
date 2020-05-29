@@ -38,8 +38,8 @@ import articleApi from '../../model/article'
 import ArticleForm from './article-form'
 
 function format_str() {
-  for (var i = 1; i < arguments.length; i++) {
-    var exp = new RegExp('\\{' + (i - 1) + '\\}', 'gm')
+  for (let i = 1; i < arguments.length; i++) {
+    let exp = new RegExp('\\{' + (i - 1) + '\\}', 'gm')
     arguments[0] = arguments[0].replace(exp, arguments[i])
   }
   return arguments[0]
@@ -148,19 +148,19 @@ export default {
         prop: 'id',
         label: '状态',
         customRender: function(row, column) {
-          var isaudit = format_str(
+          let isaudit = format_str(
             '<i title="{0}" class="el-icon-{1}"></i>',
             row.is_audit ? '已审核' : '拉黑',
             row.is_audit ? 'check' : 'close',
           )
 
-          var isremd = format_str(
+          let isremd = format_str(
             '<i  style="margin-left:10px;" title="{0}" class="el-icon-{1}"></i>',
             row.is_stickie ? '置顶' : '未置顶',
             row.is_stickie ? 'top' : 'bottom',
           )
 
-          var isstickie = format_str(
+          let isstickie = format_str(
             '<i  style="margin-left:10px;" title="{0}" class="el-icon-{1}"></i>',
             row.recommend ? '推荐' : '未推荐',
             row.recommend ? 'thumb' : 'ice-cream-square',
@@ -172,14 +172,14 @@ export default {
         prop: 'is_audit',
         label: '关键字/来源/摘要/缩略图',
         customRender: function(row, column) {
-          var d = format_str(
+          let d = format_str(
             '<i class="el-icon-{0}"></i><i class="el-icon-{1}" style="margin-left:10px;"></i><i class="el-icon-{2}" style="margin-left:10px;"></i>',
             row.keywords ? 'check' : 'close',
             row.source ? 'check' : 'close',
             row.excerpt ? 'check' : 'close',
           )
           if (row.thumbnail) {
-            var thumurl = format_str('<i class="el-icon-picture"  style="margin-left:10px;"></i>', row.thumbnail)
+            let thumurl = format_str('<i class="el-icon-picture"  style="margin-left:10px;"></i>', row.thumbnail)
             d += thumurl
           }
           return d

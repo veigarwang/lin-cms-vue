@@ -81,7 +81,7 @@ export default {
   methods: {
     async show(id) {
       if (id != 0) {
-        var setting = await settingApi.getSetting(id)
+        let setting = await settingApi.getSetting(id)
         this.form = setting
       } else {
         Object.assign(this.form, {

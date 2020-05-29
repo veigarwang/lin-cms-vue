@@ -95,7 +95,7 @@ export default {
   methods: {
     async show() {
       if (this.id != 0) {
-        var tag = await tagApi.getTag(this.id)
+        let tag = await tagApi.getTag(this.id)
         this.form = tag
         this.thumbnailPreview.length = 0
         if (tag.thumbnail) {
@@ -122,7 +122,7 @@ export default {
       }
     },
     async confirmEdit(formName) {
-      var thumbnail = await this.$refs['thumbnail'].getValue()
+      let thumbnail = await this.$refs['thumbnail'].getValue()
       if (thumbnail.length > 0) {
         this.form.thumbnail = thumbnail[0].src
       } else {
