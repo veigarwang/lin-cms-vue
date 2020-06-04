@@ -2,7 +2,6 @@ import * as types from './mutation-type'
 
 export default {
   [types.SET_LOGINED](state) {
-    /* eslint no-param-reassign: 0 */
     state.logined = true
   },
 

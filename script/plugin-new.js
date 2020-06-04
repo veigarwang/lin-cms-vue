@@ -140,7 +140,7 @@ inquirer
           viewConfig.inNav = true
           viewConfig.title = '舞台页'
           viewConfig.type = 'view'
-          viewConfig.auths = {
+          viewConfig.permissions = {
             role: null,
             permission: null,
           }
