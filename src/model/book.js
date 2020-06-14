@@ -32,12 +32,9 @@ class Book {
     return res
   }
 
-  async getBooks() {
-    return _axios({
-      method: 'get',
-      url: 'v1/book',
-      handleError: true,
-    })
+  async getBooks(params) {
+    const res = await get("v1/book", params);
+    return res
   }
 }
 

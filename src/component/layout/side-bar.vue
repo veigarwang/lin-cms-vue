@@ -1,7 +1,11 @@
 <template>
   <div class="app-sidebar">
-    <div class="logo" v-if="!elMenuCollapse"><img src="../../assets/image/logo.png" alt="" /></div>
-    <div class="mobile-logo" v-else><img src="../../assets/image/mobile-logo.png" alt="" /></div>
+    <div class="logo" v-if="!elMenuCollapse">
+      <img src="../../assets/image/logo.png" alt />
+    </div>
+    <div class="mobile-logo" v-else>
+      <img src="../../assets/image/mobile-logo.png" alt />
+    </div>
     <div style="margin-bottom:50px">
       <div v-if="showSidebarSearch" style="margin-top: 15px">
         <div class="search-display" v-if="!showSearchList" @click="toSearch">
@@ -84,17 +88,24 @@
           </el-submenu>
 
           <!-- 一级else -->
-          <el-menu-item
-            class="subMenuContent"
-            :index="idMap[item.name]"
-            @click="goto(item.path)"
-            v-else
-            :key="idMap[item.name]"
-          >
-            <i v-if="!filterIcon(item.icon)" :class="item.icon"></i>
-            <img v-else :src="item.icon" class="imgIcon" />
-            <span slot="title">{{ item.title }}</span>
-          </el-menu-item>
+          <router-link :to="item.path" :key="item.name" class v-else>
+            <el-menu-item class="subMenuContent" :index="idMap[item.name]" :key="idMap[item.name]">
+              <i v-if="!filterIcon(item.icon)" :class="item.icon"></i>
+              <img v-else :src="item.icon" class="imgIcon" />
+              <span slot="title">{{ item.title }}</span>
+            </el-menu-item>
+            <!-- <el-menu-item
+              class="subMenuContent"
+              :index="idMap[item.name]"
+              @click="goto(item.path)"
+              v-else
+              :key="idMap[item.name]"
+            >
+              <i v-if="!filterIcon(item.icon)" :class="item.icon"></i>
+              <img v-else :src="item.icon" class="imgIcon" />
+              <span slot="title">{{ item.title }}</span>
+            </el-menu-item>-->
+          </router-link>
         </template>
       </el-menu>
     </div>

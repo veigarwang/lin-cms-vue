@@ -188,13 +188,17 @@ export default {
     UploadImgs,
   },
   async mounted() {
+    console.log('begin mounted')
     await this.setForm()
+    console.log('end mounted')
   },
   async created() {
+    console.log('begin created')
     this.classifys = await classifyApi.getClassifys()
     this.article_types = await baseApi.getItems({
       typeCode: 'Article.Type',
     })
+    console.log('end created')
   },
   methods: {
     async setForm() {

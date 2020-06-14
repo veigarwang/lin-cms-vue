@@ -7,7 +7,7 @@ let homeRouter = [
   {
     title: '林间有风',
     type: 'view',
-    name: Symbol('about'),
+    name: 'about',
     route: '/about',
     filePath: 'view/about/about.vue',
     inNav: true,

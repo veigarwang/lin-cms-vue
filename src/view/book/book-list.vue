@@ -7,7 +7,7 @@
         <!-- 分组选择下拉框 -->
         <div class="header-right">
           <div style="margin-left:30px">
-            <el-button type="default" icon="el-icon-search" @click="getTest">刷新Test</el-button>
+            <el-button type="default" icon="el-icon-search" @click="getBooks">刷新</el-button>
           </div>
         </div>
       </div>

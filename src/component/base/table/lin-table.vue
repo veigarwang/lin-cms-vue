@@ -67,6 +67,7 @@
       layout="prev, pager, next, jumper"
       :page-size="pagination.pageSize ? pagination.pageSize: 10 "
       :total="pagination.pageTotal ? pagination.pageTotal : null "
+      :current-page="pagination.currentPage ? pagination.currentPage: 1 "
       @current-change="currentChange"
     ></el-pagination>
   </div>
@@ -171,7 +172,12 @@ export default {
       rowClassName: '', // 行样式
     }
   },
-  created() {},
+  created() {
+    console.log('lin-table-created')
+  },
+  activated() {
+    console.log('lin-table-activated')
+  },
   beforeMount() {
     // 先放在session里，因为每次切换页码table都会重新渲染，之前选中都数据就丢失了  sessionstorage在create里面打包会提示undefined
     sessionStorage.setItem('selectedTableData', JSON.stringify([]))
