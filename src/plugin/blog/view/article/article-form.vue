@@ -194,7 +194,7 @@ export default {
   },
   async created() {
     console.log('begin created')
-    this.classifys = await classifyApi.getClassifys()
+    this.classifys = await classifyApi.getClassifies()
     this.article_types = await baseApi.getItems({
       typeCode: 'Article.Type',
     })

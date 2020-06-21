@@ -64,11 +64,11 @@ export default {
     }
   },
   methods: {
-    async getClassifys() {
+    async getClassifies() {
       this.loading = true
       const currentPage = this.pagination.currentPage - 1
       let res = await classifyApi
-        .getClassifys({
+        .getClassifies({
           count: this.pagination.pageSize,
           page: currentPage,
           classify_name: this.pagination.classify_name,
@@ -87,7 +87,7 @@ export default {
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
-      await this.getClassifys()
+      await this.getClassifies()
       this.loading = false
     },
     handleDelete(val) {
@@ -105,7 +105,7 @@ export default {
         }
         if (res.code === 0) {
           this.loading = false
-          await this.getClassifys()
+          await this.getClassifies()
 
           this.$message({
             type: 'success',
@@ -118,19 +118,19 @@ export default {
       })
     },
     async refresh() {
-      await this.getClassifys()
+      await this.getClassifies()
     },
     // 下拉框选择分组
     async handleChange() {
       this.currentPage = 1
       this.loading = true
-      await this.getClassifys()
+      await this.getClassifies()
       this.loading = false
     },
 
     async editClose() {
       this.showEdit = false
-      await this.getClassifys()
+      await this.getClassifies()
     },
   },
   async created() {
@@ -153,7 +153,7 @@ export default {
     ]
     this.operate = [{ name: '删除', func: 'handleDelete', type: 'danger', auth: '删除标签' }]
 
-    await this.getClassifys()
+    await this.getClassifies()
   },
   beforeDestroy() {},
 }

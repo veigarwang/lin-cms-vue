@@ -6,7 +6,7 @@ class Comment {
 
   // 类中的方法可以代表一个用户行为
   async addComment(info) {
-    const res = await post("v1/comment/", info);
+    const res = await post("api/blog/comments/", info);
     return res;
   }
 
@@ -14,22 +14,22 @@ class Comment {
   // 1. await 一定要搭配 async 来使用
   // 2. await 后面跟的是一个 Promise 对象
   async getComment(id) {
-    const res = await get(`v1/comment/${id}`);
+    const res = await get(`api/blog/comments/${id}`);
     return res;
   }
 
   async editComment(id, info) {
-    const res = await put(`v1/comment/${id}?is_audit=${info}`);
+    const res = await put(`api/blog/comments/${id}?is_audit=${info}`);
     return res;
   }
 
   async delectComment(id) {
-    const res = await _delete(`v1/comment/cms/${id}`);
+    const res = await _delete(`api/blog/comments/cms/${id}`);
     return res;
   }
 
   async getComments(pagesParmas) {
-    const res = await get("v1/comment/", pagesParmas);
+    const res = await get("api/blog/comments/", pagesParmas);
     return res;
   }
 }

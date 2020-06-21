@@ -2,33 +2,33 @@ import { post, get, put, _delete } from "@/lin/plugin/axios";
 
 class Tag {
   async addTag(params) {
-    const res = await post("v1/tag", params);
+    const res = await post("api/blog/tags", params);
     return res;
   }
 
   async getTag(id) {
-    const res = await get(`v1/tag/${id}`);
+    const res = await get(`api/blog/tags/${id}`);
     return res;
   }
 
   async editTag(id, data) {
-    const res = await put(`v1/tag/${id}`, data);
+    const res = await put(`api/blog/tags/${id}`, data);
     return res;
   }
 
   async correctTagCount(id) {
-    const res = await put(`v1/tag/correct/${id}`);
+    const res = await put(`api/blog/tags/correct/${id}`);
     return res;
   }
 
 
   async deleteTag(id) {
-    const res = await _delete(`v1/tag/${id}`);
+    const res = await _delete(`api/blog/tags/${id}`);
     return res;
   }
 
   async getTags(params) {
-    const res = await get("v1/tag", params);
+    const res = await get("api/blog/tags", params);
     return res;
   }
 }
