@@ -105,15 +105,15 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   async res => {
-    let { code, message } = res.data 
+    let { code, message } = res.data
     if (res.status.toString().charAt(0) === '2') {
       return res.data
     }
     return new Promise(async (resolve, reject) => {
       const { url } = res.config
-      
-      // refresh_token 异常，直接登出
-      if (code === 10000 || code === 10100) {
+
+      // refreshToken相关，直接登出
+      if (code === 10000 || code === 10042 || code === 10052) {
         setTimeout(() => {
           store.dispatch('loginOut')
           const { origin } = window.location
@@ -121,8 +121,8 @@ _axios.interceptors.response.use(
         }, 1500)
         return resolve(null)
       }
-      // 令牌相关，刷新令牌
-      if (code === 10040 || code === 10041 || code === 10050 || code === 10051) {
+      // assessToken相关，刷新令牌
+      if (code === 10041 || code === 10051) {
         const cache = {}
         if (cache.url !== url) {
           cache.url = url
