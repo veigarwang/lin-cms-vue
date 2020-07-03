@@ -5,7 +5,6 @@
         <div class="header-left">
           <div class="title">分类专栏列表</div>
         </div>
-
         <div class="header-right">
           <el-input
             size="medium"

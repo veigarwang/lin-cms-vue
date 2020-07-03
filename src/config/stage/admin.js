@@ -1,7 +1,7 @@
 const adminRouter = {
   route: null,
   name: null,
-  title: '权限管理',
+  title: '系统管理',
   type: 'folder',
   icon: 'iconfont icon-huiyuanguanli',
   filePath: 'view/admin/',
@@ -89,6 +89,15 @@ const adminRouter = {
       filePath: 'view/admin/setting/setting-list.vue',
       title: '设置管理',
       permission: ['得到所有设置'],
+    },
+    {
+      route: '/admin/log/serilog',
+      type: 'view',
+      name: 'serilog',
+      inNav: true,
+      filePath: 'view/admin/log/serilog.vue',
+      title: 'Serilog日志',
+      permission: ['Serilog日志'],
     },
   ],
 }

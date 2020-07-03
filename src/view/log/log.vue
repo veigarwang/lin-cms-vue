@@ -233,6 +233,9 @@ export default {
         this.logs = this.logs.concat(moreLogs)
 
         this.more = false
+        if (moreLogs.length == 0) {
+          this.finished = true
+        }
       } catch (error) {
         console.log('error', error)
 

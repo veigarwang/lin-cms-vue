@@ -165,6 +165,10 @@ class Log {
   async getUserAndVisits() {
     return await get('cms/log/visitis')
   }
+
+  async getSerilogListAsync(params) {
+    return await get('cms/log/serilog', params)
+  }
 }
 
 export default new Log({})

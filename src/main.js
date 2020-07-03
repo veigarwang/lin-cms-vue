@@ -21,6 +21,7 @@ import SourceCode from '@/component/base/source-code/source-code'
 import '@/assets/style/index.scss' // eslint-disable-line
 import '@/assets/style/realize/element-variable.scss'
 import 'element-ui/lib/theme-chalk/display.css'
+import '@/assets/style/main.scss';
 
 Vue.config.productionTip = false;
 
