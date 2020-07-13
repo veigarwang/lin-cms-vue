@@ -132,8 +132,8 @@ export default {
       { prop: 'provider_key', label: '提供者值' },
     ]
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary', auth: '新增修改设置' },
-      { name: '删除', func: 'handleDelete', type: 'danger', auth: '删除设置' },
+      { name: '编辑', func: 'handleEdit', type: 'primary', permission: '新增修改设置' },
+      { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除设置' },
     ]
 
     await this.getSettings()

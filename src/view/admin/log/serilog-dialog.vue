@@ -33,7 +33,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="参数" prop="properties">
+        <el-form-item label="属性" prop="properties">
           <pre>{{form.properties}}</pre>
         </el-form-item>
         <el-form-item label="异常" prop="exception">
@@ -117,6 +117,7 @@ export default {
   methods: {
     show(record) {
       Object.assign(this.form, record)
+      this.form.properties = JSON.parse(this.form.properties)
       this.dialogFormVisible = true
     },
     handleClose() {
@@ -127,4 +128,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+pre {
+  white-space: pre-wrap; /* css-3 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
 </style>

@@ -31,7 +31,7 @@
     </div>
     <!--表格结束-->
 
-    <type-dialog  ref="dialogForm" @ok="refresh"></type-dialog>
+    <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
   </div>
 </template>
 
@@ -116,13 +116,13 @@ export default {
         name: '编辑',
         func: 'handleEdit',
         type: 'primary',
-        auth: '编辑字典类别',
+        permission: '编辑字典类别',
       },
       {
         name: '删除',
         func: 'handleDelete',
         type: 'danger',
-        auth: '删除字典类别',
+        permission: '删除字典类别',
       },
     ]
     await this.getBaseTypes()

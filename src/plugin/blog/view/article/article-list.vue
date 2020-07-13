@@ -188,8 +188,8 @@ export default {
     ] // 设置表头信息
 
     this.operate = [
-      { name: '审核', func: 'handleEdit', type: 'primary' },
-      { name: '删除', func: 'handleDelete', type: 'danger' },
+      { name: '审核', func: 'handleEdit', type: 'primary',permission:'审核随笔' },
+      { name: '删除', func: 'handleDelete', type: 'danger',permission:'删除随笔'},
     ]
   },
   beforeDestroy() {},

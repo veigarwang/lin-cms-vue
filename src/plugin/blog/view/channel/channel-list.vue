@@ -188,8 +188,8 @@ export default {
       },
     ]
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary', auth: '编辑技术频道' },
-      { name: '删除', func: 'handleDelete', type: 'danger', auth: '删除技术频道' },
+      { name: '编辑', func: 'handleEdit', type: 'primary', permission: '编辑技术频道' },
+      { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除技术频道' },
     ]
 
     await this.getChannels()

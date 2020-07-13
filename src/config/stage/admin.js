@@ -7,7 +7,6 @@ const adminRouter = {
   filePath: 'view/admin/',
   order: null,
   inNav: true,
-  permission: ['超级管理员独有权限'],
   children: [
     {
       route: '/admin/user/list',

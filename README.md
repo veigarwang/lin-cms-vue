@@ -145,7 +145,7 @@ QQ群搜索：Lin CMS 官方交流群 或 814597236
 ### 0.3.0
 
 1. `A` 新增一个用户可以属于多个分组
-2. `F` 权限相关 auth right 统一替换为 permission
+2. `F` 权限相关 permission right 统一替换为 permission
 
 ### 0.2.2
 

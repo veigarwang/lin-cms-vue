@@ -174,8 +174,8 @@ export default {
     ]
 
     this.operate = [
-      { name: '查看', func: 'handleDetail', type: 'primary' },
-      { name: '删除', func: 'handleDelete', type: 'danger', auth: '删除评论' },
+      { name: '审核', func: 'handleDetail', type: 'primary', permission: '审核评论' },
+      { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除评论' },
     ]
   },
   beforeDestroy() {},

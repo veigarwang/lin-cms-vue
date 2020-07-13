@@ -172,9 +172,9 @@ export default {
       },
     ]
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary', auth: '编辑标签' },
-      { name: '删除', func: 'handleDelete', type: 'danger', auth: '删除标签' },
-      { name: '校正数量', func: 'handleCorrect', type: 'default', auth: '校正文章数量' },
+      { name: '编辑', func: 'handleEdit', type: 'primary', permission: '编辑标签' },
+      { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除标签' },
+      { name: '校正数量', func: 'handleCorrect', type: 'default', permission: '校正文章数量' },
     ]
 
     await this.getTags()

@@ -23,7 +23,7 @@
                 clearable
               ></el-input>
             </el-form-item>
-            <el-form-item label="活动区域">
+            <el-form-item label="时间范围">
               <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
             </el-form-item>
             <el-form-item>
@@ -192,7 +192,7 @@ export default {
         scopedSlots: { customRender: 'timestamp' },
       },
     ]
-    this.operate = [{ name: '查看', func: 'handleDetail', type: 'primary', auth: 'Serilog日志' }]
+    this.operate = [{ name: '查看', func: 'handleDetail', type: 'primary', permission: 'Serilog日志' }]
 
     await this.getSerilogs()
   },

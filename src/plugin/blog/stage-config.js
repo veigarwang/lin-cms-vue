@@ -15,7 +15,8 @@ const blogRouter = {
       name: "ClassifyList",
       route: "/cms/classify/list",
       filePath: "plugin/blog/view/classify/classify-list.vue",
-      inNav: true
+      inNav: true,
+      permission: ["分类专栏列表"]
     },
     {
       name: null,
@@ -25,7 +26,7 @@ const blogRouter = {
       route: "/cms/channel/list",
       filePath: "plugin/blog/view/channel/channel-list.vue",
       inNav: true,
-      permission: ["技术频道"]
+      permission: ["技术频道列表"]
     },
     {
       name: null,
@@ -46,7 +47,7 @@ const blogRouter = {
       filePath: "plugin/blog/view/article/article-list.vue",
       inNav: true,
       icon: "iconfont icon-tushuguanli",
-      permission: ["审核随笔", "删除随笔"]
+      permission: ['所有随笔']
     },
     {
       name: "CommentList",

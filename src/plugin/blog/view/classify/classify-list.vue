@@ -29,6 +29,9 @@
         <template v-slot:thumbnail_display="scope">
           <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
         </template>
+        <template v-slot:create_time="scope">
+          <span>{{scope.row.create_time|filterTimeYmdHms}}</span>
+        </template>
       </lin-table>
       <!--表格结束-->
     </div>
@@ -145,12 +148,10 @@ export default {
         prop: 'create_time',
         label: '创建时间',
         scope: 'create_time',
-        customRender: function(row, column) {
-          return Vue.filter('filterTimeYmdHms')(column)
-        },
+        scopedSlots: { customRender: 'create_time' },
       },
     ]
-    this.operate = [{ name: '删除', func: 'handleDelete', type: 'danger', auth: '删除标签' }]
+    this.operate = [{ name: '删除', func: 'handleDelete', type: 'danger', permission: '删除标签' }]
 
     await this.getClassifies()
   },

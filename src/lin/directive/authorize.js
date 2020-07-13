@@ -9,7 +9,7 @@ function isAllowed(permission, user, permissions) {
     return permissions.includes(permission)
   }
   if (permission instanceof Array) {
-    return permission.some(auth => permissions.indexOf(auth) >= 0)
+    return permission.some(permission => permissions.indexOf(permission) >= 0)
   }
   return false
 }
