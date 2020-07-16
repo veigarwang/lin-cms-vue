@@ -108,7 +108,7 @@ const globalFilter = {
     return `${year}-${month}-${date} ${hour}:${min}:${se}`;
   },
 
-  filterTitle(value, len = 9) {
+  filterTitle(value, len = 10) {
     return Utils.cutString(value, len);
   }
 };

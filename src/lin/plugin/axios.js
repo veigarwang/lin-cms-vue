@@ -150,6 +150,7 @@ _axios.interceptors.response.use(
       }
 
       Vue.prototype.$message({
+        showClose: true,
         message: message,
         type: 'error',
       })

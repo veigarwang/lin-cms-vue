@@ -22,6 +22,7 @@ deepTravel(stageConfig, viewConfig => {
   const viewRouter = {}
   viewRouter.path = viewConfig.route
   viewRouter.name = viewConfig.name
+  viewRouter.props = viewConfig.props
   viewRouter.component = () => import(`@/${viewConfig.filePath}`)
   viewRouter.meta = {
     title: viewConfig.title,
