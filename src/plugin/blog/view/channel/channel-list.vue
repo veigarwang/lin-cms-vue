@@ -32,10 +32,10 @@
         :tableColumn="tableColumn"
         :tableData="tableData"
         :operate="operate"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
         v-loading="loading"
         :pagination="pagination"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
         @currentChange="handleCurrentChange"
       >
         <template v-slot:status="scope">

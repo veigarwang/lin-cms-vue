@@ -61,9 +61,11 @@
             :tableColumn="tableColumn"
             :tableData="tableData"
             :operate="operate"
+            v-loading="loading"
+            :pagination="pagination"
             @handleEdit="handleEdit"
             @handleDelete="handleDelete"
-            v-loading="loading"
+            @currentChange="handleCurrentChange"
           ></lin-table>
         </div>
       </el-col>
@@ -174,9 +176,7 @@ export default {
     // 切换table页
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
-      this.loading = true
-      await this.getClassifies()
-      this.loading = false
+      await this.getResources()
     },
     handleDelete(val) {
       let res
