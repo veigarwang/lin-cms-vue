@@ -41,7 +41,7 @@ PHP[lin-cms-tp5](https://github.com/ChenJinchuang/lin-cms-tp5)
 - 前端UI[https://github.com/luoyunchong/lin-cms-vvlog](https://github.com/luoyunchong/lin-cms-vvlog)
 
 ## 线上 Demo
-- 本项目swagger地址 [https://baimocore.cn/swagger/index.html](https://baimocore.cn/swagger/index.html)
+- 本项目swagger地址 [https://api.igeekfan.cn/swagger/index.html](https://api.igeekfan.cn/swagger/index.html)
 - 用户端 lin-cms-vvlog [http://vvlog.baimocore.cn](http://vvlog.baimocore.cn) 
   - 普通用户：710277267@qq.com
   - 密码：123qwe
