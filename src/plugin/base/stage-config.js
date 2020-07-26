@@ -47,6 +47,16 @@ const baseRouter = {
         inNav: false,
         props: true
       }]
+    },
+    {
+      name: null,
+      title: "文档管理",
+      type: "view",
+      name: "DocList",
+      route: "/base/doc/list",
+      filePath: "plugin/base/view/doc/doc-list.vue",
+      inNav: true,
+      permission: ["所有文档"]
     }
   ]
 };
