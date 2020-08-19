@@ -35,6 +35,10 @@ export default class Admin {
     return get('cms/admin/permission')
   }
 
+  static getTreePermissionsList() {
+    return get('cms/admin/permission/tree-list')
+  }
+
   static async getAdminUsers({ group_id, count = this.uCount, page = this.uPag }) {
     let res
     if (group_id) {

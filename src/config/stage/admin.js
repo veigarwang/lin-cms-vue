@@ -81,9 +81,17 @@ const adminRouter = {
       ],
     },
     {
+      route: '/admin/permission/list',
+      type: 'view',
+      name: 'permission',
+      inNav: true,
+      filePath: 'view/admin/permission/permission-list.vue',
+      title: '权限列表',
+    },
+    {
       route: '/admin/setting/list',
       type: 'view',
-      name: 'SettingList',
+      name: 'setting',
       inNav: true,
       filePath: 'view/admin/setting/setting-list.vue',
       title: '设置管理',
