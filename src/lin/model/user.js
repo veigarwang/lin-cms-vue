@@ -21,11 +21,8 @@ export default class User {
    * @param {string} username 用户名
    * @param {string} password 密码
    */
-  static async getToken(username, password) {
-    const tokens = await post('cms/user/login', {
-      username,
-      password,
-    })
+  static async getToken(data, headers) {
+    const tokens = await post('cms/user/login', data, {}, headers)
     saveTokens(tokens.access_token, tokens.refresh_token)
     return tokens
   }

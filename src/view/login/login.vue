@@ -7,7 +7,8 @@
       <div class="title">
         <h1 title="Lin">Lin CMS</h1>
       </div>
-      <form class="login-form" autocomplete="off" @submit.prevent="throttleLogin()">
+      <form class="login-form" autocomplete="off">
+        <!-- @submit.prevent="throttleLogin()" -->
         <div class="form-item nickname">
           <span class="icon account-icon"></span>
           <input type="text" v-model="form.username" autocomplete="off" placeholder="请填写用户名" />
@@ -16,7 +17,7 @@
           <span class="icon secret-icon"></span>
           <input type="password" v-model="form.password" autocomplete="off" placeholder="请填写用户登录密码" />
         </div>
-        <button class="submit-btn" type="submit">登录</button>
+        <el-button class="submit-btn" type="primary" @click="throttleLogin()" :disabled="loading">登录</el-button>
       </form>
     </div>
   </div>
@@ -38,14 +39,28 @@ export default {
         username: 'root',
         password: '123456',
       },
+      headers: {
+        'Google-RecaptchaToken': '',
+      },
     }
   },
   methods: {
     async login() {
-      const { username, password } = this.form
       try {
         this.loading = true
-        await User.getToken(username, password)
+        // Show reCAPTCHA badge:
+        await this.$recaptchaLoaded()
+        // Execute reCAPTCHA with action "login".
+        this.headers['Google-RecaptchaToken'] = await this.$recaptcha('login')
+      } catch (e) {
+        this.$message.error('验证码加载失败！')
+        console.log(e)
+        this.loading = true
+        return
+      }
+      try {
+        this.loading = true
+        await User.getToken(this.form, this.headers)
         await this.getInformation()
         this.loading = false
         this.$router.push('/about')
@@ -56,14 +71,10 @@ export default {
       }
     },
     async getInformation() {
-      try {
-        // 尝试获取当前用户信息
-        const user = await User.getPermissions()
-        this.setUserAndState(user)
-        this.setUserPermissions(user.permissions)
-      } catch (e) {
-        console.log(e)
-      }
+      // 尝试获取当前用户信息
+      const user = await User.getPermissions()
+      this.setUserAndState(user)
+      this.setUserPermissions(user.permissions)
     },
     ...mapActions(['setUserAndState']),
     ...mapMutations({

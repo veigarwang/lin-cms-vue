@@ -206,12 +206,13 @@ if (!Vue.axios) {
  * @param {object} data
  * @param {object} params
  */
-export function post(url, data = {}, params = {}) {
+export function post(url, data = {}, params = {}, headers = {}) {
   return _axios({
     method: 'post',
     url,
     data,
     params,
+    headers
   })
 }
 
