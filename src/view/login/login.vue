@@ -46,18 +46,18 @@ export default {
   },
   methods: {
     async login() {
-      try {
-        this.loading = true
-        // Show reCAPTCHA badge:
-        await this.$recaptchaLoaded()
-        // Execute reCAPTCHA with action "login".
-        this.headers['Google-RecaptchaToken'] = await this.$recaptcha('login')
-      } catch (e) {
-        this.$message.error('验证码加载失败！')
-        console.log(e)
-        this.loading = true
-        return
-      }
+      // try {
+      //   this.loading = true
+      //   // Show reCAPTCHA badge:
+      //   await this.$recaptchaLoaded()
+      //   // Execute reCAPTCHA with action "login".
+      //   this.headers['Google-RecaptchaToken'] = await this.$recaptcha('login')
+      // } catch (e) {
+      //   this.$message.error('验证码加载失败！')
+      //   console.log(e)
+      //   this.loading = true
+      //   return
+      // }
       try {
         this.loading = true
         await User.getToken(this.form, this.headers)
