@@ -3,7 +3,8 @@
     title="字典信息"
     :append-to-body="true"
     :before-close="handleClose"
-    :visible.sync="dialogFormVisible"
+    :visible.sync="dialogFormVisible" 
+      :close-on-click-modal="false"
   >
     <div style="margin-top:-25px;">
       <el-form
@@ -43,9 +44,9 @@
         </el-form-item>
       </el-form>
     </div>
-    <div slot="footer" class="dialog-footer" style="padding-left:5px;">
-      <el-button type="primary" @click="confirmEdit('form')">确 定</el-button>
-      <el-button @click="resetForm('form')">重 置</el-button>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="handleClose">取消</el-button>
+      <el-button type="primary" @click="confirmEdit('form')">确定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -93,9 +94,8 @@ export default {
       this.dialogFormVisible = true
     },
     // 弹框 右上角 X
-    handleClose(done) {
+    handleClose() {
       this.dialogFormVisible = false
-      done()
     },
     async submitForm() {
       if (this.id === 0) {
@@ -121,9 +121,6 @@ export default {
           this.$message.error('请填写正确的信息')
         }
       })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
     },
   },
   async created() {

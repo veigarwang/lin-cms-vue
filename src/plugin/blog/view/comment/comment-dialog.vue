@@ -3,6 +3,7 @@
     title="评论信息"
     :append-to-body="true"
     :before-close="handleClose"
+    :close-on-click-modal="false"
     :visible.sync="dialogFormVisible"
   >
     <div style="margin-top:-25px;">
@@ -29,9 +30,9 @@
         </el-form-item>
       </el-form>
     </div>
-    <div slot="footer" class="dialog-footer" style="padding-left:5px;">
+    <div slot="footer" class="dialog-footer">
+      <el-button type="default" @click="handleClose">取 消</el-button>
       <el-button type="primary" @click="confirmEdit('form')">确 定</el-button>
-      <el-button type="default" @click="handleClose">关闭</el-button>
     </div>
   </el-dialog>
 </template>

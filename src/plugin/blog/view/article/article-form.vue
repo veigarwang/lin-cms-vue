@@ -116,19 +116,7 @@
               <el-row>
                 <el-col :lg="24">
                   <div class="mavon-editor">
-                    <mavon-editor
-                      v-model="form.content"
-                      id="mavon-editor"
-                      ref="mavon"
-                      :toolbarsFlag="false"
-                      :editable="false"
-                      :readModel="true"
-                      defaultOpen="preview"
-                      :subfield="false"
-                      :boxShadow="false"
-                      previewBackground="#fff"
-                      :navigation="false"
-                    />
+                    <pre>{{form.content}}</pre>
                   </div>
                 </el-col>
               </el-row>
@@ -154,8 +142,6 @@
 
 <script>
 import baseApi from '@/plugin/base/model/base'
-import { mavonEditor } from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
 import UploadImgs from '@/component/base/upload-image'
 import articleApi from '../../model/article'
 import classifyApi from '../../model/classify'
@@ -184,7 +170,6 @@ export default {
     },
   },
   components: {
-    mavonEditor,
     UploadImgs,
   },
   async mounted() {
@@ -241,7 +226,4 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/style/form.scss';
-.mavon-editor /deep/ .v-note-wrapper {
-  z-index: 8;
-}
 </style>

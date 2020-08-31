@@ -77,8 +77,8 @@
         </el-checkbox-group>
       </el-form-item>
       <el-form-item v-show="submit" class="submit">
-        <el-button type="primary" @click="submitForm('form')">保 存</el-button>
         <el-button @click="resetForm('form')">重 置</el-button>
+        <el-button type="primary" @click="submitForm('form')">保 存</el-button>
       </el-form-item>
     </el-form>
   </div>

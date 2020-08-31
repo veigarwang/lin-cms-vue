@@ -11,12 +11,16 @@
       @row-click="rowClick"
       v-loading="loading"
     >
+      <template v-slot:is_static="scope">
+        <el-switch v-model="scope.row.is_static" disabled active-text inactive-text></el-switch>
+      </template>
     </lin-table>
     <el-dialog
       title="分组信息"
       :append-to-body="true"
       :visible.sync="dialogFormVisible"
       :before-close="handleClose"
+      :close-on-click-modal="false"
       class="groupListInfoDialog"
     >
       <div style="margin-top:-25px;">
@@ -38,9 +42,9 @@
           </el-form-item>
         </el-form>
       </div>
-      <div slot="footer" class="dialog-footer" style="padding-left:5px;">
+      <div slot="footer" class="dialog-footer">
+        <el-button type="default" @click="handleClose">取 消</el-button>
         <el-button type="primary" @click="confirmEdit">确 定</el-button>
-        <el-button @click="resetForm('form')">重 置</el-button>
       </div>
     </el-dialog>
   </div>
@@ -175,8 +179,8 @@ export default {
       this.handleEdit(row)
     },
     // 弹框 右上角 X
-    handleClose(done) {
-      done()
+    handleClose() {
+      this.dialogFormVisible = false
     },
     // 切换tab栏
     handleClick(tab) {
@@ -191,9 +195,14 @@ export default {
   },
   async created() {
     await this.getAllGroups()
-    this.tableColumn = [{ prop: 'name', label: '名称' }, { prop: 'info', label: '信息' }] // 设置表头信息
+    // 设置表头信息
+    this.tableColumn = [
+      { prop: 'name', label: '名称' },
+      { prop: 'info', label: '信息' },
+      { prop: 'is_static', label: '静态分组', scopedSlots: { customRender: 'is_static' } },
+    ]
     this.operate = [
-      { name: '信息', func: 'handleEdit', type: 'primary' },
+      { name: '编辑', func: 'handleEdit', type: 'primary' },
       { name: '权限', func: 'goToGroupEditPage', type: 'info' },
       { name: '删除', func: 'handleDelete', type: 'danger' },
     ]
@@ -217,16 +226,5 @@ export default {
     font-size: 16px;
     font-weight: 500;
   }
-}
-.groupListInfoDialog /deep/ .el-dialog__footer {
-  text-align: left;
-  padding-left: 30px;
-}
-.groupListInfoDialog /deep/ .el-dialog__header {
-  padding-left: 30px;
-}
-
-.groupListInfoDialog /deep/ .el-dialog__body {
-  padding: 30px;
 }
 </style>

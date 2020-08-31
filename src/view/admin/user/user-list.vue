@@ -55,6 +55,7 @@
       :append-to-body="true"
       :before-close="handleClose"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal="false"
     >
       <div style="margin-top:-25px;">
         <el-tabs v-model="activeTab" @tab-click="handleClick">
@@ -84,8 +85,8 @@
       </div>
       <!-- 按键操作 -->
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="confirmEdit">确 定</el-button>
-        <el-button @click="resetForm">重 置</el-button>
+        <el-button type="default" @click="handleClose">取消</el-button>
+        <el-button type="primary" @click="confirmEdit">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -230,22 +231,13 @@ export default {
         await this.$refs.password.submitForm('form')
       }
     },
-    // 重置
-    resetForm() {
-      if (this.activeTab === '修改信息') {
-        this.$refs.userInfo.resetForm('form')
-      } else {
-        this.$refs.password.resetForm('form')
-      }
-    },
     // 双击 table ro
     rowClick(row) {
       this.handleEdit(row)
     },
     // 弹框 右上角 X
-    handleClose(done) {
+    handleClose() {
       this.dialogFormVisible = false
-      done()
     },
     // 切换tab栏
     handleClick(tab) {
@@ -304,7 +296,7 @@ export default {
         prop: 'create_time',
         label: '创建时间',
         scope: 'create_time',
-        customRender: function(row, column) {
+        customRender: function (row, column) {
           return Vue.filter('filterTimeYmdHms')(column)
         },
       },

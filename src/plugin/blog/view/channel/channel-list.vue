@@ -162,24 +162,29 @@ export default {
       {
         prop: 'channel_name',
         label: '技术频道',
+        width: 100,
       },
       {
         prop: 'thumbnail_display',
         label: '封面',
         scopedSlots: { customRender: 'thumbnail_display' },
+        width: 100,
       },
       {
         prop: 'sort_code',
         label: '排序码',
+        width: 100,
       },
       {
         prop: 'channel_code',
         label: '编码',
+        width: 100,
       },
       {
         prop: 'status',
         label: '状态',
         scopedSlots: { customRender: 'status' },
+        width: 100,
       },
       {
         prop: 'tags',

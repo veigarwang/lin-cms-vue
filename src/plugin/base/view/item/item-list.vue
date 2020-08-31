@@ -43,7 +43,11 @@
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
         v-loading="loading"
-      ></lin-table>
+      >
+        <template v-slot:create_time="scope">
+          <span>{{scope.row.create_time|filterTimeYmdHms}}</span>
+        </template>
+      </lin-table>
     </div>
     <!--表格结束-->
 
@@ -55,7 +59,6 @@
 import baseApi from '../../model/base'
 import LinTable from '@/component/base/table/lin-table'
 import ItemDialog from './item-dialog'
-import Vue from 'vue'
 export default {
   components: { LinTable, ItemDialog },
   inject: ['eventBus'],
@@ -139,9 +142,7 @@ export default {
         prop: 'create_time',
         label: '创建时间',
         scope: 'create_time',
-        customRender: function(row, column) {
-          return Vue.filter('filterTimeYmdHms')(column)
-        },
+        scopedSlots: { customRender: 'create_time' },
       },
     ]
     this.operate = [
