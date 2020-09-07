@@ -11,19 +11,23 @@
       @submit.native.prevent
     >
       <el-form-item label="用户名" prop="username">
-        <el-input size="medium" clearable v-model="form.username" :disabled="isEdited"></el-input>
+        <el-input size="medium" clearable v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="昵称" prop="nickname">
         <el-input size="medium" clearable v-model="form.nickname"></el-input>
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input
-          size="medium"
-          clearable
-          v-model="form.email"
-          :disabled="isEdited"
-          auto-complete="new-password"
-        ></el-input>
+        <el-input size="medium" clearable v-model="form.email" auto-complete="new-password"></el-input>
+      </el-form-item>
+      <el-form-item label="状态" prop="active">
+        <el-switch
+          v-model="form.active"
+          active-color="#13ce66"
+          :active-value="1"
+          :inactive-value="2"
+          active-text="启用"
+          inactive-text="禁用"
+        ></el-switch>
       </el-form-item>
       <el-form-item v-if="pageType === 'add'" label="密码" prop="password">
         <el-input
@@ -69,11 +73,7 @@
             :label="item.id"
             border
             style="margin-left: 0"
-          >
-            {{
-            item.name
-            }}
-          </el-checkbox>
+          >{{ item.name}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item v-show="submit" class="submit">
@@ -123,7 +123,6 @@ export default {
   data() {
     // 验证回调函数
     const checkUserName = (rule, value, callback) => {
-      // eslint-disable-line
       if (!value) {
         callback(new Error('用户名不能为空'))
       }
@@ -160,16 +159,17 @@ export default {
         confirm_password: '',
         email: '',
         group_ids: [],
+        active: 1,
       },
       // 验证规则
       rules: {
-        username: [
-          {
-            validator: checkUserName,
-            trigger: ['blur', 'change'],
-            required: true,
-          },
-        ],
+        // username: [
+        //   {
+        //     validator: checkUserName,
+        //     trigger: ['blur', 'change'],
+        //     required: true,
+        //   },
+        // ],
         nickname: [
           {
             trigger: ['blur', 'change'],
@@ -215,23 +215,21 @@ export default {
               } else {
                 this.$message.error('新增用户失败')
               }
-              console.log(e)
             }
           } else {
             // 更新用户信息
-            if (
-              this.form.email === this.info.email &&
-              this.form.group_ids.sort().toString() === this.info.group_ids.sort().toString()
-            ) {
-              this.$emit('handleInfoResult', false)
-              return
-            }
+            // if (
+            //   this.form.email === this.info.email &&
+            //   this.form.group_ids.sort().toString() === this.info.group_ids.sort().toString()
+            // ) {
+            //   this.$emit('handleInfoResult', false)
+            //   return
+            // }
             try {
               this.loading = true
-              res = await Admin.updateOneUser(this.form.email, this.form.group_ids, this.form.nickname, this.id)
+              res = await Admin.updateOneUser(this.id, this.form)
             } catch (e) {
               this.loading = false
-              console.log(e)
             }
             if (res.code < window.MAX_SUCCESS_CODE) {
               this.loading = false
@@ -243,7 +241,6 @@ export default {
             }
           }
         } else {
-          console.log('error submit!!')
           this.$message.error('请填写正确的信息')
         }
       })
@@ -261,6 +258,7 @@ export default {
       this.form.username = this.info.username
       this.form.nickname = this.info.nickname
       this.form.email = this.info.email
+      this.form.active = this.info.active
       const temp = []
       this.info.group_ids.forEach(item => {
         temp.push(item.id)
@@ -268,17 +266,6 @@ export default {
       this.form.group_ids = temp
     },
   },
-  // watch: {
-  //   groups: {
-  //     // 默认选中管理员组
-  //     handler() {
-  //       if (this.groups && this.groups[0] && this.groups[0].id) {
-  //         this.form.group_ids = [this.groups[0].id]
-  //       }
-  //     },
-  //     immediate: true,
-  //   },
-  // },
   created() {
     // 通过是否接收到数据来判断当前页面是添加数据还是编辑数据
     if (this.pageType === 'edit') {

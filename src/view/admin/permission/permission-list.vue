@@ -27,6 +27,11 @@
       <el-table-column type="index" width="50" label="#" />
       <el-table-column prop="name" label="权限名" width="180" />
       <el-table-column prop="router" label="接口地址" width="400" />
+      <el-table-column prop="create_time" label="创建时间" width="180">
+        <template slot-scope="scope">
+          <span>{{ scope.row.create_time |filterTimeYmdHms}}</span>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>

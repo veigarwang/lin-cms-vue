@@ -39,11 +39,11 @@
         @currentChange="handleCurrentChange"
       >
         <template v-slot:status="scope">
-          <el-tag size="small" v-if="scope.row.status==true" type="success">启用</el-tag>
-          <el-tag size="small" v-else type="danger">禁用</el-tag>
+          <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
         <template v-slot:tags="scope">
           <el-tag
+            style="margin-right:1px;"
             size="small"
             v-for="(tag,index) in scope.row.tags"
             v-bind:key="index"

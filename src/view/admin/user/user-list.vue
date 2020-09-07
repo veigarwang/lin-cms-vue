@@ -36,7 +36,29 @@
       @handleDelete="handleDelete"
       @row-click="rowClick"
       v-loading="loading"
-    ></lin-table>
+    >
+      <template v-slot:active="scope">
+        <el-switch
+          v-model="scope.row.active"
+          disabled
+          active-color="#13ce66"
+          :active-value="1"
+          :inactive-value="2"
+        ></el-switch>
+      </template>
+      <template v-slot:create_time="scope">
+        <span>{{scope.row.create_time|filterTimeYmdHms}}</span>
+      </template>
+      <template v-slot:groups="scope">
+        <el-tag
+          style="margin-right:1px;"
+          size="small"
+          v-for="(item,index) in scope.row.groups"
+          v-bind:key="index"
+          type="primary"
+        >{{item.name}}</el-tag>
+      </template>
+    </lin-table>
     <!-- 分页 -->
     <div class="pagination">
       <el-pagination
@@ -97,7 +119,6 @@ import Admin from '@/lin/model/admin'
 import LinTable from '@/component/base/table/lin-table'
 import UserInfo from './user-info'
 import UserPassword from './user-password'
-import Vue from 'vue'
 export default {
   components: { LinTable, UserInfo, UserPassword },
   inject: ['eventBus'],
@@ -125,6 +146,7 @@ export default {
         confirm_password: '',
         email: '',
         group_ids: [],
+        active: 1,
       },
       loading: false,
     }
@@ -142,7 +164,8 @@ export default {
           page: currentPage,
         })
         this.loading = false
-        this.tableData = this.shuffleList(res.items)
+        this.tableData = res.items
+        // this.shuffleList(res.items)
         this.total = res.total
       } catch (e) {
         this.loading = false
@@ -176,6 +199,7 @@ export default {
       this.form.nickname = selectedData.nickname
       this.form.email = selectedData.email
       this.form.group_ids = selectedData.groups
+      this.form.active = selectedData.active
       this.dialogFormVisible = true
     },
     // 下拉框选择分组
@@ -271,34 +295,34 @@ export default {
         })
       }
     },
-    shuffleList(users) {
-      const list = []
-      users.forEach(element => {
-        const groups = []
-        element.groups.forEach(item => {
-          groups.push(item.name)
-        })
-        element.groupNames = groups.join(',')
-        list.push(element)
-      })
-      return list
-    },
+    // shuffleList(users) {
+    //   const list = []
+    //   users.forEach(element => {
+    //     const groups = []
+    //     element.groups.forEach(item => {
+    //       groups.push(item.name)
+    //     })
+    //     element.groupNames = groups.join(',')
+    //     list.push(element)
+    //   })
+    //   return list
+    // },
   },
   async created() {
     await this.getAdminUsers()
     this.getAllGroups()
     this.tableColumn = [
-      { prop: 'username', label: '用户名' },
-      { prop: 'nickname', label: '昵称' },
-      { prop: 'email', label: '邮箱' },
-      { prop: 'groupNames', label: '所属分组' },
+      { prop: 'username', label: '用户名', width: 200 },
+      { prop: 'nickname', label: '昵称', width: 200 },
+      { prop: 'active', label: '状态', width: 100, scopedSlots: { customRender: 'active' } },
+      { prop: 'email', label: '邮箱', width: 200 },
+      { prop: 'groups', label: '所属分组', scopedSlots: { customRender: 'groups' } },
       {
         prop: 'create_time',
         label: '创建时间',
         scope: 'create_time',
-        customRender: function (row, column) {
-          return Vue.filter('filterTimeYmdHms')(column)
-        },
+        width: 160,
+        scopedSlots: { customRender: 'create_time' },
       },
     ] // 设置表头信息
     this.operate = [
@@ -316,14 +340,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/style/list.scss';
 
-.info {
-  margin-left: -55px;
-  margin-bottom: -30px;
-}
-
 .password {
   margin-top: 20px;
-  margin-left: -55px;
-  margin-bottom: -20px;
 }
 </style>

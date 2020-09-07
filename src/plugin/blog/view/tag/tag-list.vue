@@ -38,8 +38,7 @@
         @currentChange="handleCurrentChange"
       >
         <template v-slot:status="scope">
-          <el-tag size="small" v-if="scope.row.status==true" type="success">启用</el-tag>
-          <el-tag size="small" v-else type="danger">禁用</el-tag>
+          <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
         <template v-slot:thumbnail_display="scope">
           <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
@@ -166,7 +165,7 @@ export default {
         prop: 'create_time',
         label: '创建时间',
         scope: 'create_time',
-        customRender: function(row, column) {
+        customRender: function (row, column) {
           return Vue.filter('filterTimeYmdHms')(column)
         },
       },

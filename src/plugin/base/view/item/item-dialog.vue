@@ -3,8 +3,8 @@
     title="字典信息"
     :append-to-body="true"
     :before-close="handleClose"
-    :visible.sync="dialogFormVisible" 
-      :close-on-click-modal="false"
+    :visible.sync="dialogFormVisible"
+    :close-on-click-modal="false"
   >
     <div style="margin-top:-25px;">
       <el-form
@@ -39,6 +39,14 @@
         <el-form-item label="名称" prop="item_name">
           <el-input size="medium" clearable v-model="form.item_name"></el-input>
         </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-switch
+            v-model="form.status"
+            active-color="#13ce66"
+            active-text="启用"
+            inactive-text="禁用"
+          ></el-switch>
+        </el-form-item>
         <el-form-item label="排序码" prop="sort_code">
           <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
         </el-form-item>
@@ -67,6 +75,7 @@ export default {
         item_name: '',
         sort_code: 0,
         base_type_id: '',
+        status: true,
       },
       rules: {
         // 表单验证规则
@@ -88,6 +97,7 @@ export default {
           item_name: '',
           sort_code: 0,
           base_type_id: '',
+          status: true,
         })
         this.id = 0
       }

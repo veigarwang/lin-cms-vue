@@ -121,12 +121,8 @@ export default class Admin {
     return res
   }
 
-  static async updateOneUser(email, group_ids, nickname, id) {
-    const res = await put(`cms/admin/user/${id}`, {
-      email,
-      group_ids,
-      nickname
-    })
+  static async updateOneUser(id, user) {
+    const res = await put(`cms/admin/user/${id}`, user)
     return res
   }
 

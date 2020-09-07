@@ -44,6 +44,9 @@
         @handleDelete="handleDelete"
         v-loading="loading"
       >
+        <template v-slot:status="scope">
+          <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
+        </template>
         <template v-slot:create_time="scope">
           <span>{{scope.row.create_time|filterTimeYmdHms}}</span>
         </template>
@@ -137,6 +140,11 @@ export default {
     this.tableColumn = [
       { prop: 'item_code', label: '编码' },
       { prop: 'item_name', label: '名称' },
+      {
+        prop: 'status',
+        label: '状态',
+        scopedSlots: { customRender: 'status' },
+      },
       { prop: 'sort_code', label: '排序码' },
       {
         prop: 'create_time',

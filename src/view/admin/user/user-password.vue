@@ -83,12 +83,11 @@ export default {
         return
       }
       this.$refs[formName].validate(async valid => {
-        // eslint-disable-line
         if (valid) {
           let res
           try {
             this.loading = true
-            res = await Admin.changePassword(this.form.new_password, this.form.confirm_password, this.id) // eslint-disable-line
+            res = await Admin.changePassword(this.form.new_password, this.form.confirm_password, this.id)
           } catch (e) {
             this.loading = false
             console.log(e)
