@@ -169,6 +169,9 @@ class Log {
   async getSerilogListAsync(params) {
     return await get('cms/log/serilog', params)
   }
+  async getLogDashboard() {
+    return await get('cms/log/dashboard')
+  }
 }
 
 export default new Log({})

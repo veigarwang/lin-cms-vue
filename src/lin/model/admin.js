@@ -103,11 +103,8 @@ export default class Admin {
     return res
   }
 
-  static async updateOneGroup(name, info, id) {
-    const res = await put(`cms/admin/group/${id}`, {
-      name,
-      info,
-    })
+  static async updateOneGroup(data, id) {
+    const res = await put(`cms/admin/group/${id}`, data)
     return res
   }
 

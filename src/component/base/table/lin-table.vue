@@ -64,11 +64,12 @@
       class="pagination"
       v-if="pagination"
       background
-      layout="prev, pager, next, jumper"
+      layout="sizes, prev, pager, next, jumper"
       :page-size="pagination.pageSize ? pagination.pageSize: 10 "
       :total="pagination.pageTotal ? pagination.pageTotal : null "
       :current-page="pagination.currentPage ? pagination.currentPage: 1 "
       @current-change="currentChange"
+      @size-change="handleSizeChange"
     ></el-pagination>
   </div>
 </template>
@@ -279,6 +280,9 @@ export default {
       })
       // 切换行索引
       this.currentIndex = (this.currentPage - 1) * this.pagination.pageSize + 1
+    },
+    handleSizeChange(pageSize) {
+      this.$emit('sizeChange', pageSize)
     },
     // checkbox触发函数
     handleSelectionChange(val) {

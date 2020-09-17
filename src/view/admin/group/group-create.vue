@@ -20,14 +20,16 @@
             <el-form-item label="分组描述" prop="info">
               <el-input size="medium" clearable v-model="form.info"></el-input>
             </el-form-item>
+            <el-form-item label="排序码" prop="sort_code">
+              <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
+            </el-form-item>
             <el-form-item>
               <group-permissions
                 @updatePermissions="updatePermissions"
                 @updateAllPermissions="updateAllPermissions"
                 ref="groupPermissions"
                 title="分配权限"
-              >
-              </group-permissions>
+              ></group-permissions>
             </el-form-item>
             <el-form-item class="submit">
               <el-button type="primary" @click="submitForm('form')">保 存</el-button>
@@ -51,7 +53,6 @@ export default {
   inject: ['eventBus'],
   data() {
     const checkName = (rule, value, callback) => {
-      // eslint-disable-line
       if (!value) {
         return callback(new Error('分组名称不能为空'))
       }
@@ -63,6 +64,7 @@ export default {
       form: {
         name: '',
         info: '',
+        sort_code: 0,
       },
       rules: {
         name: [{ validator: checkName, trigger: ['blur', 'change'], required: true }],
@@ -80,7 +82,6 @@ export default {
     },
     async submitForm(formName) {
       this.$refs[formName].validate(async valid => {
-        // eslint-disable-line
         if (valid) {
           let res
           const finalPermissions = this.permissions.filter(x => Object.keys(this.allPermissions).indexOf(x) < 0)

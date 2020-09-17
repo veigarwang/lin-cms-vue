@@ -40,6 +40,9 @@
           <el-form-item label="分组描述" prop="info">
             <el-input size="medium" clearable v-model="form.info"></el-input>
           </el-form-item>
+          <el-form-item label="排序码" prop="sort_code">
+            <el-input size="medium" clearable v-model="form.sort_code"></el-input>
+          </el-form-item>
         </el-form>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -71,11 +74,7 @@ export default {
         // 表单信息
         name: '',
         info: '',
-      },
-      cacheForm: {
-        // 缓存第一次的表单信息
-        name: '',
-        info: '',
+        sort_code: 0,
       },
       loading: false,
       activeTab: '修改信息', // tab 标题
@@ -104,13 +103,10 @@ export default {
         this.$message.warning('请将信息填写完整')
         return
       }
-      if (this.cacheForm.name !== this.form.name || this.cacheForm.info !== this.form.info) {
-        // eslint-disable-line
-        const res = await Admin.updateOneGroup(this.form.name, this.form.info, this.id)
-        if (res.code < window.MAX_SUCCESS_CODE) {
-          this.$message.success(`${res.message}`)
-          this.getAllGroups()
-        }
+      const res = await Admin.updateOneGroup(this.form, this.id)
+      if (res.code < window.MAX_SUCCESS_CODE) {
+        this.$message.success(`${res.message}`)
+        this.getAllGroups()
       }
       this.dialogFormVisible = false
     },
@@ -124,13 +120,11 @@ export default {
       if (val.index >= 0) {
         selectedData = val.row
       } else {
-        // 单机 table row
+        // 单击 table row
         selectedData = val
       }
       this.id = selectedData.id
-      this.form.name = selectedData.name
-      this.form.info = selectedData.info
-      this.cacheForm = { ...this.form }
+      this.form = { ...selectedData }
       this.dialogFormVisible = true
     },
     goToGroupEditPage(val) {
@@ -199,6 +193,7 @@ export default {
     this.tableColumn = [
       { prop: 'name', label: '名称' },
       { prop: 'info', label: '信息' },
+      { prop: 'sort_code', label: '排序码' },
       { prop: 'is_static', label: '静态分组', scopedSlots: { customRender: 'is_static' } },
     ]
     this.operate = [

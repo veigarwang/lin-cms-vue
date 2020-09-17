@@ -84,22 +84,13 @@ export default {
       }
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          let res
-          try {
-            this.loading = true
-            res = await Admin.changePassword(this.form.new_password, this.form.confirm_password, this.id)
-          } catch (e) {
-            this.loading = false
-            console.log(e)
-          }
+          this.loading = true
+          let res = await Admin.changePassword(this.form.new_password, this.form.confirm_password, this.id)
+          this.loading = false
+          this.$message.success(`${res.message}`)
           if (res.code < window.MAX_SUCCESS_CODE) {
-            this.loading = false
-            this.$message.success(`${res.message}`)
             this.resetForm(formName)
             this.$emit('handlePasswordResult', true)
-          } else {
-            this.loading = false
-            this.$message.error(`${res.message}`)
           }
         } else {
           console.log('error submit!!')

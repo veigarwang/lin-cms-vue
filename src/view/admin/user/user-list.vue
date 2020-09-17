@@ -36,6 +36,9 @@
       @handleDelete="handleDelete"
       @row-click="rowClick"
       v-loading="loading"
+      @currentChange="handleCurrentChange"
+      @sizeChange="handleSizeChange"
+      :pagination="pagination"
     >
       <template v-slot:active="scope">
         <el-switch
@@ -59,18 +62,6 @@
         >{{item.name}}</el-tag>
       </template>
     </lin-table>
-    <!-- 分页 -->
-    <div class="pagination">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :background="true"
-        :page-size="pageCount"
-        :current-page="currentPage"
-        v-if="refreshPagination"
-        layout="prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
-    </div>
     <!-- 弹窗 -->
     <el-dialog
       title="用户信息"
@@ -125,11 +116,7 @@ export default {
   data() {
     return {
       id: 0, // 用户id
-      refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
-      total: 0, // 分组内的用户总数
-      currentPage: 1, // 默认获取第一页的数据
-      pageCount: 10, // 每页10条数据
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
@@ -138,6 +125,11 @@ export default {
       groups: [], // 所有分组
       group_id: undefined,
       activeTab: '修改信息',
+      pagination: {
+        pageSize: 10,
+        pageTotal: 0,
+        currentPage: 1, // 默认获取第一页的数据
+      },
       form: {
         // 表单信息
         username: '',
@@ -155,33 +147,22 @@ export default {
     // 根据分组 刷新/获取分组内的用户
     async getAdminUsers() {
       let res
-      const currentPage = this.currentPage - 1
-      try {
-        this.loading = true
-        res = await Admin.getAdminUsers({
-          group_id: this.group_id,
-          count: this.pageCount,
-          page: currentPage,
-        })
-        this.loading = false
-        this.tableData = res.items
-        // this.shuffleList(res.items)
-        this.total = res.total
-      } catch (e) {
-        this.loading = false
-        console.log(e)
-      }
+      const currentPage = this.pagination.currentPage - 1
+      this.loading = true
+      res = await Admin.getAdminUsers({
+        count: this.pagination.pageSize,
+        page: currentPage,
+        group_id: this.group_id,
+      })
+      this.loading = false
+      this.tableData = res.items
+      this.pagination.pageTotal = res.total
     },
     // 获取所有分组
     async getAllGroups() {
-      try {
-        this.loading = true
-        this.groups = await Admin.getAllGroups()
-        this.loading = false
-      } catch (e) {
-        this.loading = false
-        console.log(e)
-      }
+      this.loading = true
+      this.groups = await Admin.getAllGroups()
+      this.loading = false
     },
     // 获取所拥有的权限并渲染  由子组件提供
     async handleEdit(val) {
@@ -195,26 +176,23 @@ export default {
         selectedData = val
       }
       this.id = selectedData.id
-      this.form.username = selectedData.username
-      this.form.nickname = selectedData.nickname
-      this.form.email = selectedData.email
+      this.form = { ...selectedData }
       this.form.group_ids = selectedData.groups
-      this.form.active = selectedData.active
       this.dialogFormVisible = true
     },
     // 下拉框选择分组
     async handleChange() {
-      this.currentPage = 1
-      this.loading = true
+      this.pagination.currentPage = 1
       await this.getAdminUsers()
-      this.loading = false
     },
     // 切换table页
     async handleCurrentChange(val) {
-      this.currentPage = val
-      this.loading = true
+      this.pagination.currentPage = val
       await this.getAdminUsers('changePage')
-      this.loading = false
+    },
+    async handleSizeChange(pageSize) {
+      this.pagination.pageSize = pageSize
+      await this.getAdminUsers('changePage')
     },
     handleDelete(val) {
       let res
@@ -223,18 +201,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await Admin.deleteOneUser(val.row.id)
-        } catch (e) {
-          this.loading = false
-          console.log(e)
-        }
+        this.loading = true
+        res = await Admin.deleteOneUser(val.row.id)
+
         if (res.code < window.MAX_SUCCESS_CODE) {
           this.loading = false
-          if (this.total % this.pageCount === 1 && this.currentPage !== 1) {
+          if (this.pagination.pageTotal % this.pagination.pageSize === 1 && this.pagination.currentPage !== 1) {
             // 判断删除的是不是每一页的最后一条数据
-            this.currentPage--
+            this.pagination.currentPage--
           }
           await this.getAdminUsers()
           this.$message({
@@ -284,29 +258,13 @@ export default {
     // 监听添加用户是否成功
     async addUser(flag) {
       if (flag === true) {
-        if (this.total % this.pageCount === 0) {
+        if (this.pagination.pageTotal % this.pagination.pageSize === 0) {
           // 判断当前页的数据是不是满了，需要增加新的页码
-          this.currentPage++
+          this.pagination.currentPage++
         }
         await this.getAdminUsers()
-        this.refreshPagination = false // 刷新pagination组件
-        this.$nextTick(() => {
-          this.refreshPagination = true
-        })
       }
     },
-    // shuffleList(users) {
-    //   const list = []
-    //   users.forEach(element => {
-    //     const groups = []
-    //     element.groups.forEach(item => {
-    //       groups.push(item.name)
-    //     })
-    //     element.groupNames = groups.join(',')
-    //     list.push(element)
-    //   })
-    //   return list
-    // },
   },
   async created() {
     await this.getAdminUsers()
