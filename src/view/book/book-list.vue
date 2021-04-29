@@ -8,7 +8,8 @@
         <div class="header-right">
           <div style="margin-left:30px">
             <el-button type="default" icon="el-icon-search" @click="getBooks">刷新</el-button>
-          </div>
+
+           <el-button @click="exprotExcel">导出</el-button>
         </div>
       </div>
       <!-- 表格 -->
@@ -34,6 +35,7 @@
 import book from '@/model/book'
 import LinTable from '@/component/base/table/lin-table'
 import BookModify from './book-modify'
+import ParseTime from '@/lin/util/parseTime'
 
 export default {
   components: {
@@ -104,7 +106,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await book.delectBook(val.row.id)
+        const res = await book.deleteBook(val.row.id)
         if (res.code < window.MAX_SUCCESS_CODE) {
           this.getBooks()
           this.$message({
@@ -119,10 +121,28 @@ export default {
       this.showEdit = false
       this.getBooks()
     },
-    async getTest() {
-      let res = await test.getTest()
-      // console.log(res)
-      // this.$message(res);
+    // 导出表格
+    exprotExcel() {
+      // 动态导入
+      import('@/lin/util/exportExcel').then(excel => {
+        const tHeader = ['timestamp', 'title', 'label', 'importance', 'status']
+        const filterVal = ['timestamp', 'title', 'label', 'importance', 'status']
+        const data = this.formatJson(filterVal)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'table-list',
+        })
+      })
+    },
+    // 将表单格式化为json数据
+    formatJson(filterVal) {
+      return this.tableData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return ParseTime(v[j])
+        }
+        return v[j]
+      }),)
     },
   },
 }

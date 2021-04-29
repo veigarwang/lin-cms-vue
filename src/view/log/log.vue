@@ -224,7 +224,6 @@ export default {
         } else {
           res = await log.moreLogPage()
         }
-        console.log('res', res)
 
         let moreLogs = res.items
         if (this.isSearch && this.searchKeyword) {
@@ -237,9 +236,9 @@ export default {
           this.finished = true
         }
       } catch (error) {
-        console.log('error', error)
+        console.error('error', error)
 
-        if (error.data.code === 10020) {
+        if (error.data.code === 10220) {
           this.finished = true
         }
 

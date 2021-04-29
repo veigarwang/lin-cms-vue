@@ -201,23 +201,23 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        this.loading = true
-        res = await Admin.deleteOneUser(val.row.id)
-
-        if (res.code < window.MAX_SUCCESS_CODE) {
+        try {
+          this.loading = true
+          res = await Admin.deleteOneUser(val.row.id)
           this.loading = false
-          if (this.pagination.pageTotal % this.pagination.pageSize === 1 && this.pagination.currentPage !== 1) {
-            // 判断删除的是不是每一页的最后一条数据
-            this.pagination.currentPage--
+          if (res.code < window.MAX_SUCCESS_CODE) {
+            if (this.total_nums % this.pageCount === 1 && this.currentPage !== 1) {
+              // 判断删除的是不是每一页的最后一条数据
+              this.currentPage--
+            }
+            await this.getAdminUsers()
+            this.$message({
+              type: 'success',
+              message: `${res.message}`,
+            })
           }
-          await this.getAdminUsers()
-          this.$message({
-            type: 'success',
-            message: `${res.message}`,
-          })
-        } else {
+        } catch (e) {
           this.loading = false
-          this.$message.error(`${res.message}`)
         }
       })
     },
@@ -239,7 +239,6 @@ export default {
     },
     // 切换tab栏
     handleClick(tab) {
-      console.log(tab)
       this.activeTab = tab.name
     },
     // 监听子组件更新用户信息是否成功

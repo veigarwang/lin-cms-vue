@@ -25,6 +25,7 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
+import AppConfig from '@/config/index'
 import User from '@/lin/model/user'
 import Utils from '@/lin/util/util'
 
@@ -63,7 +64,7 @@ export default {
         await User.getToken(this.form, this.headers)
         await this.getInformation()
         this.loading = false
-        this.$router.push('/about')
+        this.$router.push(AppConfig.defaultRoute)
         this.$message.success('登录成功')
       } catch (e) {
         this.loading = false

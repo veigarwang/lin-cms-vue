@@ -2,13 +2,13 @@
 import Vue from 'vue'
 import Config from '@/config'
 import store from '@/store'
+import router from '@/router'
 
 const Plugin = {
   install(vue) {
     vue.prototype.$_lin_jump = () => {
-      if (!Config.openAutoJumpOut) {
-        return
-      }
+      if (router.currentRoute.path === '/' || router.currentRoute.path === '/login' || !Config.openAutoJumpOut) return
+
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
         store.dispatch('loginOut')

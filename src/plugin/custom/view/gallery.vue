@@ -19,7 +19,7 @@
       </div>
     </div>
     <source-code
-      link="https://github.com/TaleLin/lin-cms-vue/blob/master/src/plugin/lin-cms-ui/view/table/table-combox.vue"
+      link="https://github.com/TaleLin/lin-cms-vue/blob/8b4ef5bdc81d3f567ccc7785d61b962ad21c69cf/src/plugin/custom/view/gallery.vue"
     ></source-code>
   </div>
 </template>

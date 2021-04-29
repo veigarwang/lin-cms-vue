@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a href="http://doc.cms.7yue.pro/">
+  <a href="http://doc.cms.talelin.com/">
     <img width="200" src="https://consumerminiaclprd01.blob.core.chinacloudapi.cn/miniappbackground/sfgmember/lin/left-logo.png">
   </a>
 </p>
@@ -57,7 +57,7 @@ PHP[lin-cms-tp5](https://github.com/ChenJinchuang/lin-cms-tp5)
 
 ### 案例
 
-[http://sleeve.7yue.pro/](http://sleeve.7yue.pro/)
+[http://sleeve.talelin.com/](http://sleeve.talelin.com/)
 
 
 ### Lin CMS 的特点
@@ -103,7 +103,7 @@ npm run serve or yarn (run) serve
 ## 讨论交流
 微信公众号搜索：林间有风
 <br>
-<img class="QR-img" src="http://i1.sleeve.7yue.pro/wechat-account.jpeg" width="150" height="150">
+<img class="QR-img" src="http://i1.sleeve.talelin.com/wechat-account.jpeg" width="150" height="150">
 
 QQ群搜索：Lin CMS 官方交流群 或 814597236
 
@@ -111,7 +111,15 @@ QQ群搜索：Lin CMS 官方交流群 或 814597236
 
 ## 版本日志
 
-最新版本 `0.3.5`
+最新版本 `0.3.6`
+
+### 0.3.6
+
+1. `F` 修复一级菜单双击报错
+2. `U` 统一不同编辑器换行符
+3. `U` 内容提交使用“加载中”按钮
+4. `F` 修复Table组件不能居中问题
+5. `F` 编辑用户时，至少选择一个分组
 
 ### 0.3.5
 
