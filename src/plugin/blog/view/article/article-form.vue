@@ -116,7 +116,8 @@
               <el-row>
                 <el-col :lg="24">
                   <div class="mavon-editor">
-                    <pre>{{form.content}}</pre>
+                    <!-- <pre>{{form.content}}</pre> -->
+                    <div id="preview" class="preview" @click="handlePreview($event)"></div>
                   </div>
                 </el-col>
               </el-row>
@@ -146,7 +147,7 @@ import UploadImgs from '@/component/base/upload-image'
 import articleApi from '../../model/article'
 import classifyApi from '../../model/classify'
 import tagApi from '../../model/tag'
-
+import Vditor from 'vditor';
 export default {
   name: 'ArticleForm',
   data() {
@@ -203,6 +204,7 @@ export default {
             imgId: res.id,
           })
         }
+        this.render(res.content);
       }
     },
     async confirmEdit(formName) {
@@ -220,10 +222,46 @@ export default {
     back() {
       this.$emit('editClose')
     },
+    render(markdown){
+      var that = this;
+      Vditor.preview(document.getElementById('preview'), markdown, {
+        markdown: {
+          toc: true,
+          theme: 'light',
+        },
+        hljs: {
+          enable: true,
+          style: 'tango',
+          lineNumber: true,
+        },
+        speech: {
+          enable: true,
+        },
+        anchor: 2,
+        after() {
+          if (window.innerWidth <= 768) {
+            return;
+          }
+        },
+        lazyLoadImage:
+          'https://cdn.jsdelivr.net/npm/vditor/dist/images/img-loading.svg',
+      });
+    } ,
+    handlePreview($event) {
+      if ($event.target) {
+        if ($event.target.nodeName == 'IMG') {
+          this.$imagePreview({
+            images: [$event.target.currentSrc],
+          });
+        }
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/style/form.scss';
+@import '~vditor/dist/index.css';
+@import '@/assets/style/vditor-preview.scss';
 </style>

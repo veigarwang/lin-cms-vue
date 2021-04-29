@@ -4,12 +4,9 @@
     <div class="container" v-if="!showEdit">
       <div class="header">
         <div class="title">图书列表</div>
-        <!-- 分组选择下拉框 -->
-        <div class="header-right">
-          <div style="margin-left:30px">
-            <el-button type="default" icon="el-icon-search" @click="getBooks">刷新</el-button>
-
-           <el-button @click="exprotExcel">导出</el-button>
+        <div>
+          <el-button type="default" icon="el-icon-search" @click="getBooks">刷新</el-button>
+          <el-button @click="exprotExcel">导出</el-button>
         </div>
       </div>
       <!-- 表格 -->
@@ -21,8 +18,6 @@
         @handleDelete="handleDelete"
         @row-click="rowClick"
         v-loading="loading"
-        :pagination="pagination"
-        @currentChange="handleCurrentChange"
       ></lin-table>
     </div>
 
@@ -30,6 +25,7 @@
     <book-modify v-else @editClose="editClose" :editBookID="editBookID"></book-modify>
   </div>
 </template>
+
 
 <script>
 import book from '@/model/book'
@@ -40,7 +36,7 @@ import ParseTime from '@/lin/util/parseTime'
 export default {
   components: {
     LinTable,
-    BookModify,
+    BookModify
   },
   data() {
     return {
