@@ -3,35 +3,23 @@
     <div class="container">
       <div class="header">
         <div class="header-left">
-          <div class="title">字典列表</div>
+          <div class="title">字典条目列表</div>
         </div>
         <div class="header-right">
-          <div style="margin-left:30px">
-            <el-select
-              size="medium"
-              filterable
-              v-model="typeCode"
-              :disabled="types.length === 0"
-              placeholder="请选择分组"
-              @change="handleChange"
-              style="margin-right:30px"
-            >
-              <el-option
-                v-for="(item,index) in types"
-                :key="index"
-                :label="item.full_name"
-                :value="item.type_code"
-              ></el-option>
-            </el-select>
+          <div style="margin-left: 30px">
             <el-button
               type="primary"
               icon="el-icon-edit"
               v-permission="'新增字典'"
-              @click="()=>{
-               this.$refs['dialogForm'].show();
-            }"
-            >新增字典</el-button>
-            <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+              @click="
+                () => {
+                  this.$refs['dialogForm'].show()
+                }
+              "
+              >新增字典</el-button
+            >
+            <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
+            <el-button type="default" icon="el-icon-back" @click="back">返回</el-button>
           </div>
         </div>
       </div>
@@ -48,7 +36,7 @@
           <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
         <template v-slot:create_time="scope">
-          <span>{{scope.row.create_time|filterTimeYmdHms}}</span>
+          <span>{{ scope.row.create_time | filterTimeYmdHms }}</span>
         </template>
       </lin-table>
     </div>
@@ -65,6 +53,12 @@ import ItemDialog from './item-dialog'
 export default {
   components: { LinTable, ItemDialog },
   inject: ['eventBus'],
+  props: {
+    typeCode: {
+      type: String,
+      default: null,
+    },
+  },
   data() {
     return {
       refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
@@ -74,7 +68,6 @@ export default {
       operate: [], // 表格按键操作区
       loading: false,
       types: [],
-      typeCode: '',
     }
   },
   methods: {
@@ -86,10 +79,10 @@ export default {
         res = await baseApi.getItems({
           typeCode: this.typeCode,
         })
-        setTimeout(() => {
-          this.loading = false
-        }, 500)
+        // setTimeout(() => {
         this.tableData = res
+        this.loading = false
+        // }, 500)
       } catch (e) {
         this.loading = false
       }
@@ -99,7 +92,7 @@ export default {
     },
     handleDelete(val) {
       let res
-      this.$confirm('此操作将永久删除该字典项, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该字典条目, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -124,16 +117,20 @@ export default {
         }
       })
     },
-    async refresh() {
-      this.types = await baseApi.getTypes()
+    async refresh(val) {
+      //this.types = await baseApi.getTypes()
       await this.getBaseItems()
+      if (val) this.$message.success('刷新成功')
     },
     // 下拉框选择分组
-    async handleChange() {
-      this.currentPage = 1
-      this.loading = true
-      await this.getBaseItems()
-      this.loading = false
+    // async handleChange() {
+    //   this.currentPage = 1
+    //   this.loading = true
+    //   await this.getBaseItems()
+    //   this.loading = false
+    // },
+    back() {
+      this.$emit('editClose')
     },
   },
   async created() {
@@ -158,10 +155,10 @@ export default {
       { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除字典' },
     ]
 
-    this.types = await baseApi.getTypes()
-    if (this.types && this.types.length > 0) {
-      this.typeCode = this.types[0].type_code
-    }
+    // this.types = await baseApi.getTypes()
+    // if (this.types && this.types.length > 0) {
+    //   this.typeCode = this.types[0].type_code
+    // }
     await this.getBaseItems()
   },
   beforeDestroy() {},

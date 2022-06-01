@@ -121,6 +121,7 @@ export default {
     },
     async refresh() {
       await this.getClassifies()
+      this.$message.success('刷新成功')
     },
     // 下拉框选择分组
     async handleChange() {

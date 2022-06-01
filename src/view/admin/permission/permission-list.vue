@@ -6,7 +6,7 @@
       </div>
       <div class="header-right">
         <div style="margin-left:30px">
-          <el-button type="default" icon="el-icon-search" @click="getTreePermissionsList">刷新</el-button>
+          <el-button type="default" icon="el-icon-refresh" @click="getTreePermissionsList">刷新</el-button>
         </div>
       </div>
     </div>

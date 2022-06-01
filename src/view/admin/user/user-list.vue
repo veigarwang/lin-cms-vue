@@ -23,7 +23,7 @@
               :value="group.id"
             ></el-option>
           </el-select>
-          <el-button type="default" icon="el-icon-search" @click="getAdminUsers">刷新</el-button>
+          <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
         </div>
       </div>
     </div>
@@ -220,6 +220,10 @@ export default {
           this.loading = false
         }
       })
+    },
+    async refresh() {
+      await this.getAdminUsers()
+      this.$message.success('刷新成功')
     },
     // 提交表单信息
     async confirmEdit() {

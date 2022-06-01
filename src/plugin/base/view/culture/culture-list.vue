@@ -15,7 +15,7 @@
                this.$router.push(`/base/culture/form`)
              }"
             >新增本地化</el-button>
-            <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+            <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
           </div>
         </div>
       </div>
@@ -87,6 +87,7 @@ export default {
     },
     async refresh() {
       await this.getCultures()
+      this.$message.success('刷新成功')
     },
   },
   async created() {

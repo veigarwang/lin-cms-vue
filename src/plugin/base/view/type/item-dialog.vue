@@ -119,11 +119,9 @@ export default {
         if (valid) {
           let res
           this.loading = true
-
           res = await this.submitForm().finally(() => {
             this.loading = false
           })
-
           this.$message.success(`${res.message}`)
           this.dialogFormVisible = false
           this.$emit('ok')

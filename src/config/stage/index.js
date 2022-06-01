@@ -1,19 +1,24 @@
 import adminConfig from './admin'
-import bookConfig from './book' // 引入图书管理路由文件
+import bookConfig from './book' // 引入书籍管理路由文件
+import encyclopediaConfig from './encyclopedia' // 引入书籍管理路由文件
+
 import pluginsConfig from './plugin'
 import Utils from '@/lin/util/util'
 
 let homeRouter = [
   {
-    title: '林间有风',
+    title: '主页',
     type: 'view',
     name: 'about',
     route: '/about',
     filePath: 'view/about/about.vue',
     inNav: true,
     icon: 'iconfont icon-iconset0103',
-    order: 1,
+    order: 0,
   },
+  bookConfig,
+  encyclopediaConfig,
+  adminConfig,
   {
     title: '日志管理',
     type: 'view',
@@ -22,7 +27,7 @@ let homeRouter = [
     filePath: 'view/log/log.vue',
     inNav: true,
     icon: 'iconfont icon-rizhiguanli',
-    order: 2,
+    order: 7,
     permission: ['查询所有日志'],
   },
   {
@@ -33,7 +38,7 @@ let homeRouter = [
     filePath: 'view/home/log-dashboard.vue',
     inNav: true,
     icon: 'iconfont icon-rizhiguanli',
-    order: 2
+    order: 8
   },
   {
     title: '个人中心',
@@ -52,9 +57,7 @@ let homeRouter = [
     filePath: 'view/error-page/404.vue',
     inNav: false,
     icon: "iconfont icon-rizhiguanli"
-  },
-  bookConfig,
-  adminConfig
+  }
 ];
 
 const plugins = [...pluginsConfig];
