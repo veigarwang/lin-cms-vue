@@ -208,7 +208,7 @@ export default {
       'form.name',
       Utils.debounce(func => {
         var res = pinyinUtil.getPinyin(this.form.name, ' ', true, false)
-        if (!this.firstLoad) {
+        if (!this.firstLoad || !this.item_id) {
           this.form.pronunciation = res
         } else {
           this.firstLoad = false
@@ -233,7 +233,8 @@ export default {
             var array = this.form.original_text.match(reg)
             var res = []
             array.forEach(element => {
-              res.push(element.replace(/山海經·/, ''))
+              var item = element.replace(/山海經·/, '')
+              if (res.indexOf(item) == -1) res.push(element.replace(/山海經·/, ''))
             })
             this.form.provenance = res.toString()
             //reg.exec(this.form.original_text).toString()
