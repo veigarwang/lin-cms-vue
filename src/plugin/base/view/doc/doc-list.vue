@@ -21,7 +21,7 @@
                 this.id=0;
             }"
           >新增文档</el-button>
-          <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+          <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
         </div>
       </div>
       <!-- 表格 -->
@@ -120,6 +120,7 @@ export default {
     },
     async refresh() {
       await this.getDocs()
+      this.$message.success('刷新成功')
     },
     async editClose() {
       this.showEdit = false

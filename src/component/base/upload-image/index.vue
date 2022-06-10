@@ -245,12 +245,12 @@ export default {
     /** 每一项宽度 */
     width: {
       type: [Number, String],
-      default: 160,
+      default: 200,
     },
     /** 每一项高度 */
     height: {
       type: [Number, String],
-      default: 160,
+      default: 200,
     },
     /** 是否开启自动上传 */
     autoUpload: {
@@ -683,7 +683,7 @@ export default {
         return false
       }
 
-      // 如无错误, 表示图像都以上传, 开始构造数据
+      // 如无错误, 表示图像都已上传, 开始构造数据
       /**
        * @type {array<ReturnItem>}
        */

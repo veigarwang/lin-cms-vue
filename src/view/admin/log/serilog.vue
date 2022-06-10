@@ -168,6 +168,7 @@ export default {
     },
     async refresh() {
       await this.getSerilogs()
+      this.$message.success('刷新成功')
     },
     async handleDetail(val) {
       this.$refs['dialogForm'].show(val.row)

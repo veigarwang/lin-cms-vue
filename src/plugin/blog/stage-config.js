@@ -3,9 +3,9 @@ const blogRouter = {
   name: null,
   title: "工作台",
   type: "folder", // 类型: folder, tab, view
-  icon: "iconfont icon-tushuguanli",
+  icon: "iconfont icon-jiemianicon-",
   filePath: "view/blog/",
-  order: null,
+  order: 4,
   inNav: true,
   children: [
     {

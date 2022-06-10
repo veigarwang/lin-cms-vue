@@ -40,9 +40,6 @@
           <el-form-item label="分组描述" prop="info">
             <el-input size="medium" clearable v-model="form.info"></el-input>
           </el-form-item>
-          <el-form-item label="排序码" prop="sort_code">
-            <el-input size="medium" clearable v-model="form.sort_code"></el-input>
-          </el-form-item>
         </el-form>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -187,12 +184,11 @@ export default {
     this.tableColumn = [
       { prop: 'name', label: '名称' },
       { prop: 'info', label: '信息' },
-      { prop: 'sort_code', label: '排序码' },
       { prop: 'is_static', label: '静态分组', scopedSlots: { customRender: 'is_static' } },
     ]
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
-      { name: '权限', func: 'goToGroupEditPage', type: 'info' },
+      { name: '权限', func: 'goToGroupEditPage', type: 'success' },
       { name: '删除', func: 'handleDelete', type: 'danger' },
     ]
     // 监听添加分组是否成功

@@ -39,14 +39,17 @@
         <el-form-item label="名称" prop="item_name">
           <el-input size="medium" clearable v-model="form.item_name"></el-input>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item label="明细" prop="sort_code">
+          <el-input size="medium" clearable v-model="form.item_details"></el-input>
+        </el-form-item>
+        <!-- <el-form-item label="状态" prop="status">
           <el-switch
             v-model="form.status"
             active-color="#13ce66"
             active-text="启用"
             inactive-text="禁用"
           ></el-switch>
-        </el-form-item>
+        </el-form-item>         -->
         <el-form-item label="排序码" prop="sort_code">
           <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
         </el-form-item>
@@ -73,6 +76,7 @@ export default {
         // 表单信息
         item_code: '',
         item_name: '',
+        item_details: '',
         sort_code: 0,
         base_type_id: '',
         status: true,
@@ -119,11 +123,9 @@ export default {
         if (valid) {
           let res
           this.loading = true
-
           res = await this.submitForm().finally(() => {
             this.loading = false
           })
-
           this.$message.success(`${res.message}`)
           this.dialogFormVisible = false
           this.$emit('ok')

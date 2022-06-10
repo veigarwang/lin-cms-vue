@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;">
+  <div style="height: 100%">
     <el-container>
       <el-aside :width="sideBarWidth" class="aside" :style="asideStyle">
         <side-bar :isCollapse="isCollapse" :is-phone="isPhone"></side-bar>
@@ -236,7 +236,7 @@ export default {
 .el-main {
   overflow-y: auto;
   position: relative;
-  padding: 0;
+  padding: 0 0 1em 0;
 }
 
 .backTop {

@@ -32,13 +32,14 @@
         :sortable="item.sortable ? item.sortable : false"
         :fixed="item.fixed ? item.fixed : false"
         :width="item.width ? item.width : ''"
+        :align="item.align"
       >
         <template slot-scope="scope">
           <!-- solt 自定义列-->
           <template v-if="item.customRender">
-            <div v-html="item.customRender(scope.row,scope.row[item.prop])" />
+            <div v-html="item.customRender(scope.row, scope.row[item.prop])" />
           </template>
-          <template v-else-if="item.scopedSlots&&item.scopedSlots.customRender">
+          <template v-else-if="item.scopedSlots && item.scopedSlots.customRender">
             <slot :name="item.scopedSlots.customRender" :row="scope.row" />
           </template>
           <template v-else>
@@ -46,7 +47,7 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column v-if="operate.length > 0" label="操作" fixed="right" width="275">
+      <el-table-column v-if="operate.length > 0" label="操作" fixed="right" width="200">
         <template slot-scope="scope">
           <el-button
             v-for="(item, index) in operate"
@@ -56,7 +57,8 @@
             size="mini"
             v-permission="{ permission: item.permission ? item.permission : '', type: 'disabled' }"
             @click.native.prevent.stop="buttonMethods(item.func, scope.$index, scope.row)"
-          >{{item.name}}</el-button>
+            >{{ item.name }}</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -64,12 +66,12 @@
       class="pagination"
       v-if="pagination"
       background
-      layout="sizes, prev, pager, next, jumper"
-      :page-size="pagination.pageSize ? pagination.pageSize: 10 "
-      :total="pagination.pageTotal ? pagination.pageTotal : null "
-      :current-page="pagination.currentPage ? pagination.currentPage: 1 "
-      @current-change="currentChange"
-      @size-change="handleSizeChange"
+      layout="total, sizes, prev, pager, next, jumper"
+      :page-size="pagination.pageSize ? pagination.pageSize : 10"
+      :total="pagination.pageTotal ? pagination.pageTotal : null"
+      :current-page="pagination.currentPage ? pagination.currentPage : 1"
+      @current-change="currentPageChange"
+      @size-change="pageSizeChange"
     ></el-pagination>
   </div>
 </template>
@@ -93,6 +95,14 @@ export default {
     operateWidth: {
       type: [String, Number],
       default: 175,
+    },
+    center: {
+      type: Boolean,
+      default: false,
+    },
+    centerText: {
+      type: String,
+      default: "{textAlign: 'center'}",
     },
     operate: {
       // 自定义按键及绑定方法
@@ -171,6 +181,7 @@ export default {
       oldKey: [], // 上一次选中数据的key
       currentIndex: 1, // 当前索引，切换页面的时候需要重新计算
       rowClassName: '', // 行样式
+      cellClassName: '',
     }
   },
   created() {
@@ -253,7 +264,7 @@ export default {
       this.$emit('row-click', row)
     },
     // 切换当前页
-    currentChange(page) {
+    currentPageChange(page) {
       const currentSelectedData = []
       this.oldVal = []
       this.currentPage = page
@@ -263,6 +274,7 @@ export default {
           index >= (this.currentPage - 1) * this.pagination.pageSize &&
           index < this.currentPage * this.pagination.pageSize,
       )
+      // 调用父组件指定属性
       this.$emit('currentChange', page)
       // 已选中的数据打勾
       this.selectedTableData.forEach(item => {
@@ -281,7 +293,8 @@ export default {
       // 切换行索引
       this.currentIndex = (this.currentPage - 1) * this.pagination.pageSize + 1
     },
-    handleSizeChange(pageSize) {
+    pageSizeChange(pageSize) {
+      // 调用父组件指定属性
       this.$emit('sizeChange', pageSize)
     },
     // checkbox触发函数
@@ -448,10 +461,9 @@ export default {
 .pagination {
   display: flex;
   justify-content: flex-end;
-  margin-right: -10px;
+  //margin-right: -10px;
   margin-top: 15px;
 }
-
 .lin-table .rowClassName {
   cursor: move !important;
 }

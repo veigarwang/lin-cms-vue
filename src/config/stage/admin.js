@@ -5,7 +5,7 @@ const adminRouter = {
   type: 'folder',
   icon: 'iconfont icon-huiyuanguanli',
   filePath: 'view/admin/',
-  order: null,
+  order: 5,
   inNav: true,
   children: [
     {

@@ -218,7 +218,7 @@ $--font-path: "~element-ui/lib/theme-chalk/fonts";
 }
 
 .el-form-item__content {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .el-form--label-top .el-form-item__label {
@@ -281,7 +281,7 @@ $--font-path: "~element-ui/lib/theme-chalk/fonts";
 }
 
 .el-table .cell {
-  display: flex;
+  //display: flex;
   margin-top: 2px;
   margin-bottom: 2px;
 

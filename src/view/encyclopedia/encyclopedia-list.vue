@@ -4,18 +4,18 @@
     <div class="container" v-show="!showForm">
       <div class="header">
         <div class="header-left">
-          <p class="title">书籍列表</p>
+          <p class="title">词条列表</p>
         </div>
         <div class="header-right">
-          <lin-search @query="onQueryChange" placeholder="请输入ISBN/书籍名" />
+          <lin-search @query="onQueryChange" placeholder="请输入词条名" />
           <el-button
             type="primary"
             icon="el-icon-plus"
-            v-permission="'新增书籍'"
+            v-permission="'新增词条'"
             style="margin-left: 10px"
             @click="
               () => {
-                ;(showForm = true), (this.edit_book_id = null)
+                ;(showForm = true), (this.edit_item_id = null)
               }
             "
             >新增</el-button
@@ -37,59 +37,53 @@
         @row-click="rowClick"
         v-loading="loading"
       >
-        <template v-slot:title="scope">
+        <!-- <template v-slot:title="scope">
           <span>{{ '《' + scope.row.title + '》' }}{{ scope.row.subtitle }}</span>
         </template>
         <template v-slot:date_purchased="scope">
           <span>{{ scope.row.date_purchased | filterTime }}</span>
-        </template></lin-table
-      >
+        </template> -->
+      </lin-table>
     </div>
 
     <!-- 编辑页面 -->
-    <book-form v-if="showForm" @editClose="editClose" :edit_book_id="edit_book_id"></book-form>
+    <encyclopedia-form
+      v-if="showForm"
+      @editClose="editClose"
+      :edit_item_id="edit_item_id"
+      :last_provenance="last_provenance"
+    ></encyclopedia-form>
   </div>
 </template>
 
-
 <script>
-import book from '@/model/book'
+import encyclopedia from '@/model/encyclopedia'
 import LinTable from '@/component/base/table/lin-table'
 import LinSearch from '@/component/base/search/lin-search'
-import BookForm from './book-form'
+import EncyclopediaForm from './encyclopedia-form'
 import ParseTime from '@/lin/util/parseTime'
 
 export default {
   components: {
     LinTable,
     LinSearch,
-    BookForm,
+    EncyclopediaForm,
   },
   data() {
     return {
       tableColumn: [
-        { prop: 'book_type_name', label: '书籍类别', width: 150, align: 'center' },
-        { prop: 'isbn', label: 'ISBN', width: 180, align: 'center' },
-        {
-          prop: 'title, subtitle',
-          label: '书名',
-          scope: 'title',
-          scopedSlots: { customRender: 'title' },
-        },
-        { prop: 'author1', label: '作者', width: 150 },
-        {
-          prop: 'date_purchased',
-          label: '购买日期',
-          align: 'center',
-          scope: 'date_purchased',
-          scopedSlots: { customRender: 'date_purchased' },
-          width: 150,
-        },
+        { prop: 'item_type_name', label: '所属类别', align: 'center', width: '150px' },
+        { prop: 'name', label: '词条名称' },
+        { prop: 'pronunciation', label: '读音' },
+        { prop: 'alias', label: '别名' },
+        { prop: 'provenance', label: '出处' },
+        { prop: 'effect', label: '作用' },
       ],
       tableData: [],
       operate: [],
       showForm: false,
-      edit_book_id: 1,
+      edit_item_id: 1,
+      last_provenance: '',
       pagination: {
         pageSize: 10,
         pageTotal: 0,
@@ -106,33 +100,35 @@ export default {
         name: '删除',
         func: 'handleDelete',
         type: 'danger',
-        permission: '删除书籍',
+        permission: '删除词条',
       },
     ]
-    await this.getBooks()
+    await this.getEncyclopedias()
+    this.loading = false
+    this.last_provenance = this.tableData[0].provenance
   },
   methods: {
     // 切换table页
     async handleCurrentPageChange(val) {
       this.pagination.currentPage = val
-      await this.getBooks(this.searchKeyword)
+      await this.getEncyclopedias(this.searchKeyword)
     },
     async handlePageSizeChange(val) {
       this.pagination.pageSize = val
-      await this.getBooks(this.searchKeyword)
+      await this.getEncyclopedias(this.searchKeyword)
     },
-    async getBooks(val) {
+    async getEncyclopedias(val) {
       const currentPage = this.pagination.currentPage - 1
       try {
-        //this.loading = true
-        let res = await book.getBooks({
+        this.loading = true
+        let res = await encyclopedia.getEncyclopedias({
           keyword: val,
           count: this.pagination.pageSize,
           page: currentPage,
         })
+        this.loading = false
         this.tableData = [...res.items]
         this.pagination.pageTotal = res.total
-        this.loading = false
       } catch (error) {
         if (error.code === 10020) {
           this.tableData = []
@@ -143,27 +139,27 @@ export default {
     onQueryChange(query) {
       this.searchKeyword = query.trim()
       if (!query) {
-        this.getBooks()
+        this.getEncyclopedias()
         return
       }
       this.loading = true
-      this.getBooks(this.searchKeyword)
+      this.getEncyclopedias(this.searchKeyword)
       this.loading = false
     },
     handleEdit(val) {
       console.log('val', val)
       this.showForm = true
-      this.edit_book_id = val.row.id
+      this.edit_item_id = val.row.id
     },
     handleDelete(val) {
-      this.$confirm('此操作将永久删除该书籍, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该词条, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await book.deleteBook(val.row.id)
+        const res = await encyclopedia.deleteEncyclopedia(val.row.id)
         if (res.code < window.MAX_SUCCESS_CODE) {
-          this.getBooks(this.searchKeyword)
+          this.getEncyclopedias(this.searchKeyword)
           this.$message({
             type: 'success',
             message: `${res.message}`,
@@ -172,13 +168,13 @@ export default {
       })
     },
     async refresh() {
-      await this.getBooks(this.searchKeyword)
+      await this.getEncyclopedias(this.searchKeyword)
       this.$message.success('刷新成功')
     },
     rowClick() {},
     editClose() {
       this.showForm = false
-      this.getBooks(this.searchKeyword)
+      this.getEncyclopedias(this.searchKeyword)
     },
     // 导出表格
     exprotExcel() {

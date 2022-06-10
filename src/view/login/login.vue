@@ -5,7 +5,7 @@
     </div>
     <div class="form-box" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0)">
       <div class="title">
-        <h1 title="Lin">Lin CMS</h1>
+        <h1 title="Lin">山 海 万 象</h1>
       </div>
       <form class="login-form" autocomplete="off">
         <!-- @submit.prevent="throttleLogin()" -->
@@ -37,8 +37,8 @@ export default {
       wait: 2000, // 2000ms之内不能重复发起请求
       throttleLogin: null, // 节流登录
       form: {
-        username: 'root',
-        password: '123456',
+        username: 'admin',
+        password: '123qwe',
       },
       headers: {
         'Google-RecaptchaToken': '',
@@ -119,6 +119,7 @@ export default {
       margin-bottom: 15%;
 
       h1 {
+        font-size: 30px;
         padding-left: 74px;
         box-sizing: border-box;
         text-align: left;
@@ -166,7 +167,7 @@ export default {
         font-size: 16px;
         text-align: left;
         box-sizing: border-box;
-        padding: 0 10px;
+        padding: 0 10px 16px 0;
         padding-left: 74px;
         background: url('../../assets/image/login/login-btn.png') no-repeat;
         background-size: 90% auto;

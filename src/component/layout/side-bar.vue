@@ -6,7 +6,7 @@
     <div class="mobile-logo" v-else>
       <img src="../../assets/image/mobile-logo.png" alt />
     </div>
-    <div style="margin-bottom:50px">
+    <div style="margin-bottom: 50px">
       <div v-if="showSidebarSearch" style="margin-top: 15px">
         <div class="search-display" v-if="!showSearchList" @click="toSearch">
           <i class="el-icon-search"></i>
@@ -69,20 +69,16 @@
                   :to="grandchildItem.path"
                   class="circle third"
                 >
-                  <el-menu-item
-                    :index="idMap[grandchildItem.name]"
-                    style="padding-left: 80px;"
-                    class="subMenuContent"
-                  >{{ grandchildItem.title }}</el-menu-item>
+                  <el-menu-item :index="idMap[grandchildItem.name]" style="padding-left: 80px" class="subMenuContent">{{
+                    grandchildItem.title
+                  }}</el-menu-item>
                 </router-link>
               </el-submenu>
               <!-- 二级else -->
               <router-link :to="subItem.path" :key="subItem.name" class="circle" v-else>
-                <el-menu-item
-                  :index="idMap[subItem.name]"
-                  style="padding-left: 60px;"
-                  class="subMenuContent"
-                >{{ subItem.title }}</el-menu-item>
+                <el-menu-item :index="idMap[subItem.name]" style="padding-left: 60px" class="subMenuContent">{{
+                  subItem.title
+                }}</el-menu-item>
               </router-link>
             </template>
           </el-submenu>
@@ -241,6 +237,10 @@ export default {
 ::-webkit-scrollbar {
   width: 0px;
   height: 0px;
+}
+.app-sidebar > .el-menu-item[class^='el-icon-'] {
+  margin-left: 2px;
+  margin-right: 4px;
 }
 
 .app-sidebar {

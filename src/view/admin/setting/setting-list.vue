@@ -16,7 +16,7 @@
                 this.id=0;
             }"
             >新增设置</el-button>
-            <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+            <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
           </div>
         </div>
       </div>
@@ -118,6 +118,7 @@ export default {
     },
     async refresh() {
       await this.getSettings()
+      this.$message.success('刷新成功')
     },
     async editClose() {
       this.showEdit = false

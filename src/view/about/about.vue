@@ -3,7 +3,7 @@
     <div class="lin-info">
       <div class="lin-info-left">
         <div class="welcome">
-          <img src="../../assets/image/about/welcome.png" class="welcome-title" alt />
+          <!-- <img src="../../assets/image/about/welcome.png" class="welcome-title" alt /> -->
           <div class="subtitle">
             <div class="guide">您还可以点击林间有风官方网站，查看更多作品</div>
             <div class="link">
@@ -11,11 +11,7 @@
             </div>
           </div>
         </div>
-        <img
-          class="welcome-bg"
-          src="../../assets/image/about/header-bg.png"
-          alt
-        />
+        <img class="welcome-bg" src="../../assets/image/about/header-bg.png" alt />
       </div>
       <div class="lin-info-right">
         <div class="team-detail">
@@ -70,9 +66,9 @@
       <div class="quantity-item">
         <div class="quantity-detail">
           <div class="quantity-detail-box">
-            <div class="quantity-title">总访问量</div>
+            <div class="quantity-title">藏书数量</div>
             <div class="quantity-border-line"></div>
-            <div class="quantity">11,590</div>
+            <div class="quantity">{{ bookTotal }}</div>
           </div>
         </div>
         <div class="quantity-icon">
@@ -82,9 +78,9 @@
       <div class="quantity-item">
         <div class="quantity-detail">
           <div class="quantity-detail-box">
-            <div class="quantity-title">总用户数</div>
+            <div class="quantity-title">百科词条总数</div>
             <div class="quantity-border-line"></div>
-            <div class="quantity">51,862</div>
+            <div class="quantity">{{ entryTotal }}</div>
           </div>
         </div>
         <div class="quantity-icon">
@@ -117,7 +113,7 @@
       </div>
     </div>
     <div class="information">
-      <div class="personal">
+      <!-- <div class="personal">
         <div class="personal-title">个人信息</div>
         <img src="../../assets/image/about/avatar.png" class="personal-avatar" />
         <div class="personal-influence">
@@ -142,14 +138,11 @@
             <div class="content">为什么程序员们愿意在GitHub上开源...</div>
           </el-tab-pane>
         </el-tabs>
-      </div>
+      </div> -->
       <div class="article">
         <div class="article-title">文章</div>
         <div class="article-list">
-          <div
-            class="article-item"
-            @click="handleArticle('https://opensource.guide/how-to-contribute/')"
-          >
+          <div class="article-item" @click="handleArticle('https://opensource.guide/how-to-contribute/')">
             <img class="article-thumb" src="../../assets/image/about/open-source.jpg" alt />
             <div class="article-detail">
               <p class="article-detail-title">How to Contribute to Open Source?</p>
@@ -162,45 +155,30 @@
               <div class="article-tool">
                 <div class="pubdate">一天前</div>
                 <div class="article-about">
-                  <span>
-                    <i class="iconfont icon-shoucang"></i>37
-                  </span>
+                  <span> <i class="iconfont icon-shoucang"></i>37 </span>
                   <el-divider direction="vertical"></el-divider>
-                  <span>
-                    <i class="iconfont icon-pinglun"></i>2384
-                  </span>
+                  <span> <i class="iconfont icon-pinglun"></i>2384 </span>
                   <el-divider direction="vertical"></el-divider>
-                  <span>
-                    <i class="iconfont icon-fenxiang"></i>56
-                  </span>
+                  <span> <i class="iconfont icon-fenxiang"></i>56 </span>
                 </div>
               </div>
             </div>
           </div>
-          <div
-            class="article-item"
-            @click="handleArticle('https://www.zhihu.com/question/269033309')"
-          >
+          <div class="article-item" @click="handleArticle('https://www.zhihu.com/question/269033309')">
             <img class="article-thumb" src="../../assets/image/about/open-source.jpg" alt />
             <div class="article-detail article-last">
               <p class="article-detail-title">为什么程序员们愿意在GitHub上开源自己的成果给别人免费使用和学习？</p>
-              <div
-                class="article-detail-content"
-              >“Git的精髓在于让所有人的贡献无缝合并。而GitHub的天才之处，在于理解了Git的精髓。”来一句我们程序员们接地气的话：分享是一种快乐~</div>
+              <div class="article-detail-content">
+                “Git的精髓在于让所有人的贡献无缝合并。而GitHub的天才之处，在于理解了Git的精髓。”来一句我们程序员们接地气的话：分享是一种快乐~
+              </div>
               <div class="article-tool">
                 <div class="pubdate">2019年5月26日</div>
                 <div class="article-about">
-                  <span>
-                    <i class="iconfont icon-shoucang"></i>37
-                  </span>
+                  <span> <i class="iconfont icon-shoucang"></i>37 </span>
                   <el-divider direction="vertical"></el-divider>
-                  <span>
-                    <i class="iconfont icon-pinglun"></i>2384
-                  </span>
+                  <span> <i class="iconfont icon-pinglun"></i>2384 </span>
                   <el-divider direction="vertical"></el-divider>
-                  <span>
-                    <i class="iconfont icon-fenxiang"></i>56
-                  </span>
+                  <span> <i class="iconfont icon-fenxiang"></i>56 </span>
                 </div>
               </div>
             </div>
@@ -212,12 +190,21 @@
 </template>
 
 <script>
+import book from '@/model/book'
+import encyclopedia from '@/model/encyclopedia'
+
 export default {
   data() {
     return {
       activeName: 'first',
       showTeam: false,
+      bookTotal: 0,
+      entryTotal: 0,
     }
+  },
+  async created() {
+    this.bookTotal = await book.getBookTotal()
+    this.entryTotal = await encyclopedia.getEncyclopediaTotal()
   },
   mounted() {
     if (document.body.clientWidth > 1200 && document.body.clientWidth < 1330) {
@@ -399,7 +386,7 @@ export default {
             font-weight: 400;
           }
           .quantity-border-line {
-            width: 46px;
+            width: 96px;
             height: 2px;
             background: rgba(73, 84, 104, 1);
           }
