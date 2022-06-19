@@ -279,7 +279,6 @@ export default {
     if (this.edit_item_id) {
       this.item_id = this.edit_item_id
     }
-
     if (this.item_id) {
       this.form = await encyclopedia.getEncyclopedia(this.item_id)
       this.picturePreview.length = 0
