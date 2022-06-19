@@ -9,7 +9,7 @@
           <lin-search @query="onQueryChange" ref="searchKeyword" />
           <el-dropdown
             size="medium"
-            style="margin: 0 10px;"
+            style="margin: 0 10px"
             @command="handleCommand"
             v-permission="'查询日志记录的用户'"
           >
@@ -24,7 +24,8 @@
                 v-for="(user, index) in users"
                 :key="index"
                 :command="[user]"
-              >{{ user }}</el-dropdown-item>
+                >{{ user }}</el-dropdown-item
+              >
             </el-dropdown-menu>
           </el-dropdown>
           <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
@@ -36,8 +37,8 @@
       <div class="search" v-if="keyword">
         <p class="search-tip">
           搜索“
-          <span class="search-keyword">{{ keyword }}</span>”， 找到
-          <span class="search-num">{{ totalCount }}</span> 条日志信息
+          <span class="search-keyword">{{ keyword }}</span
+          >”， 找到 <span class="search-num">{{ totalCount }}</span> 条日志信息
         </p>
         <button class="search-back" @click="backInit">返回全部日志</button>
       </div>
@@ -47,10 +48,10 @@
         <section v-for="log in logs" :key="log.id">
           <span class="point-time"></span>
           <aside>
-            <p class="things" v-html="log.message"></p>
+            <p class="things">{{ log.username }}{{ log.message }}</p>
             <p class="brief">
-              <span class="text-yellow">{{ log.username }}</span>
-              {{ log.time | dateTimeFormatter }}
+              <span class="text-yellow"></span>
+              {{ log.create_time | dateTimeFormatter }}
             </p>
           </aside>
         </section>
@@ -62,10 +63,10 @@
           <i v-if="more" class="iconfont icon-loading"></i>
           <div v-show="!more && !finished" @click="nextPage">
             <span>查看更多</span>
-            <i class="iconfont icon-gengduo" style="font-size:14px"></i>
+            <i class="iconfont icon-gengduo" style="font-size: 14px"></i>
           </div>
           <div v-if="finished">
-            <span>{{ totalCount === 0 ? '暂无数据' : '没有更多数据了' }}</span>
+            <span>{{ totalCount === 0 ? '暂无数据' : '暂无更多数据' }}</span>
           </div>
         </div>
       </div>

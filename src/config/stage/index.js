@@ -30,16 +30,16 @@ let homeRouter = [
     order: 7,
     permission: ['查询所有日志'],
   },
-  {
-    title: '日志面板',
-    type: 'view',
-    name: Symbol('logdashboard'),
-    route: '/log-dashboard',
-    filePath: 'view/home/log-dashboard.vue',
-    inNav: true,
-    icon: 'iconfont icon-rizhiguanli',
-    order: 8
-  },
+  // {
+  //   title: '日志面板',
+  //   type: 'view',
+  //   name: Symbol('logdashboard'),
+  //   route: '/log-dashboard',
+  //   filePath: 'view/home/log-dashboard.vue',
+  //   inNav: true,
+  //   icon: 'iconfont icon-rizhiguanli',
+  //   order: 8
+  // },
   {
     title: '个人中心',
     type: 'view',

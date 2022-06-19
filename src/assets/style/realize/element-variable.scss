@@ -699,7 +699,7 @@ $typeMap: (primary: #3963bc,
 /* tag */
 @include b(tag) {
   background-color: #3963bc;
-  padding: 0 13px;
+  padding: 1px 13px 0 13px;
   height: 24px;
   line-height: 22px;
   color: rgba(255, 255, 255, 1);

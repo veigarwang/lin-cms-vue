@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="title">
-      <span v-if="!edit_item_id">新增词条</span><span v-else>修改词条</span>
+      <span v-if="!edit_item_id">新增词条</span><span v-else>修改词条 - ID: {{ item_id }}</span>
       <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一条 </span>
       <span v-if="edit_item_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一条 </span>
@@ -71,6 +71,12 @@
             <el-col :span="6">
               <el-form-item label="出处" prop="provenance">
                 <el-input size="medium" v-model="form.provenance" placeholder="请输入出处"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6"> </el-col>
+            <el-col :span="6" v-if="edit_item_id">
+              <el-form-item label="编辑次数" prop="version">
+                <div>{{ form.version }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -178,7 +184,7 @@ export default {
         pronunciation: '',
         provenance: '',
         original_text: '',
-        item_type: '',
+        item_type: ''
       },
       item_id: '',
       item_types: [],
@@ -240,6 +246,8 @@ export default {
         else if (this.form.name.endsWith('神')) this.form.item_type = Number(this.item_types[8].item_code)
         else if (this.form.name.endsWith('國') || this.form.name.endsWith('城'))
           this.form.item_type = Number(this.item_types[10].item_code)
+        else if (this.form.name.endsWith('玉'))
+          this.form.item_type = Number(this.item_types[12].item_code)
         else if (this.form.name.endsWith('金') || this.form.name.endsWith('石'))
           this.form.item_type = Number(this.item_types[14].item_code)
       }, 1000),
@@ -266,9 +274,13 @@ export default {
         'form.guozhu',
         Utils.debounce(func => {
           this.form.guozhu = this.form.guozhu
-            .replace('，郭璞注', '')
-            .replace('。郭璞注', '')
-            .replace('郭璞注', '')
+            .replace('，郭璞注：『', '：')
+            .replace('。郭璞注：『', '：')
+            .replace('、郭璞注：『', '：')
+            .replace('郭璞注：『', '：')
+            .replace('「', '『')
+            .replace('」', '』')
+            .replace('』』', '』')
             .replace(' ', '')
           //reg.exec(this.form.original_text).toString()
         }, 1000),
@@ -311,6 +323,8 @@ export default {
               if (res.code < window.MAX_SUCCESS_CODE) {
                 this.loading = false
                 this.$message.success(`${res.message}`)
+                this.form = await encyclopedia.getEncyclopedia(this.item_id)
+                this.firstLoad = true
                 //this.$emit('editClose')
               }
             } catch (error) {

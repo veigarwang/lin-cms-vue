@@ -35,7 +35,7 @@
           </li>
           <li class="account" @click="outLogin">
             <i class="iconfont icon-tuichu"></i>
-            <span>退出账户</span>
+            <span>退出登录</span>
           </li>
         </ul>
       </el-dropdown-menu>

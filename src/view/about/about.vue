@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="lin-info">
+    <!-- <div class="lin-info">
       <div class="lin-info-left">
         <div class="welcome">
-          <!-- <img src="../../assets/image/about/welcome.png" class="welcome-title" alt /> -->
+          <img src="../../assets/image/about/welcome.png" class="welcome-title" alt />
           <div class="subtitle">
             <div class="guide">您还可以点击林间有风官方网站，查看更多作品</div>
             <div class="link">
@@ -61,7 +61,7 @@
           <p class="team-label">林间有风公众号</p>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="quantity-statistics">
       <div class="quantity-item">
         <div class="quantity-detail">
@@ -90,9 +90,9 @@
       <div class="quantity-item">
         <div class="quantity-detail">
           <div class="quantity-detail-box">
-            <div class="quantity-title">新增访问量 (月)</div>
+            <div class="quantity-title">待定数据1</div>
             <div class="quantity-border-line"></div>
-            <div class="quantity">1,862</div>
+            <div class="quantity">-</div>
           </div>
         </div>
         <div class="quantity-icon">
@@ -102,9 +102,9 @@
       <div class="quantity-item">
         <div class="quantity-detail">
           <div class="quantity-detail-box">
-            <div class="quantity-title">新增用户数</div>
+            <div class="quantity-title">待定数据2</div>
             <div class="quantity-border-line"></div>
-            <div class="quantity">1,323</div>
+            <div class="quantity">-</div>
           </div>
         </div>
         <div class="quantity-icon">
@@ -140,9 +140,28 @@
         </el-tabs>
       </div> -->
       <div class="article">
-        <div class="article-title">文章</div>
+        <div class="article-title">更新历史</div>
         <div class="article-list">
-          <div class="article-item" @click="handleArticle('https://opensource.guide/how-to-contribute/')">
+          <el-timeline>
+            <el-timeline-item
+              v-for="(activity, index) in activities"
+              :key="index"
+              :type="activity.type"
+              :timestamp="activity.timestamp"
+              placement="top"
+            >
+              <el-card>
+                <h4>{{ activity.title }}</h4>
+                <div style="line-height: 2" v-for="(content, index) in activity.content" :key="index">
+                  <el-tag :key="content.label" :type="content.labelType" effect="dark" :color="content.color">{{
+                    content.label
+                  }}</el-tag>
+                  &nbsp;{{ content.entry }}
+                </div>
+              </el-card>
+            </el-timeline-item>
+          </el-timeline>
+          <!-- <div class="article-item" @click="handleArticle('https://opensource.guide/how-to-contribute/')">
             <img class="article-thumb" src="../../assets/image/about/open-source.jpg" alt />
             <div class="article-detail">
               <p class="article-detail-title">How to Contribute to Open Source?</p>
@@ -182,7 +201,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -200,6 +219,60 @@ export default {
       showTeam: false,
       bookTotal: 0,
       entryTotal: 0,
+      activities: [
+        {
+          title: 'v0.94',
+          content: [
+            { entry: '增加实体版本，以编辑次数显示', label: '改善', color: 'blueviolet' },
+          ],
+          timestamp: '2022-06-18 22:50',
+          size: 'large',
+          type: 'primary',
+          //icon: 'el-icon-more',
+        },
+        {
+          title: 'v0.93',
+          content: [
+            { entry: '增加更新历史', label: '新增', color: 'green' },
+            { entry: '增加显示藏书数量和百科词条总数', label: '新增', color: 'green' },
+            { entry: '完善系统日志', label: '改善', color: 'blueviolet' },
+          ],
+          timestamp: '2022-06-11 09:27',
+          type: '',
+        },
+        {
+          title: 'v0.91',
+          content: [
+            { entry: '增加防止重复出处的判断', label: '改善', color: 'blueviolet' },
+            { entry: '完善同名词条自动追加的判断条件', label: '改善', color: 'blueviolet' },
+            { entry: '修正编辑词条时读音会被覆盖的问题', label: '修复', color: 'orange' },
+          ],
+          timestamp: '2022-06-02 23:39',
+          type: '',
+        },
+        {
+          title: 'v0.90',
+          content: [
+            { entry: '增加山海百科模块', label: '新增', color: 'green' },
+            { entry: '完善书籍管理模块', label: '改善', color: 'blueviolet' },
+            { entry: '优化UI显示', label: '改善', color: 'blueviolet' },
+            {
+              entry: '修正在非第一页进行表格搜索的情况下，因搜索结果数量不足当前页数而不显示的问题',
+              label: '修复',
+              color: 'orange',
+            },
+          ],
+          timestamp: '2022-06-01 23:40',
+          type: '',
+        },
+      ],
+      items: [
+        { type: '', label: '标签一' },
+        { type: 'success', label: '标签二' },
+        { type: 'info', label: '标签三' },
+        { type: 'danger', label: '标签四' },
+        { type: 'warning', label: '标签五' },
+      ],
     }
   },
   async created() {
@@ -220,6 +293,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.el-card__body > h4 {
+  margin-block-start: 0;
+  margin-block-end: 0.75em;
+}
+
+.el-tag {
+  //width: 85px;
+  //text-align: center;
+  padding: 2px 13px 0 13px;
+  border-radius: 4px;
+  border: none;
+}
+
 .container {
   padding: 20px;
   .lin-info {
@@ -364,11 +450,11 @@ export default {
   .quantity-statistics {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    //margin-top: 20px;
     height: 90px;
     .quantity-item {
       display: flex;
-      width: 23%;
+      width: 24%;
       height: 100%;
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 2px 14px 0px rgba(243, 243, 243, 1);
@@ -498,7 +584,10 @@ export default {
         margin-bottom: 20px;
       }
       .article-list {
-        cursor: pointer;
+        //cursor: pointer;
+        .el-tag + .el-tag {
+          margin-left: 10px;
+        }
         .article-item {
           display: flex;
           flex-direction: row;

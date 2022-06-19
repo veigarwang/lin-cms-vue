@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="title">
-      <span v-if="!edit_book_id">新增书籍</span><span v-else>修改书籍</span
-      ><span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
+      <span v-if="!edit_book_id">新增书籍</span><span v-else>修改书籍 - ID: {{ book_id }}</span>
+      <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       <span v-if="edit_book_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一本 </span>
       <span v-if="edit_book_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一本 </span>
     </div>
@@ -165,6 +165,11 @@
             <el-col :span="6" v-show="form.is_read">
               <el-form-item label="评分" prop="rate">
                 <el-rate v-model="form.rate" show-text :texts="texts" :colors="colors3"></el-rate>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" v-if="edit_book_id">
+              <el-form-item label="编辑次数" prop="version">
+                <div>{{ form.version }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="24">

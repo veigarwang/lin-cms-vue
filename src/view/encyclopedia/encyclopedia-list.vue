@@ -72,11 +72,11 @@ export default {
   data() {
     return {
       tableColumn: [
-        { prop: 'item_type_name', label: '所属类别', align: 'center', width: '150px' },
-        { prop: 'name', label: '词条名称' },
+        { prop: 'item_type_name', label: '所属类别', align: 'center', width: '120px' },
+        { prop: 'name', label: '词条名称', width: '160px' },
         { prop: 'pronunciation', label: '读音' },
         { prop: 'alias', label: '别名' },
-        { prop: 'provenance', label: '出处' },
+        { prop: 'provenance', label: '出处', width: '275px' },
         { prop: 'effect', label: '作用' },
       ],
       tableData: [],
@@ -105,7 +105,6 @@ export default {
     ]
     await this.getEncyclopedias()
     this.loading = false
-    this.last_provenance = this.tableData[0].provenance
   },
   methods: {
     // 切换table页
@@ -127,8 +126,9 @@ export default {
           page: currentPage,
         })
         this.loading = false
-        this.tableData = [...res.items]
+        this.tableData = [...res.items]        
         this.pagination.pageTotal = res.total
+        this.last_provenance = this.tableData[0].provenance
       } catch (error) {
         if (error.code === 10020) {
           this.tableData = []
