@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container" v-if="!showEdit">
+    <div class="container" v-show="!showForm">
       <div class="header">
         <div class="header-left">
           <div class="title">字典类别列表</div>
@@ -30,6 +30,7 @@
         @handleEdit="handleEdit"
         @handleSubItem="handleSubItem"
         @handleDelete="handleDelete"
+        @row-click="rowClick"
         v-loading="loading"
       >
         <template v-slot:create_time="scope">
@@ -38,7 +39,7 @@
       </lin-table>
     </div>
     <!-- 编辑页面 -->
-    <type-item v-else @editClose="editClose" :typeCode="typeCode"></type-item>
+    <type-item v-if="showForm" @editClose="editClose" :typeCode="typeCode"></type-item>
     <!--表格结束-->
 
     <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
@@ -56,13 +57,13 @@ export default {
   data() {
     return {
       id: 0, // id
-      refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
+      //refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
       loading: false,
-      showEdit: false,
+      showForm: false,
       typeCode: 1,
     }
   },
@@ -82,15 +83,16 @@ export default {
         this.loading = false
       }
     },
-    async handleEdit(val) {
+    handleEdit(val) {
       this.$refs['dialogForm'].show(val.row)
     },
     handleSubItem(val) {
-      this.showEdit = true
+      this.showForm = true
       this.typeCode = val.row.type_code
     },
     editClose() {
-      this.showEdit = false
+      this.showForm = false
+      this.getBaseTypes()
     },
     handleDelete(val) {
       this.$confirm('此操作将永久删除该字典类型, 是否继续?', '提示', {
@@ -137,7 +139,7 @@ export default {
         type: 'primary',
         permission: '编辑字典类别',
       },
-      { name: '查看', func: 'handleSubItem', type: 'success' },
+      { name: '查看', func: 'handleSubItem', type: 'success', permission: '查看字典条目' },
       {
         name: '删除',
         func: 'handleDelete',

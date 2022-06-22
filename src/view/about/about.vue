@@ -223,7 +223,10 @@ export default {
         {
           title: 'v0.94',
           content: [
-            { entry: '增加实体版本，以编辑次数显示', label: '改善', color: 'blueviolet' },
+            { entry: '增加书籍和百科词条的编辑次数', label: '改善', color: 'blueviolet' },
+            { entry: '完善系统日志', label: '改善', color: 'blueviolet' },
+            { entry: '修正编辑字典类型后未正常刷新列表的问题', label: '修复', color: 'orange' },
+            { entry: '查询字典条目列表时会触发一次查询字典类别列表', label: '待修', color: 'red' },
           ],
           timestamp: '2022-06-18 22:50',
           size: 'large',

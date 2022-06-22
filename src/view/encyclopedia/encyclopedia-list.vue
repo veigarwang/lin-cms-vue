@@ -37,12 +37,6 @@
         @row-click="rowClick"
         v-loading="loading"
       >
-        <!-- <template v-slot:title="scope">
-          <span>{{ '《' + scope.row.title + '》' }}{{ scope.row.subtitle }}</span>
-        </template>
-        <template v-slot:date_purchased="scope">
-          <span>{{ scope.row.date_purchased | filterTime }}</span>
-        </template> -->
       </lin-table>
     </div>
 
@@ -71,14 +65,7 @@ export default {
   },
   data() {
     return {
-      tableColumn: [
-        { prop: 'item_type_name', label: '所属类别', align: 'center', width: '120px' },
-        { prop: 'name', label: '词条名称', width: '160px' },
-        { prop: 'pronunciation', label: '读音' },
-        { prop: 'alias', label: '别名' },
-        { prop: 'provenance', label: '出处', width: '275px' },
-        { prop: 'effect', label: '作用' },
-      ],
+      tableColumn: [],
       tableData: [],
       operate: [],
       showForm: false,
@@ -94,6 +81,14 @@ export default {
   },
   async created() {
     this.loading = true
+    this.tableColumn = [
+      { prop: 'item_type_name', label: '所属类别', align: 'center', width: '120px' },
+      { prop: 'name', label: '词条名称', width: '160px' },
+      { prop: 'pronunciation', label: '读音' },
+      { prop: 'alias', label: '别名' },
+      { prop: 'provenance', label: '出处', width: '275px' },
+      { prop: 'effect', label: '作用' },
+    ]
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       {
@@ -126,7 +121,7 @@ export default {
           page: currentPage,
         })
         this.loading = false
-        this.tableData = [...res.items]        
+        this.tableData = [...res.items]
         this.pagination.pageTotal = res.total
         this.last_provenance = this.tableData[0].provenance
       } catch (error) {
