@@ -173,7 +173,7 @@ export default {
 
 <el-dialog
   title="提示"
-  :visible.sync="dialogVisible"
+  v-model="dialogVisible"
   width="30%"
   :before-close="handleClose">
   <span>这是一段信息</span>
@@ -204,7 +204,7 @@ export default {
       diy: `<!-- Table -->
 <el-button type="text" @click="dialogTableVisible = true">打开嵌套表格的 Dialog</el-button>
 
-<el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+<el-dialog title="收货地址" v-model="dialogTableVisible">
   <el-table :data="gridData">
     <el-table-column property="date" label="日期" width="150"></el-table-column>
     <el-table-column property="name" label="姓名" width="200"></el-table-column>
@@ -215,7 +215,7 @@ export default {
 <!-- Form -->
 <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
 
-<el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+<el-dialog title="收货地址" v-model="dialogFormVisible">
   <el-form :model="form">
     <el-form-item label="活动名称" :label-width="formLabelWidth">
       <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -275,11 +275,11 @@ export default {
 <template>
   <el-button type="text" @click="outerVisible = true">点击打开外层 Dialog</el-button>
 
-  <el-dialog title="外层 Dialog" :visible.sync="outerVisible">
+  <el-dialog title="外层 Dialog" v-model="outerVisible">
     <el-dialog
       width="30%"
       title="内层 Dialog"
-      :visible.sync="innerVisible"
+      v-model="innerVisible"
       append-to-body>
     </el-dialog>
     <div slot="footer" class="dialog-footer">
@@ -303,7 +303,7 @@ export default {
 
 <el-dialog
   title="提示"
-  :visible.sync="centerDialogVisible"
+  v-model="centerDialogVisible"
   width="30%"
   center>
   <span>需要注意的是内容是默认不居中的</span>

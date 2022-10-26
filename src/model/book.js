@@ -35,7 +35,7 @@ class Book {
   async getBooks() {
     return _axios({
       method: 'get',
-      url: 'v1/book',
+      url: 'v1/book/list',
       handleError: true,
     })
   }

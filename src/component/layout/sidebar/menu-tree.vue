@@ -33,7 +33,7 @@ export default {
       this.$router.push({ path })
     },
     filterIcon(icon) {
-      return icon.indexOf('/') !== -1
+      return icon&&icon.indexOf('/') !== -1
     },
   },
 }

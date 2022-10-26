@@ -14,10 +14,10 @@ class Log {
     uCount = 5,
 
     lPage = 0,
-    lCount = 10,
+    lCount = 15,
 
     sPage = 0,
-    sCount = 10,
+    sCount = 15,
   }) {
     if (uPage === 0) {
       this.uPage = uPage
@@ -159,6 +159,16 @@ class Log {
   async moreSearchPage() {
     this.increaseSpage()
     return this.searchLogs({ next: true })
+  }
+  async getUserAndVisits() {
+    return await get('cms/log/visitis')
+  }
+
+  async getSerilogListAsync(params) {
+    return await get('cms/log/serilog', params)
+  }
+  async getLogDashboard() {
+    return await get('cms/log/dashboard')
   }
 }
 

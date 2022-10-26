@@ -81,6 +81,32 @@ const adminRouter = {
         },
       ],
     },
+    {
+      route: '/admin/permission/list',
+      type: 'view',
+      name: 'permission',
+      inNav: true,
+      filePath: 'view/admin/permission/permission-list.vue',
+      title: '权限列表',
+    },
+    {
+      route: '/admin/setting/list',
+      type: 'view',
+      name: 'setting',
+      inNav: true,
+      filePath: 'view/admin/setting/setting-list.vue',
+      title: '设置管理',
+      permission: ['得到所有设置'],
+    },
+    {
+      route: '/admin/log/serilog',
+      type: 'view',
+      name: 'serilog',
+      inNav: true,
+      filePath: 'view/admin/log/serilog.vue',
+      title: 'Serilog日志',
+      permission: ['Serilog日志'],
+    },
   ],
 }
 

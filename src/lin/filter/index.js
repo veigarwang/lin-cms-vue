@@ -32,7 +32,7 @@ export const filters = {
     if (!value) {
       return value
     }
-    const date = new Date(value * 1000)
+    const date = new Date(value)
     const y = 1900 + date.getYear()
     const m = `0${date.getMonth() + 1}`
     const d = `0${date.getDate()}`

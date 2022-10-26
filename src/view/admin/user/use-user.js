@@ -14,7 +14,7 @@ export const useUserList = () => {
    * 获取管理员列表数据
    */
   const getAdminUsers = async () => {
-    let res = {}
+      const res = {}
     try {
       loading.value = true
       res = await AdminModel.getAdminUsers({

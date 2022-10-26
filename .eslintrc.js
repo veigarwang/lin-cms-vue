@@ -9,6 +9,9 @@ module.exports = {
   plugins: ['vue', 'vuejs-accessibility'],
   extends: ['plugin:vue/vue3-essential', '@vue/airbnb'],
   rules: {
+    // @off 要求太严格了，有时需要在循环中写 await
+    "no-return-await": "off",
+    "no-await-in-loop": "off",
     'vue/script-setup-uses-vars': 'off',
     'vue/custom-event-name-casing': 'off',
     'vuejs-accessibility/rule-name': 'off',

@@ -77,7 +77,7 @@ export default {
     const submitForm = async () => {
       form.value.validate(async valid => {
         if (valid) {
-          let res = {}
+          const res = {}
           const finalPermissions = permissions.value.filter(x => Object.keys(allPermissions.value).indexOf(x) < 0)
           try {
             loading.value = true

@@ -37,7 +37,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import AdminModel from '@/lin/model/admin'
@@ -99,7 +99,7 @@ export default {
     const submitForm = () => {
       form.value.validate(async valid => {
         if (valid) {
-          let res = {}
+          const res = {}
           // 1. 新增用户
           if (props.pageType === 'add') {
             try {

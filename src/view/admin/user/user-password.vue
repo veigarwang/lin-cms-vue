@@ -54,7 +54,7 @@ export default {
 
       form.value.validate(async valid => {
         if (valid) {
-          let res = {}
+            const res = {}
           try {
             loading.value = true
             res = await AdminModel.changePassword(info.newPassword, info.confirmPassword, props.id)

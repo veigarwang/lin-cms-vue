@@ -25,7 +25,7 @@ export const useGroupList = () => {
    * @param {object} id 选中的一行数据 ID
    */
   const handleDelete = id => {
-    let res = {}
+      const res = {}
     ElMessageBox.confirm('此操作将永久删除该分组, 是否继续?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
