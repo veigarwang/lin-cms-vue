@@ -4,28 +4,23 @@
     <el-row>
       <el-col :lg="16" :md="20" :sm="24" :xs="24">
         <div class="content">
-          <el-form
-            ref="form"
-            status-icon
-            :rules="rules"
-            :model="group"
-            label-position="right"
-            label-width="100px"
-            v-loading="loading"
-            @submit.prevent
-          >
+          <el-form status-icon :rules="rules" :model="form" ref="form" label-position="right" label-width="100px"
+            @submit.native.prevent>
             <el-form-item label="分组名称" prop="name">
-              <el-input clearable v-model="group.name"></el-input>
+              <el-input size="medium" clearable v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="分组描述" prop="info">
-              <el-input clearable v-model="group.info"></el-input>
+              <el-input size="medium" clearable v-model="form.info"></el-input>
+            </el-form-item>
+            <el-form-item label="排序码" prop="sort_code">
+              <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
             </el-form-item>
             <el-form-item>
-              <group-permissions title="分配权限" ref="groupPermissions" @updatePermissions="updatePermissions">
-              </group-permissions>
+              <group-permissions @updatePermissions="updatePermissions" @updateAllPermissions="updateAllPermissions"
+                ref="groupPermissions" title="分配权限"></group-permissions>
             </el-form-item>
             <el-form-item class="submit">
-              <el-button type="primary" @click="submitForm('form')">保 存</el-button>
+              <el-button type="primary" :loading="loading" @click="submitForm('form')">保 存</el-button>
               <el-button @click="resetForm('form')">重 置</el-button>
             </el-form-item>
           </el-form>
@@ -36,99 +31,76 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
-import { ref, reactive } from 'vue'
-import { ElMessage } from 'element-plus'
-import AdminModel from '@/lin/model/admin'
+import Admin from '@/lin/model/admin'
 import GroupPermissions from './group-permission'
 
 export default {
   components: {
     GroupPermissions,
   },
-  setup() {
-    /**
-     * 表单验证规则
-     */
-    const { rules } = getRules()
-
-    // originally data properties
-    const form = ref(null)
-    const groupPermissions = ref(null)
-
-    const loading = ref(false)
-    const router = useRouter()
-    const permissions = ref([])
-    const allPermissions = ref([])
-    const group = reactive({ name: '', info: '' })
-
-    /**
-     * 重置表单
-     */
-    const resetForm = () => {
-      form.value.resetFields()
-      groupPermissions.value.getGroupPermissions()
+  inject: ['eventBus'],
+  data() {
+    const checkName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('分组名称不能为空'))
+      }
+      callback()
     }
-
-    /**
-     * 提交表单
-     * 添加新的分组
-     */
-    const submitForm = async () => {
-      form.value.validate(async valid => {
-        if (valid) {
-          const res = {}
-          const finalPermissions = permissions.value.filter(x => Object.keys(allPermissions.value).indexOf(x) < 0)
-          try {
-            loading.value = true
-            res = await AdminModel.createOneGroup(group.name, group.info, finalPermissions)
-          } catch (e) {
-            loading.value = false
-            console.error(e)
-          }
-          if (res.code < window.MAX_SUCCESS_CODE) {
-            loading.value = false
-            ElMessage.success(`${res.message}`)
-            router.push('/admin/group/list')
-            resetForm()
-          } else {
-            loading.value = false
-          }
-        } else {
-          ElMessage.error('请将信息填写完整')
-        }
-      })
-    }
-
-    /**
-     * 编辑后的最终权限
-     */
-    const updatePermissions = picked => {
-      permissions.value = picked
-    }
-
     return {
-      form,
-      rules,
-      group,
-      loading,
-      resetForm,
-      submitForm,
-      groupPermissions,
-      updatePermissions,
+      allPermissions: [], // 所有权限
+      permissions: [], // 最终选择的权限
+      form: {
+        name: '',
+        info: '',
+        sort_code: 0,
+      },
+      rules: {
+        name: [{ validator: checkName, trigger: ['blur', 'change'], required: true }],
+        info: [],
+      },
+      loading: false,
     }
   },
-}
-
-function getRules() {
-  const checkName = (rule, value, callback) => {
-    if (!value) {
-      return callback(new Error('分组名称不能为空'))
-    }
-    callback()
-  }
-  const rules = { info: [], name: [{ validator: checkName, trigger: ['blur', 'change'], required: true }] }
-  return { rules }
+  methods: {
+    updatePermissions(permissions) {
+      this.permissions = permissions
+    },
+    updateAllPermissions(allPermissions) {
+      this.allPermissions = allPermissions
+    },
+    async submitForm(formName) {
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          let res
+          const finalPermissions = this.permissions.filter(x => Object.keys(this.allPermissions).indexOf(x) < 0)
+          try {
+            this.loading = true
+            res = await Admin.createOneGroup(this.form.name, this.form.info, finalPermissions, this.id) // eslint-disable-line
+          } catch (e) {
+            this.loading = false
+            console.log(e)
+          }
+          if (res.code < window.MAX_SUCCESS_CODE) {
+            this.loading = false
+            this.$message.success(`${res.message}`)
+            this.eventBus.$emit('addGroup', true)
+            this.$router.push('/admin/group/list')
+            this.resetForm('form')
+          } else {
+            this.loading = false
+            this.$message.error(`${res.message}`)
+          }
+        } else {
+          this.$message.error('请将信息填写完整')
+          return false
+        }
+      })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+      this.$refs.groupPermissions.getGroupPermissions()
+    },
+  },
 }
 </script>
 

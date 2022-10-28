@@ -6,42 +6,23 @@
           <div class="title">标签管理</div>
         </div>
         <div class="header-right">
-          <el-input
-            size="medium"
-            style="margin-right:30px"
-            v-model="pagination.tag_name"
-            placeholder="标签名"
-          ></el-input>
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            v-permission="'新增标签'"
-            @click="()=>{
-                this.showEdit = true;
-                this.id=0;
-            }"
-          >新增标签</el-button>
+          <el-input size="medium" style="margin-right:30px" v-model="pagination.tag_name" placeholder="标签名"></el-input>
+          <el-button type="primary" icon="el-icon-edit" v-permission="'新增标签'" @click="() => {
+            this.showEdit = true;
+            this.id = 0;
+          }">新增标签</el-button>
           <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        :operateWidth="230"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        @handleCorrect="handleCorrect"
-        v-loading="loading"
-        :pagination="pagination"
-        @currentChange="handleCurrentChange"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :operateWidth="230"
+        @handleEdit="handleEdit" @handleDelete="handleDelete" @handleCorrect="handleCorrect" v-loading="loading"
+        :pagination="pagination" @currentChange="handleCurrentChange">
         <template v-slot:status="scope">
           <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
         <template v-slot:thumbnail_display="scope">
-          <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
+          <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
       <!--表格结束-->

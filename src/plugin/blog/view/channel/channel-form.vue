@@ -2,7 +2,7 @@
   <div>
     <sticky-top>
       <div class="title">
-        <span>{{title[this.id==0?0:1]}}</span>
+        <span>{{ title[this.id == 0 ? 0 : 1] }}</span>
         <span class="back" @click="back">
           <i class="iconfont icon-fanhui"></i> 返回
         </span>
@@ -12,45 +12,19 @@
       <div class="wrap">
         <el-row>
           <el-col :lg="16" :md="20" :sm="24" :xs="24">
-            <el-form
-              status-icon
-              ref="form"
-              label-width="120px"
-              :model="form"
-              label-position="labelPosition"
-              :rules="rules"
-              style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
-            >
+            <el-form status-icon ref="form" label-width="120px" :model="form" label-position="labelPosition"
+              :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
               <el-form-item label="技术频道" prop="channel_name">
                 <el-input size="medium" clearable v-model="form.channel_name"></el-input>
               </el-form-item>
               <el-form-item label="标签" prop="source">
-                <el-select
-                  style="width:100%;"
-                  v-model="form.tag_ids"
-                  remote
-                  multiple
-                  filterable
-                  :loading="tagLoading"
-                  default-first-option
-                  placeholder="添加一个标签"
-                  :remote-method="remoteMethod"
-                >
-                  <el-option
-                    v-for="item in tags"
-                    :key="item.id"
-                    :label="item.tag_name"
-                    :value="item.id"
-                  ></el-option>
+                <el-select style="width:100%;" v-model="form.tag_ids" remote multiple filterable :loading="tagLoading"
+                  default-first-option placeholder="添加一个标签" :remote-method="remoteMethod">
+                  <el-option v-for="item in tags" :key="item.id" :label="item.tag_name" :value="item.id"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="封面" prop="thumbnail">
-                <upload-imgs
-                  ref="thumbnail"
-                  :multiple="false"
-                  :value="thumbnailPreview"
-                  :max-num="1"
-                />
+                <upload-imgs ref="thumbnail" :multiple="false" :value="thumbnailPreview" :max-num="1" />
               </el-form-item>
               <el-form-item label="排序码" prop="sort_code">
                 <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
@@ -62,12 +36,7 @@
                 <el-input size="medium" clearable v-model="form.remark"></el-input>
               </el-form-item>
               <el-form-item label="状态" prop="status">
-                <el-switch
-                  v-model="form.status"
-                  active-color="#13ce66"
-                  active-text="启用"
-                  inactive-text="禁用"
-                ></el-switch>
+                <el-switch v-model="form.status" active-color="#13ce66" active-text="启用" inactive-text="禁用"></el-switch>
               </el-form-item>
               <el-form-item class="submit">
                 <el-button type="primary" @click="confirmEdit('form')">保 存</el-button>

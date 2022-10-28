@@ -11,7 +11,9 @@
               <i class="iconfont icon-fold" :class="{ rotate: foldState }" @click="changeSlidebarState" />
               <nav-bar></nav-bar>
             </div>
-            <el-collapse-transition> <reuse-tab ref="reuse"></reuse-tab> </el-collapse-transition>
+            <el-collapse-transition>
+              <reuse-tab ref="reuse"></reuse-tab>
+            </el-collapse-transition>
           </div>
         </el-header>
         <el-main ref="main">

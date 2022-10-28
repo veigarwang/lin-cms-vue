@@ -13,14 +13,8 @@
         <el-table-column label="操作" fixed="right" width="275">
           <template #default="scope">
             <el-button plain size="small" type="primary" @click="handleEdit(scope.row.id)">编辑</el-button>
-            <el-button
-              plain
-              size="small"
-              type="danger"
-              @click="handleDelete(scope.row.id)"
-              v-permission="{ permission: '删除图书', type: 'disabled' }"
-              >删除</el-button
-            >
+            <el-button plain size="small" type="danger" @click="handleDelete(scope.row.id)"
+              v-permission="{ permission: '删除图书', type: 'disabled' }">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

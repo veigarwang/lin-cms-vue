@@ -2,7 +2,7 @@
   <div>
     <sticky-top>
       <div class="title">
-        <span>{{title[this.id==0?0:1]}}</span>
+        <span>{{ title[this.id == 0 ? 0 : 1] }}</span>
         <span class="back" @click="back">
           <i class="iconfont icon-fanhui"></i> 返回
         </span>
@@ -12,15 +12,8 @@
       <div class="wrap">
         <el-row>
           <el-col :lg="16" :md="20" :sm="24" :xs="24">
-            <el-form
-              status-icon
-              ref="form"
-              label-width="120px"
-              :model="form"
-              label-position="labelPosition"
-              :rules="rules"
-              style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
-            >
+            <el-form status-icon ref="form" label-width="120px" :model="form" label-position="labelPosition"
+              :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
               <el-form-item label="设置名" prop="name">
                 <el-input size="medium" clearable v-model="form.name"></el-input>
               </el-form-item>
@@ -74,7 +67,7 @@ export default {
     }
   },
 
-  async created() {},
+  async created() { },
   async mounted() {
     this.show(this.id)
   },

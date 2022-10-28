@@ -1,35 +1,21 @@
 <template>
   <div>
-    <div class="container"
-      v-if="!showEdit">
+    <div class="container" v-if="!showEdit">
       <div class="header">
         <div class="header-left">
           <div class="title">随笔列表管理</div>
         </div>
         <div class="header-right">
-          <el-input size="medium"
-            style="margin-right:10px;"
-            v-model="pagination.title"
-            placeholder="标题"></el-input>
-          <el-button type="default"
-            icon="el-icon-search"
-            @click="getArticles">查询</el-button>
+          <el-input size="medium" style="margin-right:10px;" v-model="pagination.title" placeholder="标题"></el-input>
+          <el-button type="default" icon="el-icon-search" @click="getArticles">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        @row-click="rowClick"
-        v-loading="loading"
-        :pagination="pagination"
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
+        @handleDelete="handleDelete" @row-click="rowClick" v-loading="loading" :pagination="pagination"
         @currentChange="handleCurrentChange"></lin-table>
     </div>
-    <article-form v-else
-      @editClose="editClose"
-      :id="id"></article-form>
+    <article-form v-else @editClose="editClose" :id="id"></article-form>
   </div>
 </template>
 

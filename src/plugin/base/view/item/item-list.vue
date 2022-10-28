@@ -7,51 +7,33 @@
         </div>
         <div class="header-right">
           <div style="margin-left:30px">
-            <el-select size="medium"
-              filterable
-              v-model="typeCode"
-              :disabled="types.length === 0"
-              placeholder="请选择分组"
-              @change="handleChange"
-              style="margin-right:30px">
-              <el-option v-for="(item, index) in types"
-                :key="index"
-                :label="item.full_name"
-                :value="item.type_code"></el-option>
+            <el-select size="medium" filterable v-model="typeCode" :disabled="types.length === 0" placeholder="请选择分组"
+              @change="handleChange" style="margin-right:30px">
+              <el-option v-for="(item, index) in types" :key="index" :label="item.full_name" :value="item.type_code">
+              </el-option>
             </el-select>
-            <el-button type="primary"
-              icon="el-icon-edit"
-              v-permission="'新增字典'"
-              @click="() => {
-                this.$refs['dialogForm'].show();
-              }">新增字典</el-button>
-              <el-button type="default"
-                icon="el-icon-search"
-                @click="refresh">刷新</el-button>
-              </div>
-              </div>
-              </div>
-              <!-- 表格 -->
-              <lin-table :tableColumn="tableColumn"
-                :tableData="tableData"
-                :operate="operate"
-                @handleEdit="handleEdit"
-                @handleDelete="handleDelete"
-                v-loading="loading">
-                <template v-slot:status="scope">
-                  <el-switch v-model="scope.row.status"
-                    disabled
-                    active-color="#13ce66"></el-switch>
-                </template>
-                <template v-slot:create_time="scope">
-                  <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
-                </template>
-              </lin-table>
-              </div>
-              <!--表格结束-->
+            <el-button type="primary" icon="el-icon-edit" v-permission="'新增字典'" @click="() => {
+              this.$refs['dialogForm'].show();
+            }">新增字典
+            </el-button>
+            <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+          </div>
+        </div>
+      </div>
+      <!-- 表格 -->
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
+        @handleDelete="handleDelete" v-loading="loading">
+        <template v-slot:status="scope">
+          <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
+        </template>
+        <template v-slot:create_time="scope">
+          <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
+        </template>
+      </lin-table>
+    </div>
+    <!--表格结束-->
 
-              <item-dialog ref="dialogForm"
-                @ok="refresh"></item-dialog>
+    <item-dialog ref="dialogForm" @ok="refresh"></item-dialog>
   </div>
 </template>
 

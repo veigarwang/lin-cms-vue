@@ -1,65 +1,34 @@
 <template>
-  <el-dialog title="字典信息"
-    :append-to-body="true"
-    :before-close="handleClose"
-    v-model="dialogFormVisible"
+  <el-dialog title="字典信息" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible"
     :close-on-click-modal="false">
     <div style="margin-top:-25px;">
-      <el-form status-icon
-        v-if="dialogFormVisible"
-        ref="form"
-        label-width="120px"
-        :model="form"
-        label-position="labelPosition"
-        :rules="rules"
-        style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
-        <el-form-item label="类别"
-          prop="base_type_id">
-          <el-select size="medium"
-            filterable
-            v-model="form.base_type_id"
-            :disabled="types.length === 0"
+      <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
+        label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
+        <el-form-item label="类别" prop="base_type_id">
+          <el-select size="medium" filterable v-model="form.base_type_id" :disabled="types.length === 0"
             placeholder="请选择分组">
-            <el-option v-for="item in types"
-              :key="item.id"
-              :label="item.full_name"
-              :value="item.id"></el-option>
+            <el-option v-for="item in types" :key="item.id" :label="item.full_name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="编码"
-          prop="item_code">
-          <el-input size="medium"
-            clearable
-            v-model="form.item_code"></el-input>
+        <el-form-item label="编码" prop="item_code">
+          <el-input size="medium" clearable v-model="form.item_code"></el-input>
         </el-form-item>
-        <el-form-item label="名称"
-          prop="item_name">
-          <el-input size="medium"
-            clearable
-            v-model="form.item_name"></el-input>
+        <el-form-item label="名称" prop="item_name">
+          <el-input size="medium" clearable v-model="form.item_name"></el-input>
         </el-form-item>
-        <el-form-item label="状态"
-          prop="status">
-          <el-switch v-model="form.status"
-            active-color="#13ce66"
-            active-text="启用"
-            inactive-text="禁用"></el-switch>
+        <el-form-item label="状态" prop="status">
+          <el-switch v-model="form.status" active-color="#13ce66" active-text="启用" inactive-text="禁用"></el-switch>
         </el-form-item>
-        <el-form-item label="排序码"
-          prop="sort_code">
-          <el-input size="medium"
-            type="number"
-            clearable
-            v-model="form.sort_code"></el-input>
+        <el-form-item label="排序码" prop="sort_code">
+          <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
         </el-form-item>
       </el-form>
     </div>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="handleClose">取消</el-button>
-        <el-button type="primary"
-          @click="confirmEdit('form')">确定</el-button>
-        </div>
+        <el-button type="primary" @click="confirmEdit('form')">确定</el-button>
+      </div>
     </template>
   </el-dialog>
 </template>

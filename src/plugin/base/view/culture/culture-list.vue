@@ -7,27 +7,16 @@
         </div>
         <div class="header-right">
           <div style="margin-left:30px">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              v-permission="'新增本地化'"
-              @click="()=>{
-               this.$router.push(`/base/culture/form`)
-             }"
-            >新增本地化</el-button>
+            <el-button type="primary" icon="el-icon-edit" v-permission="'新增本地化'" @click="() => {
+              this.$router.push(`/base/culture/form`)
+            }">新增本地化</el-button>
             <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
           </div>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        v-loading="loading"
-      ></lin-table>
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
+        @handleDelete="handleDelete" v-loading="loading"></lin-table>
     </div>
     <!--表格结束-->
   </div>
@@ -101,7 +90,7 @@ export default {
 
     await this.getCultures()
   },
-  beforeDestroy() {},
+  beforeDestroy() { },
 }
 </script>
 

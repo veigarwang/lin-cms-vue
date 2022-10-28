@@ -7,29 +7,18 @@
         </div>
         <div class="header-right">
           <div style="margin-left:30px">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              v-permission="'新增字典类别'"
-              @click="()=>{
-                 this.$refs['dialogForm'].show(0);
-            }"
-            >新增类别</el-button>
+            <el-button type="primary" icon="el-icon-edit" v-permission="'新增字典类别'" @click="() => {
+              this.$refs['dialogForm'].show(0);
+            }">新增类别</el-button>
             <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
           </div>
         </div>
       </div>
       <!-- 表格开始 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        v-loading="loading"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
+        @handleDelete="handleDelete" v-loading="loading">
         <template v-slot:create_time="scope">
-          <span>{{$filters.filterTimeYmdHms(scope.row.create_time)}}</span>
+          <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
         </template>
       </lin-table>
     </div>
@@ -129,7 +118,7 @@ export default {
     ]
     await this.getBaseTypes()
   },
-  beforeDestroy() {},
+  beforeDestroy() { },
 }
 </script>
 

@@ -7,17 +7,11 @@ export default class User {
    * 分配用户
    * @param {object} user 注册信息
    */
-  static register(user) {
+  static register(data) {
     return _axios({
       method: 'post',
       url: 'cms/user/register',
-      data: {
-        email: user.email,
-        username: user.username,
-        password: user.password,
-        group_ids: user.groupIds,
-        confirm_password: user.confirmPassword,
-      },
+      data,
       handleError: true,
     })
   }

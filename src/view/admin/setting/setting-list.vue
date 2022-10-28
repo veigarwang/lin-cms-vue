@@ -7,37 +7,24 @@
         </div>
         <div class="header-right">
           <div style="margin-left:30px">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              v-permission="'新增设置'"
-              @click="()=>{
-                this.showEdit = true;
-                this.id=0;
-            }"
-            >新增设置</el-button>
+            <el-button type="primary" icon="el-icon-edit" v-permission="'新增设置'" @click="() => {
+              this.showEdit = true;
+              this.id = 0;
+            }">新增设置</el-button>
             <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
           </div>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        :operateWidth="230"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        v-loading="loading"
-        :pagination="pagination"
-        @currentChange="handleCurrentChange"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :operateWidth="230"
+        @handleEdit="handleEdit" @handleDelete="handleDelete" v-loading="loading" :pagination="pagination"
+        @currentChange="handleCurrentChange">
         <template v-slot:status="scope">
-          <el-setting size="small" v-if="scope.row.status==true" type="success">启用</el-setting>
+          <el-setting size="small" v-if="scope.row.status == true" type="success">启用</el-setting>
           <el-setting size="small" v-else type="danger">禁用</el-setting>
         </template>
         <template v-slot:thumbnail_display="scope">
-          <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
+          <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
       <!--表格结束-->
@@ -138,7 +125,7 @@ export default {
 
     await this.getSettings()
   },
-  beforeDestroy() {},
+  beforeDestroy() { },
 }
 </script>
 

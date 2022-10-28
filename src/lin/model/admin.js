@@ -38,13 +38,14 @@ export default class Admin {
   static getTreePermissionsList() {
     return get('cms/admin/permission/tree-list')
   }
-  static async getAdminUsers({ groupId, count = this.uCount, page = this.uPage }) {
+
+  static async getAdminUsers({ group_id, count = this.uCount, page = this.uPage }) {
     let res
-    if (groupId) {
+    if (group_id) {
       res = await get('cms/admin/users', {
         count,
         page,
-        group_id: groupId,
+        group_id,
       })
     } else {
       res = await get('cms/admin/users', {
@@ -93,7 +94,6 @@ export default class Admin {
     return group
   }
 
-
   static async createOneGroup(name, info, permission_ids) {
     const res = await post('cms/admin/group', {
       name,
@@ -103,11 +103,8 @@ export default class Admin {
     return res
   }
 
-  static async updateOneGroup(name, info, id) {
-    const res = await put(`cms/admin/group/${id}`, {
-      name,
-      info,
-    })
+  static async updateOneGroup(data, id) {
+    const res = await put(`cms/admin/group/${id}`, data)
     return res
   }
 
@@ -121,12 +118,8 @@ export default class Admin {
     return res
   }
 
-
-  static async updateOneUser(email, group_ids, id) {
-    const res = await put(`cms/admin/user/${id}`, {
-      email,
-      group_ids,
-    })
+  static async updateOneUser(id, user) {
+    const res = await put(`cms/admin/user/${id}`, user)
     return res
   }
 

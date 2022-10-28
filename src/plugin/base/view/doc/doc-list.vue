@@ -6,30 +6,17 @@
           <div class="title">文档</div>
         </div>
         <div class="header-right">
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            v-permission="'新增文档'"
-            @click="()=>{
-                this.showEdit = true;
-                this.id=0;
-            }"
-          >新增文档</el-button>
+          <el-button type="primary" icon="el-icon-edit" v-permission="'新增文档'" @click="() => {
+            this.showEdit = true;
+            this.id = 0;
+          }">新增文档</el-button>
           <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        :operateWidth="230"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        v-loading="loading"
-        :pagination="pagination"
-        @currentChange="handleCurrentChange"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :operateWidth="230"
+        @handleEdit="handleEdit" @handleDelete="handleDelete" v-loading="loading" :pagination="pagination"
+        @currentChange="handleCurrentChange">
       </lin-table>
       <!--表格结束-->
     </div>
@@ -122,8 +109,8 @@ export default {
   },
   async created() {
     this.tableColumn = [
-          { prop: 'name', label: '文档名'},
-          { prop: 'display_name', label: '显示名'},
+      { prop: 'name', label: '文档名' },
+      { prop: 'display_name', label: '显示名' },
     ]
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary', permission: '编辑文档' },
@@ -132,7 +119,7 @@ export default {
 
     await this.getDocs()
   },
-  beforeDestroy() {},
+  beforeDestroy() { },
 }
 </script>
 

@@ -19,12 +19,8 @@
               <el-input v-model="book.image" placeholder="请填写封面地址"></el-input>
             </el-form-item>
             <el-form-item label="简介" prop="summary">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 4, maxRows: 8 }"
-                placeholder="请输入简介"
-                v-model="book.summary"
-              >
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8 }" placeholder="请输入简介"
+                v-model="book.summary">
               </el-input>
             </el-form-item>
 

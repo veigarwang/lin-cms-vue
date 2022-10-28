@@ -6,44 +6,27 @@
           <div class="title">评论管理</div>
         </div>
         <div class="header-right">
-          <el-input clearable
-            size="medium"
-            style="margin-right:10px;"
-            v-model="pagination.text"
-            placeholder="评论内容"></el-input>
-          <el-button type="default"
-            icon="el-icon-search"
-            @click="getComments">查询</el-button>
+          <el-input clearable size="medium" style="margin-right:10px;" v-model="pagination.text" placeholder="评论内容">
+          </el-input>
+          <el-button type="default" icon="el-icon-search" @click="getComments">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        @handleDetail="handleDetail"
-        @handleDelete="handleDelete"
-        @row-click="rowClick"
-        v-loading="loading"
-        :pagination="pagination"
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleDetail="handleDetail"
+        @handleDelete="handleDelete" @row-click="rowClick" v-loading="loading" :pagination="pagination"
         @currentChange="handleCurrentChange">
         <template v-slot:is_audit="scope">
-          <el-tag size="medium"
-            v-if="scope.row.is_audit == true"
-            type="success">审核通过</el-tag>
-          <el-tag size="medium"
-            v-else
-            type="danger">拉黑</el-tag>
+          <el-tag size="medium" v-if="scope.row.is_audit == true" type="success">审核通过</el-tag>
+          <el-tag size="medium" v-else type="danger">拉黑</el-tag>
         </template>
         <template v-slot:userinfo="scope">
-          <span class="item username clickable"
-            v-if="scope.row.user_info">
+          <span class="item username clickable" v-if="scope.row.user_info">
             <a :href="'/blog/detail/' + scope.row.user_info.id">{{ scope.row.user_info.nickname }}</a>
           </span>
         </template>
       </lin-table>
     </div>
-    <comment-dialog ref="dialogForm"
-      @ok="getComments"></comment-dialog>
+    <comment-dialog ref="dialogForm" @ok="getComments"></comment-dialog>
   </div>
 </template>
 

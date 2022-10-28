@@ -7,51 +7,30 @@
         </div>
 
         <div class="header-right">
-          <el-input
-            size="medium"
-            style="margin-right:10px;"
-            v-model="pagination.channel_name"
-            placeholder="技术频道"
-          ></el-input>
+          <el-input size="medium" style="margin-right:10px;" v-model="pagination.channel_name" placeholder="技术频道">
+          </el-input>
 
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            v-permission="'新增技术频道'"
-            @click="()=>{
-                showEdit = true;
-                this.id=0;
-            }"
-          >新增技术频道</el-button>
+          <el-button type="primary" icon="el-icon-edit" v-permission="'新增技术频道'" @click="() => {
+            showEdit = true;
+            this.id = 0;
+          }">新增技术频道</el-button>
           <!-- this.$refs['channelForm'].show(0); -->
           <el-button type="default" icon="el-icon-search" @click="refresh">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        v-loading="loading"
-        :pagination="pagination"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        @currentChange="handleCurrentChange"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
+        :pagination="pagination" @handleEdit="handleEdit" @handleDelete="handleDelete"
+        @currentChange="handleCurrentChange">
         <template v-slot:status="scope">
           <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
         <template v-slot:tags="scope">
-          <el-tag
-            style="margin-right:1px;"
-            size="small"
-            v-for="(tag,index) in scope.row.tags"
-            v-bind:key="index"
-            type="success"
-          >{{tag.tag_name}}</el-tag>
+          <el-tag style="margin-right:1px;" size="small" v-for="(tag, index) in scope.row.tags" v-bind:key="index"
+            type="success">{{ tag.tag_name }}</el-tag>
         </template>
         <template v-slot:thumbnail_display="scope">
-          <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
+          <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
       <!--表格结束-->
@@ -199,7 +178,7 @@ export default {
 
     await this.getChannels()
   },
-  beforeDestroy() {},
+  beforeDestroy() { },
 }
 </script>
 

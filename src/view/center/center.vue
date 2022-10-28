@@ -10,14 +10,8 @@
               <div class="name-wrapper">
                 <div class="label">昵称</div>
                 <div class="name">
-                  <el-input
-                    placeholder="请输入内容"
-                    size="small"
-                    v-model="nickname"
-                    suffix-icon="el-icon-edit"
-                    ref="input"
-                    @blur="blur"
-                  ></el-input>
+                  <el-input placeholder="请输入内容" size="small" v-model="nickname" suffix-icon="el-icon-edit" ref="input"
+                    @blur="blur"></el-input>
                 </div>
               </div>
               <div class="avatar" title="点击修改头像">
@@ -31,15 +25,8 @@
           </div>
           <div class="password">
             <div class="title">修改密码</div>
-            <el-form
-              ref="form"
-              :model="form"
-              status-icon
-              :rules="rules"
-              @submit.prevent
-              label-width="90px"
-              label-position="left"
-            >
+            <el-form ref="form" :model="form" status-icon :rules="rules" @submit.prevent label-width="90px"
+              label-position="left">
               <el-form-item label="原始密码" prop="old_password">
                 <el-input type="password" v-model="form.old_password" autocomplete="off"></el-input>
               </el-form-item>
@@ -272,11 +259,13 @@ export default {
   .wrap {
     padding: 20px;
     max-width: 800px;
+
     .user {
       padding: 0px 20px 25px 30px;
       z-index: 100;
       position: relative;
       border-bottom: 1px solid #dae1ec;
+
       .title {
         font-weight: bold;
         font-size: 16px;
@@ -284,23 +273,28 @@ export default {
         text-indent: 0px;
         border: none;
       }
+
       .content {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         .name-wrapper {
           display: flex;
           align-items: center;
+
           .label {
             margin-right: 20px;
             color: #333;
             font-weight: bold;
             font-size: 14px;
           }
+
           .name {
             font-weight: 500;
           }
         }
+
         .avatar {
           width: 80px;
           height: 80px;
@@ -371,8 +365,10 @@ export default {
         }
       }
     }
+
     .password {
       padding: 25px 20px 25px 30px;
+
       .title {
         color: #3a3a3a;
         font-weight: bold;

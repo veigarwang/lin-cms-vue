@@ -2,7 +2,9 @@
   <div class="log">
     <sticky-top>
       <div class="log-header">
-        <div class="header-left"><p class="title">日志信息</p></div>
+        <div class="header-left">
+          <p class="title">日志信息</p>
+        </div>
         <div class="header-right" v-permission="'搜索日志'">
           <lin-search @query="onQueryChange" ref="searchKeywordDom" />
           <el-dropdown style="margin: 0 10px" @command="handleCommand" v-permission="'查询日志记录的用户'">
@@ -12,12 +14,8 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
-                <el-dropdown-item
-                  icon="el-icon-user-solid"
-                  v-for="(user, index) in users.items"
-                  :key="index"
-                  :command="[user]"
-                  >{{ user }}
+                <el-dropdown-item icon="el-icon-user-solid" v-for="(user, index) in users.items" :key="index"
+                  :command="[user]">{{ user }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -30,8 +28,8 @@
     <transition name="fade">
       <div class="search" v-if="keyword">
         <p class="search-tip">
-          搜索“<span class="search-keyword">{{ keyword }}</span
-          >”， 找到 <span class="search-num">{{ totalCount }}</span> 条日志信息
+          搜索“<span class="search-keyword">{{ keyword }}</span>”， 找到 <span class="search-num">{{ totalCount }}</span>
+          条日志信息
         </p>
         <button class="search-back" @click="backInit">返回全部日志</button>
       </div>
@@ -312,6 +310,7 @@ export default {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
 .log {
   .log-header {
     display: flex;
@@ -462,6 +461,7 @@ export default {
     font-size: 14px;
     margin-left: 28px;
     cursor: pointer;
+
     &.nothing {
       cursor: text;
     }
@@ -479,6 +479,7 @@ export default {
     }
   }
 }
+
 .nothing {
   color: #45526b;
   font-size: 14px;

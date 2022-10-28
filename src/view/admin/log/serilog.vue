@@ -6,22 +6,13 @@
           <el-form :inline="true" :model="pagination" class="search-form">
             <el-form-item label="请选择级别">
               <el-select placeholder="请选择级别" v-model="pagination.logLevel" clearable>
-                <el-option
-                  :label="item.text"
-                  :value="item.level"
-                  v-bind:key="item.level"
-                  v-for="item in logLevels"
-                ></el-option>
+                <el-option :label="item.text" :value="item.level" v-bind:key="item.level" v-for="item in logLevels">
+                </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="消息">
-              <el-input
-                size="medium"
-                style="margin-right:10px;"
-                v-model="pagination.keyword"
-                placeholder="消息"
-                clearable
-              ></el-input>
+              <el-input size="medium" style="margin-right:10px;" v-model="pagination.keyword" placeholder="消息"
+                clearable></el-input>
             </el-form-item>
             <el-form-item label="时间范围">
               <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
@@ -33,15 +24,8 @@
         </el-card>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        v-loading="loading"
-        :pagination="pagination"
-        @currentChange="handleCurrentChange"
-        @handleDetail="handleDetail"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
+        :pagination="pagination" @currentChange="handleCurrentChange" @handleDetail="handleDetail">
         <!-- <template v-slot:level="scope">
           <el-tag
             size="medium"
@@ -49,7 +33,7 @@
           >{{scope.row.level|formatLogLevels}}</el-tag>
         </template> -->
         <template v-slot:timestamp="scope">
-          {{$filters.filterTimeYmdHms(scope.row.timestamp)}}
+          {{ $filters.filterTimeYmdHms(scope.row.timestamp) }}
         </template>
       </lin-table>
     </div>
@@ -199,7 +183,7 @@ export default {
 
     await this.getSerilogs()
   },
-  beforeDestroy() {},
+  beforeDestroy() { },
 }
 </script>
 

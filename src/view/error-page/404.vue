@@ -27,10 +27,12 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
+
   .page-404 {
     width: 349px;
     height: 190px;
   }
+
   .page-logo {
     position: absolute;
     right: 40px;
