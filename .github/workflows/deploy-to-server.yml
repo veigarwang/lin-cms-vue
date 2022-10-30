@@ -5,7 +5,9 @@ name: Deploy To Server 💕
 # events but only for the main branch
 on:
   push:
-    branches: [main]
+    branches:
+            - master
+            - vue-next
   pull_request:
     branches: [main]
 
