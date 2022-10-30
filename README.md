@@ -17,7 +17,6 @@
 ![](https://img.shields.io/badge/developer-@GongJS-3963bc.svg)
 ![](https://img.shields.io/badge/developer-@quanquan-3963bc.svg)
 
-
 ## Lin CMS 简介
 
 - Lin-CMS 是林间有风团队经过大量项目实践所提炼出的一套**内容管理系统框架**。
@@ -25,20 +24,20 @@
 - Lin-CMS 可以有效的帮助开发者提高 CMS 的开发效率。
 
 - Lin-CMS 是一套前后端完整的解决方案，后端部署请移步：
-
-    - [lin-cms-koa](https://github.com/TaleLin/lin-cms-koa)
-
-    - [lin-cms-flask](https://github.com/TaleLin/lin-cms-flask)
-
-    - [lin-cms-spring-boot](https://github.com/TaleLin/lin-cms-spring-boot)
+  - Node.js [lin-cms-koa](https://github.com/TaleLin/lin-cms-koa)
+  - Python [lin-cms-flask](https://github.com/TaleLin/lin-cms-flask)
+  - Java [lin-cms-spring-boot](https://github.com/TaleLin/lin-cms-spring-boot)
+  - Csharp [lin-cms-dotnetcore](https://github.com/luoyunchong/lin-cms-dotnetcore)
+  - PHP [lin-cms-tp5](https://github.com/ChenJinchuang/lin-cms-tp5)
 
 ## 注意事项
 
 1. Lin-CMS 是工程类开源项目，不能保证无缝升级.
 
-2. 当前分支为 Vue3 版本，如需使用 Vue2.x 请切换至 master 分支。
+2. 当前分支为 Vue3 版本，如需使用 Vue2.x 请切换至 vue2 分支。
 
 ## 文档资料
+
 ### 文档地址
 
 - [http://doc.cms.talelin.com/](http://doc.cms.talelin.com/)
@@ -82,16 +81,17 @@ Lin CMS 除了内置常见的功能外，还提供了一套开发规范与工具
 
 ```sh
 # clone the project
-git clone https://github.com/TaleLin/lin-cms-vue.git
+git clone https://github.com/luoyunchong/lin-cms-vue.git
 
 # install dependency
-npm install or yarn
+pnpm install 
 
 # develop
-npm run serve or yarn (run) serve
+pnpm run serve
 ```
 
 ## 讨论交流
+
 微信公众号搜索：林间有风
 
 QQ群搜索：Lin CMS 官方交流群 或 814597236
@@ -118,6 +118,7 @@ QQ群搜索：Lin CMS 官方交流群 或 814597236
 ### 0.4.1
 
 1. `A` 新增验证码功能，默认关闭验证码
+
 ### 0.4.0
 
 1. `U` 升级到 Vue3 版本
@@ -192,16 +193,15 @@ QQ群搜索：Lin CMS 官方交流群 或 814597236
 
 ### 0.0.1-alpha.3
 
-1.  `A` 添加插件机制
-2.  `U` 重构路由设计
-2.  `A` 可配置三级路由导航
+1. `A` 添加插件机制
+2. `U` 重构路由设计
+2. `A` 可配置三级路由导航
 
 ### 0.0.1-alpha.2
 
-1.  `U` 升级到 `vue-cli3.4` 
-2.  `A` 慕课网专题插件
+1. `U` 升级到 `vue-cli3.4`
+2. `A` 慕课网专题插件
 
 ### 0.0.1-alpha.1
 
-1.  `A` 初始化内测版
-
+1. `A` 初始化内测版
