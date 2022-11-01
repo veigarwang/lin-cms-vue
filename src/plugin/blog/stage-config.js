@@ -46,7 +46,6 @@ const blogRouter = {
       route: "/cms/article/list",
       filePath: "plugin/blog/view/article/article-list.vue",
       inNav: true,
-      icon: "iconfont icon-tushuguanli",
       permission: ['所有随笔']
     },
     {
@@ -56,7 +55,6 @@ const blogRouter = {
       route: "/comment/list",
       filePath: "plugin/blog/view/comment/comment-list.vue",
       inNav: true,
-      icon: "iconfont icon-tushuguanli",
       permission: ["评论列表"]
     },
     {

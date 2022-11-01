@@ -22,7 +22,7 @@
 
                 <el-col :lg="12">
                   <el-form-item label prop="title">
-                    <el-link type="primary" :href="`${USER_URL}#post/${form.id}`" v-if="form.id != null"
+                    <el-link type="primary" :href="`${VVLOG_URL}#p/${form.id}`" v-if="form.id != null"
                       target="_blank">查看随笔</el-link>
                   </el-form-item>
                 </el-col>
@@ -125,7 +125,7 @@ export default {
       classifys: [],
       article_types: [],
       loading: false,
-      USER_URL: process.env.VUE_APP_USER_URL,
+      VVLOG_URL: process.env.VUE_APP_VVLOG_URL,
     }
   },
   props: {
