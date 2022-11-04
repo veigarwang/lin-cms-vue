@@ -10,12 +10,12 @@
           <el-input size="medium" style="margin-right:10px;" v-model="pagination.channel_name" placeholder="技术频道">
           </el-input>
 
-          <el-button type="primary" icon="el-icon-edit" v-permission="'新增技术频道'" @click="() => {
+          <el-button type="primary" icon="Edit" v-permission="'新增技术频道'" @click="() => {
             showEdit = true;
             this.id = 0;
           }">新增技术频道</el-button>
           <!-- this.$refs['channelForm'].show(0); -->
-          <el-button type="default" icon="el-icon-search" @click="refresh">查询</el-button>
+          <el-button type="default" icon="Search" @click="refresh">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->

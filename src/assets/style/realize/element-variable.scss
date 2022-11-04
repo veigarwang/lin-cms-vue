@@ -30,7 +30,9 @@ $--link-disabled-font-color: $--color-text-placeholder !default;
 .el-button {
   padding: 8px 16px;
   border-radius: 2px;
-
+  span .el-icon {
+    margin-right: 5px;
+  }
   &:hover {
     color: #3963bc !important;
     background: #ebeff8 !important;

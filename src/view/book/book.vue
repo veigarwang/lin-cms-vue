@@ -161,7 +161,7 @@ function getRules() {
   }
 
   .submit {
-    float: left;
+    float: right;
   }
 }
 </style>

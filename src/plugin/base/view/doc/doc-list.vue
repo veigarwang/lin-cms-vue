@@ -6,11 +6,12 @@
           <div class="title">文档</div>
         </div>
         <div class="header-right">
-          <el-button type="primary" icon="el-icon-edit" v-permission="'新增文档'" @click="() => {
+          <el-button type="primary" icon="Edit" v-permission="'新增文档'" @click="() => {
             this.showEdit = true;
             this.id = 0;
           }">新增文档</el-button>
-          <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+          <el-button type="default" @click="refresh" icon="Search">
+            刷新</el-button>
         </div>
       </div>
       <!-- 表格 -->

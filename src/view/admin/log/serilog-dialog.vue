@@ -14,7 +14,7 @@
           </el-col>
           <el-col :xs="12">
             <el-form-item label="级别" prop="level">
-              <el-tag size="medium" :type="form.level | formatlogLevelType">{{ form.level | formatLogLevels }}</el-tag>
+              <el-tag size="medium" :type="formatlogLevelType(form.level)">{{ formatLogLevels(form.level) }}</el-tag>
             </el-form-item>
           </el-col>
         </el-row>
@@ -86,7 +86,7 @@ export default {
     }
   },
   computed: {},
-  filters: {
+  methods: {
     formatLogLevels(level) {
       if (level < vm.logLevels.length) {
         return vm.logLevels[level].text
@@ -101,8 +101,6 @@ export default {
         return 'info'
       }
     },
-  },
-  methods: {
     show(record) {
       Object.assign(this.form, record)
       this.form.properties = JSON.parse(this.form.properties)

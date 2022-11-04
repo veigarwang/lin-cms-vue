@@ -12,7 +12,7 @@
             v-model="pagination.classify_name"
             placeholder="分类专栏"></el-input>
           <el-button type="default"
-            icon="el-icon-search"
+            icon="Search"
             @click="refresh">查询</el-button>
         </div>
       </div>

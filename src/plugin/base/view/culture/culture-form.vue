@@ -37,7 +37,7 @@
               </div>
               <div class="header-right">
                 <el-input size="medium" style="margin-right:10px;" v-model="pagination.key" placeholder="编码"></el-input>
-                <el-button type="default" icon="el-icon-search" @click="getResources">刷新</el-button>
+                <el-button type="default" @click="getResources" icon="Search">刷新</el-button>
               </div>
             </div>
             <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
@@ -201,7 +201,7 @@ export default {
   }
 
   .submit {
-    float: left;
+    float: right;
   }
 }
 </style>

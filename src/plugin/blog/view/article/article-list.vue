@@ -7,7 +7,7 @@
         </div>
         <div class="header-right">
           <el-input size="medium" style="margin-right:10px;" v-model="pagination.title" placeholder="标题"></el-input>
-          <el-button type="default" icon="el-icon-search" @click="getArticles">查询</el-button>
+          <el-button type="default" icon="Search" @click="getArticles">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->

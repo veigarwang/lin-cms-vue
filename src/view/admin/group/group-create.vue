@@ -123,7 +123,7 @@ export default {
   }
 
   .submit {
-    float: left;
+    float: right;
   }
 }
 </style>

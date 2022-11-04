@@ -30,12 +30,12 @@
         <div slot="header"><span>带icon的输入框</span></div>
         <el-row>
           <el-col :span="12">
-            <el-input placeholder="请输入内容" size="medium" suffix-icon="el-icon-edit" v-model="input2"></el-input>
+            <el-input placeholder="请输入内容" size="medium" suffix-icon="Edit" v-model="input2"></el-input>
           </el-col>
         </el-row>
         <el-row style="margin-top:20px">
           <el-col :span="12">
-            <el-input placeholder="请输入内容" size="medium" prefix-icon="el-icon-search" v-model="input3"></el-input>
+            <el-input placeholder="请输入内容" size="medium" prefix-icon="Search" v-model="input3"></el-input>
           </el-col>
         </el-row>
         <el-collapse>
@@ -70,7 +70,7 @@
                   <el-option label="订单号" value="2"></el-option>
                   <el-option label="用户电话" value="3"></el-option>
                 </el-select>
-                <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-button slot="append" icon="Search"></el-button>
               </el-input>
             </el-col>
           </el-col>
@@ -131,25 +131,25 @@ export default {
         <el-input placeholder="禁止输入" size="medium" disabled></el-input>`,
       icon: `
         <el-input placeholder="请选择日期" size="medium" suffix-icon="el-icon-date" v-model="input"></el-input>
-        <el-input placeholder="请输入内容" size="medium" prefix-icon="el-icon-search" v-model="input"></el-input>`,
+        <el-input placeholder="请输入内容" size="medium" prefix-icon="Search" v-model="input"></el-input>`,
       complex: `
         <el-input placeholder="请输入内容" size="medium" v-model="input">
             <template slot="prepend">Http://</template>
         </el-input>
-       
+
         <el-input placeholder="请输入内容" size="medium" v-model="input">
             <template slot="append">.com</template>
         </el-input>
-        
+
         <el-input placeholder="请输入内容" size="medium" class="input-with-select" v-model="input">
             <el-select size="medium" slot="prepend" placeholder="请选择">
                 <el-option label="餐厅名" value="1"></el-option>
                 <el-option label="订单号" value="2"></el-option>
                 <el-option label="用户电话" value="3"></el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button slot="append" icon="Search"></el-button>
         </el-input>
-        
+
         .input-with-select .el-input-group__prepend {
             background-color: #fff;
             width: 100px;

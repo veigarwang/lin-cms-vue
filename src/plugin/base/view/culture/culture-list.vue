@@ -7,10 +7,12 @@
         </div>
         <div class="header-right">
           <div style="margin-left:30px">
-            <el-button type="primary" icon="el-icon-edit" v-permission="'新增本地化'" @click="() => {
+            <el-button type="primary" icon="Edit" v-permission="'新增本地化'" @click="() => {
               this.$router.push(`/base/culture/form`)
             }">新增本地化</el-button>
-            <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+            <el-button type="default" @click="refresh" icon="Search">
+              刷新
+            </el-button>
           </div>
         </div>
       </div>

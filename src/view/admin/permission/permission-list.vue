@@ -6,7 +6,9 @@
       </div>
       <div class="header-right">
         <div style="margin-left:30px">
-          <el-button type="default" icon="el-icon-search" @click="getTreePermissionsList">刷新</el-button>
+          <el-button @click="getTreePermissionsList" icon="Search">
+            刷新
+          </el-button>
         </div>
       </div>
     </div>
@@ -15,7 +17,7 @@
     <el-table ref="multipleTable" v-loading="loading" row-key="rowkey" size="medium" highlight-current-row
       :border="true" :data="tableData" :default-expand-all="false" style="width: 100%;"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-      <el-table-column type="index" width="50" label="#" />
+      <el-table-column type="index" width="70" label="#" />
       <el-table-column prop="name" label="权限名" width="180" />
       <el-table-column prop="router" label="接口地址" width="400" />
       <el-table-column prop="create_time" label="创建时间" width="180">
@@ -29,7 +31,7 @@
 
 <script>
 import Admin from '@/lin/model/admin'
-
+import { Search } from 'element-plus'
 export default {
   name: 'PermissionList',
   components: {},

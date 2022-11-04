@@ -18,7 +18,7 @@
               <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="el-icon-search" @click="refresh">查询</el-button>
+              <el-button type="primary" icon="Search" @click="refresh">查询</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -26,12 +26,10 @@
       <!-- 表格 -->
       <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
         :pagination="pagination" @currentChange="handleCurrentChange" @handleDetail="handleDetail">
-        <!-- <template v-slot:level="scope">
-          <el-tag
-            size="medium"
-            :type="scope.row.level|formatlogLevelType"
-          >{{scope.row.level|formatLogLevels}}</el-tag>
-        </template> -->
+        <template v-slot:level="scope">
+          <el-tag size="medium" :type="formatlogLevelType(scope.row.level)">{{ formatLogLevels(scope.row.level) }}
+          </el-tag>
+        </template>
         <template v-slot:timestamp="scope">
           {{ $filters.filterTimeYmdHms(scope.row.timestamp) }}
         </template>
@@ -109,7 +107,7 @@ export default {
       ],
     }
   },
-  filters: {
+  methods: {
     formatLogLevels(level) {
       if (level < vm.logLevels.length) {
         return vm.logLevels[level].text
@@ -124,8 +122,6 @@ export default {
         return 'info'
       }
     },
-  },
-  methods: {
     handleDateChange(date) {
       this.searchDate = date
     },
@@ -190,7 +186,5 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/style/list.scss';
 
-.search-form {
-  margin-top: 20px;
-}
+
 </style>

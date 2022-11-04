@@ -11,7 +11,7 @@
             style="margin-right:30px">
             <el-option v-for="(group, index) in groups" :key="index" :label="group.name" :value="group.id"></el-option>
           </el-select>
-          <el-button type="default" icon="el-icon-search" @click="getAdminUsers">刷新</el-button>
+          <el-button type="default" icon="Search" @click="getAdminUsers">刷新</el-button>
         </div>
       </div>
     </div>

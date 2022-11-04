@@ -1,5 +1,4 @@
 <template>
-  <div class="container">
     <el-date-picker
       v-model="value"
       type="daterange"
@@ -12,10 +11,9 @@
       :shortcuts="shortcuts"
     >
     </el-date-picker>
-  </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script type="js">
 import dayjs from 'dayjs'
 
 export default {

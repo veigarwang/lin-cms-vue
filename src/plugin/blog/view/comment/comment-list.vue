@@ -8,7 +8,7 @@
         <div class="header-right">
           <el-input clearable size="medium" style="margin-right:10px;" v-model="pagination.text" placeholder="评论内容">
           </el-input>
-          <el-button type="default" icon="el-icon-search" @click="getComments">查询</el-button>
+          <el-button type="default" icon="Search" @click="getComments">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->

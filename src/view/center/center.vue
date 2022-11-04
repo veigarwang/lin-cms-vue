@@ -10,7 +10,7 @@
               <div class="name-wrapper">
                 <div class="label">昵称</div>
                 <div class="name">
-                  <el-input placeholder="请输入内容" size="small" v-model="nickname" suffix-icon="el-icon-edit" ref="input"
+                  <el-input placeholder="请输入内容" size="small" v-model="nickname" suffix-icon="Edit" ref="input"
                     @blur="blur"></el-input>
                 </div>
               </div>

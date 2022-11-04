@@ -3,7 +3,7 @@
     <sticky-top>
       <div class="title">
         <span>{{ title[this.id == 0 ? 0 : 1] }}</span>
-        <span class="back" @click="back">
+        <span class="back" @click="goBack">
           <i class="iconfont icon-fanhui"></i> 返回
         </span>
       </div>
@@ -111,7 +111,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    back() {
+    goBack() {
       this.$emit('editClose')
     },
   },

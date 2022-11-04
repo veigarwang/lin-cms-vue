@@ -7,11 +7,11 @@
         </div>
         <div class="header-right">
           <el-input size="medium" style="margin-right:30px" v-model="pagination.tag_name" placeholder="标签名"></el-input>
-          <el-button type="primary" icon="el-icon-edit" v-permission="'新增标签'" @click="() => {
+          <el-button type="primary" icon="Edit" v-permission="'新增标签'" @click="() => {
             this.showEdit = true;
             this.id = 0;
           }">新增标签</el-button>
-          <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+          <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
         </div>
       </div>
       <!-- 表格 -->

@@ -12,11 +12,13 @@
               <el-option v-for="(item, index) in types" :key="index" :label="item.full_name" :value="item.type_code">
               </el-option>
             </el-select>
-            <el-button type="primary" icon="el-icon-edit" v-permission="'新增字典'" @click="() => {
+            <el-button type="primary" icon="Edit" v-permission="'新增字典'" @click="() => {
               this.$refs['dialogForm'].show();
             }">新增字典
             </el-button>
-            <el-button type="default" icon="el-icon-search" @click="refresh">刷新</el-button>
+            <el-button type="default" icon="Search" @click="refresh">
+              刷新
+            </el-button>
           </div>
         </div>
       </div>
