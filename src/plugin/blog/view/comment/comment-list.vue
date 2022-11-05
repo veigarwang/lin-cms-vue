@@ -42,19 +42,18 @@ export default {
   inject: ['eventBus'],
   data() {
     return {
-      id: 0, // id
-      refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
-      editIndex: null, // 编辑的行
-      tableData: [], // 表格数据
-      tableColumn: [], // 表头数据
-      operate: [], // 表格按键操作区
-      dialogFormVisible: false, // 控制弹窗显示
+      id: 0,
+      refreshPagination: true,
+      editIndex: null,
+      tableData: [],
+      tableColumn: [],
+      operate: [],
       activeTab: '修改信息',
       loading: false,
       pagination: {
         pageSize: 10,
         pageTotal: 0,
-        currentPage: 1, // 默认获取第一页的数据
+        currentPage: 1,
         text: '',
       },
     }
@@ -78,7 +77,7 @@ export default {
     buttonMethods(func, index, row) {
       console.log(func, index, row)
     },
-    async handleDetail(val) {
+    handleDetail(val) {
       let selectedData
       // 单击 编辑按键
       if (val.index >= 0) {
@@ -88,9 +87,7 @@ export default {
         // 单击 table row
         selectedData = val
       }
-      console.log(selectedData)
       this.$refs['dialogForm'].show(selectedData)
-      // this.$router.push("/comment/form/" + selectedData.id);
     },
     // 切换table页
     async handleCurrentChange(val) {
@@ -116,7 +113,6 @@ export default {
         if (res.code === 0) {
           this.loading = false
           if (this.pagination.pageTotal % this.pagination.pageSize === 1 && this.pagination.currentPage !== 1) {
-            // 判断删除的是不是每一页的最后一条数据
             this.pagination.currentPage--
           }
           await this.getComments()
@@ -130,7 +126,6 @@ export default {
         }
       })
     },
-    // 双击 table ro
     rowClick(row) {
       this.handleDetail(row)
     },

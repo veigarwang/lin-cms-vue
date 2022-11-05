@@ -19,7 +19,7 @@
             <el-input size="medium" clearable v-model="form.info"></el-input>
           </el-form-item>
           <el-form-item label="排序码" prop="sort_code">
-            <el-input size="medium" clearable v-model="form.sort_code"></el-input>
+            <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
           </el-form-item>
         </el-form>
       </div>
