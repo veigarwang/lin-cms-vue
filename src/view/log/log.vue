@@ -306,7 +306,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.log :v-deep(.el-button) {
+.log :deep(.el-button) {
   padding-top: 10px;
   padding-bottom: 10px;
 }

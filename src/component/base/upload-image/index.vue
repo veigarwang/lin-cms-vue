@@ -1075,7 +1075,7 @@ export default {
   }
 
   .thumb-item {
-    :v-deep(.el-image-viewer__canvas) {
+    :deep(.el-image-viewer__canvas) {
       position: absolute;
       max-width: 800px;
       left: 50%;

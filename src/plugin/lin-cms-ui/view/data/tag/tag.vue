@@ -145,7 +145,7 @@ export default {
       ],
       text: '',
       /* eslint-disable */
-      base: `     
+      base: `
         <el-tag>标签一</el-tag>
         <el-tag type="success">标签二</el-tag>
         <el-tag type="info">标签三</el-tag>
@@ -217,7 +217,7 @@ export default {
               margin-left: 10px;
               vertical-align: bottom;
             }
-            .input-new-tag :v-deep(.el-input__inner) {
+            .input-new-tag :deep(.el-input__inner) {
               height: 24px;
             }
           </style>
@@ -370,7 +370,7 @@ export default {
   margin-left: 10px;
   vertical-align: bottom;
 }
-.input-new-tag :v-deep(.el-input__inner) {
+.input-new-tag :deep(.el-input__inner) {
   height: 24px;
 }
 </style>
