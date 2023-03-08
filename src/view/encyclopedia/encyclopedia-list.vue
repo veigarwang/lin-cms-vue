@@ -37,6 +37,9 @@
         @row-click="rowClick"
         v-loading="loading"
       >
+        <template v-slot:name="scope">
+          <span>{{ scope.row.name }}{{ scope.row.alias !== null && scope.row.alias !== '' ? '（' + scope.row.alias + '）' : '' }}</span>
+        </template>
       </lin-table>
     </div>
 
@@ -65,7 +68,14 @@ export default {
   },
   data() {
     return {
-      tableColumn: [],
+      tableColumn: [
+        { prop: 'item_type_name', label: '所属类别', align: 'center', width: '100px' },
+        { prop: 'name, alias', label: '词条名称', scope: 'name', scopedSlots: { customRender: 'name' } },
+        { prop: 'pronunciation', label: '读音' },
+        { prop: 'explanation', label: '释名' },
+        { prop: 'provenance', label: '出处' },
+        { prop: 'effect', label: '作用' },
+      ],
       tableData: [],
       operate: [],
       showForm: false,
@@ -81,14 +91,6 @@ export default {
   },
   async created() {
     this.loading = true
-    this.tableColumn = [
-      { prop: 'item_type_name', label: '所属类别', align: 'center', width: '120px' },
-      { prop: 'name', label: '词条名称', width: '160px' },
-      { prop: 'pronunciation', label: '读音' },
-      { prop: 'alias', label: '别名' },
-      { prop: 'provenance', label: '出处', width: '275px' },
-      { prop: 'effect', label: '作用' },
-    ]
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       {

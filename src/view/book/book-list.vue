@@ -76,7 +76,7 @@ export default {
           scope: 'title',
           scopedSlots: { customRender: 'title' },
         },
-        { prop: 'author1', label: '作者', width: 150 },
+        { prop: 'author1', label: '作者', width: 175 },
         {
           prop: 'date_purchased',
           label: '购买日期',

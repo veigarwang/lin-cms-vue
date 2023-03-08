@@ -1,10 +1,12 @@
 <template>
   <div class="container">
     <div class="title">
-      <span v-if="!edit_item_id">新增词条</span><span v-else>修改词条 - ID: {{ item_id }}</span>
-      <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
-      <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一条 </span>
+      <span v-if="!edit_item_id" class="id">新增词条</span><span v-else class="id">修改词条 - ID: {{ item_id }}</span>      
       <span v-if="edit_item_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一条 </span>
+      <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一条 </span>
+      <span class="back" @click="back"> <i class="el-icon-refresh-left"></i> 返回 </span>
+      <span v-if="!edit_item_id" class="save" @click="submitForm('form', true)" :loading="loading"> <i class="el-icon-finished"></i> 连续新增 </span>
+      <span class="save" @click="submitForm('form', false)" :loading="loading"> <i class="el-icon-check"></i> 保存 </span>
     </div>
     <el-divider></el-divider>
     <div class="wrap">
@@ -36,6 +38,11 @@
                 <el-input size="medium" v-model="form.name" placeholder="请输入词条名"></el-input>
               </el-form-item>
             </el-col>
+            <!-- <el-col :span="6" v-if="!edit_item_id">
+              <el-form-item label="词条名">
+                <div>{{ form.name }}</div>
+              </el-form-item>
+            </el-col> -->
             <el-col :span="6">
               <el-form-item label="读音" prop="pronunciation">
                 <el-input size="medium" v-model="form.pronunciation" placeholder="请输入读音"></el-input>
@@ -132,7 +139,7 @@
                 <el-input
                   size="medium"
                   type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 4 }"
+                  :autosize="{ minRows: 1, maxRows: 2 }"
                   placeholder="请输入聖解"
                   v-model="form.remarks"
                 >
@@ -184,7 +191,7 @@ export default {
         pronunciation: '',
         provenance: '',
         original_text: '',
-        item_type: ''
+        item_type: '',
       },
       item_id: '',
       item_types: [],
@@ -221,6 +228,10 @@ export default {
     this.$watch(
       'form.name',
       Utils.debounce(func => {
+        this.form.name = this.form.name.replace('之山', '山')
+        this.form.name = this.form.name.replace('之水', '水')
+        this.form.name = this.form.name.replace('之玉', '玉')
+        this.form.name = this.form.name.replace('之國', '國')
         var res = pinyinUtil.getPinyin(this.form.name, ' ', true, false)
         if (!this.firstLoad || !this.item_id) {
           this.form.pronunciation = res
@@ -233,22 +244,31 @@ export default {
           this.form.name.endsWith('水') ||
           this.form.name.endsWith('澤') ||
           this.form.name.endsWith('湖') ||
+          this.form.name.endsWith('淵') ||
+          this.form.name.endsWith('江') ||
           this.form.name.endsWith('海')
         )
           this.form.item_type = Number(this.item_types[1].item_code)
         else if (this.form.name.endsWith('草')) this.form.item_type = Number(this.item_types[2].item_code)
         else if (this.form.name.endsWith('木') || this.form.name.endsWith('樹'))
           this.form.item_type = Number(this.item_types[3].item_code)
-        else if (this.form.name.endsWith('虫') || this.form.name.endsWith('蟲'))
+        else if (this.form.name.endsWith('虫') || this.form.name.endsWith('蟲') || this.form.name.endsWith('蛇'))
           this.form.item_type = Number(this.item_types[4].item_code)
         else if (this.form.name.endsWith('魚')) this.form.item_type = Number(this.item_types[5].item_code)
         else if (this.form.name.endsWith('鳥')) this.form.item_type = Number(this.item_types[6].item_code)
         else if (this.form.name.endsWith('神')) this.form.item_type = Number(this.item_types[8].item_code)
         else if (this.form.name.endsWith('國') || this.form.name.endsWith('城'))
           this.form.item_type = Number(this.item_types[10].item_code)
-        else if (this.form.name.endsWith('玉'))
+        else if (this.form.name.endsWith('玉') || this.form.name.endsWith('碧'))
           this.form.item_type = Number(this.item_types[12].item_code)
-        else if (this.form.name.endsWith('金') || this.form.name.endsWith('石'))
+        else if (
+          this.form.name.endsWith('堊') ||
+          this.form.name.endsWith('䨼') ||
+          this.form.name.endsWith('米') ||
+          this.form.name.endsWith('赭')
+        )
+          this.form.item_type = Number(this.item_types[13].item_code)
+        else if (this.form.name.endsWith('金') || this.form.name.endsWith('石') || this.form.name.endsWith('銅'))
           this.form.item_type = Number(this.item_types[14].item_code)
       }, 1000),
     ),
@@ -273,18 +293,49 @@ export default {
       this.$watch(
         'form.guozhu',
         Utils.debounce(func => {
-          this.form.guozhu = this.form.guozhu
-            .replace('，郭璞注：『', '：')
-            .replace('。郭璞注：『', '：')
-            .replace('、郭璞注：『', '：')
-            .replace('郭璞注：『', '：')
-            .replace('「', '『')
-            .replace('」', '』')
-            .replace('』』', '』')
-            .replace(' ', '')
+          if (
+            this.form.guozhu.indexOf('，郭璞注：『') > -1 ||
+            this.form.guozhu.indexOf('。郭璞注：『') > -1 ||
+            this.form.guozhu.indexOf('、郭璞注：『') > -1 ||
+            this.form.guozhu.indexOf('郭璞注：『') > -1 ||
+            this.form.guozhu.indexOf('「') > -1 ||
+            this.form.guozhu.indexOf('」') > -1 ||
+            this.form.guozhu.indexOf('』』') > -1 ||
+            this.form.guozhu.indexOf(' ') > -1
+          ) {
+            this.form.guozhu =
+              this.form.guozhu
+                .replace('，郭璞注：『', '：')
+                .replace('。郭璞注：『', '：')
+                .replace('、郭璞注：『', '：')
+                .replace('郭璞注：『', '：')
+                .replace('「', '『')
+                .replace('」', '』')
+                .replace('』』', '』')
+                .replace(' ', '') + '\n'
+          }
           //reg.exec(this.form.original_text).toString()
         }, 1000),
       )
+    this.$watch(
+      'form.alias',
+      Utils.debounce(func => {
+        if (this.form.alias.indexOf('，') > -1) {
+          this.form.alias = this.form.alias.replace('，', ',')
+        }
+      }, 1000),
+    )
+    this.$watch(
+      'form.jijie',
+      Utils.debounce(func => {
+        if (this.form.jijie.indexOf('珂案：') > -1) {
+          this.form.jijie = this.form.jijie.replace('珂案：', '袁珂云：「') + '」\n'
+        }
+        if (this.form.jijie.indexOf('０') > -1) {
+          this.form.jijie = this.form.jijie.replace('０', '〇')
+        }
+      }, 1000),
+    )
   },
   async mounted() {
     this.loading = true
@@ -339,7 +390,7 @@ export default {
               if (res.code < window.MAX_SUCCESS_CODE) {
                 this.last_provenance = this.form.provenance
                 this.$message.success(`${res.message}`)
-                if (!continued) this.resetForm(formName)
+                if (!continued) this.$emit('editClose')
               }
             } catch (error) {
               this.loading = false
@@ -348,7 +399,7 @@ export default {
             }
           }
         } else {
-          this.$message.error('请输入正确的信息')
+          this.$message.error('请输入必要的信息')
         }
       })
     },
@@ -361,12 +412,14 @@ export default {
         this.form.original_text = '《山海經·' + this.last_provenance + '》：'
     },
     async previous() {
-      try {
-        this.item_id = this.item_id - 1
-        this.firstLoad = true
-        this.form = await encyclopedia.getEncyclopedia(this.item_id)
-      } catch (error) {
-        this.item_id = this.item_id + 1
+      while (this.item_id > 1) {
+        try {
+          this.item_id = this.item_id - 1
+          this.firstLoad = true
+          this.form = await encyclopedia.getEncyclopedia(this.item_id)
+          this.item_id = this.form.id
+          break
+        } catch (error) {}
       }
     },
     async next() {
@@ -375,8 +428,10 @@ export default {
         this.firstLoad = true
         this.form = await encyclopedia.getEncyclopedia(this.item_id)
       } catch (error) {
-        this.item_id = this.item_id - 1
+        this.item_id = this.item_id + 1
+        this.form = await encyclopedia.getEncyclopedia(this.item_id)
       }
+      this.item_id = this.form.id
     },
     back() {
       this.$emit('editClose')
@@ -393,21 +448,31 @@ export default {
 
 .container {
   .title {
+    .id {
+      float: left;
+      margin-left: 10px;
+    }
     .previous {
-      float: right;
-      margin-right: 30px;
+      //float: left;
+      margin-left: 30px;
       cursor: pointer;
       z-index: 100;
     }
     .next {
-      float: right;
-      margin-right: 30px;
+      //float: left;
+      margin-left: 30px;
       cursor: pointer;
       z-index: -100;
     }
-    .back {
+
+    .save {
       float: right;
       margin-right: 40px;
+      cursor: pointer;
+    }
+    .back {
+      float: right;
+      margin-right: 10px;
       cursor: pointer;
     }
   }

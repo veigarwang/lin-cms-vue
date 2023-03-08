@@ -94,7 +94,7 @@ export default {
           }
         } else {
           console.log('error submit!!')
-          this.$message.error('请填写正确的信息')
+          this.$message.error('请输入必要的信息')
           this.$emit('handlePasswordResult', false)
           return false
         }
