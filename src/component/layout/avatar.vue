@@ -1,28 +1,17 @@
 <template>
-  <el-dialog
-    center
-    title="裁剪"
-    width="300px"
-    :append-to-body="true"
-    :close-on-click-modal="false"
-    :model-value="cropVisible"
-    custom-class="croppa-dialog"
-  >
+  <el-dialog center title="裁剪" width="300px" :append-to-body="true" :close-on-click-modal="false"
+    :model-value="cropVisible" class="croppa-dialog">
     <div style="text-align: center;">
       <div class="avatar-croppa-container">
-        <vue-picture-cropper
-          :boxStyle="{
-            width: '100%',
-            height: '100%',
-            margin: 'auto',
-            backgroundColor: '#f8f8f8',
-          }"
-          :img="originalImage"
-          :options="{
-            viewMode: 1, // 限制裁剪框不超过画布的大小
-            aspectRatio: 1, // 头像使用长宽比为 1 裁剪
-          }"
-        />
+        <vue-picture-cropper :boxStyle="{
+          width: '100%',
+          height: '100%',
+          margin: 'auto',
+          backgroundColor: '#f8f8f8',
+        }" :img="originalImage" :options="{
+  viewMode: 1, // 限制裁剪框不超过画布的大小
+  aspectRatio: 1, // 头像使用长宽比为 1 裁剪
+}" />
       </div>
       <div style="margin-top: 1em;">通过鼠标滚轮调节头像大小</div>
     </div>
