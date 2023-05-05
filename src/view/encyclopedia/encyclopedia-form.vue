@@ -1,12 +1,16 @@
 <template>
   <div class="container">
     <div class="title">
-      <span v-if="!edit_item_id" class="id">新增词条</span><span v-else class="id">修改词条 - ID: {{ item_id }}</span>      
+      <span v-if="!edit_item_id" class="id">新增词条</span><span v-else class="id">修改词条 - ID: {{ item_id }}</span>
       <span v-if="edit_item_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一条 </span>
       <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一条 </span>
       <span class="back" @click="back"> <i class="el-icon-refresh-left"></i> 返回 </span>
-      <span v-if="!edit_item_id" class="save" @click="submitForm('form', true)" :loading="loading"> <i class="el-icon-finished"></i> 连续新增 </span>
-      <span class="save" @click="submitForm('form', false)" :loading="loading"> <i class="el-icon-check"></i> 保存 </span>
+      <span v-if="!edit_item_id" class="save" @click="submitForm('form', true)" :loading="loading">
+        <i class="el-icon-finished"></i> 连续新增
+      </span>
+      <span class="save" @click="submitForm('form', false)" :loading="loading">
+        <i class="el-icon-check"></i> 保存
+      </span>
     </div>
     <el-divider></el-divider>
     <div class="wrap">
@@ -238,7 +242,14 @@ export default {
         } else {
           this.firstLoad = false
         }
-        if (this.form.name.endsWith('山') || this.form.name.endsWith('丘') || this.form.name.endsWith('谷'))
+        if (
+          this.form.name.endsWith('山') ||
+          this.form.name.endsWith('丘') ||
+          this.form.name.endsWith('谷') ||
+          this.form.name.endsWith('野') ||
+          this.form.name.endsWith('臺') ||
+          this.form.name.endsWith('穴')
+        )
           this.form.item_type = Number(this.item_types[0].item_code)
         else if (
           this.form.name.endsWith('水') ||
@@ -250,15 +261,39 @@ export default {
         )
           this.form.item_type = Number(this.item_types[1].item_code)
         else if (this.form.name.endsWith('草')) this.form.item_type = Number(this.item_types[2].item_code)
-        else if (this.form.name.endsWith('木') || this.form.name.endsWith('樹'))
+        else if (this.form.name.endsWith('木') || this.form.name.endsWith('林') || this.form.name.endsWith('樹'))
           this.form.item_type = Number(this.item_types[3].item_code)
         else if (this.form.name.endsWith('虫') || this.form.name.endsWith('蟲') || this.form.name.endsWith('蛇'))
           this.form.item_type = Number(this.item_types[4].item_code)
-        else if (this.form.name.endsWith('魚')) this.form.item_type = Number(this.item_types[5].item_code)
+        else if (
+          this.form.name.endsWith('魚') ||
+          this.form.name.endsWith('龜') ||
+          this.form.name.endsWith('貝') ||
+          this.form.name.endsWith('蛟')
+        )
+          this.form.item_type = Number(this.item_types[5].item_code)
         else if (this.form.name.endsWith('鳥')) this.form.item_type = Number(this.item_types[6].item_code)
+        else if (
+          this.form.name.endsWith('獸') ||
+          this.form.name.endsWith('熊') ||
+          this.form.name.endsWith('羆') ||
+          this.form.name.endsWith('豹') ||
+          this.form.name.endsWith('牛') ||
+          this.form.name.endsWith('羊') ||
+          this.form.name.endsWith('馬') ||
+          this.form.name.endsWith('象') ||
+          this.form.name.endsWith('兕') ||
+          this.form.name.endsWith('犀') ||
+          this.form.name.endsWith('虎') ||
+          this.form.name.endsWith('狼') ||
+          this.form.name.endsWith('鹿')
+        )
+          this.form.item_type = Number(this.item_types[7].item_code)
         else if (this.form.name.endsWith('神')) this.form.item_type = Number(this.item_types[8].item_code)
         else if (this.form.name.endsWith('國') || this.form.name.endsWith('城'))
           this.form.item_type = Number(this.item_types[10].item_code)
+        else if (this.form.name.endsWith('人') || this.form.name.endsWith('民'))
+          this.form.item_type = Number(this.item_types[11].item_code)
         else if (this.form.name.endsWith('玉') || this.form.name.endsWith('碧'))
           this.form.item_type = Number(this.item_types[12].item_code)
         else if (
@@ -329,13 +364,21 @@ export default {
       'form.jijie',
       Utils.debounce(func => {
         if (this.form.jijie.indexOf('珂案：') > -1) {
-          this.form.jijie = this.form.jijie.replace('珂案：', '袁珂云：「') + '」\n'
+          this.form.jijie = this.form.jijie.replace('珂案：', '袁珂云：『') + '』\n'
         }
         if (this.form.jijie.indexOf('０') > -1) {
           this.form.jijie = this.form.jijie.replace('０', '〇')
         }
       }, 1000),
     )
+    this.$watch(
+        'form.remarks',
+        Utils.debounce(func => {
+          if (this.form.guozhu.indexOf(' ') > -1) {
+            this.form.guozhu = this.form.guozhu.replace(' ', '')
+          }
+        }, 1000),
+      )
   },
   async mounted() {
     this.loading = true

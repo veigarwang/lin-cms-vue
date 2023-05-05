@@ -7,7 +7,24 @@
           <p class="title">书籍列表</p>
         </div>
         <div class="header-right">
-          <lin-search @query="onQueryChange" placeholder="请输入ISBN/书籍名" />
+          <el-select
+            size="small"
+            filterable
+            default-first-option 
+            v-model="book_type"
+            placeholder="筛选类别"
+            @change="handleChange"
+            clearable
+            style="width: 100px ;margin-right: 10px"
+          >
+            <el-option
+              v-for="item in book_types"
+              :key="Number(item.item_code)"
+              :label="item.item_name"
+              :value="Number(item.item_code)"
+            ></el-option>
+          </el-select>
+          <lin-search @query="onQueryChange" placeholder="请输入ISBN/书籍名" size="small" />
           <el-button
             type="primary"
             icon="el-icon-plus"
@@ -21,7 +38,7 @@
             >新增</el-button
           >
           <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
-          <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button>
+          <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
         </div>
       </div>
       <!-- 表格 -->
@@ -54,6 +71,7 @@
 
 <script>
 import book from '@/model/book'
+import baseApi from '@/model/base'
 import LinTable from '@/component/base/table/lin-table'
 import LinSearch from '@/component/base/search/lin-search'
 import BookForm from './book-form'
@@ -90,11 +108,13 @@ export default {
       operate: [],
       showForm: false,
       edit_book_id: 1,
+      book_types: [],
       pagination: {
         pageSize: 10,
         pageTotal: 0,
         currentPage: 1, // 默认获取第一页的数据
       },
+      book_type: '',
       searchKeyword: '',
     }
   },
@@ -109,24 +129,38 @@ export default {
         permission: '删除书籍',
       },
     ]
+    let arr = await baseApi.getItems({
+      typeCode: 'Book.Type',
+    })
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].status == 1) {
+        this.book_types.push(arr[i])
+      }
+    }
     await this.getBooks()
   },
   methods: {
+    // 下拉框选择分组
+    async handleChange() {
+      this.pagination.currentPage = 1
+      await this.getBooks()
+    },
     // 切换table页
     async handleCurrentPageChange(val) {
       this.pagination.currentPage = val
-      await this.getBooks(this.searchKeyword)
+      await this.getBooks()
     },
     async handlePageSizeChange(val) {
       this.pagination.pageSize = val
-      await this.getBooks(this.searchKeyword)
+      await this.getBooks()
     },
-    async getBooks(val) {
+    async getBooks() {
       const currentPage = this.pagination.currentPage - 1
       try {
         //this.loading = true
-        let res = await book.getBooks({
-          keyword: val,
+        let res = await book.getBooks({          
+          keyword: this.searchKeyword,
+          itemType: this.book_type,
           count: this.pagination.pageSize,
           page: currentPage,
         })
@@ -147,7 +181,7 @@ export default {
         return
       }
       this.loading = true
-      this.getBooks(this.searchKeyword)
+      this.getBooks()
       this.loading = false
     },
     handleEdit(val) {
@@ -163,7 +197,7 @@ export default {
       }).then(async () => {
         const res = await book.deleteBook(val.row.id)
         if (res.code < window.MAX_SUCCESS_CODE) {
-          this.getBooks(this.searchKeyword)
+          this.getBooks()
           this.$message({
             type: 'success',
             message: `${res.message}`,
@@ -172,13 +206,13 @@ export default {
       })
     },
     async refresh() {
-      await this.getBooks(this.searchKeyword)
+      await this.getBooks()
       this.$message.success('刷新成功')
     },
     rowClick() {},
     editClose() {
       this.showForm = false
-      this.getBooks(this.searchKeyword)
+      this.getBooks()
     },
     // 导出表格
     exprotExcel() {

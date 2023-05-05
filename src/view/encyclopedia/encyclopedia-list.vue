@@ -7,7 +7,24 @@
           <p class="title">词条列表</p>
         </div>
         <div class="header-right">
-          <lin-search @query="onQueryChange" placeholder="请输入词条名" />
+          <el-select
+            size="small"
+            filterable
+            default-first-option 
+            v-model="item_type"
+            placeholder="筛选类别"
+            @change="handleChange"
+            clearable
+            style="width: 100px ;margin-right: 10px"
+          >
+            <el-option
+              v-for="item in item_types"
+              :key="Number(item.item_code)"
+              :label="item.item_name"
+              :value="Number(item.item_code)"
+            ></el-option>
+          </el-select>
+          <lin-search @query="onQueryChange" placeholder="请输入词条名" size="small" />
           <el-button
             type="primary"
             icon="el-icon-plus"
@@ -21,7 +38,7 @@
             >新增</el-button
           >
           <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
-          <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button>
+          <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
         </div>
       </div>
       <!-- 表格 -->
@@ -38,7 +55,10 @@
         v-loading="loading"
       >
         <template v-slot:name="scope">
-          <span>{{ scope.row.name }}{{ scope.row.alias !== null && scope.row.alias !== '' ? '（' + scope.row.alias + '）' : '' }}</span>
+          <span
+            >{{ scope.row.name
+            }}{{ scope.row.alias !== null && scope.row.alias !== '' ? '（' + scope.row.alias + '）' : '' }}</span
+          >
         </template>
       </lin-table>
     </div>
@@ -55,6 +75,7 @@
 
 <script>
 import encyclopedia from '@/model/encyclopedia'
+import baseApi from '@/model/base'
 import LinTable from '@/component/base/table/lin-table'
 import LinSearch from '@/component/base/search/lin-search'
 import EncyclopediaForm from './encyclopedia-form'
@@ -68,6 +89,7 @@ export default {
   },
   data() {
     return {
+      item_types: [],
       tableColumn: [
         { prop: 'item_type_name', label: '所属类别', align: 'center', width: '100px' },
         { prop: 'name, alias', label: '词条名称', scope: 'name', scopedSlots: { customRender: 'name' } },
@@ -86,6 +108,7 @@ export default {
         pageTotal: 0,
         currentPage: 1, // 默认获取第一页的数据
       },
+      item_type: '',
       searchKeyword: '',
     }
   },
@@ -100,25 +123,39 @@ export default {
         permission: '删除词条',
       },
     ]
+    let arr = await baseApi.getItems({
+      typeCode: 'Encyclopedia.Type',
+    })
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].status == 1) {
+        this.item_types.push(arr[i])
+      }
+    }
     await this.getEncyclopedias()
     this.loading = false
   },
   methods: {
+    // 下拉框选择分组
+    async handleChange() {
+      this.pagination.currentPage = 1
+      await this.getEncyclopedias()
+    },
     // 切换table页
     async handleCurrentPageChange(val) {
       this.pagination.currentPage = val
-      await this.getEncyclopedias(this.searchKeyword)
+      await this.getEncyclopedias()
     },
     async handlePageSizeChange(val) {
       this.pagination.pageSize = val
-      await this.getEncyclopedias(this.searchKeyword)
+      await this.getEncyclopedias()
     },
-    async getEncyclopedias(val) {
+    async getEncyclopedias() {
       const currentPage = this.pagination.currentPage - 1
       try {
         this.loading = true
         let res = await encyclopedia.getEncyclopedias({
-          keyword: val,
+          keyword: this.searchKeyword,
+          itemType: this.item_type,
           count: this.pagination.pageSize,
           page: currentPage,
         })
@@ -140,7 +177,7 @@ export default {
         return
       }
       this.loading = true
-      this.getEncyclopedias(this.searchKeyword)
+      this.getEncyclopedias()
       this.loading = false
     },
     handleEdit(val) {
@@ -156,7 +193,7 @@ export default {
       }).then(async () => {
         const res = await encyclopedia.deleteEncyclopedia(val.row.id)
         if (res.code < window.MAX_SUCCESS_CODE) {
-          this.getEncyclopedias(this.searchKeyword)
+          this.getEncyclopedias()
           this.$message({
             type: 'success',
             message: `${res.message}`,
@@ -165,13 +202,13 @@ export default {
       })
     },
     async refresh() {
-      await this.getEncyclopedias(this.searchKeyword)
+      await this.getEncyclopedias()
       this.$message.success('刷新成功')
     },
     rowClick() {},
     editClose() {
       this.showForm = false
-      this.getEncyclopedias(this.searchKeyword)
+      this.getEncyclopedias()
     },
     // 导出表格
     exprotExcel() {

@@ -221,17 +221,36 @@ export default {
       entryTotal: 0,
       activities: [
         {
+          title: 'v0.96',
+          content: [
+            { entry: '书籍管理和山海百科页面增加类别筛选下拉列表', label: '新增', color: 'green' },
+            { entry: '查询字典条目列表时会触发一次查询字典类别列表', label: '待修', color: 'red' },
+          ],
+          timestamp: '2023-03-25 13:35',
+          size: 'large',
+          type: 'primary',
+          //icon: 'el-icon-more',
+        },
+        {
+          title: 'v0.95',
+          content: [
+            { entry: '词条新增页面增加右上角新增及连续新增按钮', label: '新增', color: 'green' },
+            { entry: '调整词条新增页面样式，优化部分提示信息', label: '改善', color: 'blueviolet' },
+            { entry: '完善新增词条时对已有词条的判断逻辑', label: '改善', color: 'blueviolet' },
+            { entry: '保存词条时自动修正误用的单双引号', label: '改善', color: 'blueviolet' },
+          ],
+          timestamp: '2023-03-08 23:27',
+          //icon: 'el-icon-more',
+        },
+        {
           title: 'v0.94',
           content: [
             { entry: '增加书籍和百科词条的编辑次数', label: '改善', color: 'blueviolet' },
             { entry: '完善系统日志', label: '改善', color: 'blueviolet' },
-            { entry: '修正编辑字典类型后未正常刷新列表的问题', label: '修复', color: 'orange' },
-            { entry: '查询字典条目列表时会触发一次查询字典类别列表', label: '待修', color: 'red' },
+            { entry: '修正编辑字典类型后未正常刷新列表的问题', label: '修复', color: 'orange' }
           ],
           timestamp: '2022-06-18 22:50',
-          size: 'large',
-          type: 'primary',
-          //icon: 'el-icon-more',
+          type: '',
         },
         {
           title: 'v0.93',
