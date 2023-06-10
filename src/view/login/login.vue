@@ -45,8 +45,8 @@ export default {
     const throttleLogin = ref(null)
 
     const account = reactive({
-      username: '',
-      password: '',
+      username: 'admin',
+      password: '123qwe',
       captcha: '',
     })
 

@@ -155,7 +155,7 @@ export default {
       })
       if (res) {
         let searchLogs = res.items
-        search.totalCount = res.total
+        search.totalCount = res.count
         if (search.searchKeyword) {
           searchLogs = searchLogKeyword(search.searchKeyword, searchLogs)
         }
