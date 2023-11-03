@@ -205,7 +205,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/style/container.scss';
-.loadingDemo /deep/ .el-table {
+.loadingDemo :deep(.el-table) {
   border: none;
 }
 </style>

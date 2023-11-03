@@ -6,42 +6,23 @@
           <div class="title">标签管理</div>
         </div>
         <div class="header-right">
-          <el-input
-            size="medium"
-            style="margin-right:30px"
-            v-model="pagination.tag_name"
-            placeholder="标签名"
-          ></el-input>
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            v-permission="'新增标签'"
-            @click="()=>{
-                this.showEdit = true;
-                this.id=0;
-            }"
-          >新增标签</el-button>
-          <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
+          <el-input size="medium" style="margin-right:30px" v-model="pagination.tag_name" placeholder="标签名"></el-input>
+          <el-button type="primary" icon="Edit" v-permission="'新增标签'" @click="() => {
+            this.showEdit = true;
+            this.id = 0;
+          }">新增标签</el-button>
+          <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        :operateWidth="230"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        @handleCorrect="handleCorrect"
-        v-loading="loading"
-        :pagination="pagination"
-        @currentChange="handleCurrentChange"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :operateWidth="230"
+        @handleEdit="handleEdit" @handleDelete="handleDelete" @handleCorrect="handleCorrect" v-loading="loading"
+        :pagination="pagination" @currentChange="handleCurrentChange">
         <template v-slot:status="scope">
           <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
         <template v-slot:thumbnail_display="scope">
-          <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
+          <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
       <!--表格结束-->
@@ -51,10 +32,11 @@
 </template>
 
 <script>
-import tagApi from '../../model/tag'
+import { getCurrentInstance } from 'vue'
 import LinTable from '@/component/base/table/lin-table'
+import tagApi from '../../model/tag'
 import TagForm from './tag-form'
-import Vue from 'vue'
+
 export default {
   name: 'TagList',
   components: { LinTable, TagForm },
@@ -78,17 +60,17 @@ export default {
     async getTags() {
       const currentPage = this.pagination.currentPage - 1
       this.loading = true
-      let res = await tagApi
+      const res = await tagApi
         .getTags({
           count: this.pagination.pageSize,
           page: currentPage,
           tag_name: this.pagination.tag_name,
         })
-        .finally(r => {
+        .finally(() => {
           this.loading = false
         })
       this.tableData = [...res.items]
-      this.pagination.pageTotal = res.total
+      this.pagination.pageTotal = res.count
     },
     async handleEdit(val) {
       this.showEdit = true
@@ -129,7 +111,6 @@ export default {
     },
     async refresh() {
       await this.getTags()
-      this.$message.success('刷新成功')
     },
     // 下拉框选择分组
     async handleChange() {
@@ -166,8 +147,9 @@ export default {
         prop: 'create_time',
         label: '创建时间',
         scope: 'create_time',
-        customRender: function (row, column) {
-          return Vue.filter('filterTimeYmdHms')(column)
+        customRender(row, column) {
+          const { appContext } = getCurrentInstance()
+          return appContext.config.globalProperties.$filters.filterTimeYmdHms(column)
         },
       },
     ]
@@ -178,8 +160,7 @@ export default {
     ]
 
     await this.getTags()
-  },
-  beforeDestroy() {},
+  }
 }
 </script>
 

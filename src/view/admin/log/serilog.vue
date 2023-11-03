@@ -6,49 +6,33 @@
           <el-form :inline="true" :model="pagination" class="search-form">
             <el-form-item label="请选择级别">
               <el-select placeholder="请选择级别" v-model="pagination.logLevel" clearable>
-                <el-option
-                  :label="item.text"
-                  :value="item.level"
-                  v-bind:key="item.level"
-                  v-for="item in logLevels"
-                ></el-option>
+                <el-option :label="item.text" :value="item.level" v-bind:key="item.level" v-for="item in logLevels">
+                </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="消息">
-              <el-input
-                size="medium"
-                style="margin-right:10px;"
-                v-model="pagination.keyword"
-                placeholder="消息"
-                clearable
-              ></el-input>
+              <el-input size="medium" style="margin-right:10px;" v-model="pagination.keyword" placeholder="消息"
+                clearable></el-input>
             </el-form-item>
             <el-form-item label="时间范围">
               <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="el-icon-search" @click="refresh">查询</el-button>
+              <el-button type="primary" icon="Search" @click="refresh">查询</el-button>
             </el-form-item>
           </el-form>
         </el-card>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        v-loading="loading"
-        :pagination="pagination"
-        @currentChange="handleCurrentChange"
-        @handleDetail="handleDetail"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
+        :pagination="pagination" @currentChange="handleCurrentChange" @handleDetail="handleDetail">
         <template v-slot:level="scope">
-          <el-tag
-            size="medium"
-            :type="scope.row.level|formatlogLevelType"
-          >{{scope.row.level|formatLogLevels}}</el-tag>
+          <el-tag size="medium" :type="formatlogLevelType(scope.row.level)">{{ formatLogLevels(scope.row.level) }}
+          </el-tag>
         </template>
-        <template v-slot:timestamp="scope">{{scope.row.timestamp|filterTimeYmdHms}}</template>
+        <template v-slot:timestamp="scope">
+          {{ $filters.filterTimeYmdHms(scope.row.timestamp) }}
+        </template>
       </lin-table>
     </div>
     <serilog-dialog ref="dialogForm"></serilog-dialog>
@@ -122,7 +106,7 @@ export default {
       ],
     }
   },
-  filters: {
+  methods: {
     formatLogLevels(level) {
       if (level < vm.logLevels.length) {
         return vm.logLevels[level].text
@@ -137,8 +121,6 @@ export default {
         return 'info'
       }
     },
-  },
-  methods: {
     handleDateChange(date) {
       this.searchDate = date
     },
@@ -154,11 +136,11 @@ export default {
         params.start = this.searchDate[0]
         params.end = this.searchDate[1]
       }
-      let res = await log.getSerilogListAsync(params).finally(r => {
+      const res = await log.getSerilogListAsync(params).finally(r => {
         this.loading = false
       })
       this.tableData = [...res.items]
-      this.pagination.pageTotal = res.total
+      this.pagination.pageTotal = res.count
     },
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
@@ -168,7 +150,6 @@ export default {
     },
     async refresh() {
       await this.getSerilogs()
-      this.$message.success('刷新成功')
     },
     async handleDetail(val) {
       this.$refs['dialogForm'].show(val.row)
@@ -197,14 +178,11 @@ export default {
 
     await this.getSerilogs()
   },
-  beforeDestroy() {},
+  beforeDestroy() { },
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/style/list.scss';
 
-.search-form {
-  margin-top: 20px;
-}
 </style>

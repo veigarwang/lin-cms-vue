@@ -2,70 +2,20 @@ import Util from '@/lin/util/util'
 
 let stageMap = {}
 
-const deepTravel = (obj, fuc) => {
-  if (Array.isArray(obj)) {
-    obj.forEach(item => {
-      deepTravel(item, fuc)
-    })
-    return
-  }
-  if (obj && obj.children) {
-    fuc(obj)
-    deepTravel(obj.children, fuc)
-    return
-  }
-  if (obj.name) {
-    fuc(obj)
-  }
-}
-
-export const logined = state => state.logined
+export const loggedIn = state => state.loggedIn
 
 export const user = state => state.user
 
-export const readedMessages = state => state.readedMessages
+export const alreadyReadMessages = state => state.alreadyReadMessages
 
 export const unreadMessages = state => state.unreadMessages
 
 /**
- * 在侧边栏展示时，如果当前路由 children 属性为空，则删除该路由
- * @param {*} arr 路由配置项数据
+ * 获取有权限的舞台配置
+ * @param {*} state
  */
-function IterationDelateMenuChildren(arr) {
-  if (arr.length) {
-    for (const i in arr) {
-      if (arr[i].children && !arr[i].children.length) {
-        delete arr[i]
-      } else if (arr[i].children && arr[i].children.length) {
-        IterationDelateMenuChildren(arr[i].children)
-      }
-    }
-  }
-  return arr
-}
-
-/**
- * Shaking 掉无限制路由
- * @param {array} stageConfig 路由配置项数据
- * @param {array} permissions 当前登录管理员所拥有的权限集合
- * @param {object} currentUser 当前登录管理员
- */
-function permissionShaking(stageConfig, permissions, currentUser) {
-  const shookConfig = stageConfig.filter(route => {
-    if (Util.hasPermission(permissions, route, currentUser)) {
-      if (route.children && route.children.length) {
-        route.children = permissionShaking(route.children, permissions, currentUser)
-      }
-      return true
-    }
-    return false
-  })
-  return IterationDelateMenuChildren(shookConfig)
-}
-
-// 获取有权限的舞台配置
 export const permissionStageConfig = state => {
-  const { stageConfig, permissions, user } = state // eslint-disable-line
+  const { stageConfig, permissions, user } = state
   const tempStageConfig = Util.deepClone(stageConfig)
   const shookConfig = permissionShaking(tempStageConfig, permissions, user)
 
@@ -78,15 +28,19 @@ export const permissionStageConfig = state => {
   return shookConfig
 }
 
-// 获取侧边栏配置
-export const sideBarList = (state, getter) => {
-  const { sideBarLevel } = state // eslint-disable-line
-  const { permissionStageConfig } = getter // eslint-disable-line
+/**
+ * 获取有权限的左侧菜单数据
+ * @param {*} state
+ * @param {*} getters 其他 getter
+ */
+export const sidebarList = (state, getters) => {
+  const { sidebarLevel } = state
+  const { permissionStageConfig } = getters
 
-  function deepGetSideBar(target, level = 3) {
+  function deepGetSidebar(target, level = 3) {
     // 集合节点处理
     if (Array.isArray(target)) {
-      const acc = target.map(item => deepGetSideBar(item, level - 1))
+      const acc = target.map(item => deepGetSidebar(item, level - 1))
       return acc.filter(item => item !== null)
     }
 
@@ -102,7 +56,7 @@ export const sideBarList = (state, getter) => {
       sideConfig.title = target.title
       sideConfig.icon = target.icon
       sideConfig.path = target.route || Util.getRandomStr(6)
-      sideConfig.children = target.children.map(item => deepGetSideBar(item, level - 1))
+      sideConfig.children = target.children.map(item => deepGetSidebar(item, level - 1))
       sideConfig.children = sideConfig.children.filter(item => item !== null)
       return sideConfig
     }
@@ -132,6 +86,7 @@ export const sideBarList = (state, getter) => {
       }
       return sideConfig
     }
+
     // 最后一层, 都当做子节点处理
     if (level <= 0) {
       const sideConfig = {}
@@ -147,23 +102,21 @@ export const sideBarList = (state, getter) => {
     return null
   }
 
-  const sideBar = deepGetSideBar(permissionStageConfig, sideBarLevel)
+  const sideBar = deepGetSidebar(permissionStageConfig, sidebarLevel)
   return sideBar
 }
 
-// 获取有权限的所有节点配置对象
-// eslint-disable-next-line
-export const getStageByName = () => {
-  return name => stageMap[name]
-}
+/**
+ * 获取有权限的所有节点配置对象
+ */
+export const getStageByName = () => name => stageMap[name]
 
-// 获取有权限的所有节点配置对象
-// eslint-disable-next-line
-export const getStageByRoute = () => {
-  return path => {
-    const result = Object.getOwnPropertySymbols(stageMap).find(key => stageMap[key].route === path)
-    return stageMap[result]
-  }
+/**
+ * 获取有权限的所有节点配置对象
+ */
+export const getStageByRoute = () => path => {
+  const result = Object.getOwnPropertySymbols(stageMap).find(key => stageMap[key].route === path)
+  return stageMap[result]
 }
 
 export const stageList = () => stageMap
@@ -208,4 +161,63 @@ export const getStageInfo = state => {
     }
     return stageInfo
   }
+}
+
+/**
+ * 递归
+ * @param {*} obj
+ * @param {*} fuc
+ */
+function deepTravel(obj, fuc) {
+  if (Array.isArray(obj)) {
+    obj.forEach(item => {
+      deepTravel(item, fuc)
+    })
+    return
+  }
+  if (obj && obj.children) {
+    fuc(obj)
+    deepTravel(obj.children, fuc)
+    return
+  }
+  if (obj.name) {
+    fuc(obj)
+  }
+}
+
+/**
+ * 在侧边栏展示时，如果当前路由 children 属性为空，则删除该路由
+ * @param {*} arr 路由配置项数据
+ */
+function IterationDelateMenuChildren(arr) {
+  if (arr.length) {
+    // eslint-disable-next-line no-unused-vars
+    for (const i in arr) {
+      if (arr[i].children && !arr[i].children.length) {
+        delete arr[i]
+      } else if (arr[i].children && arr[i].children.length) {
+        IterationDelateMenuChildren(arr[i].children)
+      }
+    }
+  }
+  return arr
+}
+
+/**
+ * Shaking 掉无权限路由
+ * @param {array} stageConfig 路由配置项数据
+ * @param {array} permissions 当前登录管理员所拥有的权限集合
+ * @param {object} currentUser 当前登录管理员
+ */
+function permissionShaking(stageConfig, permissions, currentUser) {
+  const shookConfig = stageConfig.filter(route => {
+    if (Util.hasPermission(permissions, route, currentUser)) {
+      if (route.children && route.children.length) {
+        route.children = permissionShaking(route.children, permissions, currentUser)
+      }
+      return true
+    }
+    return false
+  })
+  return IterationDelateMenuChildren(shookConfig)
 }

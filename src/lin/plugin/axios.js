@@ -1,14 +1,19 @@
-// ajax 封装插件, 使用 axios
-import Vue from 'vue'
+/**
+ * 封装 axios
+ */
 import axios from 'axios'
-import Config from '@/config'
-import ErrorCode from '@/config/error-code'
+import { ElMessage } from 'element-plus'
+
 import store from '@/store'
+import router from '@/router'
+import Config from '@/config'
+import autoJump from '@/lin/util/auto-jump'
+import ErrorCode from '@/config/error-code'
 import { getToken, saveAccessToken } from '@/lin/util/token'
 
 const config = {
-  baseURL: Config.baseURL || process.env.apiUrl || '',
-  timeout: 2222222222 * 1000, // 请求超时时间设置
+  baseURL: Config.baseURL || '',
+  timeout: 5 * 1000, // 请求超时时间设置
   crossDomain: true,
   // withCredentials: true, // Check cross-site Access-Control
   // 定义可获得的http响应状态码
@@ -20,19 +25,12 @@ const config = {
 
 /**
  * 错误码是否是refresh相关
- * @param {number} code 错误码
+ * @param { number } code 错误码
  */
 function refreshTokenException(code) {
-  let flag = false
-  const codes = [10000, 10042, 10050, 10052]
-  if (codes.includes(code)) {
-    flag = true
-  }
-  return flag
+  const codes = [10000, 10042, 10050, 10052, 10012]
+  return codes.includes(code)
 }
-
-// const retryTime = 2 // 请求失败重试次数
-// const retryDelay = 1500 // 请求失败重试间隔
 
 // 创建请求实例
 const _axios = axios.create(config)
@@ -40,35 +38,24 @@ const _axios = axios.create(config)
 _axios.interceptors.request.use(
   originConfig => {
     // 有 API 请求重新计时
-    Vue.prototype.$_lin_jump()
+    autoJump(router)
 
     const reqConfig = { ...originConfig }
 
     // step1: 容错处理
     if (!reqConfig.url) {
       console.error('request need url')
-      throw new Error({
-        source: 'axiosInterceptors',
-        message: 'request need url',
-      })
     }
 
-    if (!reqConfig.method) {
-      // 默认使用 get 请求
-      reqConfig.method = 'get'
-    }
-    // 大小写容错
-    reqConfig.method = reqConfig.method.toLowerCase()
+    reqConfig.method = reqConfig.method.toLowerCase() // 大小写容错
 
     // 参数容错
     if (reqConfig.method === 'get') {
       if (!reqConfig.params) {
-        // 防止字段用错
         reqConfig.params = reqConfig.data || {}
       }
     } else if (reqConfig.method === 'post') {
       if (!reqConfig.data) {
-        // 防止字段用错
         reqConfig.data = reqConfig.params || {}
       }
 
@@ -91,10 +78,8 @@ _axios.interceptors.request.use(
         })
         reqConfig.data = formData
       }
-    } else {
-      // TODO: 其他类型请求数据格式处理
-      console.warn(`其他请求类型: ${reqConfig.method}, 暂无自动处理`)
     }
+
     // step2: permission 处理
     if (reqConfig.url === 'cms/user/refresh') {
       const refreshToken = getToken('refresh_token')
@@ -102,30 +87,31 @@ _axios.interceptors.request.use(
         reqConfig.headers.Authorization = refreshToken
       }
     } else {
-      // 有access_token
       const accessToken = getToken('access_token')
       if (accessToken) {
         reqConfig.headers.Authorization = accessToken
       }
     }
+
     return reqConfig
   },
-  error => {
-    Promise.reject(error)
-  },
+  error => Promise.reject(error),
 )
 
 // Add a response interceptor
 _axios.interceptors.response.use(
   async res => {
-    let { code, message } = res.data
     if (res.status.toString().charAt(0) === '2') {
       return res.data
     }
+
+    const { code, message } = res.data
+
     return new Promise(async (resolve, reject) => {
+      let tipMessage = ''
       const { url } = res.config
 
-      // refreshToken相关，直接登出
+      // refresh_token 异常，直接登出
       if (refreshTokenException(code)) {
         setTimeout(() => {
           store.dispatch('loginOut')
@@ -146,71 +132,52 @@ _axios.interceptors.response.use(
           return resolve(result)
         }
       }
-      // 第一种情况：默认直接提示后端返回的异常信息；特殊情况：如果本次请求添加了 handleError: true，用户自己try catch，框架不做处理
+
+      // 弹出信息提示的第一种情况：直接提示后端返回的异常信息（框架默认为此配置）；
+      // 特殊情况：如果本次请求添加了 handleError: true，用户自行通过 try catch 处理，框架不做额外处理
       if (res.config.handleError) {
         return reject(res)
       }
-      // 第二种情况：采用前端自己的一套异常提示信息；特殊情况：如果本次请求添加了 showBackend: true, 弹出后端返回错误信息。
+
+      // 弹出信息提示的第二种情况：采用前端自己定义的一套异常提示信息（需自行在配置项开启）；
+      // 特殊情况：如果本次请求添加了 showBackend: true, 弹出后端返回错误信息。
       if (Config.useFrontEndErrorMsg && !res.config.showBackend) {
         // 弹出前端自定义错误信息
         const errorArr = Object.entries(ErrorCode).filter(v => v[0] === code.toString())
         // 匹配到前端自定义的错误码
         if (errorArr.length > 0 && errorArr[0][1] !== '') {
-          message = errorArr[0][1]
+          ;[[, tipMessage]] = errorArr
         } else {
-          message = ErrorCode['777']
+          tipMessage = ErrorCode['777']
         }
       }
 
-      Vue.prototype.$message({
-        showClose: true,
-        message: message,
-        type: 'error',
-      })
-      reject(null)
+      if (typeof message === 'string') {
+        tipMessage = message
+      }
+      if (Object.prototype.toString.call(message) === '[object Object]') {
+        ;[tipMessage] = Object.values(message).flat()
+      }
+      if (Object.prototype.toString.call(message) === '[object Array]') {
+        ;[tipMessage] = message
+      }
+      ElMessage.error(tipMessage)
+      reject(res)
     })
   },
   error => {
     if (!error.response) {
-      Vue.prototype.$notify({
-        title: 'Network Error',
-        dangerouslyUseHTMLString: true,
-        message: '<strong class="my-notify">请检查 API 是否异常</strong>',
-      })
+      ElMessage.error('请检查 API 是否异常')
       console.log('error', error)
     }
 
     // 判断请求超时
     if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
-      Vue.prototype.$message({
-        type: 'warning',
-        message: '请求超时',
-      })
+      ElMessage.warning('请求超时')
     }
     return Promise.reject(error)
   },
 )
-
-Plugin.install = function (Vue, options) {
-  Vue.axios = _axios
-  window.axios = _axios
-  Object.defineProperties(Vue.prototype, {
-    axios: {
-      get() {
-        return _axios
-      },
-    },
-    $axios: {
-      get() {
-        return _axios
-      },
-    },
-  })
-}
-
-if (!Vue.axios) {
-  Vue.use(Plugin)
-}
 
 // 导出常用函数
 

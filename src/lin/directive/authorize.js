@@ -1,10 +1,14 @@
-import Vue from 'vue'
 import store from '@/store'
 
+/**
+ * 判断是否允许访问该DOM
+ * @param {*} permission 权限
+ * @param {*} user 当前用户实例
+ * @param {*} permissions 当前管理员所在分组权限集
+ */
 function isAllowed(permission, user, permissions) {
-  if (user.admin) {
-    return true
-  }
+  if (user.admin) return true
+
   if (typeof permission === 'string') {
     return permissions.includes(permission)
   }
@@ -14,18 +18,19 @@ function isAllowed(permission, user, permissions) {
   return false
 }
 
-Vue.directive('permission', {
-  bind(el, binding) {
-    let permission
+export default {
+  beforeMount(el, binding) {
     let type
+    let permission
+    const element = el
+
     if (Object.prototype.toString.call(binding.value) === '[object Object]') {
-      permission = binding.value.permission
-      type = binding.value.type
+      ;({ permission } = binding.value);
+      ({ type } = binding.value)
     } else {
       permission = binding.value
     }
     const isAllow = isAllowed(permission, store.state.user || {}, store.state.permissions)
-    const element = el
     if (!isAllow && permission) {
       if (type) {
         element.disabled = true
@@ -36,6 +41,4 @@ Vue.directive('permission', {
       }
     }
   },
-})
-
-export default Vue.directive('permission')
+}

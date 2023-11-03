@@ -32,9 +32,12 @@ class Book {
     return res
   }
 
-  async getBooks(params) {
-    const res = await get("v1/book", params);
-    return res
+  async getBooks() {
+    return _axios({
+      method: 'get',
+      url: 'v1/book/list',
+      handleError: true,
+    })
   }
 
   async getBookTotal(isRead){

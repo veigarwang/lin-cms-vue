@@ -1,9 +1,11 @@
-name: Publish 
+
+name: Gitee Mirror💕
 
 on:
     push:
         branches:
             - master
+            - vue-next
 
 jobs:
     build:

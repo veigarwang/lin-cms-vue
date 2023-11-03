@@ -5,7 +5,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  lintOnSave: true,
+  lintOnSave: false,
   productionSourceMap: false,
   // assetsDir: 'static',
   devServer: {
@@ -22,20 +22,11 @@ module.exports = {
     },
   },
   chainWebpack: config => {
-    config.resolve.alias
-      .set('@', resolve('src'))
-      .set('lin', resolve('src/lin'))
-      .set('assets', resolve('src/asset'))
-    config.module
-      .rule("md")
-      .test(/\.md$/)
-      .use("vue-loader")
-      .loader("vue-loader")
-      .end()
-      .use('vue-markdown-loader')
-      .loader('vue-markdown-loader/lib/markdown-compiler')
+    config.resolve.alias.set('@', resolve('src')).set('lin', resolve('src/lin')).set('assets', resolve('src/assets'))
+    config.module.rule('ignore').test(/\.md$/).use('ignore-loader').loader('ignore-loader').end()
   },
   configureWebpack: {
+    devtool: 'source-map',
     resolve: {
       extensions: [".js", ".json", ".vue", ".scss", ".html"]
     }
@@ -43,7 +34,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        data: '@import "@/assets/style/share.scss";',
+        prependData: `@import "@/assets/style/shared.scss";`,
       },
     },
   },

@@ -1,49 +1,37 @@
 <template>
-  <el-dialog
-    title="Serilog日志详细"
-    :append-to-body="true"
-    :before-close="handleClose"
-    :visible.sync="dialogFormVisible"
-  >
+  <el-dialog title="Serilog日志详细" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible">
     <div style="margin-top:-25px;">
-      <el-form
-        status-icon
-        v-if="dialogFormVisible"
-        ref="form"
-        label-width="120px"
-        :model="form"
-        label-position="labelPosition"
-        style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
-      >
+      <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
+        label-position="labelPosition" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
         <el-form-item label="消息" prop="message">
-          <span>{{form.message}}</span>
+          <span>{{ form.message }}</span>
         </el-form-item>
         <el-row :gutter="10">
           <el-col :xs="12">
             <el-form-item label="创建时间" prop="timestamp">
-              <span>{{form.timestamp|filterTimeYmdHms}}</span>
+              <span>{{ $filters.filterTimeYmdHms(form.timestamp) }}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="12">
             <el-form-item label="级别" prop="level">
-              <el-tag
-                size="medium"
-                :type="form.level|formatlogLevelType"
-              >{{form.level|formatLogLevels}}</el-tag>
+              <el-tag size="medium" :type="formatlogLevelType(form.level)">{{ formatLogLevels(form.level) }}</el-tag>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="属性" prop="properties">
-          <pre>{{form.properties}}</pre>
+          <pre>{{ form.properties }}</pre>
         </el-form-item>
         <el-form-item label="异常" prop="exception">
-          <pre>{{form.exception}}</pre>
+          <pre>{{ form.exception }}</pre>
         </el-form-item>
       </el-form>
     </div>
-    <div slot="footer" class="dialog-footer" style="padding-left:5px;">
-      <el-button type="default" @click="handleClose">关闭</el-button>
-    </div>
+    <template #footer>
+      <div class="dialog-footer" style="padding-left:5px;">
+        <el-button type="default" @click="handleClose">关闭</el-button>
+      </div>
+    </template>
+
   </el-dialog>
 </template>
 
@@ -98,7 +86,7 @@ export default {
     }
   },
   computed: {},
-  filters: {
+  methods: {
     formatLogLevels(level) {
       if (level < vm.logLevels.length) {
         return vm.logLevels[level].text
@@ -113,8 +101,6 @@ export default {
         return 'info'
       }
     },
-  },
-  methods: {
     show(record) {
       Object.assign(this.form, record)
       this.form.properties = JSON.parse(this.form.properties)
@@ -129,10 +115,15 @@ export default {
 
 <style lang="scss" scoped>
 pre {
-  white-space: pre-wrap; /* css-3 */
-  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  white-space: pre-wrap;
+  /* css-3 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
 }
 </style>

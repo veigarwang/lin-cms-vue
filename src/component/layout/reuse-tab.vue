@@ -1,12 +1,22 @@
 <template>
   <div v-if="histories.length > 1" ref="resueTab" class="reuse-tab">
-    <swiper :options="swiperOption" class="reuse-tab-wrap">
+    <swiper
+      class="reuse-tab-wrap"
+      slides-per-view="auto"
+      :space-between="1"
+      :initial-slide="0"
+      effect="slide"
+      :prevent-clicks="false"
+      :free-mode="true"
+      :mousewheel="true"
+      direction="horizontal"
+    >
       <swiper-slide v-for="(item, index) in histories" :key="item.path">
         <router-link
           class="reuse-tab-item"
           :class="item.path === $route.path ? 'active' : ''"
           :to="item.path"
-          @contextmenu.prevent.native="onTags(index, $event)"
+          @contextmenu.prevent="onTags(index, $event)"
         >
           <i v-if="!filterIcon(stageList[item.stageId].icon)" :class="stageList[item.stageId].icon"></i>
           <img v-else :src="stageList[item.stageId].icon" style="width:16px;" />
@@ -27,12 +37,16 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import emitter from 'lin/util/emitter'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import SwiperCore, { Mousewheel } from 'swiper'
 
-import 'swiper/dist/css/swiper.css' // eslint-disable-line
+import 'swiper/swiper.scss'
+
+SwiperCore.use([Mousewheel])
 
 export default {
-  components: { swiper, swiperSlide },
+  components: { Swiper, SwiperSlide },
   data() {
     return {
       histories: [],
@@ -42,17 +56,6 @@ export default {
       top: 0,
       left: 0,
       index: 0,
-      swiperOption: {
-        slidesPerView: 'auto',
-        initialSlide: 0,
-        effect: 'slide',
-        spaceBetween: 1,
-        preventClicks: false,
-        freeMode: true,
-        mousewheel: {
-          sensitivity: 1.5,
-        },
-      },
     }
   },
   watch: {
@@ -63,13 +66,14 @@ export default {
       if (flag) {
         return
       }
+
       const ele = {}
       ele.stageId = to.name
       ele.path = to.path
       ele.routePath = to.matched[to.matched.length - 1].path
       this.histories = [ele, ...histories]
     },
-    logined(val) {
+    loggedIn(val) {
       if (val) {
         return
       }
@@ -88,13 +92,12 @@ export default {
     },
     histories(arr) {
       if (arr.length < 2) {
-        this.eventBus.$emit('noReuse')
+        emitter.emit('noReuse')
       } else {
-        this.eventBus.$emit('hasReuse')
+        emitter.emit('hasReuse')
       }
     },
   },
-  inject: ['eventBus'],
   created() {
     // 关闭窗口时执行
     window.onbeforeunload = () => {
@@ -103,8 +106,8 @@ export default {
     }
   },
   computed: {
-    logined() {
-      return this.$store.state.logined
+    loggedIn() {
+      return this.$store.state.loggedIn
     },
     defaultRoute() {
       return this.$store.state.defaultRoute
@@ -113,7 +116,7 @@ export default {
   },
   mounted() {
     this.init()
-    this.eventBus.$on('clearTap', () => {
+    emitter.on('clearTap', () => {
       this.histories = []
     })
   },
@@ -140,10 +143,8 @@ export default {
         if (!findResult) {
           return
         }
-        histories.push({
-          ...item,
-          stageId: findResult.name,
-        })
+
+        histories.push({ ...item, stageId: findResult.name })
         this.histories = histories
       })
     },
@@ -219,21 +220,22 @@ export default {
 
 <style lang="scss" scoped>
 .swiper-slide {
-  width: auto;
+  width: auto !important;
   min-width: 126px;
   display: flex;
-  height: $reusetab-height;
+  height: $reuse-tab-height;
   flex-direction: column;
   justify-content: center;
   background-color: $reuse-tab-item-background;
   color: $right-side-font-color;
+  margin-right: 1px;
 }
 
 .reuse-tab-wrap {
   bottom: 0;
   left: 0;
   user-select: none;
-  height: $reusetab-height;
+  height: $reuse-tab-height;
   background: $header-background;
   font-size: 14px;
   color: #8c98ae;
@@ -244,7 +246,7 @@ export default {
   .reuse-tab-item {
     box-sizing: border-box;
     width: auto;
-    height: $reusetab-height;
+    height: $reuse-tab-height;
     min-width: 126px;
     display: flex;
     justify-content: center;

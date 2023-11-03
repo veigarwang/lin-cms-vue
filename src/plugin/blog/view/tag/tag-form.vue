@@ -2,7 +2,7 @@
   <div>
     <sticky-top>
       <div class="title">
-        <span>{{title[this.id==0?0:1]}}</span>
+        <span>{{ title[this.id == 0 ? 0 : 1] }}</span>
         <span class="back" @click="back">
           <i class="iconfont icon-fanhui"></i> 返回
         </span>
@@ -12,15 +12,8 @@
       <div class="wrap">
         <el-row>
           <el-col :lg="16" :md="20" :sm="24" :xs="24">
-            <el-form
-              status-icon
-              ref="form"
-              label-width="120px"
-              :model="form"
-              label-position="labelPosition"
-              :rules="rules"
-              style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
-            >
+            <el-form status-icon ref="form" label-width="120px" :model="form" label-position="labelPosition"
+              :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
               <el-form-item label="标签名称" prop="tag_name">
                 <el-input size="medium" clearable v-model="form.tag_name"></el-input>
               </el-form-item>
@@ -31,20 +24,10 @@
                 <el-input size="medium" clearable v-model="form.alias"></el-input>
               </el-form-item>
               <el-form-item label="状态" prop="status">
-                <el-switch
-                  v-model="form.status"
-                  active-color="#13ce66"
-                  active-text="启用"
-                  inactive-text="禁用"
-                ></el-switch>
+                <el-switch v-model="form.status" active-color="#13ce66" active-text="启用" inactive-text="禁用"></el-switch>
               </el-form-item>
               <el-form-item label="封面" prop="thumbnail">
-                <upload-imgs
-                  ref="thumbnail"
-                  :multiple="false"
-                  :value="thumbnailPreview"
-                  :max-num="1"
-                />
+                <upload-imgs ref="thumbnail" :multiple="false" :value="thumbnailPreview" :max-num="1" />
               </el-form-item>
               <el-form-item class="submit">
                 <el-button type="primary" @click="confirmEdit('form')">保 存</el-button>
@@ -90,21 +73,21 @@ export default {
     },
   },
   async created() {
-    this.show()
+    await this.show()
   },
   methods: {
     async show() {
       if (this.id != 0) {
-        let tag = await tagApi.getTag(this.id)
+        const tag = await tagApi.getTag(this.id)
         this.form = tag
         this.thumbnailPreview.length = 0
         if (tag.thumbnail) {
-          this.thumbnailPreview.push({
+          this.thumbnailPreview = [{
             id: tag.id,
             display: tag.thumbnail_display,
             src: tag.thumbnail,
             imgId: tag.id,
-          })
+          }]
         }
       } else {
         Object.assign(this.form, {
@@ -122,7 +105,7 @@ export default {
       }
     },
     async confirmEdit(formName) {
-      let thumbnail = await this.$refs['thumbnail'].getValue()
+      const thumbnail = await this.$refs['thumbnail'].getValue()
       if (thumbnail.length > 0) {
         this.form.thumbnail = thumbnail[0].src
       } else {
@@ -130,17 +113,15 @@ export default {
       }
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          let res
           this.loading = true
-
-          res = await this.submitForm().finally(() => {
+          const res = await this.submitForm().finally(() => {
             this.loading = false
           })
 
           this.$message.success(`${res.message}`)
           this.$emit('editClose')
         } else {
-          this.$message.error('请输入必要的信息')
+          this.$message.error('请填写正确的信息')
         }
       })
     },
@@ -153,8 +134,6 @@ export default {
   },
 }
 </script>
-
-
 <style lang="scss" scoped>
 @import '@/assets/style/form.scss';
 </style>

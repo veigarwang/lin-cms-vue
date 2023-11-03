@@ -1,51 +1,34 @@
 <template>
   <div class="container">
     <div class="title">分组列表信息</div>
-    <lin-table
-      :tableColumn="tableColumn"
-      :tableData="tableData"
-      :operate="operate"
-      @handleEdit="handleEdit"
-      @goToGroupEditPage="goToGroupEditPage"
-      @handleDelete="handleDelete"
-      @row-click="rowClick"
-      v-loading="loading"
-    >
+    <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
+      @goToGroupEditPage="goToGroupEditPage" @handleDelete="handleDelete" @row-click="rowClick" v-loading="loading">
       <template v-slot:is_static="scope">
         <el-switch v-model="scope.row.is_static" disabled active-text inactive-text></el-switch>
       </template>
     </lin-table>
-    <el-dialog
-      title="分组信息"
-      :append-to-body="true"
-      :visible.sync="dialogFormVisible"
-      :before-close="handleClose"
-      :close-on-click-modal="false"
-      class="groupListInfoDialog"
-    >
+    <el-dialog title="分组信息" :append-to-body="true" v-model="dialogFormVisible" :before-close="handleClose"
+      :close-on-click-modal="false" class="groupListInfoDialog">
       <div style="margin-top:-25px;">
-        <el-form
-          status-icon
-          v-if="dialogFormVisible"
-          ref="form"
-          label-width="120px"
-          :model="form"
-          label-position="labelPosition"
-          :rules="rules"
-          style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
-        >
+        <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
+          label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
           <el-form-item label="分组名称" prop="name">
             <el-input size="medium" clearable v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="分组描述" prop="info">
             <el-input size="medium" clearable v-model="form.info"></el-input>
           </el-form-item>
+          <el-form-item label="排序码" prop="sort_code">
+            <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
+          </el-form-item>
         </el-form>
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="default" @click="handleClose">取 消</el-button>
-        <el-button type="primary" @click="confirmEdit">确 定</el-button>
-      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="default" @click="handleClose">取 消</el-button>
+          <el-button type="primary" @click="confirmEdit">确 定</el-button>
+        </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -184,11 +167,12 @@ export default {
     this.tableColumn = [
       { prop: 'name', label: '名称' },
       { prop: 'info', label: '信息' },
+      { prop: 'sort_code', label: '排序码' },
       { prop: 'is_static', label: '静态分组', scopedSlots: { customRender: 'is_static' } },
     ]
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
-      { name: '权限', func: 'goToGroupEditPage', type: 'success' },
+      { name: '权限', func: 'goToGroupEditPage', type: 'info' },
       { name: '删除', func: 'handleDelete', type: 'danger' },
     ]
     // 监听添加分组是否成功

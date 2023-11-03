@@ -6,29 +6,21 @@
           <p class="title">日志信息</p>
         </div>
         <div class="header-right" v-permission="'搜索日志'">
-          <lin-search @query="onQueryChange" ref="searchKeyword" />
-          <el-dropdown
-            size="medium"
-            style="margin: 0 10px"
-            @command="handleCommand"
-            v-permission="'查询日志记录的用户'"
-          >
-            <el-button size="medium">
-              {{ searchUser ? searchUser : '全部人员' }}
-              <i class="el-icon-arrow-down el-icon--right"></i>
+          <lin-search @query="onQueryChange" ref="searchKeywordDom" />
+          <el-dropdown style="margin: 0 10px" @command="handleCommand" v-permission="'查询日志记录的用户'">
+            <el-button>
+              {{ searchUser ? searchUser : '全部人员' }} <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
-              <el-dropdown-item
-                icon="el-icon-user-solid"
-                v-for="(user, index) in users"
-                :key="index"
-                :command="[user]"
-                >{{ user }}</el-dropdown-item
-              >
-            </el-dropdown-menu>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-user-solid" v-for="(user, index) in users.items" :key="index"
+                  :command="[user]">{{ user }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
           </el-dropdown>
-          <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
+          <lin-date-picker @dateChange="handleDateChange" ref="searchDateDom" class="date"> </lin-date-picker>
         </div>
       </div>
       <el-divider v-if="!keyword"></el-divider>
@@ -36,9 +28,8 @@
     <transition name="fade">
       <div class="search" v-if="keyword">
         <p class="search-tip">
-          搜索“
-          <span class="search-keyword">{{ keyword }}</span
-          >”， 找到 <span class="search-num">{{ totalCount }}</span> 条日志信息
+          搜索“<span class="search-keyword">{{ keyword }}</span>”， 找到 <span class="search-num">{{ totalCount }}</span>
+          条日志信息
         </p>
         <button class="search-back" @click="backInit">返回全部日志</button>
       </div>
@@ -50,34 +41,36 @@
           <aside>
             <p class="things">{{ log.username }}{{ log.message }}</p>
             <p class="brief">
-              <span class="text-yellow"></span>
-              {{ log.create_time | dateTimeFormatter }}
+              <span class="text-yellow">{{ log.username }}</span> {{ $filters.dateTimeFormatter(log.time) }}
             </p>
           </aside>
         </section>
       </article>
 
-      <div v-if="logs && logs.length">
-        <el-divider></el-divider>
-        <div class="more" :class="{ nothing: finished }">
-          <i v-if="more" class="iconfont icon-loading"></i>
-          <div v-show="!more && !finished" @click="nextPage">
-            <span>查看更多</span>
-            <i class="iconfont icon-gengduo" style="font-size: 14px"></i>
-          </div>
-          <div v-if="finished">
-            <span>{{ totalCount === 0 ? '暂无数据' : '暂无更多数据' }}</span>
+      <div v-if="totalCount > count || totalCount === 0">
+        <div v-if="logs?.length">
+          <el-divider></el-divider>
+          <div class="more" :class="{ nothing: finished }">
+            <i v-if="more" class="iconfont icon-loading"></i>
+            <div v-show="!more && !finished" @click="nextPage">
+              <span>查看更多</span> <i class="iconfont icon-gengduo" style="font-size: 14px"></i>
+            </div>
+            <div v-if="finished">
+              <span>{{ totalCount === 0 ? '暂无数据' : '没有更多数据了' }}</span>
+            </div>
           </div>
         </div>
+        <div class="nothing" v-else>暂无日志信息</div>
       </div>
-      <div class="nothing" v-else>暂无日志信息</div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import log from 'lin/model/log'
+import { useStore } from 'vuex'
+import { computed, ref, reactive, watch, onMounted, toRefs } from 'vue'
+
+import logModel from 'lin/model/log'
 import { searchLogKeyword } from 'lin/util/search'
 import LinSearch from '@/component/base/search/lin-search'
 import LinDatePicker from '@/component/base/date-picker/lin-date-picker'
@@ -87,199 +80,237 @@ export default {
     LinSearch,
     LinDatePicker,
   },
-  data() {
-    return {
-      log: null,
-      value: '',
-      logs: [],
-      users: [],
-      searchUser: '',
-      more: false,
-      loading: false,
-      finished: false,
-      isSearch: false,
-      error: false,
-      searchKeyword: '',
-      searchDate: [],
-      keyword: null,
-      totalCount: 0,
-    }
-  },
-  computed: {
-    ...mapGetters(['permissions', 'user']),
-  },
-  async created() {
-    this.loading = true
-    await this.initPage()
-    this.loading = false
-  },
-  watch: {
-    // 用户搜索
-    searchUser(user) {
-      this.keyword = user
-      if (this.searchKeyword) {
-        this.keyword = `${user} ${this.searchKeyword}`
-      }
-      if (this.searchDate.length) {
-        this.keyword = `${user} ${this.searchKeyword} ${this.searchDate}`
-      }
-      this.searchPage()
-    },
-    // 关键字搜索
-    searchKeyword(newVal) {
-      if (newVal) {
-        this.keyword = newVal
-        if (this.searchUser) {
-          this.keyword = `${this.searchUser} ${newVal}`
-        }
-        if (this.searchDate.length) {
-          this.keyword = `${this.searchUser} ${newVal} ${this.searchDate}`
-        }
-      } else {
-        this.keyword = ''
-        if (this.searchUser) {
-          this.keyword = `${this.searchUser}`
-        }
-        if (this.searchDate.length) {
-          this.keyword = `${this.searchUser} ${this.searchDate}`
-        }
-        this.$refs.searchKeyword.clear()
-      }
-      this.searchPage()
-    },
-    // 日期搜索
-    searchDate(newDate) {
-      if (newDate && newDate.length) {
-        this.keyword = `${newDate[0]}至${newDate[1]}`
-        if (this.searchUser) {
-          this.keyword = `${this.searchUser} ${newDate[0]}至${newDate[1]}`
-        }
-        if (this.searchKeyword) {
-          this.keyword = `${this.searchUser} ${this.searchKeyword} ${newDate[0]}至${newDate[1]}`
-        }
-      } else {
-        this.keyword = ''
-        this.isSearch = false
-        if (this.searchUser) {
-          this.keyword = `${this.searchUser}`
-        }
-        if (this.searchKeyword) {
-          this.keyword = `${this.searchUser} ${this.searchKeyword}`
-        }
-        this.$refs.searchDate.clear()
-      }
-      this.searchPage()
-    },
-  },
-  methods: {
-    // 下拉框
-    handleCommand(user) {
-      this.searchUser = user[0]
-    },
-    // 页面初始化
-    async initPage() {
+  setup() {
+    // originally data properties
+    const store = useStore()
+    const user = computed(() => store.getters.user)
+    const permissions = computed(() => store.getters.permissions)
+
+    const count = 10
+    const logs = ref([])
+    const users = ref([])
+    const loading = ref(false)
+    const isSearch = ref(false)
+    const finished = ref(false)
+    const searchDateDom = ref()
+    const searchKeywordDom = ref()
+
+    /**
+     * Part 1
+     * 日志页面初始化
+     */
+    const initPage = async () => {
       try {
-        if (this.user.admin || this.permissions.includes('查询日志记录的用户')) {
-          this.users = await log.getLoggedUsers({})
+        loading.value = true
+        if (user.value.admin || permissions.value.includes('查询日志记录的用户')) {
+          users.value = await logModel.getLoggedUsers({})
         }
-        const res = await log.getLogs({ page: 0 })
-        this.logs = res.items
+        const res = await logModel.getLogs({ page: 0, count })
+        logs.value = res.items
+        loading.value = false
       } catch (err) {
+        loading.value = false
         console.error(err.data)
       }
-    },
+    }
+    onMounted(async () => {
+      await initPage()
+    })
+
+    /**
+     * Part 2
+     * 根据调解筛选查询日志
+     */
+    const search = reactive({
+      keyword: '',
+      searchUser: '',
+      searchKeyword: '',
+      searchDate: [],
+      totalCount: 0,
+    })
+
+    const onQueryChange = query => {
+      search.searchKeyword = query.trim()
+    }
+    const handleDateChange = date => {
+      search.searchDate = date
+    }
+    const handleCommand = currentUser => {
+      search.searchUser = currentUser[0] // eslint-disable-line
+    }
     // 条件检索
-    async searchPage() {
-      this.totalCount = 0
-      this.logs = []
-      this.loading = true
-      this.finished = false
-      const name = this.searchUser === '全部人员' ? '' : this.searchUser
-      const res = await log.searchLogs({
+    const searchPage = async () => {
+      logs.value = []
+      loading.value = true
+      search.totalCount = 0
+      finished.value = false
+      const name = search.searchUser === '全部人员' ? '' : search.searchUser
+
+      const res = await logModel.searchLogs({
         page: 0, // 初始化
-        keyword: this.searchKeyword,
+        keyword: search.searchKeyword,
         name,
-        start: this.searchDate[0],
-        end: this.searchDate[1],
+        start: search.searchDate[0],
+        end: search.searchDate[1],
       })
       if (res) {
-        let logs = res.items
-        this.totalCount = res.total
-        if (this.searchKeyword) {
-          logs = await searchLogKeyword(this.searchKeyword, logs)
+        let searchLogs = res.items
+        search.totalCount = res.count
+        if (search.searchKeyword) {
+          searchLogs = searchLogKeyword(search.searchKeyword, searchLogs)
         }
-        this.logs = logs
+        logs.value = searchLogs
       } else {
-        this.finished = true
+        finished.value = true
       }
-      this.isSearch = true
-      this.loading = false
-    },
-    // 下一页
-    async nextPage() {
-      this.more = true
+      isSearch.value = true
+      loading.value = false
+    }
+
+    watch(
+      () => search.searchKeyword,
+      newKeyword => {
+        // 关键字搜索
+        if (newKeyword) {
+          search.keyword = newKeyword
+          if (search.searchUser) {
+            search.keyword = `${search.searchUser} ${newKeyword}`
+          }
+          if (search.searchDate.length) {
+            search.keyword = `${search.searchUser} ${newKeyword} ${search.searchDate[0]}至${search.searchDate[1]}`
+          }
+        } else {
+          search.keyword = ''
+          if (search.searchUser) {
+            search.keyword = `${search.searchUser}`
+          }
+          if (search.searchDate.length) {
+            search.keyword = `${search.searchUser} ${search.searchDate[0]}至${search.searchDate[1]}`
+          }
+          searchKeywordDom.value.clear()
+        }
+        searchPage()
+      },
+      { lazy: true },
+    )
+
+    watch(
+      () => search.searchUser,
+      newUser => {
+        // 用户搜索
+        search.keyword = newUser
+        if (search.searchKeyword) {
+          search.keyword = `${newUser} ${search.searchKeyword}`
+        }
+        if (search.searchDate.length) {
+          search.keyword = `${newUser} ${search.searchKeyword} ${search.searchDate[0]}至${search.searchDate[1]}`
+        }
+        searchPage()
+      },
+      { lazy: true },
+    )
+
+    watch(
+      () => search.searchDate,
+      newDate => {
+        if (newDate?.length) {
+          search.keyword = `${newDate[0]}至${newDate[1]}`
+          if (search.searchUser) {
+            search.keyword = `${search.searchUser} ${newDate[0]}至${newDate[1]}`
+          }
+          if (search.searchKeyword) {
+            search.keyword = `${search.searchUser} ${search.searchKeyword} ${newDate[0]}至${newDate[1]}`
+          }
+        } else {
+          search.keyword = ''
+          isSearch.value = false
+          if (search.searchUser) {
+            search.keyword = `${search.searchUser}`
+          }
+          if (search.searchKeyword) {
+            search.keyword = `${search.searchUser} ${search.searchKeyword}`
+          }
+          searchDateDom.value.clear()
+        }
+        searchPage()
+      },
+      { lazy: true },
+    )
+
+    const backInit = async () => {
+      search.searchUser = ''
+      search.searchKeyword = ''
+      search.searchDate = []
+      search.keyword = ''
+      search.totalCount = 0
+      logs.value = []
+      isSearch.value = false
+      await initPage()
+    }
+
+    /**
+     * Part 3
+     * 翻页处理
+     */
+    const more = ref(false)
+    const nextPage = async () => {
+      more.value = true
       let res
       try {
-        if (this.isSearch) {
-          res = await log.moreSearchPage()
+        if (isSearch.value) {
+          res = await logModel.moreSearchPage()
         } else {
-          res = await log.moreLogPage()
+          res = await logModel.moreLogPage()
         }
 
         let moreLogs = res.items
-        if (this.isSearch && this.searchKeyword) {
-          moreLogs = await searchLogKeyword(this.searchKeyword, moreLogs)
+        if (!moreLogs.length) {
+          finished.value = true
+        } else {
+          if (isSearch.value && search.searchKeyword) {
+            moreLogs = await searchLogKeyword(search.searchKeyword, moreLogs)
+          }
+          logs.value = logs.value.concat(moreLogs)
         }
-        this.logs = this.logs.concat(moreLogs)
 
-        this.more = false
-        if (moreLogs.length == 0) {
-          this.finished = true
-        }
+        more.value = false
       } catch (error) {
         console.error('error', error)
 
-        if (error.data.code === 10220) {
-          this.finished = true
+        if (error.data.code === 10020) {
+          finished.value = true
         }
-
-        this.more = false
+        more.value = false
       }
-    },
-    searchByUser(user) {
-      this.searchUser = user
-    },
-    onQueryChange(query) {
-      // 处理带空格的情况
-      this.searchKeyword = query.trim()
-    },
-    handleDateChange(date) {
-      this.searchDate = date
-    },
-    // 清空检索
-    async backInit() {
-      this.searchUser = ''
-      this.searchKeyword = ''
-      this.searchDate = []
-      this.keyword = ''
-      this.logs = []
-      this.isSearch = false
-      this.loading = true
-      await this.initPage()
-      this.loading = false
-    },
-  },
-  destroyed() {
-    log.init()
+    }
+
+    return {
+      users,
+      logs,
+      more,
+      count,
+      loading,
+      finished,
+      backInit,
+      nextPage,
+      isSearch,
+      onQueryChange,
+      handleCommand,
+      searchDateDom,
+      handleDateChange,
+      searchKeywordDom,
+      ...toRefs(search),
+    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.log /deep/ .el-button {
+.log :deep(.el-button) {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
 .log {
   .log-header {
     display: flex;
@@ -430,6 +461,7 @@ export default {
     font-size: 14px;
     margin-left: 28px;
     cursor: pointer;
+
     &.nothing {
       cursor: text;
     }
@@ -447,6 +479,7 @@ export default {
     }
   }
 }
+
 .nothing {
   color: #45526b;
   font-size: 14px;

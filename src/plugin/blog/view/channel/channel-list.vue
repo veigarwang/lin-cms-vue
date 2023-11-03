@@ -7,51 +7,30 @@
         </div>
 
         <div class="header-right">
-          <el-input
-            size="medium"
-            style="margin-right:10px;"
-            v-model="pagination.channel_name"
-            placeholder="技术频道"
-          ></el-input>
+          <el-input size="medium" style="margin-right:10px;" v-model="pagination.channel_name" placeholder="技术频道">
+          </el-input>
 
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            v-permission="'新增技术频道'"
-            @click="()=>{
-                showEdit = true;
-                this.id=0;
-            }"
-          >新增技术频道</el-button>
+          <el-button type="primary" icon="Edit" v-permission="'新增技术频道'" @click="() => {
+            showEdit = true;
+            this.id = 0;
+          }">新增技术频道</el-button>
           <!-- this.$refs['channelForm'].show(0); -->
-          <el-button type="default" icon="el-icon-search" @click="refresh">查询</el-button>
+          <el-button type="default" icon="Search" @click="refresh">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        v-loading="loading"
-        :pagination="pagination"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        @currentChange="handleCurrentChange"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
+        :pagination="pagination" @handleEdit="handleEdit" @handleDelete="handleDelete"
+        @currentChange="handleCurrentChange">
         <template v-slot:status="scope">
           <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
         <template v-slot:tags="scope">
-          <el-tag
-            style="margin-right:1px;"
-            size="small"
-            v-for="(tag,index) in scope.row.tags"
-            v-bind:key="index"
-            type="success"
-          >{{tag.tag_name}}</el-tag>
+          <el-tag style="margin-right:1px;" size="small" v-for="(tag, index) in scope.row.tags" v-bind:key="index"
+            type="success">{{ tag.tag_name }}</el-tag>
         </template>
         <template v-slot:thumbnail_display="scope">
-          <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
+          <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
       <!--表格结束-->
@@ -64,7 +43,6 @@
 import channelApi from '../../model/channel'
 import LinTable from '@/component/base/table/lin-table'
 import ChannelForm from './channel-form'
-import Vue from 'vue'
 export default {
   name: 'ChannelList',
   components: { LinTable, ChannelForm },
@@ -90,7 +68,7 @@ export default {
     async getChannels() {
       this.loading = true
       const currentPage = this.pagination.currentPage - 1
-      let res = await channelApi
+      const res = await channelApi
         .getChannels({
           count: this.pagination.pageSize,
           page: currentPage,
@@ -100,7 +78,7 @@ export default {
           this.loading = false
         })
       this.tableData = [...res.items]
-      this.pagination.pageTotal = res.total
+      this.pagination.pageTotal = res.count
     },
     async handleEdit(val) {
       this.showEdit = true
@@ -143,7 +121,6 @@ export default {
     },
     async refresh() {
       await this.getChannels()
-      this.$message.success('刷新成功')
     },
     // 下拉框选择分组
     async handleChange() {
@@ -200,7 +177,7 @@ export default {
 
     await this.getChannels()
   },
-  beforeDestroy() {},
+  beforeDestroy() { },
 }
 </script>
 

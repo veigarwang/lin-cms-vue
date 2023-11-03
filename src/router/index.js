@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import routes from './route'
-import store from '../store'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import { ElMessage } from 'element-plus'
+
 import appConfig from '@/config/index'
 import Util from '@/lin/util/util'
-
-Vue.use(Router)
+import autoJump from '@/lin/util/auto-jump'
+import store from '../store'
+import routes from './route'
 
 // 判断是否需要登录访问, 配置位于 config 文件夹
 let isLoginRequired = routeName => {
@@ -35,18 +35,16 @@ let isLoginRequired = routeName => {
   return isLoginRequired(routeName)
 }
 
-const router = new Router({
-  // mode: 'history',
-  scrollBehavior: () => ({
-    y: 0,
-  }),
+const router = createRouter({
+  scrollBehavior: () => ({ y: 0 }),
   base: process.env.BASE_URL,
+  history: createWebHashHistory(),
   routes,
 })
 
 router.beforeEach((to, from, next) => {
   // 登录验证
-  if (isLoginRequired(to.name) && !store.state.logined) {
+  if (isLoginRequired(to.name) && !store.state.loggedIn) {
     next({ path: '/login' })
     return
   }
@@ -54,21 +52,17 @@ router.beforeEach((to, from, next) => {
   // TODO: tab 模式重复点击验证
 
   // 权限验证
-  if (store && store.state && store.getters) {
+  if (store?.state && store?.getters) {
     const { permissions, user } = store.getters
     if (to.path !== '/about' && !Util.hasPermission(permissions, to.meta, user)) {
-      Vue.prototype.$notify({
-        title: '无权限',
-        dangerouslyUseHTMLString: true,
-        message: '<strong class="my-notify">您无此页面的权限哟</strong>',
-      })
+      ElMessage.error('您无此页面的权限哟')
       next({ path: '/about' })
       return
     }
   }
 
   // 路由发生变化重新计时
-  Vue.prototype.$_lin_jump()
+  autoJump(router)
 
   // 路由发生变化修改页面title
   if (to.meta.title) {

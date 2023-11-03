@@ -1,59 +1,53 @@
-import "@babel/polyfill";
-import Vue from "vue";
-import ElementUI from "element-ui";
+import 'dayjs/locale/zh-cn'
+import { createApp } from 'vue'
+import ElementPlus from 'element-plus'
+import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 import '@/config/global'
-import '@/lin/mixin'
-import '@/lin/filter'
-import '@/lin/plugin'
-import '@/lin/directive'
+import 'lin/plugin'
+import { filters } from 'lin/filter'
+import permissionDirective from 'lin/directive/authorize'
 
-import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
-import LinNotify from '@/component/notify'
-import router from '@/router'
-import store from '@/store'
 import App from '@/app.vue'
+import store from '@/store'
+import router from '@/router'
 
-import StickyTop from '@/component/base/sticky-top/sticky-top'
+import LinNotify from '@/component/notify'
 import LIcon from '@/component/base/icon/lin-icon'
+import StickyTop from '@/component/base/sticky-top/sticky-top'
 import SourceCode from '@/component/base/source-code/source-code'
 
-import '@/assets/style/index.scss' // eslint-disable-line
+import '@/assets/style/index.scss'
+import 'element-plus/dist/index.css'
 import '@/assets/style/realize/element-variable.scss'
-import 'element-ui/lib/theme-chalk/display.css'
 import '@/assets/style/main.scss';
 
-Vue.config.productionTip = false;
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
-Vue.use(ElementUI)
-Vue.use(LinNotify, {
+const app = createApp(App)
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+app.use(store)
+app.use(router)
+app.use(ElementPlus, { locale })
+app.use(LinNotify, {
   reconnection: true,
   reconnectionAttempts: 5,
   reconnectionDelay: 3000,
 })
 
-Vue.component(CollapseTransition.name, CollapseTransition);
-
 // base 组件注册
-Vue.component("sticky-top", StickyTop);
-Vue.component("l-icon", LIcon);
-Vue.component("source-code", SourceCode);
+app.component('l-icon', LIcon)
+app.component('sticky-top', StickyTop)
+app.component('source-code', SourceCode)
 
+app.config.globalProperties.$filters = filters
 
-// import { VueReCaptcha } from 'vue-recaptcha-v3'
+app.directive('permission', permissionDirective)
 
-// Vue.use(VueReCaptcha, {
-//   siteKey: '6Le2mr4ZAAAAAP-83AhlTnJ3jaU9hiwniQ80nI7d',
-//   loaderOptions: {
-//     useRecaptchaNet: true
-//   }
-// })
-
-const AppInstance = new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+app.mount('#app')
 
 // 设置 App 实例
-window.App = AppInstance;
+window.App = app

@@ -1,11 +1,11 @@
-import _axios, { post, get, put } from '@/lin/plugin/axios'
-import { saveTokens } from '../util/token'
 import store from '@/store'
+import _axios, { get, put } from '@/lin/plugin/axios'
+import { saveTokens } from '../util/token'
 
 export default class User {
   /**
    * 分配用户
-   * @param {object} data 注册信息
+   * @param {object} user 注册信息
    */
   static register(data) {
     return _axios({
@@ -18,11 +18,24 @@ export default class User {
 
   /**
    * 登陆获取tokens
-   * @param {string} username 用户名
-   * @param {string} password 密码
+   * @param { String } username 用户名
+   * @param { String } password 密码
+   * @param { String } captcha 验证码
+   * @param { String } tag 验证码签名
    */
-  static async getToken(data, headers) {
-    const tokens = await post('cms/user/login', data, {}, headers)
+  static async getToken(username, password, captcha, tag) {
+    const tokens = await _axios({
+      url: 'cms/user/login',
+      method: 'POST',
+      data: {
+        captcha,
+        username,
+        password,
+      },
+      headers: {
+        tag,
+      },
+    })
     saveTokens(tokens.access_token, tokens.refresh_token)
     return tokens
   }

@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import _axios, { get } from '@/lin/plugin/axios'
 
 class Log {
@@ -38,7 +37,6 @@ class Log {
     if (sCount) {
       this.sCount = sCount
     }
-    // lCount && this.lCount = lCount
   }
 
   async increaseUpage() {

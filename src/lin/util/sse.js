@@ -1,4 +1,5 @@
-import Vue from 'vue'
+import { ElMessage } from 'element-plus'
+
 // import EventSourcePolyfill from 'event-source-polyfill'
 import 'event-source-polyfill/src/eventsource'
 import { getToken } from './cookie'
@@ -43,12 +44,8 @@ export default class Sse {
     this.source.addEventListener(eventName, event => {
       // console.log('receive one message: ', event.data)
       // console.log('receive one message: ', event.lastEventId)
-      store.commit('ADD_UNREAD_MESSAGE', { data: event.data, id: event.lastEventId })
-      Vue.prototype.$notify({
-        title: '您有新的消息',
-        dangerouslyUseHTMLString: true,
-        message: `<strong class="my-notify">${JSON.parse(event.data).message}</strong>`,
-      })
+      store.commit('MARK_UNREAD_MESSAGE', { data: event.data, id: event.lastEventId })
+      ElMessage.warning(JSON.parse(event.data).message)
     })
   }
 }

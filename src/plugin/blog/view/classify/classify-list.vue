@@ -1,49 +1,51 @@
 <template>
   <div>
-    <div class="container" v-if="!showEdit">
+    <div class="container"
+      v-if="!showEdit">
       <div class="header">
         <div class="header-left">
           <div class="title">分类专栏列表</div>
         </div>
         <div class="header-right">
-          <el-input
-            size="medium"
+          <el-input size="medium"
             style="margin-right:10px;"
             v-model="pagination.classify_name"
-            placeholder="分类专栏"
-          ></el-input>
-          <el-button type="default" icon="el-icon-search" @click="refresh">查询</el-button>
+            placeholder="分类专栏"></el-input>
+          <el-button type="default"
+            icon="Search"
+            @click="refresh">查询</el-button>
         </div>
       </div>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
+      <lin-table :tableColumn="tableColumn"
         :tableData="tableData"
         :operate="operate"
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
         v-loading="loading"
         :pagination="pagination"
-        @currentChange="handleCurrentChange"
-      >
+        @currentChange="handleCurrentChange">
         <template v-slot:thumbnail_display="scope">
-          <div class="thumb" :style="'background-image: url('+scope.row.thumbnail_display+');'"></div>
+          <div class="thumb"
+            :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
         <template v-slot:create_time="scope">
-          <span>{{scope.row.create_time|filterTimeYmdHms}}</span>
+          <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
         </template>
       </lin-table>
       <!--表格结束-->
     </div>
-    <classify-form v-else @editClose="editClose" :id="id"></classify-form>
+    <classify-form v-else
+      @editClose="editClose"
+      :id="id"></classify-form>
   </div>
 </template>
 
 <script>
-import classifyApi from '../../model/classify'
 import LinTable from '@/component/base/table/lin-table'
+import classifyApi from '../../model/classify'
 import ClassifyForm from './classify-form'
-import Vue from 'vue'
+
 export default {
   name: 'ClassifyList',
   components: { LinTable, ClassifyForm },
@@ -69,7 +71,7 @@ export default {
     async getClassifies() {
       this.loading = true
       const currentPage = this.pagination.currentPage - 1
-      let res = await classifyApi
+      const res = await classifyApi
         .getClassifies({
           count: this.pagination.pageSize,
           page: currentPage,
@@ -79,7 +81,7 @@ export default {
           this.loading = false
         })
       this.tableData = [...res.items]
-      this.pagination.pageTotal = res.total
+      this.pagination.pageTotal = res.count
     },
     async handleEdit(val) {
       this.showEdit = true
@@ -121,7 +123,6 @@ export default {
     },
     async refresh() {
       await this.getClassifies()
-      this.$message.success('刷新成功')
     },
     // 下拉框选择分组
     async handleChange() {
@@ -155,8 +156,7 @@ export default {
     this.operate = [{ name: '删除', func: 'handleDelete', type: 'danger', permission: '删除标签' }]
 
     await this.getClassifies()
-  },
-  beforeDestroy() {},
+  }
 }
 </script>
 

@@ -1,14 +1,7 @@
 <template>
   <div class="container">
-    <el-form
-      :model="form"
-      status-icon
-      :rules="rules"
-      label-position="right"
-      ref="form"
-      v-loading="loading"
-      label-width="100px"
-    >
+    <el-form :model="form" status-icon :rules="rules" label-position="right" ref="form" v-loading="loading"
+      label-width="100px">
       <el-form-item label="密码" prop="new_password">
         <el-input
           size="medium"
@@ -36,11 +29,8 @@
 </template>
 
 <script>
-import Admin from '@/lin/model/admin'
-
 export default {
-  props: ['id'],
-  data() {
+data() {
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'))
@@ -75,7 +65,7 @@ export default {
       },
     }
   },
-  methods: {
+methods: {
     // 提交表单
     submitForm(formName) {
       if (this.form.new_password === '' && this.form.confirm_password === '') {
@@ -105,5 +95,11 @@ export default {
       this.$refs[formName].resetFields()
     },
   },
-}
+};
+</script>
+
+<script setup>
+import Admin from '@/lin/model/admin'
+
+defineProps(['id']);
 </script>

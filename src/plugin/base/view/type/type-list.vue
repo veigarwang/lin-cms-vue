@@ -1,45 +1,27 @@
 <template>
   <div>
-    <div class="container" v-show="!showForm">
+    <div class="container">
       <div class="header">
         <div class="header-left">
-          <div class="title">字典类别列表</div>
+          <div class="title">字典列表</div>
         </div>
         <div class="header-right">
-          <div style="margin-left: 30px">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              v-permission="'新增字典类别'"
-              @click="
-                () => {
-                  this.$refs['dialogForm'].show(0)
-                }
-              "
-              >新增类别</el-button
-            >
-            <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
+          <div style="margin-left:30px">
+            <el-button type="primary" icon="Edit" v-permission="'新增字典类别'" @click="() => {
+              this.$refs['dialogForm'].show(0);
+            }">新增类别</el-button>
+            <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
           </div>
         </div>
       </div>
       <!-- 表格开始 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        @handleEdit="handleEdit"
-        @handleSubItem="handleSubItem"
-        @handleDelete="handleDelete"
-        @row-click="rowClick"
-        v-loading="loading"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
+        @handleDelete="handleDelete" v-loading="loading">
         <template v-slot:create_time="scope">
-          <span>{{ scope.row.create_time | filterTimeYmdHms }}</span>
+          <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
         </template>
       </lin-table>
     </div>
-    <!-- 编辑页面 -->
-    <type-item v-if="showForm" @editClose="editClose" :typeCode="typeCode"></type-item>
     <!--表格结束-->
 
     <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
@@ -47,24 +29,22 @@
 </template>
 
 <script>
-import baseApi from '../../model/base'
 import LinTable from '@/component/base/table/lin-table'
+import baseApi from '../../model/base'
 import TypeDialog from './type-dialog'
-import TypeItem from './type-item'
+
 export default {
-  components: { LinTable, TypeDialog, TypeItem },
+  components: { LinTable, TypeDialog },
   inject: ['eventBus'],
   data() {
     return {
       id: 0, // id
-      //refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
+      refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       editIndex: null, // 编辑的行
       tableData: [], // 表格数据
       tableColumn: [], // 表头数据
       operate: [], // 表格按键操作区
       loading: false,
-      showForm: false,
-      typeCode: 1,
     }
   },
   methods: {
@@ -75,38 +55,30 @@ export default {
         this.loading = true
 
         res = await baseApi.getTypes({})
-        // setTimeout(() => {
-        this.loading = false
-        this.tableData = res
-        // }, 500)
+        setTimeout(() => {
+          this.loading = false
+          this.tableData = res
+        }, 500)
       } catch (e) {
         this.loading = false
       }
     },
-    handleEdit(val) {
+    async handleEdit(val) {
       this.$refs['dialogForm'].show(val.row)
     },
-    handleSubItem(val) {
-      this.showForm = true
-      this.typeCode = val.row.type_code
-    },
-    editClose() {
-      this.showForm = false
-      this.getBaseTypes()
-    },
     handleDelete(val) {
-      this.$confirm('此操作将永久删除该字典类型, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该字典项, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
         this.loading = true
 
-        let res = await baseApi.deleteType(val.row.id).finally(() => {
+        const res = await baseApi.deleteType(val.row.id).finally(() => {
           this.loading = false
         })
 
-        await this.getBaseTypes()
+        await this.refresh()
 
         this.$message({
           type: 'success',
@@ -116,20 +88,18 @@ export default {
     },
     async refresh() {
       await this.getBaseTypes()
-      this.$message.success('刷新成功')
     },
   },
   async created() {
     this.tableColumn = [
-      { prop: 'sort_code', label: '序号', align: 'center', width: '150px' },
       { prop: 'type_code', label: '编码' },
       { prop: 'full_name', label: '名称' },
+      { prop: 'sort_code', label: '排序码' },
       {
         prop: 'create_time',
         label: '创建时间',
         scope: 'create_time',
         scopedSlots: { customRender: 'create_time' },
-        align: 'center',
       },
     ]
     this.operate = [
@@ -139,7 +109,6 @@ export default {
         type: 'primary',
         permission: '编辑字典类别',
       },
-      { name: '查看', func: 'handleSubItem', type: 'success', permission: '查看字典条目' },
       {
         name: '删除',
         func: 'handleDelete',
@@ -149,7 +118,7 @@ export default {
     ]
     await this.getBaseTypes()
   },
-  beforeDestroy() {},
+  beforeDestroy() { },
 }
 </script>
 

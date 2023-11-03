@@ -7,84 +7,39 @@
       <!-- 分组选择下拉框 -->
       <div class="header-right">
         <div style="margin-left:30px">
-          <el-select
-            size="medium"
-            filterable
-            v-model="group_id"
-            placeholder="请选择分组"
-            @change="handleChange"
-            clearable
-            style="margin-right:30px"
-          >
-            <el-option
-              v-for="(group, index) in groups"
-              :key="index"
-              :label="group.name"
-              :value="group.id"
-            ></el-option>
+          <el-select size="medium" filterable v-model="group_id" placeholder="请选择分组" @change="handleChange" clearable
+            style="margin-right:30px">
+            <el-option v-for="(group, index) in groups" :key="index" :label="group.name" :value="group.id"></el-option>
           </el-select>
-          <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
+          <el-button type="default" icon="Search" @click="getAdminUsers">刷新</el-button>
         </div>
       </div>
     </div>
     <!-- 表格 -->
-    <lin-table
-      :tableColumn="tableColumn"
-      :tableData="tableData"
-      :operate="operate"
-      @handleEdit="handleEdit"
-      @handleDelete="handleDelete"
-      @row-click="rowClick"
-      v-loading="loading"
-      @currentChange="handleCurrentChange"
-      @sizeChange="handleSizeChange"
-      :pagination="pagination"
-    >
+    <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
+      @handleDelete="handleDelete" @row-click="rowClick" v-loading="loading" @currentChange="handleCurrentChange"
+      @sizeChange="handleSizeChange" :pagination="pagination">
       <template v-slot:active="scope">
-        <el-switch
-          v-model="scope.row.active"
-          disabled
-          active-color="#13ce66"
-          :active-value="1"
-          :inactive-value="2"
-        ></el-switch>
+        <el-switch v-model="scope.row.active" disabled active-color="#13ce66" :active-value="1" :inactive-value="2">
+        </el-switch>
       </template>
       <template v-slot:create_time="scope">
-        <span>{{scope.row.create_time|filterTimeYmdHms}}</span>
+        <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
       </template>
       <template v-slot:groups="scope">
-        <el-tag
-          style="margin-right:1px;"
-          size="small"
-          v-for="(item,index) in scope.row.groups"
-          v-bind:key="index"
-          type="primary"
-        >{{item.name}}</el-tag>
+        <el-tag style="margin-right:1px;" size="small" v-for="(item, index) in scope.row.groups" v-bind:key="index"
+          type="primary">{{ item.name }}</el-tag>
       </template>
     </lin-table>
     <!-- 弹窗 -->
-    <el-dialog
-      title="用户信息"
-      :append-to-body="true"
-      :before-close="handleClose"
-      :visible.sync="dialogFormVisible"
-      :close-on-click-modal="false"
-    >
+    <el-dialog title="用户信息" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible"
+      :close-on-click-modal="false">
       <div style="margin-top:-25px;">
         <el-tabs v-model="activeTab" @tab-click="handleClick">
           <el-tab-pane label="修改信息" name="修改信息">
-            <user-info
-              ref="userInfo"
-              v-if="dialogFormVisible"
-              @handleInfoResult="handleInfoResult"
-              labelPosition="right"
-              pageType="edit"
-              :id="id"
-              :groups="groups"
-              :info="form"
-              :submit="false"
-              class="info"
-            />
+            <user-info ref="userInfo" v-if="dialogFormVisible" @handleInfoResult="handleInfoResult"
+              labelPosition="right" pageType="edit" :id="id" :groups="groups" :info="form" :submit="false"
+              class="info" />
           </el-tab-pane>
           <el-tab-pane label="修改密码" name="修改密码">
             <user-password
@@ -97,10 +52,13 @@
         </el-tabs>
       </div>
       <!-- 按键操作 -->
-      <div slot="footer" class="dialog-footer">
-        <el-button type="default" @click="handleClose">取消</el-button>
-        <el-button type="primary" @click="confirmEdit">确定</el-button>
-      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="default" @click="handleClose">取消</el-button>
+          <el-button type="primary" @click="confirmEdit">确定</el-button>
+        </div>
+      </template>
+
     </el-dialog>
   </div>
 </template>
@@ -156,7 +114,7 @@ export default {
       })
       this.loading = false
       this.tableData = res.items
-      this.pagination.pageTotal = res.total
+      this.pagination.pageTotal = res.count
     },
     // 获取所有分组
     async getAllGroups() {

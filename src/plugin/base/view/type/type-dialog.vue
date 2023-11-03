@@ -1,22 +1,9 @@
 <template>
-  <el-dialog
-    title="字典分类信息"
-    :append-to-body="true"
-    :before-close="handleClose"
-    :visible.sync="dialogFormVisible"
-    :close-on-click-modal="false"
-  >
+  <el-dialog title="字典分类信息" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible"
+    :close-on-click-modal="false">
     <div style="margin-top:-25px;">
-      <el-form
-        status-icon
-        v-if="dialogFormVisible"
-        ref="form"
-        label-width="120px"
-        :model="form"
-        label-position="labelPosition"
-        :rules="rules"
-        style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
-      >
+      <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
+        label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
         <el-form-item label="类别编码" prop="type_code">
           <el-input size="medium" clearable v-model="form.type_code"></el-input>
         </el-form-item>
@@ -28,14 +15,18 @@
         </el-form-item>
       </el-form>
     </div>
-    <div slot="footer" class="dialog-footer" style="padding-left:5px;">
-      <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" @click="confirmEdit('form')">确 定</el-button>
-    </div>
+    <template #footer>
+      <div class="dialog-footer" style="padding-left:5px;">
+        <el-button @click="handleClose">取消</el-button>
+        <el-button type="primary" @click="confirmEdit('form')">确 定</el-button>
+      </div>
+    </template>
+
   </el-dialog>
 </template>
-<script>
+<script lang="js">
 import baseApi from '../../model/base'
+
 export default {
   name: 'TypeDialog',
   data() {
@@ -78,30 +69,32 @@ export default {
     async submitForm() {
       if (this.id === 0) {
         return await baseApi.addType(this.form)
-      } else {
-        return await baseApi.editType(this.id, this.form)
       }
+      return await baseApi.editType(this.id, this.form)
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
     },
     async confirmEdit(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           this.loading = true
 
-          let res = await this.submitForm().finally(() => {
+          const res = await this.submitForm().finally(() => {
             this.loading = false
           })
           this.dialogFormVisible = false
           this.$message.success(`${res.message}`)
+          this.resetForm(formName)
           this.$emit('ok')
         } else {
-          this.$message.error('请输入必要的信息')
+          this.$message.error('请填写正确的信息')
         }
       })
     },
-  },
-  async created() {},
-  beforeDestroy() {},
+  }
 }
 </script>
 <style scoped>
+
 </style>

@@ -9,7 +9,7 @@
   <a href="#简介">简介</a>&nbsp;|&nbsp;<a href="#快速上手">快速上手</a>&nbsp;|&nbsp;<a href="#版本日志">版本日志</a>
 </p>
 
-![](https://img.shields.io/badge/版本-0.3.5-3963bc.svg)
+![](https://img.shields.io/badge/版本-0.4.2-3963bc.svg)
 ![](https://img.shields.io/badge/node-8.11.0+-3963bc.svg)
 ![](https://img.shields.io/badge/脚手架-vuecli3-3963bc.svg)
 ![](https://img.shields.io/badge/license-MIT-3963bc.svg)
@@ -17,50 +17,45 @@
 ![](https://img.shields.io/badge/developer-@GongJS-3963bc.svg)
 ![](https://img.shields.io/badge/developer-@quanquan-3963bc.svg)
 
-## 简介
+## Lin CMS 简介
 
-Lin-CMS 是林间有风团队经过大量项目实践所提炼出的一套**内容管理系统框架**。
+- Lin-CMS 是林间有风团队经过大量项目实践所提炼出的一套**内容管理系统框架**。
 
-Lin-CMS 可以有效的帮助开发者提高 CMS 的开发效率。
+- Lin-CMS 可以有效的帮助开发者提高 CMS 的开发效率。
 
-Lin-CMS 是一套前后端完整的解决方案，后端部署请移步：
+- Lin-CMS 是一套前后端完整的解决方案，后端部署请移步：
+  - Node.js [lin-cms-koa](https://github.com/TaleLin/lin-cms-koa)
+  - Python [lin-cms-flask](https://github.com/TaleLin/lin-cms-flask)
+  - Java [lin-cms-spring-boot](https://github.com/TaleLin/lin-cms-spring-boot)
+  - Csharp [lin-cms-dotnetcore](https://github.com/luoyunchong/lin-cms-dotnetcore)
+  - PHP [lin-cms-tp5](https://github.com/ChenJinchuang/lin-cms-tp5)
 
-[lin-cms-koa](https://github.com/TaleLin/lin-cms-koa)
+## 注意事项
 
-[lin-cms-flask](https://github.com/TaleLin/lin-cms-flask)
+1. Lin-CMS 是工程类开源项目，不能保证无缝升级.
 
-[lin-cms-spring-boot](https://github.com/TaleLin/lin-cms-spring-boot)
+2. 当前分支为 Vue3 版本，如需使用 Vue2.x 请切换至 vue2 分支。
 
-C#:[lin-cms-dotnetcore](https://github.com/luoyunchong/lin-cms-dotnetcore)
-
-PHP[lin-cms-tp5](https://github.com/ChenJinchuang/lin-cms-tp5)
+## 文档资料
 
 ## 开源
 - 后端接口 [https://github.com/luoyunchong/lin-cms-dotnetcore](https://github.com/luoyunchong/lin-cms-dotnetcore)
 - 管理后台UI [https://github.com/luoyunchong/lin-cms-vue](https://github.com/luoyunchong/lin-cms-vue)
 - 前端UI[https://github.com/luoyunchong/lin-cms-vvlog](https://github.com/luoyunchong/lin-cms-vvlog)
 
-## 线上 Demo
-- 本项目swagger地址 [https://api.igeekfan.cn/swagger/index.html](https://api.igeekfan.cn/swagger/index.html)
-- 用户端 lin-cms-vvlog [http://vvlog.baimocore.cn](http://vvlog.baimocore.cn) 
-  - 普通用户：710277267@qq.com
-  - 密码：123qwe
+- [http://doc.cms.talelin.com/](http://doc.cms.talelin.com/)
 
 - 管理员 lin-cms-vue [http://cms.baimocore.cn/](http://cms.baimocore.cn)
   - 管理员： admin
   - 密码：123qwe
 
-
-## 线上文档地址(完善中)
-- [https://luoyunchong.github.io/vuepress-docs/dotnetcore/lin-cms/](https://luoyunchong.github.io/vuepress-docs/dotnetcore/lin-cms/)
-- [https://igeekfan.gitee.io/vuepress-docs/dotnetcore/lin-cms/](https://igeekfan.gitee.io/vuepress-docs/dotnetcore/lin-cms/)
+- [http://face.cms.talelin.com/](http://face.cms.talelin.com/)
 
 ### 案例
 
-[http://sleeve.talelin.com/](http://sleeve.talelin.com/)
+- [http://sleeve.talelin.com/](http://sleeve.talelin.com/)
 
-
-### Lin CMS 的特点
+## Lin CMS 的特点
 
 Lin CMS 的构筑思想是有其自身特点的。下面我们阐述一些 Lin 的主要特点。
 
@@ -91,19 +86,18 @@ Lin CMS 除了内置常见的功能外，还提供了一套开发规范与工具
 
 ```sh
 # clone the project
-git clone https://github.com/TaleLin/lin-cms-vue.git
+git clone https://github.com/luoyunchong/lin-cms-vue.git
 
 # install dependency
-npm install or yarn
+pnpm install 
 
 # develop
-npm run serve or yarn (run) serve
+pnpm run serve
 ```
 
 ## 讨论交流
+
 微信公众号搜索：林间有风
-<br>
-<img class="QR-img" src="http://i1.sleeve.talelin.com/wechat-account.jpeg" width="150" height="150">
 
 QQ群搜索：Lin CMS 官方交流群 或 814597236
 
@@ -111,21 +105,28 @@ QQ群搜索：Lin CMS 官方交流群 或 814597236
 
 ## 版本日志
 
-最新版本 `0.3.6`
+最新版本 `0.4.3`
 
-### 0.3.6
+### 0.4.3
 
-1. `F` 修复一级菜单双击报错
-2. `U` 统一不同编辑器换行符
-3. `U` 内容提交使用“加载中”按钮
-4. `F` 修复Table组件不能居中问题
-5. `F` 编辑用户时，至少选择一个分组
+1. `U` 升级 `element-plus` 到 Release 版本 `2.1.4`
+2. `U` 升级 vue 相关依赖库版本至最新版本 `5.0.3`
+3. `U` 升级 `eslint` 和 `@babel/eslint-parser` 版本
+4. `A` 添加 `Accessibility` 相关 eslint 检查机制
 
-### 0.3.5
+### 0.4.2
 
-1. `F` 统一前端规范，文件夹、文件名统一用单数和小写字母中划线形式
-2. `A` 新增右键关闭历史记录
-3. `F` 调整默认 dialog 样式
+1. `U` 升级 `Vue` 版本至 `3.2.24`
+2. `U` 升级 `axios` 版本至 `0.24.0`
+3. `U` 升级 `element-plus` 版本至 `1.2.0-beta.5`
+
+### 0.4.1
+
+1. `A` 新增验证码功能，默认关闭验证码
+
+### 0.4.0
+
+1. `U` 升级到 Vue3 版本
 
 ### 0.3.5
 
@@ -199,15 +200,15 @@ QQ群搜索：Lin CMS 官方交流群 或 814597236
 
 ### 0.0.1-alpha.3
 
-1.  `A` 添加插件机制
-2.  `U` 重构路由设计
-2.  `A` 可配置三级路由导航
+1. `A` 添加插件机制
+2. `U` 重构路由设计
+2. `A` 可配置三级路由导航
 
 ### 0.0.1-alpha.2
 
-1.  `U` 升级到 `vue-cli3.4` 
-2.  `A` 慕课网专题插件
+1. `U` 升级到 `vue-cli3.4`
+2. `A` 慕课网专题插件
 
 ### 0.0.1-alpha.1
 
-1.  `A` 初始化内测版
+1. `A` 初始化内测版

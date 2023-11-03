@@ -6,12 +6,18 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { getCurrentInstance, onMounted } from 'vue'
+
 export default {
-  mounted() {
-    const headerHeight = 72
-    const { clientHeight } = document.body
-    this.$refs.container.style.height = `${clientHeight - headerHeight}px`
-  },
+  setup() {
+    onMounted(() => {
+      const headerHeight = 72
+      const { clientHeight } = document.body
+
+      const ctx = getCurrentInstance()
+      ctx.refs.container.style.height = `${clientHeight - headerHeight}px`
+    })
+  }
 }
 </script>
 
@@ -21,10 +27,12 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
+
   .page-404 {
     width: 349px;
     height: 190px;
   }
+
   .page-logo {
     position: absolute;
     right: 40px;

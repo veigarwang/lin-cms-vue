@@ -1,13 +1,12 @@
-import Vue from 'vue'
 import Utils from '../util/util'
 /*
  * 全局的过滤函数
  * */
-function checkAddZone(num) {
-  return num < 10 ? `0${num.toString()}` : num;
+export function checkAddZone(num) {
+  return num < 10 ? `0${num.toString()}` : num
 }
 
-const globalFilter = {
+export const filters = {
   filterAddress(value) {
     // 过滤地址
     if (!value) return value
@@ -36,19 +35,15 @@ const globalFilter = {
     if (!value) {
       return value;
     }
-    const date = new Date(value);
-    const y = 1900 + date.getYear();
-    const m = `0${date.getMonth() + 1}`;
-    const d = `0${date.getDate()}`;
-    const hh = date.getHours();
-    const mm = date.getMinutes() <= 9 ? `0${date.getMinutes()}` : `${date.getMinutes()}`;
-    const ss =
-      date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
-    const val = `${y}-${m.substring(m.length - 2, m.length)}-${d.substring(
-      d.length - 2,
-      d.length
-    )}  ${hh}:${mm}:${ss}`;
-    return val;
+    const date = new Date(value)
+    const y = 1900 + date.getYear()
+    const m = `0${date.getMonth() + 1}`
+    const d = `0${date.getDate()}`
+    const hh = date.getHours()
+    const mm = `${date.getMinutes()}`
+    const ss = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds()
+    const val = `${y}-${m.substring(m.length - 2, m.length)}-${d.substring(d.length - 2, d.length)}  ${hh}:${mm}:${ss}`
+    return val
   },
 
   filterTimeYear(value) {
@@ -108,12 +103,7 @@ const globalFilter = {
     return `${year}-${month}-${date} ${hour}:${min}:${se}`;
   },
 
-  filterTitle(value, len = 10) {
-    return Utils.cutString(value, len);
-  }
-};
-
-// 全局过滤器
-Object.keys(globalFilter).forEach(k => Vue.filter(k, globalFilter[k]));
-
-export default globalFilter;
+  filterTitle(value, len = 9) {
+    return Utils.cutString(value, len)
+  },
+}

@@ -41,6 +41,16 @@ let homeRouter = [
   //   order: 8
   // },
   {
+    title: '日志面板',
+    type: 'view',
+    name: Symbol('logdashboard'),
+    route: '/log-dashboard',
+    filePath: 'view/home/log-dashboard.vue',
+    inNav: true,
+    icon: 'iconfont icon-rizhiguanli',
+    order: 2
+  },
+  {
     title: '个人中心',
     type: 'view',
     name: Symbol('center'),
@@ -60,9 +70,20 @@ let homeRouter = [
   }
 ];
 
-const plugins = [...pluginsConfig];
+// 接入插件
+const plugins = [...pluginsConfig]
+filterPlugin(homeRouter)
+homeRouter = homeRouter.concat(plugins)
 
-// 筛除已经被添加的插件
+// 处理顺序
+homeRouter = Utils.sortByOrder(homeRouter)
+deepReduceName(homeRouter)
+
+export default homeRouter
+
+/**
+ * 筛除已经被添加的插件
+ */
 function filterPlugin(data) {
   if (plugins.length === 0) {
     return;
@@ -82,15 +103,10 @@ function filterPlugin(data) {
   }
 }
 
-filterPlugin(homeRouter);
-
-homeRouter = homeRouter.concat(plugins);
-
-// 处理顺序
-homeRouter = Utils.sortByOrder(homeRouter);
-
-// 使用 Symbol 处理 name 字段, 保证唯一性
-const deepReduceName = target => {
+/**
+ * 使用 Symbol 处理 name 字段, 保证唯一性
+ */
+function deepReduceName(target) {
   if (Array.isArray(target)) {
     target.forEach(item => {
       if (typeof item !== 'object') {
@@ -100,16 +116,10 @@ const deepReduceName = target => {
     });
     return;
   }
-  if (typeof target === "object") {
-    // if (typeof target.name !== 'symbol') {
-    //   // eslint-disable-next-line no-param-reassign
-    //   target.name = target.name || Utils.getRandomStr()
-    //   // eslint-disable-next-line no-param-reassign
-    //   target.name = Symbol(target.name)
-    // }
-
-    if (!target.name) {
-      target.name = target.name || Utils.getRandomStr();
+  if (typeof target === 'object') {
+    if (typeof target.name !== 'symbol') {
+      target.name = target.name || Utils.getRandomStr()
+      target.name = Symbol(target.name)
     }
 
     if (Array.isArray(target.children)) {
@@ -121,8 +131,4 @@ const deepReduceName = target => {
       });
     }
   }
-};
-
-deepReduceName(homeRouter);
-
-export default homeRouter;
+}

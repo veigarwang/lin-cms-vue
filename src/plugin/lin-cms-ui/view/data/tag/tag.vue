@@ -3,9 +3,9 @@
     <div class="lin-title">Tag 标签</div>
     <div class="lin-wrap-ui">
       <el-card style="margin-bottom:50px;">
-        <div slot="header">
+        <template #header>
           <span>基础用法</span>
-        </div>
+        </template>
         <el-row>
           <div>
             <el-tag>标签一</el-tag>
@@ -22,9 +22,9 @@
         </el-collapse>
       </el-card>
       <el-card style="margin-bottom:50px;">
-        <div slot="header">
+        <template #header>
           <span>可移除标签</span>
-        </div>
+        </template>
         <el-row>
           <div>
             <el-tag
@@ -61,7 +61,7 @@
               v-if="inputVisible"
               ref="saveTagInput"
               size="small"
-              @keyup.enter.native="handleInputConfirm"
+              @keyup.enter="handleInputConfirm"
               @blur="handleInputConfirm"
             ></el-input>
             <i v-else class="el-icon-circle-plus button-new-tag" @click="showInput"></i>
@@ -158,7 +158,7 @@ export default {
       ],
       text: '',
       /* eslint-disable */
-      base: `     
+      base: `
         <el-tag>标签一</el-tag>
         <el-tag type="success">标签二</el-tag>
         <el-tag type="info">标签三</el-tag>
@@ -230,7 +230,7 @@ export default {
               margin-left: 10px;
               vertical-align: bottom;
             }
-            .input-new-tag /deep/ .el-input__inner {
+            .input-new-tag :deep(.el-input__inner) {
               height: 24px;
             }
           </style>
@@ -383,7 +383,7 @@ export default {
   margin-left: 10px;
   vertical-align: bottom;
 }
-.input-new-tag /deep/ .el-input__inner {
+.input-new-tag :deep(.el-input__inner) {
   height: 24px;
 }
 </style>

@@ -5,17 +5,20 @@
     </div>
     <div class="form-box" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0)">
       <div class="title">
-        <h1 title="Lin">山 海 万 象</h1>
+        <h1 title="Lin">Lin CMS</h1>
       </div>
-      <form class="login-form" autocomplete="off">
-        <!-- @submit.prevent="throttleLogin()" -->
+      <form class="login-form" autocomplete="off" @submit.prevent="throttleLogin()">
         <div class="form-item nickname">
           <span class="icon account-icon"></span>
-          <input type="text" v-model="form.username" autocomplete="off" placeholder="请填写用户名" />
+          <input type="text" v-model="account.username" autocomplete="off" placeholder="请填写用户名" />
         </div>
         <div class="form-item password">
           <span class="icon secret-icon"></span>
-          <input type="password" v-model="form.password" autocomplete="off" placeholder="请填写用户登录密码" />
+          <input type="password" v-model="account.password" autocomplete="off" placeholder="请填写用户登录密码" />
+        </div>
+        <div class="form-item password" v-if="captchaImage">
+          <img class="captcha" :src="captchaImage" @click.stop="getCaptcha()" />
+          <input type="text" v-model="account.captcha" autocomplete="off" placeholder="请填写验证码" />
         </div>
         <el-button class="submit-btn" type="primary" @click="throttleLogin()" :disabled="loading">登录</el-button>
       </form>
@@ -24,69 +27,92 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
-import AppConfig from '@/config/index'
-import User from '@/lin/model/user'
+import { reactive, ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import axios from 'lin/plugin/axios'
+import UserModel from '@/lin/model/user'
 import Utils from '@/lin/util/util'
+import Config from '@/config'
 
 export default {
-  name: 'login',
-  data() {
+  setup() {
+    let tag = ''
+    const wait = 2000 // 2000ms之内不能重复发起请求
+    const loading = ref(false)
+    const captchaImage = ref('')
+    const store = useStore()
+    const router = useRouter()
+    const throttleLogin = ref(null)
+
+    const account = reactive({
+      username: 'admin',
+      password: '123qwe',
+      captcha: '',
+    })
+
+    /**
+     * 根据账号密码登录，拿到 token 并储存
+     */
+    const login = async () => {
+      const { username, password, captcha } = account
+      try {
+        loading.value = true
+        await UserModel.getToken(username, password, captcha, tag)
+        await getInformation()
+        loading.value = false
+        router.push(Config.defaultRoute)
+        ElMessage({
+          message: '登录成功',
+          type: 'success',
+        })
+      } catch (e) {
+        getCaptcha()
+        loading.value = false
+      }
+    }
+
+    const getCaptcha = async () => {
+      axios({
+        method: 'get',
+        url: 'cms/user/captcha',
+      }).then(result => {
+        ; ({ tag } = result)
+        captchaImage.value = result.image
+      })
+    }
+
+    /**
+     * 获取并更新当前管理员信息
+     */
+    const getInformation = async () => {
+      try {
+        // 尝试获取当前用户信息
+        const user = await UserModel.getPermissions()
+        store.dispatch('setUserAndState', user)
+        store.commit('SET_USER_PERMISSIONS', user.permissions)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    /**
+     * 节流登录
+     */
+    onMounted(() => {
+      getCaptcha()
+      throttleLogin.value = Utils.throttle(login, wait)
+    })
+
     return {
-      loading: false, // 加载动画
-      wait: 2000, // 2000ms之内不能重复发起请求
-      throttleLogin: null, // 节流登录
-      form: {
-        username: 'admin',
-        password: '123qwe',
-      },
-      headers: {
-        'Google-RecaptchaToken': '',
-      },
+      account,
+      loading,
+      getCaptcha,
+      captchaImage,
+      throttleLogin,
     }
   },
-  methods: {
-    async login() {
-      // try {
-      //   this.loading = true
-      //   // Show reCAPTCHA badge:
-      //   await this.$recaptchaLoaded()
-      //   // Execute reCAPTCHA with action "login".
-      //   this.headers['Google-RecaptchaToken'] = await this.$recaptcha('login')
-      // } catch (e) {
-      //   this.$message.error('验证码加载失败！')
-      //   console.log(e)
-      //   this.loading = true
-      //   return
-      // }
-      try {
-        this.loading = true
-        await User.getToken(this.form, this.headers)
-        await this.getInformation()
-        this.loading = false
-        this.$router.push(AppConfig.defaultRoute)
-        this.$message.success('登录成功')
-      } catch (e) {
-        this.loading = false
-        console.log(e)
-      }
-    },
-    async getInformation() {
-      // 尝试获取当前用户信息
-      const user = await User.getPermissions()
-      this.setUserAndState(user)
-      this.setUserPermissions(user.permissions)
-    },
-    ...mapActions(['setUserAndState']),
-    ...mapMutations({
-      setUserPermissions: 'SET_USER_PERMISSIONS',
-    }),
-  },
-  created() {
-    // 节流登录
-    this.throttleLogin = Utils.throttle(this.login, this.wait)
-  },
-  components: {},
 }
 </script>
 
@@ -94,8 +120,8 @@ export default {
 .login {
   width: 100%;
   height: 100%;
-  background-size: auto;
   background: #1b2c5f url('../../assets/image/login/login-ba.png') no-repeat center center;
+  background-size: cover;
 
   .team-name {
     position: fixed;
@@ -131,6 +157,7 @@ export default {
       width: 100%;
 
       .form-item {
+        position: relative;
         width: 100%;
         height: 40px;
         box-sizing: border-box;
@@ -145,6 +172,14 @@ export default {
           font-size: 14px;
           padding-left: 74px;
           box-sizing: border-box;
+        }
+
+        .captcha {
+          position: absolute;
+          width: 80px;
+          right: 30px;
+          top: -22px;
+          cursor: pointer;
         }
       }
 

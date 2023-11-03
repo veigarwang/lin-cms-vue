@@ -3,13 +3,22 @@ const baseRouter = {
   name: null,
   title: "基础资料",
   type: "folder", // 类型: folder, tab, view
-  icon: "iconfont icon-chajian",
-  order: 3,
+  icon: "iconfont icon-tushuguanli",
+  order: null,
   inNav: true,
-  children: [    
+  children: [
     {
       name: null,
       title: "字典管理",
+      type: "view",
+      name: "ItemList",
+      route: "/base/item",
+      filePath: "plugin/base/view/item/item-list.vue",
+      inNav: true
+    },
+    {
+      name: null,
+      title: "字典类别管理",
       type: "view",
       name: "TypeList",
       route: "/base/type",

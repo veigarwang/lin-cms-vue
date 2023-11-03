@@ -1,14 +1,7 @@
 <template>
   <div class="container">
-    <el-form
-      :model="form"
-      status-icon
-      :rules="rules"
-      :label-position="labelPosition"
-      ref="form"
-      label-width="100px"
-      @submit.native.prevent
-    >
+    <el-form :model="form" status-icon :rules="rules" :label-position="labelPosition" ref="form" label-width="100px"
+      @submit.native.prevent>
       <el-form-item label="用户名" prop="username">
         <el-input size="medium" clearable v-model="form.username"></el-input>
       </el-form-item>
@@ -19,23 +12,12 @@
         <el-input size="medium" clearable v-model="form.email" auto-complete="new-password"></el-input>
       </el-form-item>
       <el-form-item label="状态" prop="active">
-        <el-switch
-          v-model="form.active"
-          active-color="#13ce66"
-          :active-value="1"
-          :inactive-value="2"
-          active-text="启用"
-          inactive-text="禁用"
-        ></el-switch>
+        <el-switch v-model="form.active" active-color="#13ce66" :active-value="1" :inactive-value="2" active-text="启用"
+          inactive-text="禁用"></el-switch>
       </el-form-item>
       <el-form-item v-if="pageType === 'add'" label="密码" prop="password">
-        <el-input
-          size="medium"
-          clearable
-          type="password"
-          v-model="form.password"
-          auto-complete="new-password"
-        ></el-input>
+        <el-input size="medium" clearable type="password" v-model="form.password" auto-complete="new-password">
+        </el-input>
       </el-form-item>
       <el-form-item
         v-if="pageType === 'add'"
@@ -54,14 +36,13 @@
       <el-form-item v-if="pageType !== 'password'" label="选择分组">
         <el-checkbox-group v-model="form.group_ids" size="small" style="transform: translateY(5px);">
           <el-checkbox v-for="item in groups" :key="item.id" :label="item.id" border style="margin-left: 0">{{
-            item.name
+              item.name
           }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item v-show="submit" class="submit">
         <el-button type="primary" :loading="loading" @click="submitForm('form')">保 存</el-button>
-        <el-button @click="resetForm('form')">重 置</el-button>
-        <el-button type="primary" @click="submitForm('form')">保 存</el-button>
+        <el-button @click="goBack">返回</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -85,7 +66,7 @@ export default {
     groups: {
       // 所有分组
       type: Array,
-      default: () => {},
+      default: () => { },
     },
     labelPosition: {
       // 表单label位置
@@ -95,7 +76,7 @@ export default {
     info: {
       // 用户信息
       type: Object,
-      default: () => {},
+      default: () => { },
     },
     pageType: {
       type: String,
@@ -175,6 +156,9 @@ export default {
     }
   },
   methods: {
+    goBack() {
+      this.$router.push({path:'/admin/user/list'})
+    },
     // 提交表单
     async submitForm(formName) {
       this.$refs[formName].validate(async valid => {
@@ -228,7 +212,7 @@ export default {
             }
           }
         } else {
-          this.$message.error('请输入必要的信息')
+          this.$message.error('请填写正确的信息')
         }
       })
     },
@@ -270,7 +254,7 @@ export default {
   max-width: 800px;
 
   .submit {
-    float: left;
+    float: right;
   }
 }
 </style>

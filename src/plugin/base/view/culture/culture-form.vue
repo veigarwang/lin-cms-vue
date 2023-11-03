@@ -2,7 +2,7 @@
   <div class="container">
     <sticky-top>
       <div class="title">
-        <span>{{$route.params.id==undefined?'新建本地化':'编辑本地化'}}</span>
+        <span>{{ $route.params.id == undefined ? '新建本地化' : '编辑本地化' }}</span>
         <span class="back" @click="back">
           <i class="iconfont icon-fanhui"></i> 返回
         </span>
@@ -11,16 +11,8 @@
     <div class="wrap">
       <el-row>
         <el-col :lg="16" :md="20" :sm="24" :xs="24">
-          <el-form
-            status-icon
-            :rules="rules"
-            :model="form"
-            ref="form"
-            label-position="right"
-            label-width="100px"
-            v-loading="formLoading"
-            @submit.native.prevent
-          >
+          <el-form status-icon :rules="rules" :model="form" ref="form" label-position="right" label-width="100px"
+            v-loading="formLoading" @submit.native.prevent>
             <el-form-item label="本地化名称" prop="name">
               <el-input size="medium" clearable v-model="form.name"></el-input>
             </el-form-item>
@@ -33,42 +25,27 @@
           </el-form>
         </el-col>
       </el-row>
-    </div>
-    <div>
-      <el-col>
-        <div v-if="this.id!=undefined">
-          <div class="header">
-            <div class="header-left">
-              <div class="title">
-                <el-button
-                  type="primary"
-                  plain
-                  @click="()=>{this.$refs['dialogForm'].show({culture_id:this.form.id});}"
-                >添加本地化资源</el-button>
+      <el-row>
+        <el-col>
+          <div v-if="this.id != undefined">
+            <div class="header">
+              <div class="header-left">
+                <div class="title">
+                  <el-button type="primary" plain
+                    @click="() => { this.$refs['dialogForm'].show({ culture_id: this.form.id }); }">添加本地化资源</el-button>
+                </div>
+              </div>
+              <div class="header-right">
+                <el-input size="medium" style="margin-right:10px;" v-model="pagination.key" placeholder="编码"></el-input>
+                <el-button type="default" @click="getResources" icon="Search">刷新</el-button>
               </div>
             </div>
-            <div class="header-right">
-              <el-input
-                size="medium"
-                style="margin-right:10px;"
-                v-model="pagination.key"
-                placeholder="编码"
-              ></el-input>
-              <el-button type="default" icon="el-icon-refresh" @click="getResources">刷新</el-button>
-            </div>
+            <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
+              :pagination="pagination" @handleEdit="handleEdit" @handleDelete="handleDelete"
+              @currentChange="handleCurrentChange"></lin-table>
           </div>
-          <lin-table
-            :tableColumn="tableColumn"
-            :tableData="tableData"
-            :operate="operate"
-            v-loading="loading"
-            :pagination="pagination"
-            @handleEdit="handleEdit"
-            @handleDelete="handleDelete"
-            @currentChange="handleCurrentChange"
-          ></lin-table>
-        </div>
-      </el-col>
+        </el-col>
+      </el-row>
     </div>
     <resource-dialog ref="dialogForm" @ok="getResources"></resource-dialog>
   </div>
@@ -135,6 +112,7 @@ export default {
           try {
             this.formLoading = true
             if (this.id == undefined) {
+              console.log(this.form)
               res = await cultureApi.addCulture(this.form)
             } else {
               res = await cultureApi.editCulture(this.form)
@@ -155,20 +133,23 @@ export default {
       this.$refs[formName].resetFields()
     },
     async getResources() {
-      this.loading = true
-      const currentPage = this.pagination.currentPage - 1
-      let res = await resourceApi
-        .getResources({
-          count: this.pagination.pageSize,
-          page: currentPage,
-          culture_id: this.pagination.culture_id,
-          key: this.pagination.key,
-        })
-        .finally(r => {
-          this.loading = false
-        })
-      this.tableData = [...res.items]
-      this.pagination.pageTotal = res.total
+      if (this.pagination.culture_id != "") {
+        this.loading = true
+        const currentPage = this.pagination.currentPage - 1
+        const res = await resourceApi
+          .getResources({
+            count: this.pagination.pageSize,
+            page: currentPage,
+            culture_id: this.pagination.culture_id,
+            key: this.pagination.key,
+          })
+          .finally(r => {
+            this.loading = false
+          })
+        this.tableData = [...res.items]
+        this.pagination.pageTotal = res.count
+      }
+
     },
     async handleEdit(val) {
       this.$refs['dialogForm'].show(val.row)
@@ -219,7 +200,7 @@ export default {
   }
 
   .submit {
-    float: left;
+    float: right;
   }
 }
 </style>

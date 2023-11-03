@@ -20,8 +20,10 @@
             <p class="article-detail-title">How to Contribute to Open Source?</p>
           </div>
           <div class="info-row article-detail-content">
-            Whether you just made your first open source contribution, or you’re looking for new ways to contribute, we hope you’re inspired to take action.
-            Even if your contribution wasn’t accepted, don’t forget to say thanks when a maintainer put effort into helping you.
+            Whether you just made your first open source contribution, or you’re looking for new ways to contribute, we
+            hope you’re inspired to take action.
+            Even if your contribution wasn’t accepted, don’t forget to say thanks when a maintainer put effort into
+            helping you.
             Open source is made by people like you: one issue, pull request, comment, or high-five at a time.
           </div>
           <div class="info-row">
@@ -63,7 +65,7 @@ export default {
       default: {},
     },
   },
-  mounted() {},
+  mounted() { },
   methods: {},
 }
 </script>
@@ -75,7 +77,9 @@ export default {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 2px 14px 0px rgba(243, 243, 243, 1);
   border-radius: 8px;
+
   .article-list {
+
     // cursor: pointer;
     .article-item {
       display: flex;
@@ -100,9 +104,11 @@ export default {
           color: rgba(69, 82, 107, 1);
           line-height: 22px;
         }
+
         .article-detail-title:hover {
           text-decoration: underline;
         }
+
         .article-detail-content {
           margin-bottom: 10px;
           font-size: 14px;
@@ -128,9 +134,11 @@ export default {
           display: flex;
           align-items: baseline;
           white-space: nowrap;
+
           .item.clickable:hover {
             color: #007fff;
           }
+
           .item.username {
             display: flex;
             align-items: baseline;
@@ -171,9 +179,11 @@ export default {
                 color: inherit;
               }
             }
+
             li:hover {
               background-color: #f7f8fa;
             }
+
             .iconfont {
               margin-right: 0.2em;
             }
