@@ -84,10 +84,14 @@
                 <el-input size="medium" v-model="form.provenance" placeholder="请输入出处"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6"> </el-col>
             <el-col :span="6" v-if="edit_item_id">
               <el-form-item label="编辑次数" prop="version">
                 <div>{{ form.version }}</div>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" v-if="edit_item_id && form.version > 0">
+              <el-form-item label="上次修改于" prop="update_time">
+                <div>{{ form.update_time | dateTimeFormatter }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -156,7 +160,7 @@
                 <el-button type="primary" v-if="!edit_item_id" @click="submitForm('form', true)" :loading="loading"
                   >连续新增</el-button
                 >
-                <el-button @click="resetForm('form')">重 置</el-button>
+                <el-button v-if="!edit_item_id" @click="resetForm('form')">重 置</el-button>
               </el-form-item>
             </el-col>
           </el-form>
@@ -242,14 +246,7 @@ export default {
         } else {
           this.firstLoad = false
         }
-        if (
-          this.form.name.endsWith('山') ||
-          this.form.name.endsWith('丘') ||
-          this.form.name.endsWith('谷') ||
-          this.form.name.endsWith('野') ||
-          this.form.name.endsWith('臺') ||
-          this.form.name.endsWith('穴')
-        )
+        if (this.form.name.endsWith('山') || this.form.name.endsWith('丘'))
           this.form.item_type = Number(this.item_types[0].item_code)
         else if (
           this.form.name.endsWith('水') ||
@@ -290,10 +287,10 @@ export default {
         )
           this.form.item_type = Number(this.item_types[7].item_code)
         else if (this.form.name.endsWith('神')) this.form.item_type = Number(this.item_types[8].item_code)
+        else if (this.form.name.endsWith('人') || this.form.name.endsWith('民'))
+          this.form.item_type = Number(this.item_types[9].item_code)
         else if (this.form.name.endsWith('國') || this.form.name.endsWith('城'))
           this.form.item_type = Number(this.item_types[10].item_code)
-        else if (this.form.name.endsWith('人') || this.form.name.endsWith('民'))
-          this.form.item_type = Number(this.item_types[11].item_code)
         else if (this.form.name.endsWith('玉') || this.form.name.endsWith('碧'))
           this.form.item_type = Number(this.item_types[12].item_code)
         else if (
@@ -307,51 +304,49 @@ export default {
           this.form.item_type = Number(this.item_types[14].item_code)
       }, 1000),
     ),
-      this.$watch(
-        'form.original_text',
-        Utils.debounce(func => {
-          while (this.form.original_text.indexOf(' ') > -1)
-            this.form.original_text = this.form.original_text.replace(' ', '')
-          var reg = /山海經·(.*?)經/gms
-          if (this.form.original_text.search(reg) !== -1) {
-            var array = this.form.original_text.match(reg)
-            var res = []
-            array.forEach(element => {
-              var item = element.replace(/山海經·/, '')
-              if (res.indexOf(item) == -1) res.push(element.replace(/山海經·/, ''))
-            })
-            this.form.provenance = res.toString()
-            //reg.exec(this.form.original_text).toString()
-          }
-        }, 1000),
-      ),
-      this.$watch(
-        'form.guozhu',
-        Utils.debounce(func => {
-          if (
-            this.form.guozhu.indexOf('，郭璞注：『') > -1 ||
-            this.form.guozhu.indexOf('。郭璞注：『') > -1 ||
-            this.form.guozhu.indexOf('、郭璞注：『') > -1 ||
-            this.form.guozhu.indexOf('郭璞注：『') > -1 ||
-            this.form.guozhu.indexOf('「') > -1 ||
-            this.form.guozhu.indexOf('」') > -1 ||
-            this.form.guozhu.indexOf('』』') > -1 ||
-            this.form.guozhu.indexOf(' ') > -1
-          ) {
-            this.form.guozhu =
-              this.form.guozhu
-                .replace('，郭璞注：『', '：')
-                .replace('。郭璞注：『', '：')
-                .replace('、郭璞注：『', '：')
-                .replace('郭璞注：『', '：')
-                .replace('「', '『')
-                .replace('」', '』')
-                .replace('』』', '』')
-                .replace(' ', '') + '\n'
-          }
+    this.$watch(
+      'form.original_text',
+      Utils.debounce(func => {
+        while (this.form.original_text.indexOf(' ') > -1)
+          this.form.original_text = this.form.original_text.replace(' ', '')
+        var reg = /山海經·(.*?)經/gms
+        if (this.form.original_text.search(reg) !== -1) {
+          var array = this.form.original_text.match(reg)
+          var res = []
+          array.forEach(element => {
+            var item = element.replace(/山海經·/, '')
+            if (res.indexOf(item) == -1) res.push(element.replace(/山海經·/, ''))
+          })
+          this.form.provenance = res.toString()
           //reg.exec(this.form.original_text).toString()
-        }, 1000),
-      )
+        }
+      }, 1000),
+    ),
+    this.$watch(
+      'form.guozhu',
+      Utils.debounce(func => {
+        if (
+          this.form.guozhu.indexOf('，郭璞注：『') > -1 ||
+          this.form.guozhu.indexOf('。郭璞注：『') > -1 ||
+          this.form.guozhu.indexOf('、郭璞注：『') > -1 ||
+          this.form.guozhu.indexOf('郭璞注：『') > -1 ||
+          this.form.guozhu.indexOf('』』') > -1 ||
+          this.form.guozhu.indexOf(' ') > -1
+        ) {
+          this.form.guozhu =
+            this.form.guozhu
+              .replace('，郭璞注：『', '：')
+              .replace('。郭璞注：『', '：')
+              .replace('、郭璞注：『', '：')
+              .replace('郭璞注：『', '：')
+              .replace('「', '『')
+              .replace('」', '』')
+              .replace('』』', '』')
+              .replace(' ', '') + '\n'
+        }
+        //reg.exec(this.form.original_text).toString()
+      }, 1000),
+    )
     this.$watch(
       'form.alias',
       Utils.debounce(func => {
@@ -372,13 +367,13 @@ export default {
       }, 1000),
     )
     this.$watch(
-        'form.remarks',
-        Utils.debounce(func => {
-          if (this.form.guozhu.indexOf(' ') > -1) {
-            this.form.guozhu = this.form.guozhu.replace(' ', '')
-          }
-        }, 1000),
-      )
+      'form.remarks',
+      Utils.debounce(func => {
+        if (this.form.guozhu.indexOf(' ') > -1) {
+          this.form.guozhu = this.form.guozhu.replace(' ', '')
+        }
+      }, 1000),
+    )
   },
   async mounted() {
     this.loading = true

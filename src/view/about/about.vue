@@ -66,9 +66,9 @@
       <div class="quantity-item">
         <div class="quantity-detail">
           <div class="quantity-detail-box">
-            <div class="quantity-title">藏书数量</div>
+            <div class="quantity-title">已读 / 藏书总数</div>
             <div class="quantity-border-line"></div>
-            <div class="quantity">{{ bookTotal }}</div>
+            <div class="quantity">{{ readBookTotal }}/{{ bookTotal }}</div>
           </div>
         </div>
         <div class="quantity-icon">
@@ -218,18 +218,32 @@ export default {
       activeName: 'first',
       showTeam: false,
       bookTotal: 0,
+      readBookTotal: 0,
       entryTotal: 0,
       activities: [
+        {
+          title: 'v0.97',
+          content: [
+            { entry: '新增使用无声调拼音进行模糊查询', label: '新增', color: 'green' },
+            { entry: '完善新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet'  },
+            { entry: '查询字典条目列表时会触发一次查询字典类别列表', label: '待修', color: 'red' },
+            
+          ],
+          timestamp: '2023-07-06 11:21',
+          size: 'large',
+          type: 'primary',
+          //icon: 'el-icon-more',
+        },
         {
           title: 'v0.96',
           content: [
             { entry: '书籍管理和山海百科页面增加类别筛选下拉列表', label: '新增', color: 'green' },
-            { entry: '查询字典条目列表时会触发一次查询字典类别列表', label: '待修', color: 'red' },
+            { entry: '完善新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet'  },
+            { entry: '对集解增加单双引号自动修正功能', label: '改善', color: 'blueviolet'  },
+            { entry: '更新部分提示信息以使其更加明确', label: '改善', color: 'blueviolet'  },
+            
           ],
           timestamp: '2023-03-25 13:35',
-          size: 'large',
-          type: 'primary',
-          //icon: 'el-icon-more',
         },
         {
           title: 'v0.95',
@@ -240,7 +254,6 @@ export default {
             { entry: '保存词条时自动修正误用的单双引号', label: '改善', color: 'blueviolet' },
           ],
           timestamp: '2023-03-08 23:27',
-          //icon: 'el-icon-more',
         },
         {
           title: 'v0.94',
@@ -298,7 +311,8 @@ export default {
     }
   },
   async created() {
-    this.bookTotal = await book.getBookTotal()
+    this.bookTotal = await book.getBookTotal(false)
+    this.readBookTotal = await book.getBookTotal(true)
     this.entryTotal = await encyclopedia.getEncyclopediaTotal()
   },
   mounted() {

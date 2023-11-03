@@ -37,8 +37,8 @@ class Book {
     return res
   }
 
-  async getBookTotal(){
-    const res = await get("v1/book/getTotal");
+  async getBookTotal(isRead){
+    const res = await get(`v1/book/getTotal/${isRead}`);
     return res
   }
 }

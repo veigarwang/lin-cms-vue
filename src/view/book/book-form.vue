@@ -172,6 +172,11 @@
                 <div>{{ form.version }}</div>
               </el-form-item>
             </el-col>
+            <el-col :span="6" v-if="edit_book_id && form.version > 0">
+              <el-form-item label="上次修改于" prop="update_time">
+                <div>{{ form.update_time | dateTimeFormatter }}</div>
+              </el-form-item>
+            </el-col>
             <el-col :span="24">
               <el-form-item label="读后感" prop="summary">
                 <el-input
@@ -300,9 +305,15 @@ export default {
           this.loading = true
           if (!this.form.author_type2) this.form.author_type2 = 0
           if (!this.form.author_type3) this.form.author_type3 = 0
+          // if (!this.form.date_purchased) {
+          //   let t = new Date()
+          //   t.setHours(0, 0, 0, 0)
+          //   this.form.date_purchased = t.toLocaleDateString()
+          // }
           let t = new Date()
           t.setTime(this.form.date_purchased + 1000 * 60 * 60 * 8)
           this.form.date_purchased = t
+          //console.log(this.form.date_purchased)
           let cover = await this.$refs['uploadEle1'].getValue()
           if (cover.length > 0) {
             this.form.cover = cover[0].src
