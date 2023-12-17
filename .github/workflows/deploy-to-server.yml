@@ -6,7 +6,7 @@ name: Deploy To Server 💕
 on:
   push:
     branches:
-            - master
+            - main
             - vue-next
   pull_request:
     branches: [main]
