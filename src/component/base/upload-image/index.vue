@@ -16,7 +16,8 @@ todo: 文件判断使用 serveWorker 优化性能
             :ref="setImageRef"
             :src="item.display"
             class="thumb-item-img"
-            :previewSrcList="srcList"
+            :initial-index="4"
+            :preview-src-list="srcList"
             style="width: 100%; height: 100%"
           >
           </el-image>
@@ -229,7 +230,6 @@ export default {
   name: 'UploadImgs',
   data() {
     return {
-      srcList: [],
       itemList: [],
       imageRefs: [],
       loading: false,
@@ -322,6 +322,10 @@ export default {
     },
   },
   computed: {
+    srcList(){
+         const usable = this.itemList.filter(item => item.status !== 'input')
+         return usable.map(item => item.display)
+    },
     /** 每项容器样式 */
     boxStyle() {
       const { width, height, disabled } = this
@@ -724,9 +728,8 @@ export default {
      * @param {Number} index 索引序号
      */
     previewImg(data, index) {
-      const usable = this.itemList.filter(item => item.status !== 'input')
-      this.srcList = usable.map(item => item.display)
-      this.imageRefs[index].showViewer = true
+    //   this.imageRefs[index].showViewer = true
+        this.imageRefs[0].$el.children[0].click()
     },
     setImageRef(el) {
       if (el) {

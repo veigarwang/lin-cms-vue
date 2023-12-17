@@ -37,12 +37,12 @@
       <div style="margin-top:-25px;">
         <el-tabs v-model="activeTab" @tab-click="handleClick">
           <el-tab-pane label="修改信息" name="修改信息">
-            <user-info ref="userInfo" v-if="dialogFormVisible" @handleInfoResult="handleInfoResult"
+            <user-info ref="userInfo" @handleInfoResult="handleInfoResult"
               labelPosition="right" pageType="edit" :id="id" :groups="groups" :info="form" :submit="false"
               class="info" />
           </el-tab-pane>
           <el-tab-pane label="修改密码" name="修改密码">
-            <user-password @handlePasswordResult="handlePasswordResult" ref="password" :id="id" class="password" />
+            <user-password ref="password" @handlePasswordResult="handlePasswordResult"  :id="id" class="password" />
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -67,6 +67,7 @@ export default {
   components: { LinTable, UserInfo, UserPassword },
   inject: ['eventBus'],
   data() {
+    window.th= this;
     return {
       id: 0, // 用户id
       editIndex: null, // 编辑的行
@@ -175,11 +176,11 @@ export default {
       })
     },
     // 提交表单信息
-    async confirmEdit() {
+    confirmEdit() {
       if (this.activeTab === '修改信息') {
-        await this.$refs.userInfo.submitForm('form')
+         this.$refs.userInfo.submitForm('form')
       } else {
-        await this.$refs.password.submitForm('form')
+         this.$refs.password.submitForm('form')
       }
     },
     // 双击 table ro

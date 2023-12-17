@@ -149,7 +149,7 @@ export default {
       this.$router.push({path:'/admin/user/list'})
     },
     // 提交表单
-    async submitForm(formName) {
+    submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           // 新增用户
