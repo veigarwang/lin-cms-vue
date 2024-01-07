@@ -100,7 +100,7 @@ export default {
           this.loading = false
         })
       this.tableData = [...res.items]
-      this.pagination.pageTotal = res.total
+      this.pagination.pageTotal = res.count
     },
     async handleEdit(val) {
       this.showEdit = true

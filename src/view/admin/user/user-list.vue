@@ -156,7 +156,7 @@ export default {
       })
       this.loading = false
       this.tableData = res.items
-      this.pagination.pageTotal = res.total
+      this.pagination.pageTotal = res.count
     },
     // 获取所有分组
     async getAllGroups() {

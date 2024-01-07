@@ -161,7 +161,7 @@ export default {
         })
         this.loading = false
         this.tableData = [...res.items]
-        this.pagination.pageTotal = res.total
+        this.pagination.pageTotal = res.count
         this.last_provenance = this.tableData[0].provenance
       } catch (error) {
         if (error.code === 10020) {

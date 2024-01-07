@@ -165,7 +165,7 @@ export default {
           page: currentPage,
         })
         this.tableData = [...res.items]
-        this.pagination.pageTotal = res.total
+        this.pagination.pageTotal = res.count
         this.loading = false
       } catch (error) {
         if (error.code === 10020) {

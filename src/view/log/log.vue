@@ -204,7 +204,7 @@ export default {
       })
       if (res) {
         let logs = res.items
-        this.totalCount = res.total
+        this.totalCount = res.count
         if (this.searchKeyword) {
           logs = await searchLogKeyword(this.searchKeyword, logs)
         }
