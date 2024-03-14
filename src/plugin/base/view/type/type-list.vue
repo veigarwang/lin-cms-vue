@@ -5,8 +5,8 @@
         <el-form-item>
           <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
           <el-button type="primary" icon="Edit" v-permission="新增字典类别" @click="() => {
-              this.$refs['dialogForm'].show(0)
-            }
+        this.$refs['dialogForm'].show(0)
+      }
         ">新增类别</el-button>
         </el-form-item>
       </el-form>
@@ -43,17 +43,11 @@ export default {
   methods: {
     async getBaseTypes() {
       let res
-      try {
-        this.loading = true
-
-        res = await baseApi.getTypes({})
-        setTimeout(() => {
-          this.loading = false
-          this.tableData = res
-        }, 500)
-      } catch (e) {
-        this.loading = false
-      }
+      this.loading = true
+      res = await baseApi.getTypes({}).finally(() => {
+        this.loading = false;
+      })
+      this.tableData = res
     },
     async handleEdit(val) {
       this.$refs['dialogForm'].show(val.row)

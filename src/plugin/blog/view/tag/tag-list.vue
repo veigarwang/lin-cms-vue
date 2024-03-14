@@ -8,9 +8,9 @@
         <div class="header-right">
           <el-input size="medium" style="margin-right:30px" v-model="pagination.tag_name" placeholder="标签名"></el-input>
           <el-button type="primary" icon="Edit" v-permission="'新增标签'" @click="() => {
-            this.showEdit = true;
-            this.id = 0;
-          }">新增标签</el-button>
+      this.showEdit = true;
+      this.id = 0;
+    }">新增标签</el-button>
           <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
         </div>
       </div>
@@ -89,25 +89,18 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await tagApi.deleteTag(val.row.id)
-        } catch (e) {
-          this.loading = false
-        }
+        this.loading = true
+        res = await tagApi.deleteTag(val.row.id).finally(() => {
+          this.loading = false;
+        })
         if (res.code === 0) {
-          this.loading = false
           await this.getTags()
-
           this.$message({
             type: 'success',
             message: `${res.message}`,
           })
-        } else {
-          this.loading = false
-          this.$message.error(`${res.message}`)
-        }
-      })
+
+        })
     },
     async refresh() {
       await this.getTags()

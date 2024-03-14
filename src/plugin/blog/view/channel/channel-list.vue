@@ -11,9 +11,9 @@
           </el-input>
 
           <el-button type="primary" icon="Edit" v-permission="'新增技术频道'" @click="() => {
-            showEdit = true;
-            this.id = 0;
-          }">新增技术频道</el-button>
+      showEdit = true;
+      this.id = 0;
+    }">新增技术频道</el-button>
           <!-- this.$refs['channelForm'].show(0); -->
           <el-button type="default" icon="Search" @click="refresh">查询</el-button>
         </div>
@@ -90,8 +90,9 @@ export default {
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
-      await this.getChannels()
-      this.loading = false
+      await this.getChannels().finally(() => {
+        this.loading = false;
+      })
     },
     handleDelete(val) {
       let res
@@ -100,12 +101,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await channelApi.deleteChannel(val.row.id)
-        } catch (e) {
-          this.loading = false
-        }
+
+        this.loading = true
+        res = await channelApi.deleteChannel(val.row.id).finally(() => {
+          this.loading = false;
+        })
         if (res.code === 0) {
           this.loading = false
           await this.getChannels()
@@ -127,8 +127,9 @@ export default {
     async handleChange() {
       this.currentPage = 1
       this.loading = true
-      await this.getChannels()
-      this.loading = false
+      await this.getChannels().finally(() => {
+        this.loading = false;
+      })
     },
 
     async editClose() {

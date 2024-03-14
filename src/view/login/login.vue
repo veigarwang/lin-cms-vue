@@ -78,13 +78,9 @@ export default {
       })
     }
     const getInformation = async () => {
-      try {
-        const user = await UserModel.getPermissions()
-        store.dispatch('setUserAndState', user)
-        store.commit('SET_USER_PERMISSIONS', user.permissions)
-      } catch (e) {
-        console.error(e)
-      }
+      const user = await UserModel.getPermissions()
+      store.dispatch('setUserAndState', user)
+      store.commit('SET_USER_PERMISSIONS', user.permissions)
     }
     onMounted(() => {
       getCaptcha()

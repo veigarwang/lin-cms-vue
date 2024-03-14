@@ -93,8 +93,9 @@ export default {
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
-      await this.getComments()
-      this.loading = false
+      await this.getComments().finally(() => {
+        this.loading = false;
+      })
     },
     handleDelete(val) {
       let res
@@ -103,13 +104,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await commentApi.delectComment(val.row.id)
-        } catch (e) {
-          this.loading = false
-          console.log(e)
-        }
+
+        this.loading = true
+        res = await commentApi.delectComment(val.row.id).finally(() => {
+          this.loading = false;
+        })
         if (res.code === 0) {
           this.loading = false
           if (this.pagination.pageTotal % this.pagination.pageSize === 1 && this.pagination.currentPage !== 1) {

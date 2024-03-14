@@ -95,18 +95,16 @@ export default {
     const searchKeywordDom = ref()
 
     const initPage = async () => {
-      try {
-        loading.value = true
-        if (user.value.admin || permissions.value.includes('查询日志记录的用户')) {
-          users.value = await logModel.getLoggedUsers({})
-        }
-        const res = await logModel.getLogs({ page: 0, count })
-        logs.value = res.items
-        loading.value = false
-      } catch (err) {
-        loading.value = false
-        console.error(err.data)
+
+      loading.value = true
+      if (user.value.admin || permissions.value.includes('查询日志记录的用户')) {
+        users.value = await logModel.getLoggedUsers({})
       }
+      const res = await logModel.getLogs({ page: 0, count }).finally(() => {
+        loading.value = false
+      })
+      logs.value = res.items
+
     }
     onMounted(async () => {
       await initPage()

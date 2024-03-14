@@ -54,12 +54,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await cultureApi.deleteCulture(val.row.id)
-        } catch (e) {
-          this.loading = false
-        }
+
+        this.loading = true
+        res = await cultureApi.deleteCulture(val.row.id).finally(() => {
+          this.loading = false;
+        })
         if (res.code === 0) {
           this.loading = false
           await this.getCultures()

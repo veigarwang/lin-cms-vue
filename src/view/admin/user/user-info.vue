@@ -175,11 +175,9 @@ export default {
             })
 
             if (res.code < window.MAX_SUCCESS_CODE) {
-              this.loading = false
               this.$message.success(`${res.message}`)
               this.$emit('handleInfoResult', true)
             } else {
-              this.loading = false
               this.$message.error(`${res.message}`)
             }
           }

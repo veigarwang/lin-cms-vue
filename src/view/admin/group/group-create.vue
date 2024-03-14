@@ -73,13 +73,10 @@ export default {
         if (valid) {
           let res
           const finalPermissions = this.permissions.filter(x => Object.keys(this.allPermissions).indexOf(x) < 0)
-          try {
-            this.loading = true
-            res = await Admin.createOneGroup(this.form.name, this.form.info, finalPermissions, this.id) // eslint-disable-line
-          } catch (e) {
-            this.loading = false
-            console.log(e)
-          }
+          this.loading = true
+          res = await Admin.createOneGroup(this.form.name, this.form.info, finalPermissions, this.id).finally(() => {
+            this.loading = false;
+          })
           if (res.code < window.MAX_SUCCESS_CODE) {
             this.loading = false
             this.$message.success(`${res.message}`)

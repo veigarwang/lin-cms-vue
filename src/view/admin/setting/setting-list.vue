@@ -8,9 +8,9 @@
         <div class="header-right">
           <div style="margin-left:30px">
             <el-button type="primary" icon="Edit" v-permission="'新增设置'" @click="() => {
-              this.showEdit = true;
-              this.id = 0;
-            }">新增设置</el-button>
+      this.showEdit = true;
+      this.id = 0;
+    }">新增设置</el-button>
             <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
           </div>
         </div>
@@ -89,12 +89,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await settingApi.deleteSetting(val.row.id)
-        } catch (e) {
-          this.loading = false
-        }
+        this.loading = true
+        res = await settingApi.deleteSetting(val.row.id).finally(() => {
+          this.loading = false;
+        })
         await this.getSettings()
 
         this.$message({

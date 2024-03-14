@@ -1,33 +1,21 @@
 <template>
   <div>
-    <div class="container"
-      v-if="!showEdit">
+    <div class="container" v-if="!showEdit">
       <div class="header">
         <div class="header-left">
           <div class="title">分类专栏列表</div>
         </div>
         <div class="header-right">
-          <el-input size="medium"
-            style="margin-right:10px;"
-            v-model="pagination.classify_name"
+          <el-input size="medium" style="margin-right:10px;" v-model="pagination.classify_name"
             placeholder="分类专栏"></el-input>
-          <el-button type="default"
-            icon="Search"
-            @click="refresh">查询</el-button>
+          <el-button type="default" icon="Search" @click="refresh">查询</el-button>
         </div>
       </div>
 
-      <lin-table :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        v-loading="loading"
-        :pagination="pagination"
-        @currentChange="handleCurrentChange">
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
+        @handleDelete="handleDelete" v-loading="loading" :pagination="pagination" @currentChange="handleCurrentChange">
         <template v-slot:thumbnail_display="scope">
-          <div class="thumb"
-            :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
+          <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
         <template v-slot:create_time="scope">
           <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
@@ -35,9 +23,7 @@
       </lin-table>
 
     </div>
-    <classify-form v-else
-      @editClose="editClose"
-      :id="id"></classify-form>
+    <classify-form v-else @editClose="editClose" :id="id"></classify-form>
   </div>
 </template>
 
@@ -101,12 +87,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await classifyApi.deleteClassify(val.row.id)
-        } catch (e) {
-          this.loading = false
-        }
+        this.loading = true
+        res = await classifyApi.deleteClassify(val.row.id).finally(() => {
+          this.loading = false;
+        })
+
         if (res.code === 0) {
           this.loading = false
           await this.getClassifies()

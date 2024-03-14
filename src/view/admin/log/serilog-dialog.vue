@@ -1,31 +1,29 @@
 <template>
   <el-dialog title="Serilog日志详细" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible">
-    <div style="margin-top:-25px;">
-      <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
-        label-position="labelPosition" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
-        <el-form-item label="消息" prop="message">
-          <span>{{ form.message }}</span>
-        </el-form-item>
-        <el-row :gutter="10">
-          <el-col :xs="12">
-            <el-form-item label="创建时间" prop="timestamp">
-              <span>{{ $filters.filterTimeYmdHms(form.timestamp) }}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="12">
-            <el-form-item label="级别" prop="level">
-              <el-tag size="medium" :type="formatlogLevelType(form.level)">{{ formatLogLevels(form.level) }}</el-tag>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item label="属性" prop="properties">
-          <pre>{{ form.properties }}</pre>
-        </el-form-item>
-        <el-form-item label="异常" prop="exception">
-          <pre>{{ form.exception }}</pre>
-        </el-form-item>
-      </el-form>
-    </div>
+    <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
+      label-position="labelPosition" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
+      <el-form-item label="消息" prop="message">
+        <span>{{ form.message }}</span>
+      </el-form-item>
+      <el-row :gutter="10">
+        <el-col :xs="12">
+          <el-form-item label="创建时间" prop="timestamp">
+            <span>{{ $filters.filterTimeYmdHms(form.timestamp) }}</span>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="12">
+          <el-form-item label="级别" prop="level">
+            <el-tag size="medium" :type="formatlogLevelType(form.level)">{{ formatLogLevels(form.level) }}</el-tag>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item label="属性" prop="properties">
+        <pre>{{ form.properties }}</pre>
+      </el-form-item>
+      <el-form-item label="异常" prop="exception">
+        <pre>{{ form.exception }}</pre>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <div class="dialog-footer" style="padding-left:5px;">
         <el-button type="default" @click="handleClose">关闭</el-button>

@@ -7,9 +7,9 @@
         </div>
         <div class="header-right">
           <el-button type="primary" icon="Edit" v-permission="'新增文档'" @click="() => {
-            this.showEdit = true;
-            this.id = 0;
-          }">新增文档</el-button>
+      this.showEdit = true;
+      this.id = 0;
+    }">新增文档</el-button>
           <el-button type="default" @click="refresh" icon="Search">
             刷新</el-button>
         </div>
@@ -70,8 +70,9 @@ export default {
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
-      await this.getDocs()
-      this.loading = false
+      await this.getDocs().finally(() => {
+        this.loading = false;
+      })
     },
     handleDelete(val) {
       let res
@@ -80,12 +81,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await docApi.deleteDoc(val.row.id)
-        } catch (e) {
-          this.loading = false
-        }
+        this.loading = true
+        res = await docApi.deleteDoc(val.row.id).finally(() => {
+          this.loading = false;
+        })
         if (res.code === 0) {
           this.loading = false
           await this.getDocs()

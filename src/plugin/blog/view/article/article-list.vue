@@ -65,19 +65,16 @@ export default {
     async getArticles() {
       let res
       const currentPage = this.pagination.currentPage - 1
-      try {
-        this.loading = true
-        res = await articleApi.getAllArticles({
-          count: this.pagination.pageSize,
-          page: currentPage,
-        })
-        this.loading = false
-        this.tableData = [...res.items]
-        this.pagination.pageTotal = res.count
-      } catch (e) {
-        this.loading = false
-        console.log(e)
-      }
+      this.loading = true
+      res = await articleApi.getAllArticles({
+        count: this.pagination.pageSize,
+        page: currentPage,
+      }).finally(() => {
+        this.loading = false;
+      })
+      this.tableData = [...res.items]
+      this.pagination.pageTotal = res.count
+
     },
     async handleEdit(val) {
       console.log(val)

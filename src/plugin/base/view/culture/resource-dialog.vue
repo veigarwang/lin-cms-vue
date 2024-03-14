@@ -1,16 +1,14 @@
 <template>
   <el-dialog title="本地化资源" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible">
-    <div style="margin-top:-25px;">
-      <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
-        label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
-        <el-form-item label="编码" prop="key">
-          <el-input size="medium" clearable v-model="form.key"></el-input>
-        </el-form-item>
-        <el-form-item label="名称" prop="value">
-          <el-input size="medium" clearable v-model="form.value"></el-input>
-        </el-form-item>
-      </el-form>
-    </div>
+    <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
+      label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
+      <el-form-item label="编码" prop="key">
+        <el-input size="medium" clearable v-model="form.key"></el-input>
+      </el-form-item>
+      <el-form-item label="名称" prop="value">
+        <el-input size="medium" clearable v-model="form.value"></el-input>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <div class="dialog-footer" style="padding-left:5px;">
         <el-button type="primary" @click="confirmEdit('form')">确 定</el-button>
@@ -91,6 +89,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

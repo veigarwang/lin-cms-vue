@@ -9,20 +9,18 @@
     </lin-table>
     <el-dialog title="分组信息" :append-to-body="true" v-model="dialogFormVisible" :before-close="handleClose"
       :close-on-click-modal="false" class="groupListInfoDialog">
-      <div style="margin-top:-25px;">
-        <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
-          label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
-          <el-form-item label="分组名称" prop="name">
-            <el-input size="medium" clearable v-model="form.name"></el-input>
-          </el-form-item>
-          <el-form-item label="分组描述" prop="info">
-            <el-input size="medium" clearable v-model="form.info"></el-input>
-          </el-form-item>
-          <el-form-item label="排序码" prop="sort_code">
-            <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
+      <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
+        label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
+        <el-form-item label="分组名称" prop="name">
+          <el-input size="medium" clearable v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="分组描述" prop="info">
+          <el-input size="medium" clearable v-model="form.info"></el-input>
+        </el-form-item>
+        <el-form-item label="排序码" prop="sort_code">
+          <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
+        </el-form-item>
+      </el-form>
       <template #footer>
         <div class="dialog-footer">
           <el-button type="default" @click="handleClose">取 消</el-button>

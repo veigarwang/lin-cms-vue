@@ -31,18 +31,15 @@
     </lin-table>
     <el-dialog title="用户信息" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible"
       :close-on-click-modal="false">
-      <div style="margin-top:-25px;">
-        <el-tabs v-model="activeTab" @tab-click="handleClick">
-          <el-tab-pane label="修改信息" name="修改信息">
-            <user-info ref="userInfo" @handleInfoResult="handleInfoResult"
-              labelPosition="right" pageType="edit" :id="id" :groups="groups" :info="form" :submit="false"
-              class="info" />
-          </el-tab-pane>
-          <el-tab-pane label="修改密码" name="修改密码">
-            <user-password ref="password" @handlePasswordResult="handlePasswordResult"  :id="id" class="password" />
-          </el-tab-pane>
-        </el-tabs>
-      </div>
+      <el-tabs v-model="activeTab" @tab-click="handleClick">
+        <el-tab-pane label="修改信息" name="修改信息">
+          <user-info ref="userInfo" @handleInfoResult="handleInfoResult" labelPosition="right" pageType="edit" :id="id"
+            :groups="groups" :info="form" :submit="false" class="info" />
+        </el-tab-pane>
+        <el-tab-pane label="修改密码" name="修改密码">
+          <user-password ref="password" @handlePasswordResult="handlePasswordResult" :id="id" class="password" />
+        </el-tab-pane>
+      </el-tabs>
       <template #footer>
         <div class="dialog-footer">
           <el-button type="default" @click="handleClose">取消</el-button>
@@ -63,7 +60,7 @@ export default {
   components: { LinTable, UserInfo, UserPassword },
   inject: ['eventBus'],
   data() {
-    window.th= this;
+    window.th = this;
     return {
       id: 0,
       editIndex: null,
@@ -101,8 +98,9 @@ export default {
         count: this.pagination.pageSize,
         page: currentPage,
         group_id: this.group_id,
+      }).finally(() => {
+        this.loading = false;
       })
-      this.loading = false
       this.tableData = res.items
       this.pagination.pageTotal = res.count
     },
@@ -149,27 +147,27 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-          this.loading = true
-          res = await Admin.deleteOneUser(val.row.id).finally(() => {
-            this.loading = false
-          })
-          if (res.code < window.MAX_SUCCESS_CODE) {
-            if (this.total_nums % this.pageCount === 1 && this.currentPage !== 1) {
-              this.currentPage--
-            }
-            await this.getAdminUsers()
-            this.$message({
-              type: 'success',
-              message: `${res.message}`,
-            })
+        this.loading = true
+        res = await Admin.deleteOneUser(val.row.id).finally(() => {
+          this.loading = false
+        })
+        if (res.code < window.MAX_SUCCESS_CODE) {
+          if (this.total_nums % this.pageCount === 1 && this.currentPage !== 1) {
+            this.currentPage--
           }
+          await this.getAdminUsers()
+          this.$message({
+            type: 'success',
+            message: `${res.message}`,
+          })
+        }
       })
     },
     confirmEdit() {
       if (this.activeTab === '修改信息') {
-         this.$refs.userInfo.submitForm('form')
+        this.$refs.userInfo.submitForm('form')
       } else {
-         this.$refs.password.submitForm('form')
+        this.$refs.password.submitForm('form')
       }
     },
     rowClick(row) {

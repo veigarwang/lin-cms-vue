@@ -109,16 +109,16 @@ export default {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           let res
-          try {
-            this.formLoading = true
-            if (this.id == undefined) {
-              console.log(this.form)
-              res = await cultureApi.addCulture(this.form)
-            } else {
-              res = await cultureApi.editCulture(this.form)
-            }
-          } finally {
-            this.formLoading = false
+          this.formLoading = true
+          if (this.id == undefined) {
+            console.log(this.form)
+            res = await cultureApi.addCulture(this.form).finally(() => {
+              this.formLoading = false;
+            })
+          } else {
+            res = await cultureApi.editCulture(this.form).finally(() => {
+              this.formLoading = false;
+            })
           }
           this.pagination.culture_id = res.id
           this.form.id = res.id

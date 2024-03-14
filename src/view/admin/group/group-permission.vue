@@ -8,22 +8,15 @@
         <div class="permissions-box" v-for="(permission, moduleName) in allPermissions" :key="moduleName">
           <el-checkbox-group v-model="permissionModuleNames">
             <div class="module-box">
-              <el-checkbox
-                @change="moduleCheck($event, permission, moduleName)"
-                class="module"
-                :label="moduleName"
-                :indeterminate="halfPermissions.includes(moduleName)"
-              ></el-checkbox>
+              <el-checkbox @change="moduleCheck($event, permission, moduleName)" class="module" :label="moduleName"
+                :indeterminate="halfPermissions.includes(moduleName)"></el-checkbox>
             </div>
           </el-checkbox-group>
           <el-checkbox-group v-model="checkedPermissionNames">
             <ul class="permissions-ul">
               <li class="permissions-li" v-for="(item, key) in permission" :key="key">
-                <el-checkbox
-                  :label="item.name"
-                  :value="permissionModuleIds.indexOf(item.id) > -1"
-                  @change="singleCheck(item.id, permission, moduleName)"
-                ></el-checkbox>
+                <el-checkbox :label="item.name" :value="permissionModuleIds.indexOf(item.id) > -1"
+                  @change="singleCheck(item.id, permission, moduleName)"></el-checkbox>
               </li>
             </ul>
           </el-checkbox-group>
@@ -82,14 +75,11 @@ export default {
       ctx.emit('updateAllPermissions', allPermissions.value)
     }
     onMounted(async () => {
-      try {
-        loading.value = true
-        await getGroupPermissions()
+      loading.value = true
+      await getGroupPermissions().finally(() => {
         loading.value = false
-      } catch (e) {
-        loading.value = false
-        console.error(e)
-      }
+      })
+      loading.value = false
     })
     /**
      * 权限批量选中（一个module）
@@ -163,12 +153,14 @@ export default {
 <style lang="scss" scoped>
 .group {
   margin-left: -95px;
+
   .label {
     margin-bottom: 10px;
     width: 70px;
     margin-left: 20px;
     float: left;
     font-weight: 500;
+
     label {
       color: #333333;
       font-size: 14px;
@@ -176,6 +168,7 @@ export default {
       height: 20px;
       line-height: 20px;
     }
+
     .necessary {
       color: #e46a76;
       font-size: 14px;
@@ -184,11 +177,13 @@ export default {
       font-size: 16px;
     }
   }
+
   .details {
     display: inline-block;
     width: calc(100% - 95px);
     margin-top: 5px;
     margin-left: 5px;
+
     .text-input {
       height: 40px;
       width: 780px;
@@ -196,6 +191,7 @@ export default {
       border-radius: 2px;
       border: 1px solid #dee2e6;
       text-indent: 20px;
+
       &::placeholder {
         font-size: 14px;
         font-weight: 400;
@@ -203,6 +199,7 @@ export default {
         text-indent: 20px;
       }
     }
+
     .permissions-box {
       .module {
         height: 20px;
@@ -211,6 +208,7 @@ export default {
         line-height: 20px;
         margin-bottom: 10px;
       }
+
       .permissions-ul {
         display: flex;
         flex-wrap: wrap;
@@ -218,6 +216,7 @@ export default {
         padding: 20px 20px 0;
         background: #f5f5f6;
         margin-bottom: 20px;
+
         .permissions-li {
           width: 150px;
           height: 20px;
@@ -228,10 +227,12 @@ export default {
           justify-content: flex-start;
           vertical-align: text-top;
           margin-right: 10px;
+
           .check {
             transform: translateY(2px);
             margin-right: 5px;
           }
+
           .permissions-name {
             height: 20px;
             font-size: 14px;
