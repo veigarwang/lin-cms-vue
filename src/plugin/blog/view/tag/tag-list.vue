@@ -79,8 +79,9 @@ export default {
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
-      await this.getTags()
-      this.loading = false
+      await this.getTags().finally(() => {
+        this.loading = false;
+      })
     },
     handleDelete(val) {
       let res
@@ -99,8 +100,8 @@ export default {
             type: 'success',
             message: `${res.message}`,
           })
-
-        })
+        }
+      })
     },
     async refresh() {
       await this.getTags()
