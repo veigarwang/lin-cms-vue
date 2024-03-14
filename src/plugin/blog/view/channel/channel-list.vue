@@ -18,7 +18,7 @@
           <el-button type="default" icon="Search" @click="refresh">查询</el-button>
         </div>
       </div>
-      <!-- 表格 -->
+
       <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
         :pagination="pagination" @handleEdit="handleEdit" @handleDelete="handleDelete"
         @currentChange="handleCurrentChange">
@@ -33,7 +33,7 @@
           <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
-      <!--表格结束-->
+
     </div>
     <channel-form ref="channelForm" v-else @editClose="editClose" :id="id"></channel-form>
   </div>
@@ -52,15 +52,15 @@ export default {
     return {
       id: 0,
       showEdit: false,
-      editIndex: null, // 编辑的行
-      tableData: [], // 表格数据
-      tableColumn: [], // 表头数据
-      operate: [], // 表格按键操作区
+      editIndex: null,
+      tableData: [],
+      tableColumn: [],
+      operate: [],
       loading: false,
       pagination: {
         pageSize: 10,
         pageTotal: 0,
-        currentPage: 1, // 默认获取第一页的数据
+        currentPage: 1,
         channel_name: '',
       },
     }
@@ -86,7 +86,7 @@ export default {
       this.id = val.row.id
       // this.$refs['channelForm'].show(val.row.id)
     },
-    // 切换table页
+
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
@@ -123,7 +123,7 @@ export default {
     async refresh() {
       await this.getChannels()
     },
-    // 下拉框选择分组
+
     async handleChange() {
       this.currentPage = 1
       this.loading = true

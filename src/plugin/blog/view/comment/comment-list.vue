@@ -11,7 +11,7 @@
           <el-button type="default" icon="Search" @click="getComments">查询</el-button>
         </div>
       </div>
-      <!-- 表格 -->
+
       <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleDetail="handleDetail"
         @handleDelete="handleDelete" @row-click="rowClick" v-loading="loading" :pagination="pagination"
         @currentChange="handleCurrentChange">
@@ -79,17 +79,17 @@ export default {
     },
     handleDetail(val) {
       let selectedData
-      // 单击 编辑按键
+
       if (val.index >= 0) {
         this.editIndex = val.index
         selectedData = val.row
       } else {
-        // 单击 table row
+
         selectedData = val
       }
       this.$refs['dialogForm'].show(selectedData)
     },
-    // 切换table页
+
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true

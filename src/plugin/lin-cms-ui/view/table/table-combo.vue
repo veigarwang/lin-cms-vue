@@ -189,8 +189,8 @@ export default {
       checkList: [],
       filterTableColumn: [],
       // 分页相关
-      refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
-      currentPage: 1, // 默认获取第一页的数据
+      refreshPagination: true,
+      currentPage: 1,
       pageCount: 10, // 每页10条数据
       total_nums: 180, // 分组内的用户总数
       // 固定列相关

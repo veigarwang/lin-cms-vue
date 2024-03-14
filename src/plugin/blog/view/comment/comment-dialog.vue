@@ -34,7 +34,7 @@ export default {
   name: 'CommentDialog',
   data() {
     return {
-      dialogFormVisible: false, // 控制弹窗显示
+      dialogFormVisible: false,
       loading: false,
       form: {
         id: 0,

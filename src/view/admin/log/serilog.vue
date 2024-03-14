@@ -23,7 +23,7 @@
           </el-form>
         </el-card>
       </div>
-      <!-- 表格 -->
+
       <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
         :pagination="pagination" @currentChange="handleCurrentChange" @handleDetail="handleDetail">
         <template v-slot:level="scope">

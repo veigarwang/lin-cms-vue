@@ -14,7 +14,7 @@
           <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
         </div>
       </div>
-      <!-- 表格 -->
+
       <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :operateWidth="230"
         @handleEdit="handleEdit" @handleDelete="handleDelete" @handleCorrect="handleCorrect" v-loading="loading"
         :pagination="pagination" @currentChange="handleCurrentChange">
@@ -25,7 +25,7 @@
           <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
-      <!--表格结束-->
+
     </div>
     <tag-form v-else :id="id" ref="tagForm" @editClose="editClose"></tag-form>
   </div>
@@ -45,14 +45,14 @@ export default {
     return {
       id: 0,
       showEdit: false,
-      tableData: [], // 表格数据
-      tableColumn: [], // 表头数据
-      operate: [], // 表格按键操作区
+      tableData: [],
+      tableColumn: [],
+      operate: [],
       loading: false,
       pagination: {
         pageSize: 10,
         pageTotal: 0,
-        currentPage: 1, // 默认获取第一页的数据
+        currentPage: 1,
       },
     }
   },
@@ -112,7 +112,7 @@ export default {
     async refresh() {
       await this.getTags()
     },
-    // 下拉框选择分组
+
     async handleChange() {
       this.currentPage = 1
       this.loading = true

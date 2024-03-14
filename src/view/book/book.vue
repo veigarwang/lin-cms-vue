@@ -115,13 +115,7 @@ export default {
   },
 }
 
-/**
- * 表单验证规则
- */
 function getRules() {
-  /**
-   * 验证回调函数
-   */
   const checkInfo = (rule, value, callback) => {
     if (!value) {
       callback(new Error('信息不能为空'))

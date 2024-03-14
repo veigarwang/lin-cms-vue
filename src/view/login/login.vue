@@ -50,9 +50,6 @@ export default {
       captcha: '',
     })
 
-    /**
-     * 根据账号密码登录，拿到 token 并储存
-     */
     const login = async () => {
       const { username, password, captcha } = account
       try {
@@ -80,13 +77,8 @@ export default {
         captchaImage.value = result.image
       })
     }
-
-    /**
-     * 获取并更新当前管理员信息
-     */
     const getInformation = async () => {
       try {
-        // 尝试获取当前用户信息
         const user = await UserModel.getPermissions()
         store.dispatch('setUserAndState', user)
         store.commit('SET_USER_PERMISSIONS', user.permissions)
@@ -94,10 +86,6 @@ export default {
         console.error(e)
       }
     }
-
-    /**
-     * 节流登录
-     */
     onMounted(() => {
       getCaptcha()
       throttleLogin.value = Utils.throttle(login, wait)

@@ -19,14 +19,10 @@ export default {
     }
   },
   async created() {
-    try {
-      this.loading = true
-      this.groups = await Admin.getAllGroups()
+    this.loading = true
+    this.groups = await Admin.getAllGroups().finally(() => {
       this.loading = false
-    } catch (e) {
-      this.loading = false
-      console.log(e)
-    }
+    })
   },
 }
 </script>

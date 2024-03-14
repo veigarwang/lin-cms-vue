@@ -1,11 +1,9 @@
 <template>
   <div>
-    <!-- 列表页面 -->
     <div class="container" v-if="!showEdit">
       <div class="header">
         <div class="title">图书列表</div>
       </div>
-      <!-- 表格 -->
       <el-table :data="books" v-loading="loading">
         <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
         <el-table-column prop="title" label="书名"></el-table-column>
@@ -20,7 +18,6 @@
       </el-table>
     </div>
 
-    <!-- 编辑页面 -->
     <book-modify v-else @editClose="editClose" :editBookId="editBookId"></book-modify>
   </div>
 </template>
@@ -46,16 +43,10 @@ export default {
     })
 
     const getBooks = async () => {
-      try {
-        loading.value = true
-        books.value = await bookModel.getBooks()
+      loading.value = true
+      books.value = await bookModel.getBooks().finally(() => {
         loading.value = false
-      } catch (error) {
-        loading.value = false
-        if (error.code === 10020) {
-          books.value = []
-        }
-      }
+      })
     }
 
     const handleEdit = id => {

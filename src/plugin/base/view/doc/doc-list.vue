@@ -19,7 +19,7 @@
         @handleEdit="handleEdit" @handleDelete="handleDelete" v-loading="loading" :pagination="pagination"
         @currentChange="handleCurrentChange">
       </lin-table>
-      <!--表格结束-->
+
     </div>
     <doc-form v-else :id="id" ref="docForm" @editClose="editClose"></doc-form>
   </div>
@@ -37,14 +37,14 @@ export default {
     return {
       id: 0,
       showEdit: false,
-      tableData: [], // 表格数据
-      tableColumn: [], // 表头数据
-      operate: [], // 表格按键操作区
+      tableData: [],
+      tableColumn: [],
+      operate: [],
       loading: false,
       pagination: {
         pageSize: 10,
         pageTotal: 0,
-        currentPage: 1, // 默认获取第一页的数据
+        currentPage: 1,
       },
     }
   },

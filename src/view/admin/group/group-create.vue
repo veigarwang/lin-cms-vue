@@ -47,8 +47,8 @@ export default {
       callback()
     }
     return {
-      allPermissions: [], // 所有权限
-      permissions: [], // 最终选择的权限
+      allPermissions: [],
+      permissions: [],
       form: {
         name: '',
         info: '',

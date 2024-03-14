@@ -10,7 +10,6 @@
           <el-button type="default" icon="Search" @click="getArticles">查询</el-button>
         </div>
       </div>
-      <!-- 表格 -->
       <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
         @handleDelete="handleDelete" @row-click="rowClick" v-loading="loading" :pagination="pagination"
         @currentChange="handleCurrentChange"></lin-table>
@@ -44,16 +43,16 @@ export default {
     return {
       id: 0,
       showEdit: false,
-      refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
-      tableData: [], // 表格数据
-      tableColumn: [], // 表头数据
-      operate: [], // 表格按键操作区
+      refreshPagination: true,
+      tableData: [],
+      tableColumn: [],
+      operate: [],
       activeTab: '修改信息',
       loading: false,
       pagination: {
         pageSize: 10,
         pageTotal: 0,
-        currentPage: 1, // 默认获取第一页的数据
+        currentPage: 1,
         title: '',
       },
     }
@@ -83,17 +82,16 @@ export default {
     async handleEdit(val) {
       console.log(val)
       let selectedData
-      // 单击 编辑按键
+
       if (val.index >= 0) {
         selectedData = val.row
       } else {
-        // 单击 table row
         selectedData = val
       }
       this.showEdit = true
       this.id = selectedData.id
     },
-    // 切换table页
+
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
@@ -172,7 +170,7 @@ export default {
           return d
         },
       },
-    ] // 设置表头信息
+    ]
 
     this.operate = [
       { name: '审核', func: 'handleEdit', type: 'primary', permission: '审核随笔' },

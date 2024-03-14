@@ -81,7 +81,6 @@ export default {
     LinDatePicker,
   },
   setup() {
-    // originally data properties
     const store = useStore()
     const user = computed(() => store.getters.user)
     const permissions = computed(() => store.getters.permissions)
@@ -95,10 +94,6 @@ export default {
     const searchDateDom = ref()
     const searchKeywordDom = ref()
 
-    /**
-     * Part 1
-     * 日志页面初始化
-     */
     const initPage = async () => {
       try {
         loading.value = true
@@ -117,10 +112,6 @@ export default {
       await initPage()
     })
 
-    /**
-     * Part 2
-     * 根据调解筛选查询日志
-     */
     const search = reactive({
       keyword: '',
       searchUser: '',
@@ -138,7 +129,7 @@ export default {
     const handleCommand = currentUser => {
       search.searchUser = currentUser[0] // eslint-disable-line
     }
-    // 条件检索
+
     const searchPage = async () => {
       logs.value = []
       loading.value = true
@@ -147,7 +138,7 @@ export default {
       const name = search.searchUser === '全部人员' ? '' : search.searchUser
 
       const res = await logModel.searchLogs({
-        page: 0, // 初始化
+        page: 0,
         keyword: search.searchKeyword,
         name,
         start: search.searchDate[0],
@@ -170,7 +161,6 @@ export default {
     watch(
       () => search.searchKeyword,
       newKeyword => {
-        // 关键字搜索
         if (newKeyword) {
           search.keyword = newKeyword
           if (search.searchUser) {
@@ -197,7 +187,6 @@ export default {
     watch(
       () => search.searchUser,
       newUser => {
-        // 用户搜索
         search.keyword = newUser
         if (search.searchKeyword) {
           search.keyword = `${newUser} ${search.searchKeyword}`
@@ -248,10 +237,6 @@ export default {
       await initPage()
     }
 
-    /**
-     * Part 3
-     * 翻页处理
-     */
     const more = ref(false)
     const nextPage = async () => {
       more.value = true

@@ -38,8 +38,8 @@ export default {
   inject: ['eventBus'],
   data() {
     return {
-      allPermissions: [], // 所有权限
-      permissions: [], // 最终选择的权限
+      allPermissions: [],
+      permissions: [],
       loading: false,
     }
   },
@@ -50,14 +50,12 @@ export default {
     updateAllPermissions(allPermissions) {
       this.allPcrmissions = allPermissions
     },
-    // 页面打开时候，记录缓存所拥有的全部权限
     getCacheAuthIds(ids) {
       this.cachePermissions = ids
     },
     async confirmEdit() {
       let addRes = 0
       let delRes = 0
-      // 判断是否更改了分组权限
       if (this.permissions.sort().toString() !== this.cachePermissions.sort().toString()) {
         const deletePermissions = this.cachePermissions
           .concat(this.permissions)

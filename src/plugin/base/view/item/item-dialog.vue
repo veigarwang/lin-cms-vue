@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       id: 0, // id
-      dialogFormVisible: false, // 控制弹窗显示
+      dialogFormVisible: false,
       loading: false,
       form: {
         // 表单信息

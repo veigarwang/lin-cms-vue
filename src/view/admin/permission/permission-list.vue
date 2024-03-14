@@ -12,8 +12,6 @@
         </div>
       </div>
     </div>
-    <!-- stripe -->
-
     <el-table ref="multipleTable" v-loading="loading" row-key="rowkey" size="medium" highlight-current-row
       :border="true" :data="tableData" :default-expand-all="false" style="width: 100%;"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
@@ -47,8 +45,9 @@ export default {
   methods: {
     async getTreePermissionsList() {
       this.loading = true
-      const res = await Admin.getTreePermissionsList()
-      this.loading = false
+      const res = await Admin.getTreePermissionsList().finally(() => {
+        this.loading = false
+      })
       this.tableData = res
       this.total = res.count
     },

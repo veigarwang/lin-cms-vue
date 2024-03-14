@@ -31,17 +31,15 @@ export default {
   name: 'TypeDialog',
   data() {
     return {
-      id: 0, // id
-      dialogFormVisible: false, // 控制弹窗显示
+      id: 0,
+      dialogFormVisible: false,
       loading: false,
       form: {
-        // 表单信息
         type_code: '',
         full_name: '',
         sort_code: 0,
       },
       rules: {
-        // 表单验证规则
         type_code: [{ required: true, message: '请输入类别编码', trigger: 'blur' }],
         full_name: [{ required: true, message: '请输入类别名称', trigger: 'blur' }],
       },
@@ -62,7 +60,6 @@ export default {
       }
       this.dialogFormVisible = true
     },
-    // 弹框 右上角 X
     handleClose() {
       this.dialogFormVisible = false
     },

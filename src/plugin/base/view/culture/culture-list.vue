@@ -16,11 +16,9 @@
           </div>
         </div>
       </div>
-      <!-- 表格 -->
       <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
         @handleDelete="handleDelete" v-loading="loading"></lin-table>
     </div>
-    <!--表格结束-->
   </div>
 </template>
 

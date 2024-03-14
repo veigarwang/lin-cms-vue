@@ -16,7 +16,7 @@
             @click="refresh">查询</el-button>
         </div>
       </div>
-      <!-- 表格 -->
+
       <lin-table :tableColumn="tableColumn"
         :tableData="tableData"
         :operate="operate"
@@ -33,7 +33,7 @@
           <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
         </template>
       </lin-table>
-      <!--表格结束-->
+
     </div>
     <classify-form v-else
       @editClose="editClose"
@@ -54,15 +54,15 @@ export default {
     return {
       id: 0,
       showEdit: false,
-      editIndex: null, // 编辑的行
-      tableData: [], // 表格数据
-      tableColumn: [], // 表头数据
-      operate: [], // 表格按键操作区
+      editIndex: null,
+      tableData: [],
+      tableColumn: [],
+      operate: [],
       loading: false,
       pagination: {
         pageSize: 10,
         pageTotal: 0,
-        currentPage: 1, // 默认获取第一页的数据
+        currentPage: 1,
         classify_name: '',
       },
     }
@@ -87,7 +87,7 @@ export default {
       this.showEdit = true
       this.id = val.row.id
     },
-    // 切换table页
+
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       this.loading = true
@@ -124,7 +124,7 @@ export default {
     async refresh() {
       await this.getClassifies()
     },
-    // 下拉框选择分组
+
     async handleChange() {
       this.currentPage = 1
       this.loading = true

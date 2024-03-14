@@ -25,8 +25,8 @@
       <el-form-item v-if="pageType !== 'password'" label="选择分组">
         <el-checkbox-group v-model="form.group_ids" size="small" style="transform: translateY(5px);">
           <el-checkbox v-for="item in groups" :key="item.id" :label="item.id" border style="margin-left: 0">{{
-              item.name
-          }}</el-checkbox>
+      item.name
+    }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item v-show="submit" class="submit">
@@ -44,37 +44,32 @@ import User from '@/lin/model/user'
 export default {
   props: {
     submit: {
-      type: Boolean, // 表单是否显示功能按钮
+      type: Boolean,
       default: true,
     },
     id: {
-      // 用户id
       type: Number,
       default: undefined,
     },
     groups: {
-      // 所有分组
       type: Array,
       default: () => { },
     },
     labelPosition: {
-      // 表单label位置
       type: String,
       default: 'right',
     },
     info: {
-      // 用户信息
       type: Object,
       default: () => { },
     },
     pageType: {
       type: String,
-      default: 'add', // 区分编辑页面/添加页面
+      default: 'add',
     },
   },
   inject: ['eventBus'],
   data() {
-    // 验证回调函数
     const checkUserName = (rule, value, callback) => {
       if (!value) {
         callback(new Error('用户名不能为空'))
@@ -103,8 +98,8 @@ export default {
       }
     }
     return {
-      loading: false, // 加载动画
-      isEdited: false, // 能否编辑
+      loading: false,
+      isEdited: false,
       form: {
         username: '',
         nickname: '',
@@ -114,7 +109,6 @@ export default {
         group_ids: [],
         active: 1,
       },
-      // 验证规则
       rules: {
         // username: [
         //   {
@@ -146,34 +140,24 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push({path:'/admin/user/list'})
+      this.$router.push({ path: '/admin/user/list' })
     },
-    // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          // 新增用户
           let res
           if (this.pageType === 'add') {
-            try {
-              this.loading = true
-              res = await User.register(this.form)
-              if (res.code < window.MAX_SUCCESS_CODE) {
-                this.loading = false
-                this.$message.success(`${res.message}`)
-                this.eventBus.$emit('addUser', true)
-                this.resetForm(formName)
-              }
-            } catch (e) {
+            this.loading = true
+            res = await User.register(this.form).finally(() => {
+              this.loading = false;
+            })
+            if (res.code < window.MAX_SUCCESS_CODE) {
               this.loading = false
-              if (e.data.code === 10073) {
-                this.$message.error(e.data.message)
-              } else {
-                this.$message.error('新增用户失败')
-              }
+              this.$message.success(`${res.message}`)
+              this.eventBus.$emit('addUser', true)
+              this.resetForm(formName)
             }
           } else {
-            // 更新用户信息
             // if (
             //   this.form.email === this.info.email &&
             //   this.form.group_ids.sort().toString() === this.info.group_ids.sort().toString()
@@ -181,16 +165,15 @@ export default {
             //   this.$emit('handleInfoResult', false)
             //   return
             // }
-            try {
-              if (!this.form.group_ids.length) {
-                this.$message.error('至少选择一个分组')
-                return
-              }
-              this.loading = true
-              res = await Admin.updateOneUser(this.id, this.form)
-            } catch (e) {
-              this.loading = false
+            if (!this.form.group_ids.length) {
+              this.$message.error('至少选择一个分组')
+              return
             }
+            this.loading = true
+            res = await Admin.updateOneUser(this.id, this.form).finally(() => {
+              this.loading = false;
+            })
+
             if (res.code < window.MAX_SUCCESS_CODE) {
               this.loading = false
               this.$message.success(`${res.message}`)
@@ -205,7 +188,6 @@ export default {
         }
       })
     },
-    // 重置表单
     resetForm(formName) {
       if (this.pageType === 'edit') {
         this.setInfo()
@@ -227,7 +209,6 @@ export default {
     },
   },
   created() {
-    // 通过是否接收到数据来判断当前页面是添加数据还是编辑数据
     if (this.pageType === 'edit') {
       this.setInfo()
       this.isEdited = true
@@ -262,5 +243,4 @@ export default {
 //       display: flex;
 //     }
 //   }
-// }
-</style>
+// }</style>

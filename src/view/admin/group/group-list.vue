@@ -44,41 +44,33 @@ export default {
   inject: ['eventBus'],
   data() {
     return {
-      id: 0, // 分组id
-      tableData: [], // 表格数据
-      tableColumn: [], // 表头数据
-      operate: [], // 表格按键操作区
-      dialogFormVisible: false, // 是否弹窗
-      labelPosition: 'right', // 设置label位置
+      id: 0,
+      tableData: [],
+      tableColumn: [],
+      operate: [],
+      dialogFormVisible: false,
+      labelPosition: 'right',
       form: {
-        // 表单信息
         name: '',
         info: '',
         sort_code: 0,
       },
       loading: false,
-      activeTab: '修改信息', // tab 标题
+      activeTab: '修改信息',
       rules: {
-        // 表单验证规则
         name: [{ required: true, message: '请输入分组名称', trigger: 'blur' }],
         info: [],
       },
     }
   },
   methods: {
-    // 获取所有分组并传给table渲染
     async getAllGroups() {
-      try {
-        this.loading = true
-        this.tableData = await Admin.getAllGroups()
+      this.loading = true
+      this.tableData = await Admin.getAllGroups().finally(() => {
         this.loading = false
-      } catch (e) {
-        this.loading = false
-        console.log(e)
-      }
+      })
     },
     async confirmEdit() {
-      // 修改分组信息
       if (this.form.name === '') {
         this.$message.warning('请将信息填写完整')
         return
@@ -93,14 +85,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    // 获取所拥有的权限并渲染  由子组件提供
     handleEdit(val) {
       let selectedData
-      // 单击 编辑按键
       if (val.index >= 0) {
         selectedData = val.row
       } else {
-        // 单击 table row
         selectedData = val
       }
       this.id = selectedData.id
@@ -109,11 +98,9 @@ export default {
     },
     goToGroupEditPage(val) {
       let selectedData
-      // 单击 编辑按键
       if (val.index >= 0) {
         selectedData = val.row
       } else {
-        // 单机 table row
         selectedData = val
       }
       this.id = selectedData.id
@@ -126,35 +113,29 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await Admin.deleteOneGroup(val.row.id)
-          if (res.code < window.MAX_SUCCESS_CODE) {
-            await this.getAllGroups()
-            this.$message({
-              type: 'success',
-              message: `${res.message}`,
-            })
-          }
+        this.loading = true
+        res = await Admin.deleteOneGroup(val.row.id).finally(() => {
           this.loading = false
-        } catch (e) {
-          this.loading = false
+        })
+        if (res.code < window.MAX_SUCCESS_CODE) {
+          await this.getAllGroups()
+          this.$message({
+            type: 'success',
+            message: `${res.message}`,
+          })
         }
+
       })
     },
-    // 双击 table row
     rowClick(row) {
       this.handleEdit(row)
     },
-    // 弹框 右上角 X
     handleClose() {
       this.dialogFormVisible = false
     },
-    // 切换tab栏
     handleClick(tab) {
       this.activeTab = tab.name
     },
-    // 监听分添加组是否成功
     async addGroup(flag) {
       if (flag === true) {
         await this.getAllGroups()
@@ -163,7 +144,6 @@ export default {
   },
   async created() {
     await this.getAllGroups()
-    // 设置表头信息
     this.tableColumn = [
       { prop: 'name', label: '名称' },
       { prop: 'info', label: '信息' },
@@ -175,7 +155,6 @@ export default {
       { name: '权限', func: 'goToGroupEditPage', type: 'info' },
       { name: '删除', func: 'handleDelete', type: 'danger' },
     ]
-    // 监听添加分组是否成功
     this.eventBus.$on('addGroup', this.addGroup)
   },
   beforeDestroy() {
