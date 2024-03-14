@@ -1,28 +1,25 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">字典列表</div>
-        </div>
-        <div class="header-right">
-          <div style="margin-left:30px">
-            <el-select size="medium" filterable v-model="typeCode" :disabled="types.length === 0" placeholder="请选择分组"
-              @change="handleChange" style="margin-right:30px">
-              <el-option v-for="(item, index) in types" :key="index" :label="item.full_name" :value="item.type_code">
-              </el-option>
-            </el-select>
-            <el-button type="primary" icon="Edit" v-permission="'新增字典'"
-              @click="() => { this.$refs['dialogForm'].show(); }">新增字典
-            </el-button>
-            <el-button type="default" icon="Search" @click="refresh">
-              刷新
-            </el-button>
-          </div>
-        </div>
-      </div>
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
-        @handleDelete="handleDelete" v-loading="loading">
+  <div style="padding:8px;">
+    <el-card header="字典类别管理" shadow="never">
+      <el-form ref="form" :model="query" :inline="true">
+        <el-form-item label="类别" prop="typeCode">
+          <el-select style="width:200px;" size="medium" filterable v-model="query.typeCode"
+            :disabled="types.length === 0" placeholder="请选择分组" @change="handleChange">
+            <el-option v-for="(item, index) in types" :key="index" :label="item.full_name" :value="item.type_code">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="default" icon="Search" @click="refresh">
+            刷新
+          </el-button>
+          <el-button type="primary" icon="Edit" v-permission="'新增字典'"
+            @click="() => { this.$refs['dialogForm'].show(); }">新增字典
+          </el-button>
+        </el-form-item>
+      </el-form>
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :border="false" :operate="operate"
+        @handleEdit="handleEdit" @handleDelete="handleDelete" v-loading="loading">
         <template v-slot:status="scope">
           <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
@@ -30,8 +27,8 @@
           <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
         </template>
       </lin-table>
-    </div>
-    <item-dialog ref="dialogForm" @ok="refresh"></item-dialog>
+      <item-dialog ref="dialogForm" @ok="refresh"></item-dialog>
+    </el-card>
   </div>
 </template>
 
@@ -51,24 +48,21 @@ export default {
       operate: [],
       loading: false,
       types: [],
-      typeCode: '',
+      query: {
+        typeCode: ''
+      }
     }
   },
   methods: {
     async getBaseItems() {
       let res
-      try {
-        this.loading = true
-        res = await baseApi.getItems({
-          typeCode: this.typeCode,
-        })
-        setTimeout(() => {
-          this.loading = false
-        }, 500)
-        this.tableData = res
-      } catch (e) {
+      this.loading = true
+      res = await baseApi.getItems({
+        typeCode: this.query.typeCode,
+      }).finally(() => {
         this.loading = false
-      }
+      })
+      this.tableData = res
     },
     async handleEdit(val) {
       this.$refs['dialogForm'].show(val.row)
@@ -80,12 +74,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        try {
-          this.loading = true
-          res = await baseApi.deleteItem(val.row.id)
-        } catch (e) {
+        this.loading = true
+        res = await baseApi.deleteItem(val.row.id).finally(() => {
           this.loading = false
-        }
+        })
+
         if (res.code === 0) {
           this.loading = false
           await this.getBaseItems()
@@ -107,8 +100,9 @@ export default {
     async handleChange() {
       this.currentPage = 1
       this.loading = true
-      await this.getBaseItems()
-      this.loading = false
+      await this.getBaseItems().finally(() => {
+        this.loading = false
+      })
     },
   },
   async created() {
@@ -135,7 +129,7 @@ export default {
 
     this.types = await baseApi.getTypes()
     if (this.types && this.types.length > 0) {
-      this.typeCode = this.types[0].type_code
+      this.query.typeCode = this.types[0].type_code
     }
     await this.getBaseItems()
   },

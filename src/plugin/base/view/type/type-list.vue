@@ -1,26 +1,22 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">字典列表</div>
-        </div>
-        <div class="header-right">
-          <div style="margin-left:30px">
-            <el-button type="primary" icon="Edit" v-permission="'新增字典类别'" @click="() => {
-              this.$refs['dialogForm'].show(0);
-            }">新增类别</el-button>
-            <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
-          </div>
-        </div>
-      </div>
+  <div style="padding: 8px">
+    <el-card header="字典类别" shadow="never">
+      <el-form ref="form" :inline="true">
+        <el-form-item>
+          <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
+          <el-button type="primary" icon="Edit" v-permission="新增字典类别" @click="() => {
+              this.$refs['dialogForm'].show(0)
+            }
+        ">新增类别</el-button>
+        </el-form-item>
+      </el-form>
       <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
         @handleDelete="handleDelete" v-loading="loading">
         <template v-slot:create_time="scope">
           <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
         </template>
       </lin-table>
-    </div>
+    </el-card>
     <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
   </div>
 </template>
