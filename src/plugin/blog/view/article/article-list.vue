@@ -38,7 +38,6 @@ function image_preview_dialog(url) {
 export default {
   name: 'articleList',
   components: { LinTable, ArticleForm },
-  inject: ['eventBus'],
   data() {
     return {
       id: 0,

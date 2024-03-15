@@ -5,6 +5,7 @@
       v-loading="loading"
       stripe
       row-key="id"
+      :size="size"
       :border="border"
       :data="currentData"
       :highlight-current-row="highlightCurrentRow ? true : false"
@@ -158,6 +159,11 @@ export default {
       // 边框
       type: Boolean,
       default: false,
+    },
+    size: {
+      // 尺寸
+      type: String,
+      default: 'default',
     },
   },
   data() {

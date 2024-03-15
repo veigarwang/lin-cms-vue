@@ -49,7 +49,6 @@ var vm
 export default {
   name: 'SerilogList',
   components: { LinTable, LinDatePicker, SerilogDialog },
-  inject: ['eventBus'],
   data() {
     vm = this
     return {

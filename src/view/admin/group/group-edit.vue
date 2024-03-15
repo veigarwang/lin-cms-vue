@@ -35,7 +35,6 @@ export default {
   components: {
     GroupPermissions,
   },
-  inject: ['eventBus'],
   data() {
     return {
       allPermissions: [],

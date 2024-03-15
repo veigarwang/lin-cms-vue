@@ -38,7 +38,6 @@ import LinTable from '@/component/base/table/lin-table'
 import ItemDialog from './item-dialog'
 export default {
   components: { LinTable, ItemDialog },
-  inject: ['eventBus'],
   data() {
     return {
       refreshPagination: true,

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog center title="裁剪" width="300px" :append-to-body="true" :close-on-click-modal="false"
+  <el-dialog center title="裁剪" width="300px" :append-to-body="true" close-on-click-modal
     :model-value="cropVisible" class="croppa-dialog">
     <div style="text-align: center;">
       <div class="avatar-croppa-container">

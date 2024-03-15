@@ -47,7 +47,6 @@ import ChannelForm from './channel-form'
 export default {
   name: 'ChannelList',
   components: { LinTable, ChannelForm },
-  inject: ['eventBus'],
   data() {
     return {
       id: 0,

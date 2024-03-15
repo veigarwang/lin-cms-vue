@@ -8,7 +8,7 @@
       </template>
     </lin-table>
     <el-dialog title="分组信息" :append-to-body="true" v-model="dialogFormVisible" :before-close="handleClose"
-      :close-on-click-modal="false" class="groupListInfoDialog">
+      close-on-click-modal class="groupListInfoDialog">
       <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
         label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
         <el-form-item label="分组名称" prop="name">
@@ -39,7 +39,6 @@ export default {
   components: {
     LinTable,
   },
-  inject: ['eventBus'],
   data() {
     return {
       id: 0,
@@ -153,11 +152,7 @@ export default {
       { name: '权限', func: 'goToGroupEditPage', type: 'info' },
       { name: '删除', func: 'handleDelete', type: 'danger' },
     ]
-    this.eventBus.$on('addGroup', this.addGroup)
-  },
-  beforeDestroy() {
-    this.eventBus.$off('addUser', this.addGroup)
-  },
+  }
 }
 </script>
 

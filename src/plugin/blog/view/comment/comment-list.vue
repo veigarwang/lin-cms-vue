@@ -39,7 +39,6 @@ import commentApi from '../../model/comment'
 export default {
   name: 'CommentList',
   components: { LinTable, CommentDialog },
-  inject: ['eventBus'],
   data() {
     return {
       id: 0,

@@ -32,7 +32,6 @@ import DocForm from './doc-form'
 export default {
   name: 'DocList',
   components: { LinTable, DocForm },
-  inject: ['eventBus'],
   data() {
     return {
       id: 0,

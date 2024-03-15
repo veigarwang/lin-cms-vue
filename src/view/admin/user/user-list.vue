@@ -30,7 +30,7 @@
       </template>
     </lin-table>
     <el-dialog title="用户信息" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible"
-      :close-on-click-modal="false">
+      close-on-click-modal>
       <el-tabs v-model="activeTab" @tab-click="handleClick">
         <el-tab-pane label="修改信息" name="修改信息">
           <user-info ref="userInfo" @handleInfoResult="handleInfoResult" labelPosition="right" pageType="edit" :id="id"
@@ -58,7 +58,6 @@ import UserInfo from './user-info'
 import UserPassword from './user-password'
 export default {
   components: { LinTable, UserInfo, UserPassword },
-  inject: ['eventBus'],
   data() {
     window.th = this;
     return {
@@ -110,7 +109,6 @@ export default {
         this.loading = false
       })
     },
-    // 获取所拥有的权限并渲染  由子组件提供
     async handleEdit(val) {
       this.editIndex = val.index
       let selectedData
@@ -220,10 +218,8 @@ export default {
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       { name: '删除', func: 'handleDelete', type: 'danger' },
     ]
-    this.eventBus.$on('addUser', this.addUser)
   },
   beforeDestroy() {
-    this.eventBus.$off('addUser', this.addUser)
   },
 }
 </script>

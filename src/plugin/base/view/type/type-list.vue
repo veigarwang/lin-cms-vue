@@ -28,7 +28,6 @@ import TypeDialog from './type-dialog'
 
 export default {
   components: { LinTable, TypeDialog },
-  inject: ['eventBus'],
   data() {
     return {
       id: 0,

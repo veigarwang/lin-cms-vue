@@ -38,7 +38,6 @@ export default {
   components: {
     GroupPermissions,
   },
-  inject: ['eventBus'],
   data() {
     const checkName = (rule, value, callback) => {
       if (!value) {
@@ -80,7 +79,6 @@ export default {
           if (res.code < window.MAX_SUCCESS_CODE) {
             this.loading = false
             this.$message.success(`${res.message}`)
-            this.eventBus.$emit('addGroup', true)
             this.$router.push('/admin/group/list')
             this.resetForm('form')
           } else {

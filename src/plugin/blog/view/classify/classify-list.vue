@@ -35,7 +35,6 @@ import ClassifyForm from './classify-form'
 export default {
   name: 'ClassifyList',
   components: { LinTable, ClassifyForm },
-  inject: ['eventBus'],
   data() {
     return {
       id: 0,

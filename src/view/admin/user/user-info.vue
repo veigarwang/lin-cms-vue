@@ -68,7 +68,6 @@ export default {
       default: 'add',
     },
   },
-  inject: ['eventBus'],
   data() {
     const checkUserName = (rule, value, callback) => {
       if (!value) {
@@ -154,7 +153,6 @@ export default {
             if (res.code < window.MAX_SUCCESS_CODE) {
               this.loading = false
               this.$message.success(`${res.message}`)
-              this.eventBus.$emit('addUser', true)
               this.resetForm(formName)
             }
           } else {

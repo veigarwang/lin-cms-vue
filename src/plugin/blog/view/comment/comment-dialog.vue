@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="评论信息" :append-to-body="true" :before-close="handleClose" :close-on-click-modal="false"
+  <el-dialog title="评论信息" :append-to-body="true" :before-close="handleClose" close-on-click-modal
     v-model="dialogFormVisible">
     <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
       label-position="labelPosition" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">

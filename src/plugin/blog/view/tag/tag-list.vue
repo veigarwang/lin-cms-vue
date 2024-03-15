@@ -40,7 +40,6 @@ import TagForm from './tag-form'
 export default {
   name: 'TagList',
   components: { LinTable, TagForm },
-  inject: ['eventBus'],
   data() {
     return {
       id: 0,

@@ -41,7 +41,6 @@ import SettingForm from './setting-form'
 export default {
   name: 'SettingList',
   components: { LinTable, SettingForm },
-  inject: ['eventBus'],
   data() {
     return {
       id: 0,
