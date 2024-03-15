@@ -6,13 +6,21 @@
           <div class="title">随笔列表管理</div>
         </div>
         <div class="header-right">
-          <el-input size="medium" style="margin-right:10px;" v-model="pagination.title" placeholder="标题"></el-input>
+          <el-input size="medium" style="margin-right: 10px" v-model="pagination.title" placeholder="标题"></el-input>
           <el-button type="default" icon="Search" @click="getArticles">查询</el-button>
         </div>
       </div>
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
-        @handleDelete="handleDelete" @row-click="rowClick" v-loading="loading" :pagination="pagination"
-        @currentChange="handleCurrentChange"></lin-table>
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        @row-click="rowClick"
+        v-loading="loading"
+        :pagination="pagination"
+        @currentChange="handleCurrentChange"
+      ></lin-table>
     </div>
     <article-form v-else @editClose="editClose" :id="id"></article-form>
   </div>
@@ -65,15 +73,16 @@ export default {
       let res
       const currentPage = this.pagination.currentPage - 1
       this.loading = true
-      res = await articleApi.getAllArticles({
-        count: this.pagination.pageSize,
-        page: currentPage,
-      }).finally(() => {
-        this.loading = false;
-      })
+      res = await articleApi
+        .getAllArticles({
+          count: this.pagination.pageSize,
+          page: currentPage,
+        })
+        .finally(() => {
+          this.loading = false
+        })
       this.tableData = [...res.items]
       this.pagination.pageTotal = res.count
-
     },
     async handleEdit(val) {
       console.log(val)
@@ -173,7 +182,7 @@ export default {
       { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除随笔' },
     ]
   },
-  beforeDestroy() { },
+  beforeDestroy() {},
 }
 </script>
 

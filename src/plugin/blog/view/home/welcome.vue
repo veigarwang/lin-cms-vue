@@ -21,23 +21,18 @@
           </div>
           <div class="info-row article-detail-content">
             Whether you just made your first open source contribution, or you’re looking for new ways to contribute, we
-            hope you’re inspired to take action.
-            Even if your contribution wasn’t accepted, don’t forget to say thanks when a maintainer put effort into
-            helping you.
-            Open source is made by people like you: one issue, pull request, comment, or high-five at a time.
+            hope you’re inspired to take action. Even if your contribution wasn’t accepted, don’t forget to say thanks
+            when a maintainer put effort into helping you. Open source is made by people like you: one issue, pull
+            request, comment, or high-five at a time.
           </div>
           <div class="info-row">
             <div class="article-tool">
               <ul class="article-about">
                 <li>
-                  <a href>
-                    <i class="iconfont icon-shoucang"></i>37
-                  </a>
+                  <a href> <i class="iconfont icon-shoucang"></i>37 </a>
                 </li>
                 <li>
-                  <a href>
-                    <i class="iconfont icon-pinglun"></i>2384
-                  </a>
+                  <a href> <i class="iconfont icon-pinglun"></i>2384 </a>
                 </li>
                 <li>
                   <a href>
@@ -65,7 +60,7 @@ export default {
       default: {},
     },
   },
-  mounted() { },
+  mounted() {},
   methods: {},
 }
 </script>
@@ -79,7 +74,6 @@ export default {
   border-radius: 8px;
 
   .article-list {
-
     // cursor: pointer;
     .article-item {
       display: flex;

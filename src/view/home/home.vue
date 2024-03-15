@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;">
+  <div style="height: 100%">
     <el-container>
       <el-aside :width="sidebarWidth" class="aside" :style="asideStyle">
         <sidebar :isCollapse="isCollapse" :is-phone="isPhone"></sidebar>
@@ -91,7 +91,7 @@ export default {
     }
 
     emitter.on('noReuse', () => {
-      this.$refs.operate.style.height = '86px'
+      this.$refs.operate.style.height = '74px'
     })
     emitter.on('hasReuse', () => {
       this.$refs.operate.style.height = '45px'
@@ -202,7 +202,7 @@ export default {
       align-items: center;
       background: $header-background;
       padding-left: 20px;
-      height: 86px;
+      height: $header-height;
 
       .iconfont {
         font-size: 16px;

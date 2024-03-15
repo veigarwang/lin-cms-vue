@@ -1,23 +1,43 @@
 <template>
   <div>
-    <div class="container" v-if="!showEdit">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">标签管理</div>
-        </div>
-        <div class="header-right">
-          <el-input size="medium" style="margin-right:30px" v-model="pagination.tag_name" placeholder="标签名"></el-input>
-          <el-button type="primary" icon="Edit" v-permission="'新增标签'" @click="() => {
-      this.showEdit = true;
-      this.id = 0;
-    }">新增标签</el-button>
+    <el-card shadow="never" v-if="!showEdit">
+      <el-form ref="form" :model="pagination" :inline="true">
+        <el-form-item label="类别" prop="typeCode">
+          <el-input
+            size="medium"
+            style="margin-right: 30px"
+            v-model="pagination.tag_name"
+            placeholder="标签名"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            type="primary"
+            icon="Edit"
+            v-permission="'新增标签'"
+            @click="
+              () => {
+                this.showEdit = true
+                this.id = 0
+              }
+            "
+            >新增标签</el-button
+          >
           <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
-        </div>
-      </div>
-
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :operateWidth="230"
-        @handleEdit="handleEdit" @handleDelete="handleDelete" @handleCorrect="handleCorrect" v-loading="loading"
-        :pagination="pagination" @currentChange="handleCurrentChange">
+        </el-form-item>
+      </el-form>
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        :operateWidth="230"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        @handleCorrect="handleCorrect"
+        v-loading="loading"
+        :pagination="pagination"
+        @currentChange="handleCurrentChange"
+      >
         <template v-slot:status="scope">
           <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
@@ -25,8 +45,7 @@
           <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
-
-    </div>
+    </el-card>
     <tag-form v-else :id="id" ref="tagForm" @editClose="editClose"></tag-form>
   </div>
 </template>
@@ -79,7 +98,7 @@ export default {
       this.pagination.currentPage = val
       this.loading = true
       await this.getTags().finally(() => {
-        this.loading = false;
+        this.loading = false
       })
     },
     handleDelete(val) {
@@ -91,7 +110,7 @@ export default {
       }).then(async () => {
         this.loading = true
         res = await tagApi.deleteTag(val.row.id).finally(() => {
-          this.loading = false;
+          this.loading = false
         })
         if (res.code === 0) {
           await this.getTags()
@@ -153,7 +172,7 @@ export default {
     ]
 
     await this.getTags()
-  }
+  },
 }
 </script>
 

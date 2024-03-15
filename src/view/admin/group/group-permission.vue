@@ -8,15 +8,22 @@
         <div class="permissions-box" v-for="(permission, moduleName) in allPermissions" :key="moduleName">
           <el-checkbox-group v-model="permissionModuleNames">
             <div class="module-box">
-              <el-checkbox @change="moduleCheck($event, permission, moduleName)" class="module" :label="moduleName"
-                :indeterminate="halfPermissions.includes(moduleName)"></el-checkbox>
+              <el-checkbox
+                @change="moduleCheck($event, permission, moduleName)"
+                class="module"
+                :label="moduleName"
+                :indeterminate="halfPermissions.includes(moduleName)"
+              ></el-checkbox>
             </div>
           </el-checkbox-group>
           <el-checkbox-group v-model="checkedPermissionNames">
             <ul class="permissions-ul">
               <li class="permissions-li" v-for="(item, key) in permission" :key="key">
-                <el-checkbox :label="item.name" :value="permissionModuleIds.indexOf(item.id) > -1"
-                  @change="singleCheck(item.id, permission, moduleName)"></el-checkbox>
+                <el-checkbox
+                  :label="item.name"
+                  :value="permissionModuleIds.indexOf(item.id) > -1"
+                  @change="singleCheck(item.id, permission, moduleName)"
+                ></el-checkbox>
               </li>
             </ul>
           </el-checkbox-group>

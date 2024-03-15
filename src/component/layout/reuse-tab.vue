@@ -297,7 +297,7 @@ export default {
 
   .active {
     box-sizing: border-box;
-    height: 40px;
+    height: $reuse-tab-height;
     color: #ffffff;
     background: $theme;
     border: none;

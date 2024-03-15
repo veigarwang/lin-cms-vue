@@ -6,14 +6,26 @@
           <div class="title">分类专栏列表</div>
         </div>
         <div class="header-right">
-          <el-input size="medium" style="margin-right:10px;" v-model="pagination.classify_name"
-            placeholder="分类专栏"></el-input>
+          <el-input
+            size="medium"
+            style="margin-right: 10px"
+            v-model="pagination.classify_name"
+            placeholder="分类专栏"
+          ></el-input>
           <el-button type="default" icon="Search" @click="refresh">查询</el-button>
         </div>
       </div>
 
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
-        @handleDelete="handleDelete" v-loading="loading" :pagination="pagination" @currentChange="handleCurrentChange">
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        v-loading="loading"
+        :pagination="pagination"
+        @currentChange="handleCurrentChange"
+      >
         <template v-slot:thumbnail_display="scope">
           <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
@@ -21,7 +33,6 @@
           <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
         </template>
       </lin-table>
-
     </div>
     <classify-form v-else @editClose="editClose" :id="id"></classify-form>
   </div>
@@ -88,7 +99,7 @@ export default {
       }).then(async () => {
         this.loading = true
         res = await classifyApi.deleteClassify(val.row.id).finally(() => {
-          this.loading = false;
+          this.loading = false
         })
 
         if (res.code === 0) {
@@ -140,7 +151,7 @@ export default {
     this.operate = [{ name: '删除', func: 'handleDelete', type: 'danger', permission: '删除标签' }]
 
     await this.getClassifies()
-  }
+  },
 }
 </script>
 

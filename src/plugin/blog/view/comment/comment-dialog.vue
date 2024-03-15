@@ -1,8 +1,20 @@
 <template>
-  <el-dialog title="评论信息" :append-to-body="true" :before-close="handleClose" close-on-click-modal
-    v-model="dialogFormVisible">
-    <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
-      label-position="labelPosition" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
+  <el-dialog
+    title="评论信息"
+    :append-to-body="true"
+    :before-close="handleClose"
+    close-on-click-modal
+    v-model="dialogFormVisible"
+  >
+    <el-form
+      status-icon
+      v-if="dialogFormVisible"
+      ref="form"
+      label-width="120px"
+      :model="form"
+      label-position="labelPosition"
+      style="margin-left: -35px; margin-bottom: -35px; margin-top: 15px"
+    >
       <el-form-item label="用户" prop="nickname">
         <span>{{ form.user_info != null ? form.user_info.nickname : '' }}</span>
       </el-form-item>
@@ -38,7 +50,7 @@ export default {
         id: 0,
         avatar: '',
         is_audit: true,
-        text: ''
+        text: '',
       },
     }
   },

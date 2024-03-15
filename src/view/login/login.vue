@@ -73,7 +73,7 @@ export default {
         method: 'get',
         url: 'cms/user/captcha',
       }).then(result => {
-        ; ({ tag } = result)
+        ;({ tag } = result)
         captchaImage.value = result.image
       })
     }

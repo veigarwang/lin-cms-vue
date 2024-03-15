@@ -14,8 +14,12 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-user-solid" v-for="(user, index) in users.items" :key="index"
-                  :command="[user]">{{ user }}
+                <el-dropdown-item
+                  icon="el-icon-user-solid"
+                  v-for="(user, index) in users.items"
+                  :key="index"
+                  :command="[user]"
+                  >{{ user }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -28,7 +32,8 @@
     <transition name="fade">
       <div class="search" v-if="keyword">
         <p class="search-tip">
-          搜索“<span class="search-keyword">{{ keyword }}</span>”， 找到 <span class="search-num">{{ totalCount }}</span>
+          搜索“<span class="search-keyword">{{ keyword }}</span
+          >”， 找到 <span class="search-num">{{ totalCount }}</span>
           条日志信息
         </p>
         <button class="search-back" @click="backInit">返回全部日志</button>
@@ -95,7 +100,6 @@ export default {
     const searchKeywordDom = ref()
 
     const initPage = async () => {
-
       loading.value = true
       if (user.value.admin || permissions.value.includes('查询日志记录的用户')) {
         users.value = await logModel.getLoggedUsers({})
@@ -104,7 +108,6 @@ export default {
         loading.value = false
       })
       logs.value = res.items
-
     }
     onMounted(async () => {
       await initPage()

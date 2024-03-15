@@ -1,40 +1,56 @@
 <template>
   <div>
-    <div class="container" v-if="!showEdit">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">技术频道列表</div>
-        </div>
-
-        <div class="header-right">
-          <el-input size="medium" style="margin-right:10px;" v-model="pagination.channel_name" placeholder="技术频道">
+    <el-card shadow="never" v-if="!showEdit">
+      <el-form ref="form" :model="pagination" :inline="true">
+        <el-form-item label="类别" prop="typeCode">
+          <el-input size="medium" style="margin-right: 10px" v-model="pagination.channel_name" placeholder="技术频道">
           </el-input>
-
-          <el-button type="primary" icon="Edit" v-permission="'新增技术频道'" @click="() => {
-      showEdit = true;
-      this.id = 0;
-    }">新增技术频道</el-button>
-          <!-- this.$refs['channelForm'].show(0); -->
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            type="primary"
+            icon="Edit"
+            v-permission="'新增技术频道'"
+            @click="
+              () => {
+                showEdit = true
+                this.id = 0
+              }
+            "
+            >新增技术频道</el-button
+          >
           <el-button type="default" icon="Search" @click="refresh">查询</el-button>
-        </div>
-      </div>
+        </el-form-item>
+      </el-form>
 
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
-        :pagination="pagination" @handleEdit="handleEdit" @handleDelete="handleDelete"
-        @currentChange="handleCurrentChange">
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        v-loading="loading"
+        :pagination="pagination"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        @currentChange="handleCurrentChange"
+      >
         <template v-slot:status="scope">
           <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
         <template v-slot:tags="scope">
-          <el-tag style="margin-right:1px;" size="small" v-for="(tag, index) in scope.row.tags" v-bind:key="index"
-            type="success">{{ tag.tag_name }}</el-tag>
+          <el-tag
+            style="margin-right: 1px"
+            size="small"
+            v-for="(tag, index) in scope.row.tags"
+            v-bind:key="index"
+            type="primary"
+            >{{ tag.tag_name }}</el-tag
+          >
         </template>
         <template v-slot:thumbnail_display="scope">
           <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
-
-    </div>
+    </el-card>
     <channel-form ref="channelForm" v-else @editClose="editClose" :id="id"></channel-form>
   </div>
 </template>
@@ -90,7 +106,7 @@ export default {
       this.pagination.currentPage = val
       this.loading = true
       await this.getChannels().finally(() => {
-        this.loading = false;
+        this.loading = false
       })
     },
     handleDelete(val) {
@@ -100,10 +116,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-
         this.loading = true
         res = await channelApi.deleteChannel(val.row.id).finally(() => {
-          this.loading = false;
+          this.loading = false
         })
         if (res.code === 0) {
           this.loading = false
@@ -127,7 +142,7 @@ export default {
       this.currentPage = 1
       this.loading = true
       await this.getChannels().finally(() => {
-        this.loading = false;
+        this.loading = false
       })
     },
 
@@ -178,7 +193,7 @@ export default {
 
     await this.getChannels()
   },
-  beforeDestroy() { },
+  beforeDestroy() {},
 }
 </script>
 

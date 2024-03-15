@@ -3,49 +3,33 @@
     <sticky-top>
       <div class="title">
         <span>{{ title[this.id == 0 ? 0 : 1] }}</span>
-        <span class="back"
-          @click="back">
-          <i class="iconfont icon-fanhui"></i> 返回
-        </span>
+        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       </div>
     </sticky-top>
     <div class="container">
       <div class="wrap">
         <el-row>
-          <el-col :lg="16"
-            :md="20"
-            :sm="24"
-            :xs="24">
-            <el-form status-icon
+          <el-col :lg="16" :md="20" :sm="24" :xs="24">
+            <el-form
+              status-icon
               ref="form"
               label-width="120px"
               :model="form"
               label-position="labelPosition"
               :rules="rules"
-              style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
-              <el-form-item label="专栏名称"
-                prop="classify_name">
-                <el-input size="medium"
-                  clearable
-                  v-model="form.classify_name"></el-input>
+              style="margin-left: -35px; margin-bottom: -35px; margin-top: 15px"
+            >
+              <el-form-item label="专栏名称" prop="classify_name">
+                <el-input size="medium" clearable v-model="form.classify_name"></el-input>
               </el-form-item>
-              <el-form-item label="封面"
-                prop="thumbnail">
-                <upload-imgs ref="thumbnail"
-                  :multiple="false"
-                  :value="thumbnailPreview"
-                  :max-num="1" />
+              <el-form-item label="封面" prop="thumbnail">
+                <upload-imgs ref="thumbnail" :multiple="false" :value="thumbnailPreview" :max-num="1" />
               </el-form-item>
-              <el-form-item label="排序码"
-                prop="sort_code">
-                <el-input size="medium"
-                  type="number"
-                  clearable
-                  v-model="form.sort_code"></el-input>
+              <el-form-item label="排序码" prop="sort_code">
+                <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
               </el-form-item>
               <el-form-item class="submit">
-                <el-button type="primary"
-                  @click="confirmEdit('form')">保 存</el-button>
+                <el-button type="primary" @click="confirmEdit('form')">保 存</el-button>
                 <el-button @click="resetForm('form')">重 置</el-button>
               </el-form-item>
             </el-form>
@@ -94,12 +78,14 @@ export default {
         this.form = classify
         this.thumbnailPreview.length = 0
         if (classify.thumbnail) {
-          this.thumbnailPreview = [{
-            id: classify.id,
-            display: classify.thumbnail_display,
-            src: classify.thumbnail,
-            imgId: classify.id,
-          }]
+          this.thumbnailPreview = [
+            {
+              id: classify.id,
+              display: classify.thumbnail_display,
+              src: classify.thumbnail,
+              imgId: classify.id,
+            },
+          ]
         }
       } else {
         Object.assign(this.form, {
@@ -143,7 +129,7 @@ export default {
       this.$emit('editClose')
     },
   },
-  async created() { },
+  async created() {},
 }
 </script>
 

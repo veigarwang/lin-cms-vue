@@ -4,8 +4,15 @@
     <el-row>
       <el-col :lg="16" :md="20" :sm="24" :xs="24">
         <div class="content">
-          <el-form status-icon :rules="rules" :model="form" ref="form" label-position="right" label-width="100px"
-            @submit.native.prevent>
+          <el-form
+            status-icon
+            :rules="rules"
+            :model="form"
+            ref="form"
+            label-position="right"
+            label-width="100px"
+            @submit.native.prevent
+          >
             <el-form-item label="分组名称" prop="name">
               <el-input size="medium" clearable v-model="form.name"></el-input>
             </el-form-item>
@@ -16,8 +23,12 @@
               <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
             </el-form-item>
             <el-form-item>
-              <group-permissions @updatePermissions="updatePermissions" @updateAllPermissions="updateAllPermissions"
-                ref="groupPermissions" title="分配权限"></group-permissions>
+              <group-permissions
+                @updatePermissions="updatePermissions"
+                @updateAllPermissions="updateAllPermissions"
+                ref="groupPermissions"
+                title="分配权限"
+              ></group-permissions>
             </el-form-item>
             <el-form-item class="submit">
               <el-button type="primary" :loading="loading" @click="submitForm('form')">保 存</el-button>
@@ -74,7 +85,7 @@ export default {
           const finalPermissions = this.permissions.filter(x => Object.keys(this.allPermissions).indexOf(x) < 0)
           this.loading = true
           res = await Admin.createOneGroup(this.form.name, this.form.info, finalPermissions, this.id).finally(() => {
-            this.loading = false;
+            this.loading = false
           })
           if (res.code < window.MAX_SUCCESS_CODE) {
             this.loading = false

@@ -3,9 +3,7 @@
     <sticky-top>
       <div class="title">
         <span>{{ title[this.id == 0 ? 0 : 1] }}</span>
-        <span class="back" @click="back">
-          <i class="iconfont icon-fanhui"></i> 返回
-        </span>
+        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       </div>
     </sticky-top>
     <div class="container">
@@ -22,8 +20,9 @@
 
                 <el-col :lg="12">
                   <el-form-item label prop="title">
-                    <el-link type="primary" :href="`${VVLOG_URL}#p/${form.id}`" v-if="form.id != null"
-                      target="_blank">查看随笔</el-link>
+                    <el-link type="primary" :href="`${VVLOG_URL}#p/${form.id}`" v-if="form.id != null" target="_blank"
+                      >查看随笔</el-link
+                    >
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -36,15 +35,26 @@
                 <el-col :lg="6">
                   <el-form-item label="随笔类型" prop="excerpt">
                     <el-select disabled v-model="form.article_type" filterable default-first-option>
-                      <el-option v-for="item in article_types" :key="Number(item.item_code)" :label="item.item_name"
-                        :value="Number(item.item_code)"></el-option>
+                      <el-option
+                        v-for="item in article_types"
+                        :key="Number(item.item_code)"
+                        :label="item.item_name"
+                        :value="Number(item.item_code)"
+                      ></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :lg="12">
                   <el-form-item label="标签" prop="source">
-                    <el-select disabled style="width:100%;" v-model="form.tag_ids" multiple filterable
-                      :loading="loading" default-first-option>
+                    <el-select
+                      disabled
+                      style="width: 100%"
+                      v-model="form.tag_ids"
+                      multiple
+                      filterable
+                      :loading="loading"
+                      default-first-option
+                    >
                       <el-option v-for="item in form.tags" :key="item.id" :label="item.tag_name" :value="item.id">
                       </el-option>
                     </el-select>
@@ -71,8 +81,14 @@
                 </el-col>
                 <el-col :lg="12">
                   <el-form-item label="摘要" prop="excerpt">
-                    <el-input disabled size="medium" type="textarea" :autosize="{ minRows: 4, maxRows: 8 }"
-                      placeholder="请输入摘要" v-model="form.excerpt"></el-input>
+                    <el-input
+                      disabled
+                      size="medium"
+                      type="textarea"
+                      :autosize="{ minRows: 4, maxRows: 8 }"
+                      placeholder="请输入摘要"
+                      v-model="form.excerpt"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -110,7 +126,7 @@ import UploadImgs from '@/component/base/upload-image'
 import articleApi from '../../model/article'
 import classifyApi from '../../model/classify'
 import tagApi from '../../model/tag'
-import Vditor from 'vditor';
+import Vditor from 'vditor'
 export default {
   name: 'ArticleForm',
   data() {
@@ -131,7 +147,7 @@ export default {
   props: {
     id: {
       type: String,
-    },  
+    },
   },
   components: {
     UploadImgs,
@@ -160,14 +176,16 @@ export default {
 
         this.thumbnailPreview.length = 0
         if (res.thumbnail) {
-          this.thumbnailPreview = [{
-            id: res.id,
-            display: res.thumbnail_display,
-            src: res.thumbnail,
-            imgId: res.id,
-          }]
+          this.thumbnailPreview = [
+            {
+              id: res.id,
+              display: res.thumbnail_display,
+              src: res.thumbnail,
+              imgId: res.id,
+            },
+          ]
         }
-        this.render(res.content);
+        this.render(res.content)
       }
     },
     async confirmEdit(formName) {
@@ -186,7 +204,7 @@ export default {
       this.$emit('editClose')
     },
     render(markdown) {
-      var that = this;
+      var that = this
       Vditor.preview(document.getElementById('preview'), markdown, {
         markdown: {
           toc: true,
@@ -203,19 +221,18 @@ export default {
         anchor: 2,
         after() {
           if (window.innerWidth <= 768) {
-            return;
+            return
           }
         },
-        lazyLoadImage:
-          'https://cdn.jsdelivr.net/npm/vditor/dist/images/img-loading.svg',
-      });
+        lazyLoadImage: 'https://cdn.jsdelivr.net/npm/vditor/dist/images/img-loading.svg',
+      })
     },
     handlePreview($event) {
       if ($event.target) {
         if ($event.target.nodeName == 'IMG') {
           this.$imagePreview({
             images: [$event.target.currentSrc],
-          });
+          })
         }
       }
     },

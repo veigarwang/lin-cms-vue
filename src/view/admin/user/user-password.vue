@@ -1,7 +1,14 @@
 <template>
   <div class="container">
-    <el-form :model="form" status-icon :rules="rules" label-position="right" ref="form" v-loading="loading"
-      label-width="100px">
+    <el-form
+      :model="form"
+      status-icon
+      :rules="rules"
+      label-position="right"
+      ref="form"
+      v-loading="loading"
+      label-width="100px"
+    >
       <el-form-item label="密码" prop="new_password">
         <el-input size="medium" clearable type="password" v-model="form.new_password" autocomplete="off"></el-input>
       </el-form-item>
@@ -58,9 +65,11 @@ export default {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           this.loading = true
-          let res = await Admin.changePassword(this.form.new_password, this.form.confirm_password, this.id).finally(() => {
-            this.loading = false;
-          })
+          let res = await Admin.changePassword(this.form.new_password, this.form.confirm_password, this.id).finally(
+            () => {
+              this.loading = false
+            },
+          )
           this.$message.success(`${res.message}`)
           if (res.code < window.MAX_SUCCESS_CODE) {
             this.resetForm(formName)
@@ -78,5 +87,5 @@ export default {
       this.$refs[formName].resetFields()
     },
   },
-};
+}
 </script>

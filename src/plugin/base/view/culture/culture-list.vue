@@ -6,18 +6,30 @@
           <div class="title">本地化语言</div>
         </div>
         <div class="header-right">
-          <div style="margin-left:30px">
-            <el-button type="primary" icon="Edit" v-permission="'新增本地化'" @click="() => {
-              this.$router.push(`/base/culture/form`)
-            }">新增本地化</el-button>
-            <el-button type="default" @click="refresh" icon="Search">
-              刷新
-            </el-button>
+          <div style="margin-left: 30px">
+            <el-button
+              type="primary"
+              icon="Edit"
+              v-permission="'新增本地化'"
+              @click="
+                () => {
+                  this.$router.push(`/base/culture/form`)
+                }
+              "
+              >新增本地化</el-button
+            >
+            <el-button type="default" @click="refresh" icon="Search"> 刷新 </el-button>
           </div>
         </div>
       </div>
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
-        @handleDelete="handleDelete" v-loading="loading"></lin-table>
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        v-loading="loading"
+      ></lin-table>
     </div>
   </div>
 </template>
@@ -54,10 +66,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-
         this.loading = true
         res = await cultureApi.deleteCulture(val.row.id).finally(() => {
-          this.loading = false;
+          this.loading = false
         })
         if (res.code === 0) {
           this.loading = false
@@ -89,7 +100,7 @@ export default {
 
     await this.getCultures()
   },
-  beforeDestroy() { },
+  beforeDestroy() {},
 }
 </script>
 

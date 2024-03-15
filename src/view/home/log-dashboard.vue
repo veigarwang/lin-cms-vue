@@ -50,7 +50,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -77,7 +76,7 @@ export default {
     async getLogDashboard() {
       const res = await log.getLogDashboard()
       this.res = res
-    }
+    },
   },
 }
 </script>

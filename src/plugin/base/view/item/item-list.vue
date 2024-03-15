@@ -1,25 +1,45 @@
 <template>
-  <div style="padding:8px;">
-    <el-card header="字典类别管理" shadow="never">
+  <div style="padding: 8px">
+    <el-card shadow="never">
       <el-form ref="form" :model="query" :inline="true">
         <el-form-item label="类别" prop="typeCode">
-          <el-select style="width:200px;" size="medium" filterable v-model="query.typeCode"
-            :disabled="types.length === 0" placeholder="请选择分组" @change="handleChange">
+          <el-select
+            style="width: 200px"
+            size="medium"
+            filterable
+            v-model="query.typeCode"
+            :disabled="types.length === 0"
+            placeholder="请选择分组"
+            @change="handleChange"
+          >
             <el-option v-for="(item, index) in types" :key="index" :label="item.full_name" :value="item.type_code">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="default" icon="Search" @click="refresh">
-            刷新
-          </el-button>
-          <el-button type="primary" icon="Edit" v-permission="'新增字典'"
-            @click="() => { this.$refs['dialogForm'].show(); }">新增字典
+          <el-button type="default" icon="Search" @click="refresh"> 刷新 </el-button>
+          <el-button
+            type="primary"
+            icon="Edit"
+            v-permission="'新增字典'"
+            @click="
+              () => {
+                this.$refs['dialogForm'].show()
+              }
+            "
+            >新增字典
           </el-button>
         </el-form-item>
       </el-form>
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :border="false" :operate="operate"
-        @handleEdit="handleEdit" @handleDelete="handleDelete" v-loading="loading">
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :border="false"
+        :operate="operate"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        v-loading="loading"
+      >
         <template v-slot:status="scope">
           <el-switch v-model="scope.row.status" disabled active-color="#13ce66"></el-switch>
         </template>
@@ -48,19 +68,21 @@ export default {
       loading: false,
       types: [],
       query: {
-        typeCode: ''
-      }
+        typeCode: '',
+      },
     }
   },
   methods: {
     async getBaseItems() {
       let res
       this.loading = true
-      res = await baseApi.getItems({
-        typeCode: this.query.typeCode,
-      }).finally(() => {
-        this.loading = false
-      })
+      res = await baseApi
+        .getItems({
+          typeCode: this.query.typeCode,
+        })
+        .finally(() => {
+          this.loading = false
+        })
       this.tableData = res
     },
     async handleEdit(val) {
@@ -132,7 +154,7 @@ export default {
     }
     await this.getBaseItems()
   },
-  beforeDestroy() { },
+  beforeDestroy() {},
 }
 </script>
 

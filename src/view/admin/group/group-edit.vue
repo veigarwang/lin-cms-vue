@@ -3,21 +3,24 @@
     <sticky-top>
       <div class="title">
         <span>编辑分组权限</span>
-        <span class="back" @click="goBack">
-          <i class="iconfont icon-fanhui"></i> 返回
-        </span>
+        <span class="back" @click="goBack"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       </div>
     </sticky-top>
     <div class="content">
       <el-row>
         <el-col :lg="16" :md="20" :sm="24" :xs="24">
           <div class="content">
-            <group-permissions :id="$route.query.id" ref="groupPermissions" @updatePermissions="updatePermissions"
-              @getCacheAuthIds="getCacheAuthIds" @updateAllPermissions="updateAllPermissions"
-              style="margin-right:-30px;margin-left:-25px;margin-bottom:-10px;">
+            <group-permissions
+              :id="$route.query.id"
+              ref="groupPermissions"
+              @updatePermissions="updatePermissions"
+              @getCacheAuthIds="getCacheAuthIds"
+              @updateAllPermissions="updateAllPermissions"
+              style="margin-right: -30px; margin-left: -25px; margin-bottom: -10px"
+            >
             </group-permissions>
           </div>
-          <div style="padding-left:5px;margin-top: 30px;text-align: right;">
+          <div style="padding-left: 5px; margin-top: 30px; text-align: right">
             <el-button type="primary" @click="confirmEdit">确 定</el-button>
             <el-button @click="goBack">返回</el-button>
           </div>

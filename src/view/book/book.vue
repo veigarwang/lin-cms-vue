@@ -19,8 +19,12 @@
               <el-input v-model="book.image" placeholder="请填写封面地址"></el-input>
             </el-form-item>
             <el-form-item label="简介" prop="summary">
-              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8 }" placeholder="请输入简介"
-                v-model="book.summary">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 4, maxRows: 8 }"
+                placeholder="请输入简介"
+                v-model="book.summary"
+              >
               </el-input>
             </el-form-item>
 
@@ -52,9 +56,10 @@ export default {
     const loading = ref(false)
     const book = reactive({ title: '', author: '', summary: '', image: '' })
 
-    const listAssign = (a, b) => Object.keys(a).forEach(key => {
-      a[key] = b[key] || a[key]
-    })
+    const listAssign = (a, b) =>
+      Object.keys(a).forEach(key => {
+        a[key] = b[key] || a[key]
+      })
 
     /**
      * 表单规则验证

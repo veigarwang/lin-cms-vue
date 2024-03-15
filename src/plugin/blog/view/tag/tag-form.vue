@@ -3,17 +3,22 @@
     <sticky-top>
       <div class="title">
         <span>{{ title[this.id == 0 ? 0 : 1] }}</span>
-        <span class="back" @click="back">
-          <i class="iconfont icon-fanhui"></i> 返回
-        </span>
+        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       </div>
     </sticky-top>
     <div class="container">
       <div class="wrap">
         <el-row>
           <el-col :lg="16" :md="20" :sm="24" :xs="24">
-            <el-form status-icon ref="form" label-width="120px" :model="form" label-position="labelPosition"
-              :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
+            <el-form
+              status-icon
+              ref="form"
+              label-width="120px"
+              :model="form"
+              label-position="labelPosition"
+              :rules="rules"
+              style="margin-left: -35px; margin-bottom: -35px; margin-top: 15px"
+            >
               <el-form-item label="标签名称" prop="tag_name">
                 <el-input size="medium" clearable v-model="form.tag_name"></el-input>
               </el-form-item>
@@ -24,7 +29,12 @@
                 <el-input size="medium" clearable v-model="form.alias"></el-input>
               </el-form-item>
               <el-form-item label="状态" prop="status">
-                <el-switch v-model="form.status" active-color="#13ce66" active-text="启用" inactive-text="禁用"></el-switch>
+                <el-switch
+                  v-model="form.status"
+                  active-color="#13ce66"
+                  active-text="启用"
+                  inactive-text="禁用"
+                ></el-switch>
               </el-form-item>
               <el-form-item label="封面" prop="thumbnail">
                 <upload-imgs ref="thumbnail" :multiple="false" :value="thumbnailPreview" :max-num="1" />
@@ -82,12 +92,14 @@ export default {
         this.form = tag
         this.thumbnailPreview.length = 0
         if (tag.thumbnail) {
-          this.thumbnailPreview = [{
-            id: tag.id,
-            display: tag.thumbnail_display,
-            src: tag.thumbnail,
-            imgId: tag.id,
-          }]
+          this.thumbnailPreview = [
+            {
+              id: tag.id,
+              display: tag.thumbnail_display,
+              src: tag.thumbnail,
+              imgId: tag.id,
+            },
+          ]
         }
       } else {
         Object.assign(this.form, {

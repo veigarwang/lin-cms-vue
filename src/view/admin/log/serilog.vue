@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="header">
-        <el-card style="width:100%;" class="margin-bottom-xs margin-top-xs" shadow="never">
+        <el-card style="width: 100%" class="margin-bottom-xs margin-top-xs" shadow="never">
           <el-form :inline="true" :model="pagination" class="search-form">
             <el-form-item label="请选择级别">
               <el-select placeholder="请选择级别" v-model="pagination.logLevel" clearable>
@@ -11,8 +11,13 @@
               </el-select>
             </el-form-item>
             <el-form-item label="消息">
-              <el-input size="medium" style="margin-right:10px;" v-model="pagination.keyword" placeholder="消息"
-                clearable></el-input>
+              <el-input
+                size="medium"
+                style="margin-right: 10px"
+                v-model="pagination.keyword"
+                placeholder="消息"
+                clearable
+              ></el-input>
             </el-form-item>
             <el-form-item label="时间范围">
               <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
@@ -24,10 +29,18 @@
         </el-card>
       </div>
 
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
-        :pagination="pagination" @currentChange="handleCurrentChange" @handleDetail="handleDetail">
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        v-loading="loading"
+        :pagination="pagination"
+        @currentChange="handleCurrentChange"
+        @handleDetail="handleDetail"
+      >
         <template v-slot:level="scope">
-          <el-tag size="medium" :type="formatlogLevelType(scope.row.level)">{{ formatLogLevels(scope.row.level) }}
+          <el-tag size="medium" :type="formatlogLevelType(scope.row.level)"
+            >{{ formatLogLevels(scope.row.level) }}
           </el-tag>
         </template>
         <template v-slot:timestamp="scope">
@@ -178,12 +191,10 @@ export default {
 
     await this.getSerilogs()
   },
-  beforeDestroy() { },
+  beforeDestroy() {},
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/style/list.scss';
-
-
 </style>

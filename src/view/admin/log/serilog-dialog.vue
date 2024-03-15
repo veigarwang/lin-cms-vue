@@ -1,7 +1,14 @@
 <template>
   <el-dialog title="Serilog日志详细" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible">
-    <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
-      label-position="labelPosition" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
+    <el-form
+      status-icon
+      v-if="dialogFormVisible"
+      ref="form"
+      label-width="120px"
+      :model="form"
+      label-position="labelPosition"
+      style="margin-left: -35px; margin-bottom: -35px; margin-top: 15px"
+    >
       <el-form-item label="消息" prop="message">
         <span>{{ form.message }}</span>
       </el-form-item>
@@ -25,11 +32,10 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <div class="dialog-footer" style="padding-left:5px;">
+      <div class="dialog-footer" style="padding-left: 5px">
         <el-button type="default" @click="handleClose">关闭</el-button>
       </div>
     </template>
-
   </el-dialog>
 </template>
 

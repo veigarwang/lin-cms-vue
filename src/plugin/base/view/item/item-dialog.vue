@@ -1,11 +1,30 @@
 <template>
-  <el-dialog title="字典信息" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible"
-    :close-on-click-modal="true" width="800">
-    <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
-      label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
+  <el-dialog
+    title="字典信息"
+    :append-to-body="true"
+    :before-close="handleClose"
+    v-model="dialogFormVisible"
+    :close-on-click-modal="true"
+    width="800"
+  >
+    <el-form
+      status-icon
+      v-if="dialogFormVisible"
+      ref="form"
+      label-width="120px"
+      :model="form"
+      label-position="labelPosition"
+      :rules="rules"
+      style="margin-left: -35px; margin-bottom: -35px; margin-top: 15px"
+    >
       <el-form-item label="类别" prop="base_type_id">
-        <el-select size="medium" filterable v-model="form.base_type_id" :disabled="types.length === 0"
-          placeholder="请选择分组">
+        <el-select
+          size="medium"
+          filterable
+          v-model="form.base_type_id"
+          :disabled="types.length === 0"
+          placeholder="请选择分组"
+        >
           <el-option v-for="item in types" :key="item.id" :label="item.full_name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>

@@ -6,15 +6,23 @@
           <div class="title">评论管理</div>
         </div>
         <div class="header-right">
-          <el-input clearable size="medium" style="margin-right:10px;" v-model="pagination.text" placeholder="评论内容">
+          <el-input clearable size="medium" style="margin-right: 10px" v-model="pagination.text" placeholder="评论内容">
           </el-input>
           <el-button type="default" icon="Search" @click="getComments">查询</el-button>
         </div>
       </div>
 
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleDetail="handleDetail"
-        @handleDelete="handleDelete" @row-click="rowClick" v-loading="loading" :pagination="pagination"
-        @currentChange="handleCurrentChange">
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        @handleDetail="handleDetail"
+        @handleDelete="handleDelete"
+        @row-click="rowClick"
+        v-loading="loading"
+        :pagination="pagination"
+        @currentChange="handleCurrentChange"
+      >
         <template v-slot:is_audit="scope">
           <el-tag size="medium" v-if="scope.row.is_audit == true" type="success">审核通过</el-tag>
           <el-tag size="medium" v-else type="danger">拉黑</el-tag>
@@ -83,7 +91,6 @@ export default {
         this.editIndex = val.index
         selectedData = val.row
       } else {
-
         selectedData = val
       }
       this.$refs['dialogForm'].show(selectedData)
@@ -93,7 +100,7 @@ export default {
       this.pagination.currentPage = val
       this.loading = true
       await this.getComments().finally(() => {
-        this.loading = false;
+        this.loading = false
       })
     },
     handleDelete(val) {
@@ -103,10 +110,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-
         this.loading = true
         res = await commentApi.delectComment(val.row.id).finally(() => {
-          this.loading = false;
+          this.loading = false
         })
         if (res.code === 0) {
           this.loading = false
@@ -157,7 +163,7 @@ export default {
       { name: '审核', func: 'handleDetail', type: 'primary', permission: '审核评论' },
       { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除评论' },
     ]
-  }
+  },
 }
 </script>
 

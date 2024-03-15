@@ -1,17 +1,30 @@
 <template>
   <div style="padding: 8px">
-    <el-card header="字典类别" shadow="never">
+    <el-card shadow="never">
       <el-form ref="form" :inline="true">
         <el-form-item>
           <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
-          <el-button type="primary" icon="Edit" v-permission="新增字典类别" @click="() => {
-        this.$refs['dialogForm'].show(0)
-      }
-        ">新增类别</el-button>
+          <el-button
+            type="primary"
+            icon="Edit"
+            v-permission="新增字典类别"
+            @click="
+              () => {
+                this.$refs['dialogForm'].show(0)
+              }
+            "
+            >新增类别</el-button
+          >
         </el-form-item>
       </el-form>
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
-        @handleDelete="handleDelete" v-loading="loading">
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        v-loading="loading"
+      >
         <template v-slot:create_time="scope">
           <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
         </template>
@@ -44,7 +57,7 @@ export default {
       let res
       this.loading = true
       res = await baseApi.getTypes({}).finally(() => {
-        this.loading = false;
+        this.loading = false
       })
       this.tableData = res
     },
@@ -103,7 +116,7 @@ export default {
     ]
     await this.getBaseTypes()
   },
-  beforeDestroy() { },
+  beforeDestroy() {},
 }
 </script>
 

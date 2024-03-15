@@ -3,16 +3,22 @@
     <sticky-top>
       <div class="title">
         <span>{{ $route.params.id == undefined ? '新建本地化' : '编辑本地化' }}</span>
-        <span class="back" @click="back">
-          <i class="iconfont icon-fanhui"></i> 返回
-        </span>
+        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       </div>
     </sticky-top>
     <div class="wrap">
       <el-row>
         <el-col :lg="16" :md="20" :sm="24" :xs="24">
-          <el-form status-icon :rules="rules" :model="form" ref="form" label-position="right" label-width="100px"
-            v-loading="formLoading" @submit.native.prevent>
+          <el-form
+            status-icon
+            :rules="rules"
+            :model="form"
+            ref="form"
+            label-position="right"
+            label-width="100px"
+            v-loading="formLoading"
+            @submit.native.prevent
+          >
             <el-form-item label="本地化名称" prop="name">
               <el-input size="medium" clearable v-model="form.name"></el-input>
             </el-form-item>
@@ -31,18 +37,38 @@
             <div class="header">
               <div class="header-left">
                 <div class="title">
-                  <el-button type="primary" plain
-                    @click="() => { this.$refs['dialogForm'].show({ culture_id: this.form.id }); }">添加本地化资源</el-button>
+                  <el-button
+                    type="primary"
+                    plain
+                    @click="
+                      () => {
+                        this.$refs['dialogForm'].show({ culture_id: this.form.id })
+                      }
+                    "
+                    >添加本地化资源</el-button
+                  >
                 </div>
               </div>
               <div class="header-right">
-                <el-input size="medium" style="margin-right:10px;" v-model="pagination.key" placeholder="编码"></el-input>
+                <el-input
+                  size="medium"
+                  style="margin-right: 10px"
+                  v-model="pagination.key"
+                  placeholder="编码"
+                ></el-input>
                 <el-button type="default" @click="getResources" icon="Search">刷新</el-button>
               </div>
             </div>
-            <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" v-loading="loading"
-              :pagination="pagination" @handleEdit="handleEdit" @handleDelete="handleDelete"
-              @currentChange="handleCurrentChange"></lin-table>
+            <lin-table
+              :tableColumn="tableColumn"
+              :tableData="tableData"
+              :operate="operate"
+              v-loading="loading"
+              :pagination="pagination"
+              @handleEdit="handleEdit"
+              @handleDelete="handleDelete"
+              @currentChange="handleCurrentChange"
+            ></lin-table>
           </div>
         </el-col>
       </el-row>
@@ -113,11 +139,11 @@ export default {
           if (this.id == undefined) {
             console.log(this.form)
             res = await cultureApi.addCulture(this.form).finally(() => {
-              this.formLoading = false;
+              this.formLoading = false
             })
           } else {
             res = await cultureApi.editCulture(this.form).finally(() => {
-              this.formLoading = false;
+              this.formLoading = false
             })
           }
           this.pagination.culture_id = res.id
@@ -133,7 +159,7 @@ export default {
       this.$refs[formName].resetFields()
     },
     async getResources() {
-      if (this.pagination.culture_id != "") {
+      if (this.pagination.culture_id != '') {
         this.loading = true
         const currentPage = this.pagination.currentPage - 1
         const res = await resourceApi
@@ -149,7 +175,6 @@ export default {
         this.tableData = [...res.items]
         this.pagination.pageTotal = res.count
       }
-
     },
     async handleEdit(val) {
       this.$refs['dialogForm'].show(val.row)

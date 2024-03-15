@@ -1,26 +1,36 @@
 <template>
   <div>
-    <div class="container" v-if="!showEdit">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">文档</div>
-        </div>
-        <div class="header-right">
-          <el-button type="primary" icon="Edit" v-permission="'新增文档'" @click="() => {
-      this.showEdit = true;
-      this.id = 0;
-    }">新增文档</el-button>
-          <el-button type="default" @click="refresh" icon="Search">
-            刷新</el-button>
-        </div>
-      </div>
-      <!-- 表格 -->
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :operateWidth="230"
-        @handleEdit="handleEdit" @handleDelete="handleDelete" v-loading="loading" :pagination="pagination"
-        @currentChange="handleCurrentChange">
+    <el-card shadow="never" v-if="!showEdit">
+      <el-form ref="form" :inline="true">
+        <el-form-item>
+          <el-button
+            type="primary"
+            icon="Edit"
+            v-permission="'新增文档'"
+            @click="
+              () => {
+                this.showEdit = true
+                this.id = 0
+              }
+            "
+            >新增文档</el-button
+          >
+          <el-button type="default" @click="refresh" icon="Search"> 刷新</el-button>
+        </el-form-item>
+      </el-form>
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        :operateWidth="230"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        v-loading="loading"
+        :pagination="pagination"
+        @currentChange="handleCurrentChange"
+      >
       </lin-table>
-
-    </div>
+    </el-card>
     <doc-form v-else :id="id" ref="docForm" @editClose="editClose"></doc-form>
   </div>
 </template>
@@ -70,7 +80,7 @@ export default {
       this.pagination.currentPage = val
       this.loading = true
       await this.getDocs().finally(() => {
-        this.loading = false;
+        this.loading = false
       })
     },
     handleDelete(val) {
@@ -82,7 +92,7 @@ export default {
       }).then(async () => {
         this.loading = true
         res = await docApi.deleteDoc(val.row.id).finally(() => {
-          this.loading = false;
+          this.loading = false
         })
         if (res.code === 0) {
           this.loading = false
@@ -104,7 +114,7 @@ export default {
     async editClose() {
       this.showEdit = false
       await this.getDocs()
-    }
+    },
   },
   async created() {
     this.tableColumn = [
@@ -113,12 +123,12 @@ export default {
     ]
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary', permission: '编辑文档' },
-      { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除文档' }
+      { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除文档' },
     ]
 
     await this.getDocs()
   },
-  beforeDestroy() { },
+  beforeDestroy() {},
 }
 </script>
 

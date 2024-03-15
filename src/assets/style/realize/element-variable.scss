@@ -30,9 +30,11 @@ $--link-disabled-font-color: $--color-text-placeholder !default;
 .el-button {
   padding: 8px 16px;
   border-radius: 2px;
+
   span .el-icon {
     margin-right: 5px;
   }
+
   &:hover {
     color: #3963bc !important;
     background: #ebeff8 !important;
@@ -228,7 +230,7 @@ $--link-disabled-font-color: $--color-text-placeholder !default;
   border: none !important;
 }
 
-.el-radio__input.is-checked + .el-radio__label {
+.el-radio__input.is-checked+.el-radio__label {
   color: $theme;
 }
 
@@ -272,13 +274,16 @@ $--link-disabled-font-color: $--color-text-placeholder !default;
   border: 1px solid $theme;
   color: #fff;
 }
+
 .el-input .el-input--suffix {
   background: $theme;
   color: #fff;
+
   input::placeholder {
     color: #fff;
   }
 }
+
 // table
 .el-table {
   border-top: 1px solid $table-border-color;
@@ -341,11 +346,11 @@ thead tr {
   background: #fff;
 }
 
-.el-table__body tr.current-row > td,
-.el-table__body tr.hover-row.current-row > td,
-.el-table__body tr.hover-row.el-table__row--striped.current-row > td,
-.el-table__body tr.hover-row.el-table__row--striped > td,
-.el-table__body tr.hover-row > td {
+.el-table__body tr.current-row>td,
+.el-table__body tr.hover-row.current-row>td,
+.el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.el-table__body tr.hover-row.el-table__row--striped>td,
+.el-table__body tr.hover-row>td {
   background-color: #ecf5ff;
 }
 
@@ -354,16 +359,19 @@ thead tr {
   font-size: 18px;
   top: 5px;
 }
+
 // el-dialog
 .el-dialog__title {
   color: $parent-title-color;
   font-size: 16px;
   font-weight: 500;
 }
+
 .el-dialog__headerbtn {
   font-size: 20px;
   top: 16px;
 }
+
 // tab
 .el-tabs__item.is-active {
   color: $theme;
@@ -421,7 +429,7 @@ thead tr {
   border-right: 1px solid #1d2a60;
 }
 
-.el-menu--vertical > .el-menu--popup {
+.el-menu--vertical>.el-menu--popup {
   max-height: 100vh;
   overflow-y: auto;
 }
@@ -435,7 +443,7 @@ thead tr {
 }
 
 .is-active {
-  color: $theme !important;
+  color: $app-main-background !important;
 
   &.el-menu-item .iconfont {
     color: $theme !important;
@@ -548,6 +556,7 @@ thead tr {
 }
 
 .el-menu--collapse {
+
   // margin-left: -2px;
   .el-submenu.is-active {
     .el-submenu__title {
@@ -613,7 +622,8 @@ thead tr {
 .el-link.is-underline:hover:after {
   border-bottom: 1px solid $--link-default-active-color;
 }
-.el-link [class*='el-icon-'] + span {
+
+.el-link [class*='el-icon-']+span {
   margin-left: 4px;
 }
 
@@ -640,19 +650,24 @@ $typeMap: (
   warning: #ffbe4d,
   info: #8c98ae,
 );
+
 .el-link {
   @each $type, $primaryColor in $typeMap {
     &.el-link--#{$type} {
       color: $primaryColor;
+
       &:hover {
         color: mix($primaryColor, $--color-white, 80%);
       }
+
       &:after {
         border-color: $primaryColor;
       }
+
       @include when(disabled) {
         color: mix($primaryColor, $--color-white, 50%);
       }
+
       @include when(underline) {
         &:hover:after {
           border-color: $primaryColor;
@@ -671,6 +686,7 @@ $typeMap: (
   color: rgba(255, 255, 255, 1);
   border-radius: 12px;
   border: 1px solid #3963bc;
+
   .el-icon-close {
     border-radius: 50%;
     font-size: 12px;
@@ -690,9 +706,11 @@ $typeMap: (
       color: #3963bc;
     }
   }
+
   @include m(dark) {
     background-color: #0a1949;
     color: rgba(255, 255, 255, 1);
+
     .el-tag__close {
       color: rgba(255, 255, 255, 1);
     }
@@ -706,6 +724,7 @@ $typeMap: (
   @include m(plain) {
     background-color: rgba(255, 255, 255, 1);
     color: #3963bc;
+
     .el-tag__close {
       color: #3963bc;
     }
@@ -713,24 +732,6 @@ $typeMap: (
     .el-tag__close:hover {
       background-color: #3963bc;
       color: rgba(255, 255, 255, 1);
-    }
-  }
-  @include m(info) {
-    background-color: #8c98ae;
-    border-color: #8c98ae;
-    color: #909399;
-
-    @include when(hit) {
-      border-color: #8c98ae;
-    }
-
-    .el-tag__close {
-      color: #909399;
-    }
-
-    .el-tag__close:hover {
-      background-color: rgba(255, 255, 255, 1);
-      color: #8c98ae;
     }
   }
 
@@ -827,10 +828,12 @@ $typeMap: (
   @include m(info) {
     background-color: #ecf1ff;
     border-color: #97b8ff;
+
     .el-message__content {
       color: #3963bc;
     }
   }
+
   & .el-icon-info {
     color: #3963bc;
   }
@@ -840,6 +843,7 @@ $typeMap: (
 @include b(notification) {
   border: 1px solid #97b8ff;
   background-color: #ecf1ff;
+
   @include e(title) {
     color: #3963bc;
   }
@@ -847,6 +851,7 @@ $typeMap: (
   @include e(content) {
     color: #3963bc;
   }
+
   .el-icon-info {
     color: #3963bc;
   }
@@ -855,6 +860,7 @@ $typeMap: (
 /* select */
 @include b(select) {
   .el-tag {
+
     // background-color: #3963bc !important;
     &__close.el-icon-close {
       background-color: #3963bc;
@@ -889,11 +895,13 @@ $typeMap: (
 @include b(dialog) {
   box-shadow: 0px 0px 14px 0px rgba(38, 38, 38, 0.5);
   border-radius: 12px;
+
   @include e(header) {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     // background:rgba(206,218,240,1);
   }
+
   @include e(title) {
     color: #333333;
   }

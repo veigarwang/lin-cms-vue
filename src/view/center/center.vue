@@ -10,14 +10,20 @@
               <div class="name-wrapper">
                 <div class="label">昵称</div>
                 <div class="name">
-                  <el-input placeholder="请输入内容" size="small" v-model="nickname" suffix-icon="Edit" ref="input"
-                    @blur="blur"></el-input>
+                  <el-input
+                    placeholder="请输入内容"
+                    size="small"
+                    v-model="nickname"
+                    suffix-icon="Edit"
+                    ref="input"
+                    @blur="blur"
+                  ></el-input>
                 </div>
               </div>
               <div class="avatar" title="点击修改头像">
                 <img :src="user.avatar || defaultAvatar" alt="头像" />
                 <label class="mask">
-                  <i class="iconfont icon-icon-test" style="font-size: 20px;"></i>
+                  <i class="iconfont icon-icon-test" style="font-size: 20px"></i>
                   <input ref="avatarInput" type="file" accept="image/*" @change="fileChange" />
                 </label>
               </div>
@@ -25,8 +31,15 @@
           </div>
           <div class="password">
             <div class="title">修改密码</div>
-            <el-form ref="form" :model="form" status-icon :rules="rules" @submit.prevent label-width="90px"
-              label-position="left">
+            <el-form
+              ref="form"
+              :model="form"
+              status-icon
+              :rules="rules"
+              @submit.prevent
+              label-width="90px"
+              label-position="left"
+            >
               <el-form-item label="原始密码" prop="old_password">
                 <el-input type="password" v-model="form.old_password" autocomplete="off"></el-input>
               </el-form-item>

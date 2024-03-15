@@ -1,16 +1,38 @@
 <template>
   <div class="container">
     <div class="title">分组列表信息</div>
-    <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" @handleEdit="handleEdit"
-      @goToGroupEditPage="goToGroupEditPage" @handleDelete="handleDelete" @row-click="rowClick" v-loading="loading">
+    <lin-table
+      :tableColumn="tableColumn"
+      :tableData="tableData"
+      :operate="operate"
+      @handleEdit="handleEdit"
+      @goToGroupEditPage="goToGroupEditPage"
+      @handleDelete="handleDelete"
+      @row-click="rowClick"
+      v-loading="loading"
+    >
       <template v-slot:is_static="scope">
         <el-switch v-model="scope.row.is_static" disabled active-text inactive-text></el-switch>
       </template>
     </lin-table>
-    <el-dialog title="分组信息" :append-to-body="true" v-model="dialogFormVisible" :before-close="handleClose"
-      close-on-click-modal class="groupListInfoDialog">
-      <el-form status-icon v-if="dialogFormVisible" ref="form" label-width="120px" :model="form"
-        label-position="labelPosition" :rules="rules" style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;">
+    <el-dialog
+      title="分组信息"
+      :append-to-body="true"
+      v-model="dialogFormVisible"
+      :before-close="handleClose"
+      close-on-click-modal
+      class="groupListInfoDialog"
+    >
+      <el-form
+        status-icon
+        v-if="dialogFormVisible"
+        ref="form"
+        label-width="120px"
+        :model="form"
+        label-position="labelPosition"
+        :rules="rules"
+        style="margin-left: -35px; margin-bottom: -35px; margin-top: 15px"
+      >
         <el-form-item label="分组名称" prop="name">
           <el-input size="medium" clearable v-model="form.name"></el-input>
         </el-form-item>
@@ -121,7 +143,6 @@ export default {
             message: `${res.message}`,
           })
         }
-
       })
     },
     rowClick(row) {
@@ -152,7 +173,7 @@ export default {
       { name: '权限', func: 'goToGroupEditPage', type: 'info' },
       { name: '删除', func: 'handleDelete', type: 'danger' },
     ]
-  }
+  },
 }
 </script>
 

@@ -1,7 +1,14 @@
 <template>
   <div class="container">
-    <el-form :model="form" status-icon :rules="rules" :label-position="labelPosition" ref="form" label-width="100px"
-      @submit.native.prevent>
+    <el-form
+      :model="form"
+      status-icon
+      :rules="rules"
+      :label-position="labelPosition"
+      ref="form"
+      label-width="100px"
+      @submit.native.prevent
+    >
       <el-form-item label="用户名" prop="username">
         <el-input size="medium" clearable v-model="form.username"></el-input>
       </el-form-item>
@@ -12,8 +19,14 @@
         <el-input size="medium" clearable v-model="form.email" auto-complete="new-password"></el-input>
       </el-form-item>
       <el-form-item label="状态" prop="active">
-        <el-switch v-model="form.active" active-color="#13ce66" :active-value="1" :inactive-value="2" active-text="启用"
-          inactive-text="禁用"></el-switch>
+        <el-switch
+          v-model="form.active"
+          active-color="#13ce66"
+          :active-value="1"
+          :inactive-value="2"
+          active-text="启用"
+          inactive-text="禁用"
+        ></el-switch>
       </el-form-item>
       <el-form-item v-if="pageType === 'add'" label="密码" prop="password">
         <el-input size="medium" clearable type="password" v-model="form.password" auto-complete="new-password">
@@ -23,10 +36,10 @@
         <el-input size="medium" clearable type="password" v-model="form.confirm_password" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item v-if="pageType !== 'password'" label="选择分组">
-        <el-checkbox-group v-model="form.group_ids" size="small" style="transform: translateY(5px);">
+        <el-checkbox-group v-model="form.group_ids" size="small" style="transform: translateY(5px)">
           <el-checkbox v-for="item in groups" :key="item.id" :label="item.id" border style="margin-left: 0">{{
-      item.name
-    }}</el-checkbox>
+            item.name
+          }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item v-show="submit" class="submit">
@@ -53,7 +66,7 @@ export default {
     },
     groups: {
       type: Array,
-      default: () => { },
+      default: () => {},
     },
     labelPosition: {
       type: String,
@@ -61,7 +74,7 @@ export default {
     },
     info: {
       type: Object,
-      default: () => { },
+      default: () => {},
     },
     pageType: {
       type: String,
@@ -148,7 +161,7 @@ export default {
           if (this.pageType === 'add') {
             this.loading = true
             res = await User.register(this.form).finally(() => {
-              this.loading = false;
+              this.loading = false
             })
             if (res.code < window.MAX_SUCCESS_CODE) {
               this.loading = false
@@ -169,7 +182,7 @@ export default {
             }
             this.loading = true
             res = await Admin.updateOneUser(this.id, this.form).finally(() => {
-              this.loading = false;
+              this.loading = false
             })
 
             if (res.code < window.MAX_SUCCESS_CODE) {
@@ -239,4 +252,5 @@ export default {
 //       display: flex;
 //     }
 //   }
-// }</style>
+// }
+</style>
