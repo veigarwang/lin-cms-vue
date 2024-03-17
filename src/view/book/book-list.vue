@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="container" v-if="!showEdit">
-      <div class="header">
-        <div class="title">图书列表</div>
-      </div>
+    <el-card shadow="never" v-if="!showEdit">
       <el-table :data="books" v-loading="loading">
         <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
         <el-table-column prop="title" label="书名"></el-table-column>
@@ -22,8 +19,7 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
-
+    </el-card>
     <book-modify v-else @editClose="editClose" :editBookId="editBookId"></book-modify>
   </div>
 </template>

@@ -25,7 +25,11 @@ module.exports = {
       },
     },
   },
-  devServer: {},
+  devServer: {
+    client: {
+      overlay: false
+    }
+  },
   // node_modules依赖项es6语法未转换问题
   transpileDependencies: ['vuex-persist'],
 }

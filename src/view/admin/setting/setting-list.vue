@@ -1,28 +1,23 @@
 <template>
   <div>
-    <div class="container" v-if="!showEdit">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">设置管理</div>
-        </div>
-        <div class="header-right">
-          <div style="margin-left: 30px">
-            <el-button
-              type="primary"
-              icon="Edit"
-              v-permission="'新增设置'"
-              @click="
-                () => {
-                  this.showEdit = true
-                  this.id = 0
-                }
-              "
-              >新增设置</el-button
-            >
-            <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
-          </div>
-        </div>
-      </div>
+    <el-card shadow="never" v-if="!showEdit">
+      <el-form ref="form" :model="query" :inline="true">
+        <el-form-item>
+          <el-button
+            type="primary"
+            icon="Edit"
+            v-permission="'新增设置'"
+            @click="
+              () => {
+                this.showEdit = true
+                this.id = 0
+              }
+            "
+            >新增设置</el-button
+          >
+          <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
+        </el-form-item>
+      </el-form>
 
       <lin-table
         :tableColumn="tableColumn"
@@ -43,7 +38,7 @@
           <div class="thumb" :style="'background-image: url(' + scope.row.thumbnail_display + ');'"></div>
         </template>
       </lin-table>
-    </div>
+    </el-card>
     <setting-form v-else :id="id" ref="settingForm" @editClose="editClose"></setting-form>
   </div>
 </template>

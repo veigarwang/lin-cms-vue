@@ -1,15 +1,11 @@
 <template>
-  <div class="container">
-    <div class="header">
-      <div class="header-left">
-        <div class="title">权限列表</div>
-      </div>
-      <div class="header-right">
-        <div style="margin-left: 30px">
-          <el-button @click="getTreePermissionsList" icon="Search"> 刷新 </el-button>
-        </div>
-      </div>
-    </div>
+  <el-card shadow="never" v-if="!showEdit">
+    <el-form ref="form" :model="query" :inline="true">
+      <el-form-item>
+        <el-button @click="getTreePermissionsList" icon="Search"> 刷新 </el-button>
+      </el-form-item>
+    </el-form>
+
     <el-table
       ref="multipleTable"
       v-loading="loading"
@@ -31,7 +27,7 @@
         </template>
       </el-table-column>
     </el-table>
-  </div>
+  </el-card>
 </template>
 
 <script>

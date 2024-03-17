@@ -1,6 +1,5 @@
 <template>
-  <div class="container">
-    <div class="title">分组列表信息</div>
+  <el-card shadow="never">
     <lin-table
       :tableColumn="tableColumn"
       :tableData="tableData"
@@ -50,7 +49,7 @@
         </div>
       </template>
     </el-dialog>
-  </div>
+  </el-card>
 </template>
 
 <script>

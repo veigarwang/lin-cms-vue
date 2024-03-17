@@ -1,5 +1,11 @@
 <template>
-  <el-dialog title="本地化资源" :append-to-body="true" :before-close="handleClose" v-model="dialogFormVisible">
+  <el-dialog
+    title="本地化资源"
+    :append-to-body="true"
+    :before-close="handleClose"
+    v-model="dialogFormVisible"
+    style="width: 500px"
+  >
     <el-form
       status-icon
       v-if="dialogFormVisible"
@@ -20,7 +26,7 @@
     <template #footer>
       <div class="dialog-footer" style="padding-left: 5px">
         <el-button type="primary" @click="confirmEdit('form')">确 定</el-button>
-        <el-button @click="resetForm('form')">重 置</el-button>
+        <el-button @click="handleClose()">关闭</el-button>
       </div>
     </template>
   </el-dialog>
@@ -78,7 +84,7 @@ export default {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           this.loading = true
-          const res = await this.submitForm().finally(() => {
+          await this.submitForm().finally(() => {
             this.loading = false
           })
           this.$message.success(`操作成功`)

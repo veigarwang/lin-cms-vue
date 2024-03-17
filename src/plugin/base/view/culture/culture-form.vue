@@ -1,19 +1,19 @@
 <template>
-  <div class="container">
+  <div>
     <sticky-top>
       <div class="title">
-        <span>{{ $route.params.id == undefined ? '新建本地化' : '编辑本地化' }}</span>
+        <span>{{ id == 0 ? '新建本地化' : '编辑本地化' }}</span>
         <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       </div>
     </sticky-top>
-    <div class="wrap">
+    <el-card shadow="never">
       <el-row>
         <el-col :lg="16" :md="20" :sm="24" :xs="24">
           <el-form
             status-icon
             :rules="rules"
-            :model="form"
             ref="form"
+            :model="form"
             label-position="right"
             label-width="100px"
             v-loading="formLoading"
@@ -33,7 +33,7 @@
       </el-row>
       <el-row>
         <el-col>
-          <div v-if="this.id != undefined">
+          <div v-if="this.id != 0">
             <div class="header">
               <div class="header-left">
                 <div class="title">
@@ -70,9 +70,8 @@
               @currentChange="handleCurrentChange"
             ></lin-table>
           </div>
-        </el-col>
-      </el-row>
-    </div>
+        </el-col> </el-row
+    ></el-card>
     <resource-dialog ref="dialogForm" @ok="getResources"></resource-dialog>
   </div>
 </template>
@@ -86,14 +85,15 @@ export default {
   components: { LinTable, ResourceDialog },
   data() {
     return {
+      id: 0,
       form: {
         id: 0,
         name: '',
         display_name: '',
       },
       rules: {
-        name: [{ trigger: ['blur', 'change'], required: true }],
-        display_name: [{ trigger: ['blur', 'change'], required: true }],
+        name: [{ trigger: ['blur'], required: true, message: '请输入名称' }],
+        display_name: [{ trigger: ['blur'], required: true, message: '请输入显示名称' }],
       },
       showEdit: false,
       editIndex: null,
@@ -111,8 +111,8 @@ export default {
       },
     }
   },
-  props: ['id'],
   async created() {
+    this.id = this.$route.params.id == '' ? 0 : this.$route.params.id
     await this.getCulture()
     this.tableColumn = [
       { prop: 'key', label: '编码' },
@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     async getCulture() {
-      if (this.id != undefined) {
+      if (this.id != 0) {
         this.pagination.culture_id = this.id
         this.form = await cultureApi.getCulture(this.id)
       }
@@ -136,8 +136,7 @@ export default {
         if (valid) {
           let res
           this.formLoading = true
-          if (this.id == undefined) {
-            console.log(this.form)
+          if (this.id == 0) {
             res = await cultureApi.addCulture(this.form).finally(() => {
               this.formLoading = false
             })
@@ -179,13 +178,11 @@ export default {
     async handleEdit(val) {
       this.$refs['dialogForm'].show(val.row)
     },
-    // 切换table页
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
       await this.getResources()
     },
     handleDelete(val) {
-      let res
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -207,26 +204,4 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/style/form.scss';
 @import '@/assets/style/list.scss';
-
-.container {
-  .title {
-    height: 59px;
-    line-height: 59px;
-    color: $parent-title-color;
-    font-size: 16px;
-    font-weight: 500;
-    text-indent: 40px;
-    border-bottom: 1px solid #dae1ec;
-  }
-
-  .wrap {
-    margin-top: 10px;
-    padding-left: 25px;
-    padding-right: 40px;
-  }
-
-  .submit {
-    float: right;
-  }
-}
 </style>

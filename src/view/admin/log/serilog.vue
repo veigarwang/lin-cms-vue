@@ -5,7 +5,7 @@
         <el-card style="width: 100%" class="margin-bottom-xs margin-top-xs" shadow="never">
           <el-form :inline="true" :model="pagination" class="search-form">
             <el-form-item label="请选择级别">
-              <el-select placeholder="请选择级别" v-model="pagination.logLevel" clearable>
+              <el-select placeholder="请选择级别" v-model="pagination.logLevel" clearable style="width: 200px">
                 <el-option :label="item.text" :value="item.level" v-bind:key="item.level" v-for="item in logLevels">
                 </el-option>
               </el-select>

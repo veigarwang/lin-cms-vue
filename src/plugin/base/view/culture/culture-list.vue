@@ -1,27 +1,22 @@
 <template>
   <div>
-    <div class="container">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">本地化语言</div>
-        </div>
-        <div class="header-right">
-          <div style="margin-left: 30px">
-            <el-button
-              type="primary"
-              icon="Edit"
-              v-permission="'新增本地化'"
-              @click="
-                () => {
-                  this.$router.push(`/base/culture/form`)
-                }
-              "
-              >新增本地化</el-button
-            >
-            <el-button type="default" @click="refresh" icon="Search"> 刷新 </el-button>
-          </div>
-        </div>
-      </div>
+    <el-card shadow="never">
+      <el-form ref="form" :model="query" :inline="true">
+        <el-form-item>
+          <el-button
+            type="primary"
+            icon="Edit"
+            v-permission="'新增本地化'"
+            @click="
+              () => {
+                this.$router.push(`/base/culture/form`)
+              }
+            "
+            >新增本地化</el-button
+          >
+          <el-button type="default" @click="refresh" icon="Search"> 刷新 </el-button>
+        </el-form-item>
+      </el-form>
       <lin-table
         :tableColumn="tableColumn"
         :tableData="tableData"
@@ -30,7 +25,7 @@
         @handleDelete="handleDelete"
         v-loading="loading"
       ></lin-table>
-    </div>
+    </el-card>
   </div>
 </template>
 
@@ -76,7 +71,7 @@ export default {
 
           this.$message({
             type: 'success',
-            message: `${res.message}`,
+            message: `删除成功`,
           })
         } else {
           this.loading = false
