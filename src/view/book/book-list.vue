@@ -57,6 +57,9 @@
         <template v-slot:title="scope">
           <span>{{ '《' + scope.row.title + '》' }}{{ scope.row.subtitle }}</span>
         </template>
+        <template v-slot:author="scope">
+          <span>{{ scope.row.author1 }} {{ scope.row.author_type_name1.replace('者','') }}</span><span v-show="scope.row.author2">{{ '，' + scope.row.author2 }} {{ scope.row.author_type_name2.replace('者','') }}</span><span v-show="scope.row.author3">{{ '，' + scope.row.author3 }} {{ scope.row.author_type_name3.replace('者','') }}</span>
+        </template>
         <template v-slot:date_purchased="scope">
           <span>{{ scope.row.date_purchased | filterTime }}</span>
         </template></lin-table
@@ -94,7 +97,13 @@ export default {
           scope: 'title',
           scopedSlots: { customRender: 'title' },
         },
-        { prop: 'author1', label: '作者', width: 175 },
+        {
+          prop: 'author1, author2, author3',
+          label: '作者',
+          scope: 'author',
+          scopedSlots: { customRender: 'author' },
+        },
+        //{ prop: 'author1', label: '作者', width: 175 },
         {
           prop: 'date_purchased',
           label: '购买日期',

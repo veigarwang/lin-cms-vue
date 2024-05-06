@@ -327,7 +327,7 @@ export default {
               if (res.code < window.MAX_SUCCESS_CODE) {
                 this.loading = false
                 this.$message.success(`${res.message}`)
-                this.$emit('editClose')
+                //this.$emit('editClose')
               }
             } catch (error) {
               this.loading = false

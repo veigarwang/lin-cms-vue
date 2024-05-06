@@ -107,6 +107,16 @@ export default {
       }
       this.dialogFormVisible = true
     },
+    showSubItem(typeId, count) {      
+      Object.assign(this.form, {
+        item_code: count,
+        item_name: '',
+        sort_code: count + 1,
+        base_type_id: typeId,
+        status: true,
+      })      
+      this.dialogFormVisible = true
+    },
     // 弹框 右上角 X
     handleClose() {
       this.dialogFormVisible = false

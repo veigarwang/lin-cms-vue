@@ -13,7 +13,7 @@
               v-permission="'新增字典类别'"
               @click="
                 () => {
-                  this.$refs['dialogForm'].show(0)
+                  this.$refs['dialogForm'].showType(this.tableData.length)
                 }
               "
               >新增类别</el-button
@@ -39,7 +39,7 @@
       </lin-table>
     </div>
     <!-- 编辑页面 -->
-    <type-item v-if="showForm" @editClose="editClose" :typeCode="typeCode"></type-item>
+    <type-item v-if="showForm" @editClose="editClose" :typeCode="typeCode" :typeName="typeName"></type-item>
     <!--表格结束-->
 
     <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
@@ -65,6 +65,7 @@ export default {
       loading: false,
       showForm: false,
       typeCode: 1,
+      typeName: null,
     }
   },
   methods: {
@@ -73,7 +74,6 @@ export default {
       let res
       try {
         this.loading = true
-
         res = await baseApi.getTypes({})
         // setTimeout(() => {
         this.loading = false
@@ -88,7 +88,8 @@ export default {
     },
     handleSubItem(val) {
       this.showForm = true
-      this.typeCode = val.row.type_code
+      this.typeCode = val.row.type_code      
+      this.typeName = val.row.full_name
     },
     editClose() {
       this.showForm = false

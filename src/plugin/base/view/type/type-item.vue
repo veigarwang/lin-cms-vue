@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header">
         <div class="header-left">
-          <div class="title">字典条目列表</div>
+          <div class="title">字典条目列表 - {{typeName}}</div>
         </div>
         <div class="header-right">
           <div style="margin-left: 30px">
@@ -13,7 +13,7 @@
               v-permission="'新增条目'"
               @click="
                 () => {
-                  this.$refs['dialogForm'].show()
+                  this.$refs['dialogForm'].showSubItem(this.tableData[0].base_type_id, this.tableData.length)
                 }
               "
               >新增条目</el-button
@@ -55,6 +55,10 @@ export default {
   inject: ['eventBus'],
   props: {
     typeCode: {
+      type: String,
+      default: null,
+    },
+    typeName: {
       type: String,
       default: null,
     },
