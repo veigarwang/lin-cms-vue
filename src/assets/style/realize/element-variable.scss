@@ -443,7 +443,7 @@ thead tr {
 }
 
 .is-active {
-  color: $app-main-background !important;
+  color: $app-main-background;
 
   &.el-menu-item .iconfont {
     color: $theme !important;

@@ -2,6 +2,33 @@
   <div style="padding: 8px">
     <el-card shadow="never">
       <el-form ref="form" :model="query" :inline="true">
+        <el-form-item label="用户名" prop="username">
+          <el-input
+            size="medium"
+            style="margin-right: 10px"
+            v-model="pagination.username"
+            placeholder="用户名"
+            clearable
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="昵称" prop="nickname">
+          <el-input
+            size="medium"
+            style="margin-right: 10px"
+            v-model="pagination.nickname"
+            placeholder="昵称"
+            clearable
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="邮件" prop="email">
+          <el-input
+            size="medium"
+            style="margin-right: 10px"
+            v-model="pagination.email"
+            placeholder="邮件"
+            clearable
+          ></el-input>
+        </el-form-item>
         <el-form-item label="分组" prop="typeCode">
           <el-select
             size="medium"
@@ -16,7 +43,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="default" icon="Search" @click="getAdminUsers">刷新</el-button>
+          <el-button type="default" icon="Search" @click="getAdminUsers">查询</el-button>
         </el-form-item>
       </el-form>
       <lin-table
@@ -25,7 +52,6 @@
         :operate="operate"
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
-        @row-click="rowClick"
         v-loading="loading"
         @currentChange="handleCurrentChange"
         @sizeChange="handleSizeChange"
@@ -45,7 +71,7 @@
             v-for="(item, index) in scope.row.groups"
             v-bind:key="index"
             type="primary"
-            >{{ item.name }}</el-tag
+            >{{ item.info }}</el-tag
           >
         </template>
       </lin-table>
@@ -109,6 +135,9 @@ export default {
         pageSize: 10,
         pageTotal: 0,
         currentPage: 1,
+        nickname: '',
+        username: '',
+        email: '',
       },
       form: {
         username: '',
@@ -127,10 +156,14 @@ export default {
       let res
       const currentPage = this.pagination.currentPage - 1
       this.loading = true
+      console.log(this.pagination.nickname)
       res = await Admin.getAdminUsers({
         count: this.pagination.pageSize,
         page: currentPage,
         group_id: this.group_id,
+        nickname: this.pagination.nickname,
+        username: this.pagination.username,
+        email: this.pagination.email,
       }).finally(() => {
         this.loading = false
       })
@@ -200,9 +233,6 @@ export default {
       } else {
         this.$refs.password.submitForm('form')
       }
-    },
-    rowClick(row) {
-      this.handleEdit(row)
     },
     handleClose() {
       this.dialogFormVisible = false

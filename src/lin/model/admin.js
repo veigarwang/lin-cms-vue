@@ -39,18 +39,30 @@ export default class Admin {
     return get('cms/admin/permission/tree-list')
   }
 
-  static async getAdminUsers({ group_id, count = this.uCount, page = this.uPage }) {
+  static async getAdminUsers({ group_id,
+    count = this.uCount,
+    page = this.uPage,
+    nickname,
+    username,
+    email
+  }) {
     let res
     if (group_id) {
       res = await get('cms/admin/users', {
         count,
         page,
         group_id,
+        nickname,
+        username,
+        email
       })
     } else {
       res = await get('cms/admin/users', {
         count,
         page,
+        nickname,
+        username,
+        email
       })
     }
     return res
