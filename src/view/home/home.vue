@@ -89,9 +89,9 @@ export default {
       //   _this.isCollapse = false
       // }
     }
-
+    this.$refs.operate.style.height = '45px'
     emitter.on('noReuse', () => {
-      this.$refs.operate.style.height = '74px'
+      this.$refs.operate.style.height = '75px'
     })
     emitter.on('hasReuse', () => {
       this.$refs.operate.style.height = '45px'

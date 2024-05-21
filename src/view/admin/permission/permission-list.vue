@@ -2,7 +2,7 @@
   <el-card shadow="never" v-if="!showEdit">
     <el-form ref="form" :model="query" :inline="true">
       <el-form-item>
-        <el-button @click="getTreePermissionsList" icon="Search"> 刷新 </el-button>
+        <el-button @click="getTreePermissionsList" icon="Search"> 查询 </el-button>
       </el-form-item>
     </el-form>
 

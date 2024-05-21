@@ -56,7 +56,7 @@
                   v-model="pagination.key"
                   placeholder="编码"
                 ></el-input>
-                <el-button type="default" @click="getResources" icon="Search">刷新</el-button>
+                <el-button type="default" @click="getResources" icon="Search">查询</el-button>
               </div>
             </div>
             <lin-table

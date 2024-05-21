@@ -15,7 +15,7 @@
             "
             >新增文档</el-button
           >
-          <el-button type="default" @click="refresh" icon="Search"> 刷新</el-button>
+          <el-button type="default" @click="refresh" icon="Search"> 查询</el-button>
         </el-form-item>
       </el-form>
       <lin-table

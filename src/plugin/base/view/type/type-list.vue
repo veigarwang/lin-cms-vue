@@ -3,7 +3,7 @@
     <el-card shadow="never">
       <el-form ref="form" :inline="true">
         <el-form-item>
-          <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
+          <el-button type="default" icon="Search" @click="refresh">查询</el-button>
           <el-button
             type="primary"
             icon="Edit"

@@ -15,7 +15,7 @@
             "
             >新增设置</el-button
           >
-          <el-button type="default" icon="Search" @click="refresh">刷新</el-button>
+          <el-button type="default" icon="Search" @click="refresh">查询</el-button>
         </el-form-item>
       </el-form>
 
