@@ -81,6 +81,14 @@ export default {
       default: 'add',
     },
   },
+  watch: {
+    info: {
+      handler() {
+        this.setInfo()
+      },
+      deep: true,
+    },
+  },
   data() {
     const checkUserName = (rule, value, callback) => {
       if (!value) {
@@ -169,17 +177,6 @@ export default {
               this.resetForm(formName)
             }
           } else {
-            // if (
-            //   this.form.email === this.info.email &&
-            //   this.form.group_ids.sort().toString() === this.info.group_ids.sort().toString()
-            // ) {
-            //   this.$emit('handleInfoResult', false)
-            //   return
-            // }
-            if (!this.form.group_ids.length) {
-              this.$message.error('至少选择一个分组')
-              return
-            }
             this.loading = true
             res = await Admin.updateOneUser(this.id, this.form).finally(() => {
               this.loading = false

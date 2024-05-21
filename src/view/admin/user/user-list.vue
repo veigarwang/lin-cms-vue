@@ -39,7 +39,7 @@
             clearable
             style="margin-right: 30px; width: 200px"
           >
-            <el-option v-for="(group, index) in groups" :key="index" :label="group.name" :value="group.id"></el-option>
+            <el-option v-for="(group, index) in groups" :key="index" :label="group.info" :value="group.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -176,7 +176,7 @@ export default {
         this.loading = false
       })
     },
-    async handleEdit(val) {
+    handleEdit(val) {
       this.editIndex = val.index
       let selectedData
 
@@ -188,6 +188,7 @@ export default {
       this.id = selectedData.id
       this.form = { ...selectedData }
       this.form.group_ids = selectedData.groups
+      console.log(this.form.email)
       this.dialogFormVisible = true
     },
 
