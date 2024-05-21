@@ -207,11 +207,7 @@ export default {
       this.form.nickname = this.info.nickname
       this.form.email = this.info.email
       this.form.active = this.info.active
-      const temp = []
-      this.info.group_ids.forEach(item => {
-        temp.push(item.id)
-      })
-      this.form.group_ids = temp
+      this.form.group_ids = this.info.group_ids
     },
   },
   created() {

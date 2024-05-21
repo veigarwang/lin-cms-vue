@@ -125,6 +125,11 @@ export default class Admin {
     return res
   }
 
+  static async getOneUser(id) {
+    const res = await get(`cms/admin/user/${id}`)
+    return res
+  }
+
   static async deleteOneUser(id) {
     const res = await _delete(`cms/admin/user/${id}`)
     return res

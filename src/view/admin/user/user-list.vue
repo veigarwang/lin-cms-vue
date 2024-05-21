@@ -75,38 +75,7 @@
           >
         </template>
       </lin-table>
-      <el-dialog
-        title="用户信息"
-        :append-to-body="true"
-        :before-close="handleClose"
-        v-model="dialogFormVisible"
-        close-on-click-modal
-      >
-        <el-tabs v-model="activeTab" @tab-click="handleClick">
-          <el-tab-pane label="修改信息" name="修改信息">
-            <user-info
-              ref="userInfo"
-              @handleInfoResult="handleInfoResult"
-              labelPosition="right"
-              pageType="edit"
-              :id="id"
-              :groups="groups"
-              :info="form"
-              :submit="false"
-              class="info"
-            />
-          </el-tab-pane>
-          <el-tab-pane label="修改密码" name="修改密码">
-            <user-password ref="password" @handlePasswordResult="handlePasswordResult" :id="id" class="password" />
-          </el-tab-pane>
-        </el-tabs>
-        <template #footer>
-          <div class="dialog-footer">
-            <el-button type="default" @click="handleClose">取消</el-button>
-            <el-button type="primary" @click="confirmEdit">确定</el-button>
-          </div>
-        </template>
-      </el-dialog>
+      <user-form-dialog ref="userFormDialog" :groups="groups"></user-form-dialog>
     </el-card>
   </div>
 </template>
@@ -114,23 +83,19 @@
 <script>
 import Admin from '@/lin/model/admin'
 import LinTable from '@/component/base/table/lin-table'
-import UserInfo from './user-info'
-import UserPassword from './user-password'
+
+import UserFormDialog from './user-form-dialog.vue'
 export default {
-  components: { LinTable, UserInfo, UserPassword },
+  components: { LinTable, UserFormDialog },
   data() {
-    window.th = this
     return {
       id: 0,
-      editIndex: null,
       tableData: [],
       tableColumn: [],
       operate: [],
       dialogFormVisible: false,
-      selectGroup: '',
       groups: [],
       group_id: undefined,
-      activeTab: '修改信息',
       pagination: {
         pageSize: 10,
         pageTotal: 0,
@@ -176,20 +141,9 @@ export default {
         this.loading = false
       })
     },
-    handleEdit(val) {
-      this.editIndex = val.index
-      let selectedData
-
-      if (val.index >= 0) {
-        selectedData = val.row
-      } else {
-        selectedData = val
-      }
-      this.id = selectedData.id
-      this.form = { ...selectedData }
-      this.form.group_ids = selectedData.groups
-      console.log(this.form.email)
-      this.dialogFormVisible = true
+    handleEdit(params) {
+      this.id = params.row.id
+      this.$refs.userFormDialog.show(this.id)
     },
 
     async handleChange() {
@@ -228,30 +182,6 @@ export default {
         }
       })
     },
-    confirmEdit() {
-      if (this.activeTab === '修改信息') {
-        this.$refs.userInfo.submitForm('form')
-      } else {
-        this.$refs.password.submitForm('form')
-      }
-    },
-    handleClose() {
-      this.dialogFormVisible = false
-    },
-    handleClick(tab) {
-      this.activeTab = tab.name
-    },
-    async handleInfoResult(flag) {
-      this.dialogFormVisible = false
-      if (flag === true) {
-        this.getAdminUsers()
-      }
-    },
-    handlePasswordResult(result) {
-      if (result === true) {
-        this.dialogFormVisible = false
-      }
-    },
     async addUser(flag) {
       if (flag === true) {
         if (this.pagination.pageTotal % this.pagination.pageSize === 0) {
@@ -289,8 +219,4 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/style/list.scss';
-
-.password {
-  margin-top: 20px;
-}
 </style>

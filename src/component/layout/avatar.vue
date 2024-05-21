@@ -80,14 +80,11 @@ export default {
                 message: '更新头像成功',
               })
               this.switchStatus()
-              // 触发重新获取用户信息
               return User.getInformation()
             }
             return Promise.reject(new Error('更新头像失败'))
           })
           .then(infoRes => {
-            // eslint-disable-line
-            // 尝试获取当前用户信息
             const user = infoRes
             this.setUserAndState(user)
           })

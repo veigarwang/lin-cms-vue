@@ -26,6 +26,12 @@
 <script>
 import Admin from '@/lin/model/admin'
 export default {
+  props: {
+    id: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
