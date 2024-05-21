@@ -1,19 +1,30 @@
 <template>
-  <el-dialog center title="裁剪" width="300px" :append-to-body="true" close-on-click-modal
-    :model-value="cropVisible" class="croppa-dialog">
-    <div style="text-align: center;">
+  <el-dialog
+    center
+    title="裁剪"
+    width="300px"
+    :append-to-body="true"
+    close-on-click-modal
+    :model-value="cropVisible"
+    class="croppa-dialog"
+  >
+    <div style="text-align: center">
       <div class="avatar-croppa-container">
-        <vue-picture-cropper :boxStyle="{
-          width: '100%',
-          height: '100%',
-          margin: 'auto',
-          backgroundColor: '#f8f8f8',
-        }" :img="originalImage" :options="{
-  viewMode: 1, // 限制裁剪框不超过画布的大小
-  aspectRatio: 1, // 头像使用长宽比为 1 裁剪
-}" />
+        <vue-picture-cropper
+          :boxStyle="{
+            width: '100%',
+            height: '100%',
+            margin: 'auto',
+            backgroundColor: '#f8f8f8',
+          }"
+          :img="originalImage"
+          :options="{
+            viewMode: 1, // 限制裁剪框不超过画布的大小
+            aspectRatio: 1, // 头像使用长宽比为 1 裁剪
+          }"
+        />
       </div>
-      <div style="margin-top: 1em;">通过鼠标滚轮调节头像大小</div>
+      <div style="margin-top: 1em">通过鼠标滚轮调节头像大小</div>
     </div>
 
     <template #footer>
@@ -59,7 +70,7 @@ export default {
           this.$message.error('头像上传失败, 请重试')
           return false
         }
-        return put('/cms/user', {
+        return put('/cms/user/avatar', {
           avatar: res[0].path,
         })
           .then(putRes => {
