@@ -6,8 +6,8 @@ name: Deploy To Server 💕
 on:
   push:
     branches:
-            - main
-            - vue-next
+      - main
+      - vue-next
   pull_request:
     branches: [main]
 
@@ -22,13 +22,11 @@ jobs:
           # if your docs needs submodules, uncomment the following line
           # submodules: true
 
-
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 7
           run_install: true
-
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -37,7 +35,7 @@ jobs:
           cache: pnpm
 
       - name: Install Deps
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build Docs
         env:
@@ -49,8 +47,8 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "--delete"
-          SOURCE: "dist/"
+          ARGS: '--delete'
+          SOURCE: 'dist/'
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USER }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
