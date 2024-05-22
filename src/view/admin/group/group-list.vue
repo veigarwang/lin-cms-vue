@@ -1,13 +1,38 @@
 <template>
   <el-card shadow="never">
+    <el-form ref="form" :model="query" :inline="true">
+      <el-form-item label="分组编码" prop="username">
+        <el-input
+          size="medium"
+          style="margin-right: 10px"
+          v-model="query.name"
+          placeholder="分组编码"
+          clearable
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="分组名称">
+        <el-input
+          size="medium"
+          style="margin-right: 10px"
+          v-model="query.info"
+          placeholder="分组名称"
+          clearable
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="default" icon="Search" @click="getGroups">查询</el-button>
+      </el-form-item>
+    </el-form>
     <lin-table
       :tableColumn="tableColumn"
       :tableData="tableData"
       :operate="operate"
+      :pagination="pagination"
+      @currentChange="handleCurrentChange"
+      @sizeChange="handleSizeChange"
       @handleEdit="handleEdit"
       @goToGroupEditPage="goToGroupEditPage"
       @handleDelete="handleDelete"
-      @row-click="rowClick"
       v-loading="loading"
     >
       <template v-slot:is_static="scope">
@@ -68,6 +93,15 @@ export default {
       operate: [],
       dialogFormVisible: false,
       labelPosition: 'right',
+      query: {
+        name: '',
+        info: '',
+      },
+      pagination: {
+        pageSize: 10,
+        pageTotal: 0,
+        currentPage: 1,
+      },
       form: {
         name: '',
         info: '',
@@ -82,11 +116,17 @@ export default {
     }
   },
   methods: {
-    async getAllGroups() {
+    async getGroups() {
       this.loading = true
-      this.tableData = await Admin.getAllGroups().finally(() => {
+      var res = await Admin.getGroups({
+        count: this.pagination.pageSize,
+        page: this.pagination.currentPage - 1,
+        ...this.query,
+      }).finally(() => {
         this.loading = false
       })
+      this.tableData = res.items
+      this.pagination.pageTotal = res.count
     },
     async confirmEdit() {
       if (this.form.name === '') {
@@ -96,7 +136,7 @@ export default {
       const res = await Admin.updateOneGroup(this.form, this.id)
       if (res.code < window.MAX_SUCCESS_CODE) {
         this.$message.success(`${res.message}`)
-        this.getAllGroups()
+        this.getGroups()
       }
       this.dialogFormVisible = false
     },
@@ -104,14 +144,8 @@ export default {
       this.$refs[formName].resetFields()
     },
     handleEdit(val) {
-      let selectedData
-      if (val.index >= 0) {
-        selectedData = val.row
-      } else {
-        selectedData = val
-      }
-      this.id = selectedData.id
-      this.form = { ...selectedData }
+      this.id = val.row.id
+      this.form = { ...val.row }
       this.dialogFormVisible = true
     },
     goToGroupEditPage(val) {
@@ -136,16 +170,13 @@ export default {
           this.loading = false
         })
         if (res.code < window.MAX_SUCCESS_CODE) {
-          await this.getAllGroups()
+          await this.getGroups()
           this.$message({
             type: 'success',
             message: `${res.message}`,
           })
         }
       })
-    },
-    rowClick(row) {
-      this.handleEdit(row)
     },
     handleClose() {
       this.dialogFormVisible = false
@@ -155,15 +186,15 @@ export default {
     },
     async addGroup(flag) {
       if (flag === true) {
-        await this.getAllGroups()
+        await this.getGroups()
       }
     },
   },
   async created() {
-    await this.getAllGroups()
+    await this.getGroups()
     this.tableColumn = [
-      { prop: 'name', label: '名称' },
-      { prop: 'info', label: '信息' },
+      { prop: 'name', label: '分组编码' },
+      { prop: 'info', label: '分组名称' },
       { prop: 'sort_code', label: '排序码' },
       { prop: 'is_static', label: '静态分组', scopedSlots: { customRender: 'is_static' } },
     ]

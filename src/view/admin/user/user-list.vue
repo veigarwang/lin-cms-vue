@@ -121,7 +121,6 @@ export default {
       let res
       const currentPage = this.pagination.currentPage - 1
       this.loading = true
-      console.log(this.pagination.nickname)
       res = await Admin.getAdminUsers({
         count: this.pagination.pageSize,
         page: currentPage,

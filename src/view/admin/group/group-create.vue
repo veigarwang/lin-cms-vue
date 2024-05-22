@@ -13,10 +13,10 @@
             label-width="100px"
             @submit.native.prevent
           >
-            <el-form-item label="分组名称" prop="name">
+            <el-form-item label="分组编码" prop="name">
               <el-input size="medium" clearable v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="分组描述" prop="info">
+            <el-form-item label="分组名称" prop="info">
               <el-input size="medium" clearable v-model="form.info"></el-input>
             </el-form-item>
             <el-form-item label="排序码" prop="sort_code">

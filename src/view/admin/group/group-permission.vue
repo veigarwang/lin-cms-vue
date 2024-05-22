@@ -33,127 +33,121 @@
   </div>
 </template>
 
-<script>
-import { onMounted, ref } from 'vue'
+<script setup>
+import { onMounted, ref, defineProps, emit } from 'vue'
 import AdminModel from '@/lin/model/admin'
-export default {
-  props: ['id', 'title'],
-  setup(props, ctx) {
-    const loading = ref(false)
-    const allPermissions = ref({})
-    const halfPermissions = ref([]) // 该分类下的权限没有全选中
-    const permissionModuleIds = ref([]) // 权限组 集合 id
-    const permissionModuleNames = ref([]) // 权限组 module name
-    const checkedPermissionNames = ref([])
-    /**
-     * 初始化权限
-     * 通过判断有没有传入id，来判断当前页面是添加分组还是编辑分组
-     */
-    const getGroupPermissions = async () => {
-      allPermissions.value = await AdminModel.getAllPermissions()
-      // 编辑分组权限
-      if (props.id) {
-        const res = await AdminModel.getOneGroup(props.id)
-        let temp = []
-        const cache = {}
-        res.permissions.forEach(v => {
-          permissionModuleIds.value.push(v.id)
-          checkedPermissionNames.value.push(v.name)
-          temp.push(v.module)
-          // 每个module拥有权限个数
-          if (!cache[v.module]) {
-            cache[v.module] = 1
-          } else {
-            cache[v.module]++
-          }
-        })
-        // 去重
-        temp = Array.from(new Set(temp))
-        // 半选
-        temp.forEach(item => {
-          if (allPermissions.value[item].length !== cache[item]) {
-            halfPermissions.value.push(item)
-          }
-        })
-        permissionModuleNames.value = Array.from(new Set(temp))
+
+const props = defineProps(['id', 'title'])
+
+const loading = ref(false)
+const allPermissions = ref({})
+const halfPermissions = ref([]) // 该分类下的权限没有全选中
+const permissionModuleIds = ref([]) // 权限组 集合 id
+const permissionModuleNames = ref([]) // 权限组 module name
+const checkedPermissionNames = ref([])
+
+/**
+ * 初始化权限
+ * 通过判断有没有传入id，来判断当前页面是添加分组还是编辑分组
+ */
+const getGroupPermissions = async () => {
+  allPermissions.value = await AdminModel.getAllPermissions()
+  // 编辑分组权限
+  if (props.id) {
+    const res = await AdminModel.getOneGroup(props.id)
+    let temp = []
+    const cache = {}
+    res.permissions.forEach(v => {
+      permissionModuleIds.value.push(v.id)
+      checkedPermissionNames.value.push(v.name)
+      temp.push(v.module)
+      // 每个module拥有权限个数
+      if (!cache[v.module]) {
+        cache[v.module] = 1
+      } else {
+        cache[v.module]++
       }
-      ctx.emit('getCacheAuthIds', permissionModuleIds.value.slice())
-      ctx.emit('updatePermissions', permissionModuleIds.value)
-      ctx.emit('updateAllPermissions', allPermissions.value)
-    }
-    onMounted(async () => {
-      loading.value = true
-      await getGroupPermissions().finally(() => {
-        loading.value = false
-      })
-      loading.value = false
     })
-    /**
-     * 权限批量选中（一个module）
-     */
-    const moduleCheck = (checked, ids, moduleName) => {
-      const _ids = ids.map(item => item.id)
-      const checkedNames = ids.map(item => item.name)
-      if (checked) {
-        permissionModuleIds.value = Array.from(new Set(permissionModuleIds.value.concat(_ids)))
-        checkedPermissionNames.value = Array.from(new Set(checkedPermissionNames.value.concat(checkedNames)))
-        if (!permissionModuleNames.value.includes(moduleName)) {
-          permissionModuleNames.value.push(moduleName)
-        }
-      } else {
-        permissionModuleIds.value = permissionModuleIds.value.filter(v => !_ids.includes(v))
-        checkedPermissionNames.value = checkedPermissionNames.value.filter(v => !checkedNames.includes(v))
-        permissionModuleNames.value = permissionModuleNames.value.filter(v => v !== moduleName)
+    // 去重
+    temp = Array.from(new Set(temp))
+    // 半选
+    temp.forEach(item => {
+      if (allPermissions.value[item].length !== cache[item]) {
+        halfPermissions.value.push(item)
       }
-      halfPermissions.value = halfPermissions.value.filter(v => v !== moduleName)
-      ctx.emit('updatePermissions', permissionModuleIds.value)
+    })
+    permissionModuleNames.value = Array.from(new Set(temp))
+  }
+  emit('getCacheAuthIds', permissionModuleIds.value.slice())
+  emit('updatePermissions', permissionModuleIds.value)
+  emit('updateAllPermissions', allPermissions.value)
+}
+
+onMounted(async () => {
+  try {
+    loading.value = true
+    await getGroupPermissions()
+    loading.value = false
+  } catch (e) {
+    loading.value = false
+    console.error(e)
+  }
+})
+
+/**
+ * 权限批量选中（一个module）
+ */
+const moduleCheck = (checked, ids, moduleName) => {
+  const _ids = ids.map(item => item.id)
+  const checkedNames = ids.map(item => item.name)
+  if (checked) {
+    permissionModuleIds.value = Array.from(new Set(permissionModuleIds.value.concat(_ids)))
+    checkedPermissionNames.value = Array.from(new Set(checkedPermissionNames.value.concat(checkedNames)))
+    if (!permissionModuleNames.value.includes(moduleName)) {
+      permissionModuleNames.value.push(moduleName)
     }
-    /**
-     * 单选某一权限
-     */
-    const singleCheck = (id, permission, moduleName) => {
-      const _ids = permission.map(item => item.id)
-      let count = 0
-      const index = permissionModuleIds.value.indexOf(id)
-      if (index === -1) {
-        permissionModuleIds.value.push(id)
-      } else {
-        permissionModuleIds.value.splice(index, 1)
-      }
-      _ids.forEach(item => {
-        if (permissionModuleIds.value.indexOf(item) > -1) {
-          count++
-        }
-        // 全选状态
-        if (_ids.length === count) {
-          permissionModuleNames.value.push(moduleName)
-          halfPermissions.value = halfPermissions.value.filter(v => v !== moduleName)
-        } else if (count === 0) {
-          // 未选中状态
-          permissionModuleNames.value = permissionModuleNames.value.filter(v => v !== moduleName)
-          halfPermissions.value = halfPermissions.value.filter(v => v !== moduleName)
-        } else {
-          // 半选状态
-          permissionModuleNames.value = permissionModuleNames.value.filter(v => v !== moduleName)
-          if (!halfPermissions.value.includes(moduleName)) {
-            halfPermissions.value.push(moduleName)
-          }
-        }
-      })
-      ctx.emit('updatePermissions', permissionModuleIds.value)
+  } else {
+    permissionModuleIds.value = permissionModuleIds.value.filter(v => !_ids.includes(v))
+    checkedPermissionNames.value = checkedPermissionNames.value.filter(v => !checkedNames.includes(v))
+    permissionModuleNames.value = permissionModuleNames.value.filter(v => v !== moduleName)
+  }
+  halfPermissions.value = halfPermissions.value.filter(v => v !== moduleName)
+  emit('updatePermissions', permissionModuleIds.value)
+}
+
+/**
+ * 单选某一权限
+ */
+const singleCheck = (id, permission, moduleName) => {
+  const _ids = permission.map(item => item.id)
+  let count = 0
+  const index = permissionModuleIds.value.indexOf(id)
+  if (index === -1) {
+    permissionModuleIds.value.push(id)
+  } else {
+    permissionModuleIds.value.splice(index, 1)
+  }
+  _ids.forEach(item => {
+    if (permissionModuleIds.value.indexOf(item) > -1) {
+      count++
     }
-    return {
-      loading,
-      moduleCheck,
-      singleCheck,
-      allPermissions,
-      halfPermissions,
-      getGroupPermissions,
-      permissionModuleIds,
-      permissionModuleNames,
-      checkedPermissionNames,
-    }
-  },
+    // 全选状态
+    // if (_ids.length === count) {
+    //   permissionModuleNames.value.push(moduleName)
+    //   halfPermissions.value = halfPermissions.value.filter(v => v !== moduleName)
+    // } else if (count === 0) {
+    //   // 未选中状态
+    //   permissionModuleNames.value = permissionModuleNames.value.filter(v => v !== moduleName)
+    //   halfPermissions.value = halfPermissions.value.filter(v => v !== moduleName)
+    // } else {
+    //   // 半选状态
+    //   permissionModuleNames.value = permissionModuleNames.value.filter(v => v !== moduleName)
+    //   if (!halfPermissions.value.includes(moduleName)) {
+    //     halfPermissions.value.push(moduleName)
+    //   }
+    // }
+  })
+  emit('updatePermissions', permissionModuleIds.value)
 }
 </script>
 

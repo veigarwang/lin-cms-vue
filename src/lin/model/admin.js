@@ -2,34 +2,6 @@
 import { post, get, put, _delete } from '@/lin/plugin/axios'
 
 export default class Admin {
-  constructor(uPage = 0, uCount = 10, gPage = 0, gCount = 5) {
-    this.uPage = uPage
-    this.uCount = uCount
-    this.lPage = gPage
-    this.gCount = gCount
-  }
-
-  async increaseUPage() {
-    this.uPage += 1
-  }
-
-  async increaseGPage() {
-    this.lPage += 1
-  }
-
-  async decreaseUPage() {
-    this.uPage -= 1
-    if (this.uPage < 0) {
-      this.uPage = 0
-    }
-  }
-
-  async decreaseGPage() {
-    this.lPage -= 1
-    if (this.lPage < 0) {
-      this.lPage = 0
-    }
-  }
 
   static getAllPermissions() {
     return get('cms/admin/permission')
@@ -46,42 +18,13 @@ export default class Admin {
     username,
     email
   }) {
-    let res
-    if (group_id) {
-      res = await get('cms/admin/users', {
-        count,
-        page,
-        group_id,
-        nickname,
-        username,
-        email
-      })
-    } else {
-      res = await get('cms/admin/users', {
-        count,
-        page,
-        nickname,
-        username,
-        email
-      })
-    }
-    return res
-  }
-
-  async nextUsersPage() {
-    await this.increaseUPage()
-    return this.getAdminUsers({})
-  }
-
-  async preUsersPage() {
-    await this.decreaseUPage()
-    return this.getAdminUsers({})
-  }
-
-  async getGroupsWithPermissions({ count = this.uCount, page = this.uPage }) {
-    const res = await get('cms/admin/groups', {
+    let res = await get('cms/admin/users', {
       count,
       page,
+      group_id,
+      nickname,
+      username,
+      email
     })
     return res
   }
@@ -96,8 +39,8 @@ export default class Admin {
     return this.getGroupsWithPermissions({})
   }
 
-  static async getAllGroups() {
-    const groups = await get('cms/admin/group/all')
+  static async getGroups(query) {
+    const groups = await get('cms/admin/group', query)
     return groups
   }
 

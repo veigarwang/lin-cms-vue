@@ -82,7 +82,6 @@ export default {
             this.$emit('handlePasswordResult', true)
           }
         } else {
-          console.log('error submit!!')
           this.$message.error('请填写正确的信息')
           this.$emit('handlePasswordResult', false)
           return false
