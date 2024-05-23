@@ -3,12 +3,8 @@ import { post, get, put, _delete } from '@/lin/plugin/axios'
 
 export default class Admin {
 
-  static getAllPermissions() {
-    return get('cms/admin/permission')
-  }
-
-  static getTreePermissionsList() {
-    return get('cms/admin/permission/tree-list')
+  static GetPermissionNodes() {
+    return get('cms/admin/permission/tree')
   }
 
   static async getAdminUsers({ group_id,

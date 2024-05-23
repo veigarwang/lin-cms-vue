@@ -24,15 +24,14 @@
             </el-form-item>
             <el-form-item>
               <group-permissions
-                @updatePermissions="updatePermissions"
                 @updateAllPermissions="updateAllPermissions"
-                ref="groupPermissions"
+                ref="groupPermissionRef"
                 title="分配权限"
               ></group-permissions>
             </el-form-item>
             <el-form-item class="submit">
               <el-button type="primary" :loading="loading" @click="submitForm('form')">保 存</el-button>
-              <el-button @click="resetForm('form')">重 置</el-button>
+              <el-button @click="goBack()">返回</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -72,8 +71,8 @@ export default {
     }
   },
   methods: {
-    updatePermissions(permissions) {
-      this.permissions = permissions
+    goBack() {
+      this.$router.push('/admin/group/list')
     },
     updateAllPermissions(allPermissions) {
       this.allPermissions = allPermissions
@@ -82,7 +81,7 @@ export default {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           let res
-          const finalPermissions = this.permissions.filter(x => Object.keys(this.allPermissions).indexOf(x) < 0)
+          const finalPermissions = this.$refs.groupPermissionRef.getCheckedKeys()
           this.loading = true
           res = await Admin.createOneGroup(this.form.name, this.form.info, finalPermissions, this.id).finally(() => {
             this.loading = false
@@ -104,7 +103,7 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
-      this.$refs.groupPermissions.getGroupPermissions()
+      this.$refs.groupPermissionRef.getGroupPermissions()
     },
   },
 }

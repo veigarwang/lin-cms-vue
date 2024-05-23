@@ -9,7 +9,7 @@
     <el-table
       ref="multipleTable"
       v-loading="loading"
-      row-key="rowkey"
+      row-key="id"
       size="medium"
       highlight-current-row
       :border="true"
@@ -32,7 +32,6 @@
 
 <script>
 import Admin from '@/lin/model/admin'
-import { Search } from 'element-plus'
 export default {
   name: 'PermissionList',
   components: {},
@@ -43,12 +42,12 @@ export default {
     }
   },
   async created() {
-    await this.getTreePermissionsList()
+    await this.getPermissionNodes()
   },
   methods: {
-    async getTreePermissionsList() {
+    async getPermissionNodes() {
       this.loading = true
-      const res = await Admin.getTreePermissionsList().finally(() => {
+      const res = await Admin.GetPermissionNodes().finally(() => {
         this.loading = false
       })
       this.tableData = res
