@@ -14,7 +14,7 @@
             </group-permissions>
           </div>
           <div style="padding-left: 5px; margin-top: 30px; text-align: right">
-            <el-button type="primary" @click="confirmEdit">确 定</el-button>
+            <el-button type="primary" @click="confirmEdit" :loading="loading">确 定</el-button>
             <el-button @click="goBack">返回</el-button>
           </div>
         </el-col>
@@ -35,12 +35,15 @@ const $route = useRoute()
 let permissions = ref([])
 let cachePermissions = ref([])
 
+const loading = ref(false)
+
 onMounted(async () => {})
 
 const groupPermissionRef = ref()
 const confirmEdit = async () => {
   let addRes = 0
   let delRes = 0
+  loading.value = true
   permissions.value = groupPermissionRef.value.getCheckedKeys()
   if (permissions.value.toString() !== cachePermissions.value.toString()) {
     const deletePermissions = cachePermissions.value
@@ -56,8 +59,10 @@ const confirmEdit = async () => {
     if (deletePermissions.length > 0) {
       delRes = await Admin.removePermissions($route.query.id, deletePermissions)
     }
+    loading.value = false
     groupPermissionRef.value.getGroupPermissions()
     ElMessage.success('权限修改成功')
+    router.push('/admin/group/list')
   }
 }
 

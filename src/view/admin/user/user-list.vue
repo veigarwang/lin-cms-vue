@@ -212,8 +212,8 @@ export default {
       },
     ]
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary' },
-      { name: '删除', func: 'handleDelete', type: 'danger' },
+      { name: '编辑', func: 'handleEdit', type: 'primary', permission: ['管理员更新用户信息', '修改用户密码'] },
+      { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除用户' },
     ]
   },
   beforeDestroy() {},

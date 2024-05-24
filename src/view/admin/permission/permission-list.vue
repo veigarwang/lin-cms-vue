@@ -29,8 +29,8 @@
       </el-table-column>
       <el-table-column prop="id" label="操作" width="200">
         <template #default="scope">
-          <el-button size="small" type="text" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button size="small" type="text" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button size="small" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="small" type="danger" plain @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

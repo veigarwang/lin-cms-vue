@@ -130,9 +130,9 @@ export default {
       { prop: 'is_static', label: '静态分组', scopedSlots: { customRender: 'is_static' } },
     ]
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary' },
-      { name: '权限', func: 'goToGroupEditPage', type: 'info' },
-      { name: '删除', func: 'handleDelete', type: 'danger' },
+      { name: '权限', func: 'goToGroupEditPage', type: 'default', permission: '分配权限' },
+      { name: '编辑', func: 'handleEdit', type: 'primary', permission: '更新权限组' },
+      { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除权限组' },
     ]
   },
 }
