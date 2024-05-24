@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card shadow="never" v-if="!showEdit">
+    <el-card shadow="never">
       <el-form ref="form" :model="query" :inline="true">
         <el-form-item>
           <el-button
@@ -9,8 +9,7 @@
             v-permission="'新增设置'"
             @click="
               () => {
-                this.showEdit = true
-                this.id = 0
+                this.$refs.settingFormDialog.handleEdit(0)
               }
             "
             >新增设置</el-button
@@ -39,23 +38,19 @@
         </template>
       </lin-table>
     </el-card>
-    <setting-form v-else :id="id" ref="settingForm" @editClose="editClose"></setting-form>
-    <setting-form-dialog @editClose="editClose"></setting-form-dialog>
+    <setting-form-dialog ref="settingFormDialog" @on-save="refresh"></setting-form-dialog>
   </div>
 </template>
 
 <script>
 import settingApi from '@/lin/model/setting'
 import LinTable from '@/component/base/table/lin-table'
-import SettingForm from './setting-form'
 import SettingFormDialog from './setting-form-dialog.vue'
 export default {
   name: 'SettingList',
-  components: { LinTable, SettingForm, SettingFormDialog },
+  components: { LinTable, SettingFormDialog },
   data() {
     return {
-      id: 0,
-      showEdit: false,
       tableData: [],
       tableColumn: [],
       operate: [],
@@ -83,8 +78,7 @@ export default {
       this.pagination.pageTotal = res.count
     },
     async handleEdit(val) {
-      this.showEdit = true
-      this.id = val.row.id
+      this.$refs.settingFormDialog.handleEdit(val.row.id)
     },
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
