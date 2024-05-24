@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     title="用户信息"
+    :width="520"
     :append-to-body="true"
     :before-close="handleClose"
     v-model="dialogFormVisible"

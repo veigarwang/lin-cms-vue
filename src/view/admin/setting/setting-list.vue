@@ -40,6 +40,7 @@
       </lin-table>
     </el-card>
     <setting-form v-else :id="id" ref="settingForm" @editClose="editClose"></setting-form>
+    <setting-form-dialog @editClose="editClose"></setting-form-dialog>
   </div>
 </template>
 
@@ -47,10 +48,10 @@
 import settingApi from '@/lin/model/setting'
 import LinTable from '@/component/base/table/lin-table'
 import SettingForm from './setting-form'
-
+import SettingFormDialog from './setting-form-dialog.vue'
 export default {
   name: 'SettingList',
-  components: { LinTable, SettingForm },
+  components: { LinTable, SettingForm, SettingFormDialog },
   data() {
     return {
       id: 0,

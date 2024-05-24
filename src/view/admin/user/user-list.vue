@@ -134,11 +134,15 @@ export default {
       this.tableData = res.items
       this.pagination.pageTotal = res.count
     },
-    async getAllGroups() {
+    async getGroups() {
       this.loading = true
-      this.groups = await Admin.getAllGroups().finally(() => {
+      var { items } = await Admin.getGroups({
+        page: 0,
+        count: 100,
+      }).finally(() => {
         this.loading = false
       })
+      this.groups = items
     },
     handleEdit(params) {
       this.id = params.row.id
@@ -192,7 +196,7 @@ export default {
   },
   async created() {
     await this.getAdminUsers()
-    this.getAllGroups()
+    this.getGroups()
     this.tableColumn = [
       { prop: 'username', label: '用户名', width: 200 },
       { prop: 'nickname', label: '昵称', width: 200 },

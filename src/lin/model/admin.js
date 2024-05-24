@@ -102,4 +102,17 @@ export default class Admin {
     })
     return res
   }
+
+  static async deletePermissionNode(permissionId){
+    return await _delete(`cms/admin/permission/${permissionId}`)
+  }
+
+  static async createPermissionNode(data){
+    return await post('cms/admin/permission', data)
+  }
+
+  static async updatePermissionNode(permissionId, data){
+    return await put(`cms/admin/permission/${permissionId}`, data)
+  }
+
 }

@@ -39,60 +39,24 @@
         <el-switch v-model="scope.row.is_static" disabled active-text inactive-text></el-switch>
       </template>
     </lin-table>
-    <el-dialog
-      title="分组信息"
-      :append-to-body="true"
-      v-model="dialogFormVisible"
-      :before-close="handleClose"
-      close-on-click-modal
-      class="groupListInfoDialog"
-    >
-      <el-form
-        status-icon
-        v-if="dialogFormVisible"
-        ref="form"
-        label-width="120px"
-        :model="form"
-        label-position="labelPosition"
-        :rules="rules"
-        style="margin-left: -35px; margin-bottom: -35px; margin-top: 15px"
-      >
-        <el-form-item label="分组名称" prop="name">
-          <el-input size="medium" clearable v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="分组描述" prop="info">
-          <el-input size="medium" clearable v-model="form.info"></el-input>
-        </el-form-item>
-        <el-form-item label="排序码" prop="sort_code">
-          <el-input size="medium" type="number" clearable v-model="form.sort_code"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="default" @click="handleClose">取 消</el-button>
-          <el-button type="primary" @click="confirmEdit">确 定</el-button>
-        </div>
-      </template>
-    </el-dialog>
+    <group-form-dialog @on-save="getGroups" ref="groupFormDialog"></group-form-dialog>
   </el-card>
 </template>
 
 <script>
 import Admin from '@/lin/model/admin'
 import LinTable from '@/component/base/table/lin-table'
-
+import GroupFormDialog from './group-form-dialog'
 export default {
   components: {
     LinTable,
+    GroupFormDialog,
   },
   data() {
     return {
-      id: 0,
       tableData: [],
       tableColumn: [],
       operate: [],
-      dialogFormVisible: false,
-      labelPosition: 'right',
       query: {
         name: '',
         info: '',
@@ -102,17 +66,7 @@ export default {
         pageTotal: 0,
         currentPage: 1,
       },
-      form: {
-        name: '',
-        info: '',
-        sort_code: 0,
-      },
       loading: false,
-      activeTab: '修改信息',
-      rules: {
-        name: [{ required: true, message: '请输入分组名称', trigger: 'blur' }],
-        info: [],
-      },
     }
   },
   methods: {
@@ -128,26 +82,7 @@ export default {
       this.tableData = res.items
       this.pagination.pageTotal = res.count
     },
-    async confirmEdit() {
-      if (this.form.name === '') {
-        this.$message.warning('请将信息填写完整')
-        return
-      }
-      const res = await Admin.updateOneGroup(this.form, this.id)
-      if (res.code < window.MAX_SUCCESS_CODE) {
-        this.$message.success(`${res.message}`)
-        this.getGroups()
-      }
-      this.dialogFormVisible = false
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    handleEdit(val) {
-      this.id = val.row.id
-      this.form = { ...val.row }
-      this.dialogFormVisible = true
-    },
+
     goToGroupEditPage(val) {
       let selectedData
       if (val.index >= 0) {
@@ -155,7 +90,6 @@ export default {
       } else {
         selectedData = val
       }
-      this.id = selectedData.id
       this.$router.push({ path: '/admin/group/edit', query: { id: selectedData.id } })
     },
     handleDelete(val) {
@@ -178,16 +112,13 @@ export default {
         }
       })
     },
-    handleClose() {
-      this.dialogFormVisible = false
-    },
-    handleClick(tab) {
-      this.activeTab = tab.name
-    },
     async addGroup(flag) {
       if (flag === true) {
         await this.getGroups()
       }
+    },
+    handleEdit(val) {
+      this.$refs.groupFormDialog.handleEdit(val)
     },
   },
   async created() {

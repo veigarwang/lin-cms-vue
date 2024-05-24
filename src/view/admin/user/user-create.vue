@@ -20,7 +20,7 @@ export default {
   },
   async created() {
     this.loading = true
-    this.groups = await Admin.getAllGroups().finally(() => {
+    this.groups = await Admin.getGroups().finally(() => {
       this.loading = false
     })
   },
