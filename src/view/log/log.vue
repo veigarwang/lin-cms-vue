@@ -16,7 +16,7 @@
                 <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
                 <el-dropdown-item
                   icon="el-icon-user-solid"
-                  v-for="(user, index) in users.items"
+                  v-for="(user, index) in users"
                   :key="index"
                   :command="[user]"
                   >{{ user }}
@@ -45,6 +45,8 @@
           <span class="point-time"></span>
           <aside>
             <p class="things" v-html="log.message"></p>
+            <p class="things" v-html="log.authority"></p>
+            <p class="things">{{ log.method }}-{{ log.status_code }}</p>
             <p class="brief">
               <span class="text-yellow">{{ log.username }}</span> {{ $filters.dateTimeFormatter(log.time) }}
             </p>

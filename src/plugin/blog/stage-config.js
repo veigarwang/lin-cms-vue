@@ -15,6 +15,7 @@ const blogRouter = {
       name: "ClassifyList",
       route: "/cms/classify/list",
       filePath: "plugin/blog/view/classify/classify-list.vue",
+      icon: 'iconfont icon-shangpinguanli',
       inNav: true,
       permission: ["分类专栏列表"]
     },
@@ -24,6 +25,7 @@ const blogRouter = {
       type: "view",
       name: "ChannelList",
       route: "/cms/channel/list",
+      icon: 'iconfont icon-tianjia',
       filePath: "plugin/blog/view/channel/channel-list.vue",
       inNav: true,
       permission: ["技术频道列表"]
@@ -34,6 +36,7 @@ const blogRouter = {
       type: "view",
       name: "TagList",
       route: "/cms/tag/list",
+      icon: 'iconfont icon-shangpinguanli',
       filePath: "plugin/blog/view/tag/tag-list.vue",
       inNav: true,
       permission: ["所有标签"]
@@ -44,6 +47,7 @@ const blogRouter = {
       type: "view",
       name: "ArticleList",
       route: "/cms/article/list",
+      icon: 'iconfont icon-iconset0103',
       filePath: "plugin/blog/view/article/article-list.vue",
       inNav: true,
       permission: ['所有随笔']
@@ -53,6 +57,7 @@ const blogRouter = {
       title: "评论管理",
       type: "view",
       route: "/comment/list",
+      icon: 'iconfont icon-tuichu',
       filePath: "plugin/blog/view/comment/comment-list.vue",
       inNav: true,
       permission: ["评论列表"]

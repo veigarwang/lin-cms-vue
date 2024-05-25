@@ -13,6 +13,7 @@ const baseRouter = {
       type: "view",
       name: "ItemList",
       route: "/base/item",
+      icon: 'iconfont icon-tuichu',
       filePath: "plugin/base/view/item/item-list.vue",
       inNav: true
     },
@@ -21,6 +22,7 @@ const baseRouter = {
       title: "字典类别管理",
       type: "view",
       name: "TypeList",
+      icon: 'iconfont icon-top',
       route: "/base/type",
       filePath: "plugin/base/view/type/type-list.vue",
       inNav: true
@@ -30,6 +32,7 @@ const baseRouter = {
       title: "本地化语言",
       type: 'tab',
       inNav: true,
+      icon: 'iconfont icon-kecheng',
       children: [{
         title: '本地化语言',
         type: 'view',
