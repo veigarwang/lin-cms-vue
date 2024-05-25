@@ -100,7 +100,7 @@ export default {
         type: 'warning',
       }).then(async () => {
         this.loading = true
-        res = await Admin.deleteOneGroup(val.row.id).finally(() => {
+        res = await Admin.deleteGroup(val.row.id).finally(() => {
           this.loading = false
         })
         if (res.code < window.MAX_SUCCESS_CODE) {

@@ -10,41 +10,20 @@ const adminRouter = {
   permission: ['超级管理员独有权限'],
   children: [
     {
-      route: '/admin/user',
-      name: null,
       title: '用户管理',
-      type: 'folder', // 取 route 为默认加载页
-      icon: 'iconfont icon-huiyuanguanli',
-      filePath: 'view/admin/user/',
+      type: 'view',
+      name: 'userList',
+      route: '/admin/user/list',
+      filePath: 'view/admin/user/user-list.vue',
       inNav: true,
-      children: [
-        {
-          title: '用户列表',
-          type: 'view',
-          name: 'userList',
-          route: '/admin/user/list',
-          filePath: 'view/admin/user/user-list.vue',
-          inNav: true,
-          icon: 'iconfont icon-huiyuanguanli',
-          permission: ['超级管理员独有权限'],
-        },
-        {
-          title: '添加用户',
-          type: 'view',
-          inNav: true,
-          route: '/admin/user/add',
-          icon: 'iconfont icon-add',
-          name: 'UserCreate',
-          filePath: 'view/admin/user/user-create.vue',
-          permission: ['超级管理员独有权限'],
-        },
-      ],
+      icon: 'iconfont icon-huiyuanguanli',
+      permission: ['查询所有用户'],
     },
     {
       route: '/admin/group/list',
       name: null,
       title: '分组管理',
-      type: 'tab', // 取 route 为默认加载页
+      type: 'tab',
       icon: 'iconfont icon-yunyingguanli_fuwufenzuguanli',
       filePath: 'view/admin/group',
       inNav: true,

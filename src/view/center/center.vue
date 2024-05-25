@@ -239,10 +239,6 @@ export default {
               window.location.href = origin
             }, 1000)
           }
-        } else {
-          console.log('error submit!!')
-          this.$message.error('请填写正确的信息')
-          return false
         }
       })
     },

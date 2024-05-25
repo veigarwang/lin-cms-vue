@@ -15,10 +15,6 @@
       <el-form-item label="确认密码" prop="confirm_password" label-position="top">
         <el-input size="medium" clearable type="password" v-model="form.confirm_password" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item v-show="false">
-        <el-button type="primary" @click="submitForm('form')">保存</el-button>
-        <el-button @click="resetForm('form')">取消</el-button>
-      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -71,8 +67,10 @@ export default {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           this.loading = true
+          this.$emit('on-loading', true)
           let res = await Admin.changePassword(this.form.new_password, this.form.confirm_password, this.id).finally(
             () => {
+              this.$emit('on-loading', false)
               this.loading = false
             },
           )
@@ -81,10 +79,6 @@ export default {
             this.resetForm(formName)
             this.$emit('handlePasswordResult', true)
           }
-        } else {
-          this.$message.error('请填写正确的信息')
-          this.$emit('handlePasswordResult', false)
-          return false
         }
       })
     },

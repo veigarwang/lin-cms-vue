@@ -8,27 +8,32 @@
     close-on-click-modal
   >
     <el-tabs v-model="activeTab" @tab-click="handleClick">
-      <el-tab-pane label="修改信息" name="修改信息">
+      <el-tab-pane :label="title" name="修改信息">
         <user-info
           ref="userInfo"
           @handleInfoResult="handleInfoResult"
-          labelPosition="right"
-          pageType="edit"
+          @on-loading="onLoading"
+          :pageType="pageType"
           :id="form.id"
           :groups="groups"
           :info="form"
-          :submit="false"
           class="info"
         />
       </el-tab-pane>
-      <el-tab-pane label="修改密码" name="修改密码">
-        <user-password ref="password" @handlePasswordResult="handlePasswordResult" :id="form.id" class="password" />
+      <el-tab-pane label="修改密码" name="修改密码" v-if="pageType == 'edit'">
+        <user-password
+          ref="password"
+          @on-loading="onLoading"
+          @handlePasswordResult="handlePasswordResult"
+          :id="form.id"
+          class="password"
+        />
       </el-tab-pane>
     </el-tabs>
     <template #footer>
       <div class="dialog-footer">
         <el-button type="default" @click="handleClose">取消</el-button>
-        <el-button type="primary" @click="confirmEdit">确定</el-button>
+        <el-button type="primary" @click="confirmEdit" :loading="loading">确定</el-button>
       </div>
     </template>
   </el-dialog>
@@ -48,6 +53,8 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      pageType: 'edit',
       selectGroup: '',
       activeTab: '修改信息',
       dialogFormVisible: false,
@@ -63,14 +70,24 @@ export default {
       },
     }
   },
+  computed: {
+    title() {
+      return this.pageType === 'add' ? '新增用户' : '修改用户'
+    },
+  },
   methods: {
-    show(id) {
+    showDialog(id) {
+      if (id == 0) {
+        this.pageType = 'add'
+      } else {
+        this.pageType = 'edit'
+      }
       this.dialogFormVisible = true
       this.form.id = id
       this.getUser()
     },
     async getUser() {
-      var user = await Admin.getOneUser(this.form.id)
+      var user = await Admin.getUser(this.form.id)
       Object.assign(this.form, user)
       this.form.group_ids = user.groups.map(item => item.id)
     },
@@ -79,6 +96,9 @@ export default {
     },
     handleClick(tab) {
       this.activeTab = tab.name
+    },
+    onLoading(flag) {
+      this.loading = flag
     },
     async handleInfoResult(flag) {
       this.dialogFormVisible = false

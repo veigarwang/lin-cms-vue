@@ -61,7 +61,7 @@ export default {
         if (!valid) {
           return
         }
-        const res = await Admin.updateOneGroup(this.form, this.id)
+        const res = await Admin.updateGroup(this.form, this.id)
         this.$message.success(`${res.message}`)
         this.$emit('on-save', res.group)
         this.dialogFormVisible = false

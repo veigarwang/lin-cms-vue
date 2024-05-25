@@ -43,7 +43,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="default" icon="Search" @click="getAdminUsers">查询</el-button>
+          <el-button type="default" icon="Search" @click="getUsers">查询</el-button>
+          <el-button type="primary" icon="Edit" @click="handleAdd">新增</el-button>
         </el-form-item>
       </el-form>
       <lin-table
@@ -75,7 +76,7 @@
           >
         </template>
       </lin-table>
-      <user-form-dialog ref="userFormDialog" :groups="groups"></user-form-dialog>
+      <user-form-dialog ref="userFormDialog" :groups="groups" @handleEditResult="getUsers"></user-form-dialog>
     </el-card>
   </div>
 </template>
@@ -83,13 +84,11 @@
 <script>
 import Admin from '@/lin/model/admin'
 import LinTable from '@/component/base/table/lin-table'
-
 import UserFormDialog from './user-form-dialog.vue'
 export default {
   components: { LinTable, UserFormDialog },
   data() {
     return {
-      id: 0,
       tableData: [],
       tableColumn: [],
       operate: [],
@@ -104,24 +103,15 @@ export default {
         username: '',
         email: '',
       },
-      form: {
-        username: '',
-        nickname: '',
-        password: '',
-        confirm_password: '',
-        email: '',
-        group_ids: [],
-        active: 1,
-      },
       loading: false,
     }
   },
   methods: {
-    async getAdminUsers() {
+    async getUsers() {
       let res
       const currentPage = this.pagination.currentPage - 1
       this.loading = true
-      res = await Admin.getAdminUsers({
+      res = await Admin.getUsers({
         count: this.pagination.pageSize,
         page: currentPage,
         group_id: this.group_id,
@@ -144,23 +134,25 @@ export default {
       })
       this.groups = items
     },
+    handleAdd() {
+      this.$refs.userFormDialog.showDialog(0)
+    },
     handleEdit(params) {
-      this.id = params.row.id
-      this.$refs.userFormDialog.show(this.id)
+      this.$refs.userFormDialog.showDialog(params.row.id)
     },
 
     async handleChange() {
       this.pagination.currentPage = 1
-      await this.getAdminUsers()
+      await this.getUsers()
     },
 
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
-      await this.getAdminUsers('changePage')
+      await this.getUsers('changePage')
     },
     async handleSizeChange(pageSize) {
       this.pagination.pageSize = pageSize
-      await this.getAdminUsers('changePage')
+      await this.getUsers('changePage')
     },
     handleDelete(val) {
       let res
@@ -170,14 +162,14 @@ export default {
         type: 'warning',
       }).then(async () => {
         this.loading = true
-        res = await Admin.deleteOneUser(val.row.id).finally(() => {
+        res = await Admin.deleteUser(val.row.id).finally(() => {
           this.loading = false
         })
         if (res.code < window.MAX_SUCCESS_CODE) {
           if (this.total_nums % this.pageCount === 1 && this.currentPage !== 1) {
             this.currentPage--
           }
-          await this.getAdminUsers()
+          await this.getUsers()
           this.$message({
             type: 'success',
             message: `${res.message}`,
@@ -185,17 +177,9 @@ export default {
         }
       })
     },
-    async addUser(flag) {
-      if (flag === true) {
-        if (this.pagination.pageTotal % this.pagination.pageSize === 0) {
-          this.pagination.currentPage++
-        }
-        await this.getAdminUsers()
-      }
-    },
   },
   async created() {
-    await this.getAdminUsers()
+    await this.getUsers()
     this.getGroups()
     this.tableColumn = [
       { prop: 'username', label: '用户名', width: 200 },

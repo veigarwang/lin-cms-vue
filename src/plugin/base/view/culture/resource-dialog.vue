@@ -90,8 +90,6 @@ export default {
           this.$message.success(`操作成功`)
           this.dialogFormVisible = false
           this.$emit('ok')
-        } else {
-          this.$message.error('请填写正确的信息')
         }
       })
     },

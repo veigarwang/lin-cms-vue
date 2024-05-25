@@ -75,9 +75,7 @@ export default {
           this.dialogFormVisible = false
           this.$message.success(`${res.message}`)
           this.$emit('ok')
-        } else {
-          this.$message.error('请填写正确的信息')
-        }
+        } 
       })
     },
     handleClose() {

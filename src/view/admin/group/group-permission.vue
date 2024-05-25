@@ -39,7 +39,7 @@ const checkedPermissions = ref([])
 
 const getGroupPermissions = async () => {
   if (props.id) {
-    const res = await Admin.getOneGroup(props.id)
+    const res = await Admin.getGroup(props.id)
     checkedPermissions.value = res.permissions.map(permission => permission.id)
     tree.value.setCheckedKeys(checkedPermissions.value)
     emit('getCacheAuthIds', checkedPermissions.value)

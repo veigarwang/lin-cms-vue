@@ -4,7 +4,7 @@
       :model="form"
       status-icon
       :rules="rules"
-      :label-position="labelPosition"
+      label-position="right"
       ref="form"
       label-width="100px"
       @submit.native.prevent
@@ -35,16 +35,10 @@
       <el-form-item v-if="pageType === 'add'" label="确认密码" prop="confirm_password" label-position="top">
         <el-input size="medium" clearable type="password" v-model="form.confirm_password" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item v-if="pageType !== 'password'" label="选择分组">
-        <el-checkbox-group v-model="form.group_ids" size="small" style="transform: translateY(5px)">
-          <el-checkbox v-for="item in groups" :key="item.id" :label="item.id" border style="margin-left: 0">{{
-            item.info
-          }}</el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item v-show="submit" class="submit">
-        <el-button type="primary" :loading="loading" @click="submitForm('form')">保 存</el-button>
-        <el-button @click="goBack">返回</el-button>
+      <el-form-item label="选择分组">
+        <el-select v-model="form.group_ids" multiple placeholder="Select" style="width: 100%">
+          <el-option v-for="item in groups" :key="item.id" :label="item.info" :value="item.id" />
+        </el-select>
       </el-form-item>
     </el-form>
   </div>
@@ -52,14 +46,9 @@
 
 <script>
 import Admin from '@/lin/model/admin'
-import User from '@/lin/model/user'
 
 export default {
   props: {
-    submit: {
-      type: Boolean,
-      default: true,
-    },
     id: {
       type: Number,
       default: undefined,
@@ -67,10 +56,6 @@ export default {
     groups: {
       type: Array,
       default: () => {},
-    },
-    labelPosition: {
-      type: String,
-      default: 'right',
     },
     info: {
       type: Object,
@@ -165,32 +150,20 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          let res
+          this.loading = true
+          this.$emit('on-loading', true)
           if (this.pageType === 'add') {
-            this.loading = true
-            res = await User.register(this.form).finally(() => {
+            await Admin.createUser(this.form).finally(() => {
               this.loading = false
+              this.$emit('on-loading', false)
             })
-            if (res.code < window.MAX_SUCCESS_CODE) {
-              this.loading = false
-              this.$message.success(`${res.message}`)
-              this.resetForm(formName)
-            }
           } else {
-            this.loading = true
-            res = await Admin.updateOneUser(this.id, this.form).finally(() => {
+            await Admin.updateUser(this.id, this.form).finally(() => {
               this.loading = false
+              this.$emit('on-loading', false)
             })
-
-            if (res.code < window.MAX_SUCCESS_CODE) {
-              this.$message.success(`${res.message}`)
-              this.$emit('handleInfoResult', true)
-            } else {
-              this.$message.error(`${res.message}`)
-            }
           }
-        } else {
-          this.$message.error('请填写正确的信息')
+          this.$emit('handleInfoResult', true)
         }
       })
     },

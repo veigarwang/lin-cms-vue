@@ -83,7 +83,7 @@ export default {
           let res
           const finalPermissions = this.$refs.groupPermissionRef.getCheckedKeys()
           this.loading = true
-          res = await Admin.createOneGroup(this.form.name, this.form.info, finalPermissions, this.id).finally(() => {
+          res = await Admin.createGroup(this.form.name, this.form.info, finalPermissions, this.id).finally(() => {
             this.loading = false
           })
           if (res.code < window.MAX_SUCCESS_CODE) {
@@ -95,9 +95,6 @@ export default {
             this.loading = false
             this.$message.error(`${res.message}`)
           }
-        } else {
-          this.$message.error('请将信息填写完整')
-          return false
         }
       })
     },
