@@ -17,12 +17,12 @@ class Classify {
   }
 
   async deleteClassify(id) {
-    const res = await _delete(`api/blog/classifies/cms/${id}`);
+    const res = await _delete(`api/blog/classifies/${id}`);
     return res;
   }
 
   async getClassifies(params) {
-    const res = await get("api/blog/classifies/cms", params);
+    const res = await get("api/blog/classifies", params);
     return res;
   }
 }
