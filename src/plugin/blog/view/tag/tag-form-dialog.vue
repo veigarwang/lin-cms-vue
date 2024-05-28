@@ -117,7 +117,7 @@ export default {
             })
           }
           this.$message.success(`${res.message}`)
-          this.$refs[formName].resetFields()
+          this.resetForm(formName)
           this.dialogFormVisible = false
           this.$emit('success')
         }
