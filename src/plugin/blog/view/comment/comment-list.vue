@@ -3,8 +3,26 @@
     <el-card>
       <el-form ref="form" :model="pagination" :inline="true">
         <el-form-item label="评论内容" prop="channel_name">
-          <el-input clearable size="medium" style="margin-right: 10px" v-model="pagination.text" placeholder="评论内容">
+          <el-input
+            clearable
+            size="medium"
+            style="margin-right: 10px"
+            v-model="pagination.text"
+            @clear="getComments"
+            placeholder="评论内容"
+          >
           </el-input>
+        </el-form-item>
+        <el-form-item label="状态" prop="channel_name">
+          <el-select
+            clearable
+            v-model="pagination.is_audit"
+            placeholder="请选择状态"
+            style="width: 120px"
+            @change="getComments"
+          >
+            <el-option v-for="item in statusItems" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="default" icon="Search" @click="getComments">查询</el-button>
@@ -15,8 +33,8 @@
         :tableData="tableData"
         :operate="operate"
         @handleDetail="handleDetail"
+        @handlePass="handlePass"
         @handleDelete="handleDelete"
-        @row-click="rowClick"
         v-loading="loading"
         :pagination="pagination"
         @currentChange="handleCurrentChange"
@@ -55,11 +73,26 @@ export default {
       operate: [],
       activeTab: '修改信息',
       loading: false,
+      statusItems: [
+        {
+          label: '请选择',
+          value: null,
+        },
+        {
+          label: '审核通过',
+          value: true,
+        },
+        {
+          label: '拉黑',
+          value: false,
+        },
+      ],
       pagination: {
         pageSize: 10,
         pageTotal: 0,
         currentPage: 1,
         text: '',
+        is_audit: null,
       },
     }
   },
@@ -72,6 +105,7 @@ export default {
           count: this.pagination.pageSize,
           page: currentPage,
           text: this.pagination.text,
+          is_audit: this.pagination.is_audit,
         })
         .finally(r => {
           this.loading = false
@@ -83,15 +117,7 @@ export default {
       console.log(func, index, row)
     },
     handleDetail(val) {
-      let selectedData
-
-      if (val.index >= 0) {
-        this.editIndex = val.index
-        selectedData = val.row
-      } else {
-        selectedData = val
-      }
-      this.$refs['dialogForm'].show(selectedData)
+      this.$refs['dialogForm'].show(val.row)
     },
 
     async handleCurrentChange(val) {
@@ -128,8 +154,10 @@ export default {
         }
       })
     },
-    rowClick(row) {
-      this.handleDetail(row)
+    async handlePass(val) {
+      await commentApi.editComment(val.row.id, true)
+      this.$message.success('审核成功')
+      await this.getComments()
     },
   },
   async created() {
@@ -158,6 +186,7 @@ export default {
     ]
 
     this.operate = [
+      { name: '通过', func: 'handlePass', type: 'default', permission: '审核评论' },
       { name: '审核', func: 'handleDetail', type: 'primary', permission: '审核评论' },
       { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除评论' },
     ]
