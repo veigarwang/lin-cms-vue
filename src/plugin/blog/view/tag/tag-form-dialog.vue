@@ -37,9 +37,7 @@
 import tagApi from '../../model/tag'
 import UploadImgs from '@/component/base/upload-image'
 export default {
-  name: 'TagForm',
   components: { UploadImgs },
-  props: {},
   computed: {
     title() {
       return this.id == 0 ? '新增标签' : '编辑标签'
@@ -94,6 +92,8 @@ export default {
           alias: '',
           status: true,
         })
+        this.thumbnailPreview = []
+        this.$refs['thumbnail'].clearFiles()
       }
     },
     async submitForm(formName) {
