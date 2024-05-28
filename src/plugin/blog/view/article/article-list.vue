@@ -1,28 +1,32 @@
 <template>
   <div>
-    <div class="container" v-if="!showEdit">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">随笔列表管理</div>
-        </div>
-        <div class="header-right">
-          <el-input size="medium" style="margin-right: 10px" v-model="pagination.title" placeholder="标题"></el-input>
+    <el-card class="container" v-if="!showEdit">
+      <el-form ref="form" :model="pagination" :inline="true">
+        <el-form-item label="标题" prop="title">
+          <el-input
+            size="medium"
+            clearable
+            style="margin-right: 30px"
+            v-model="pagination.title"
+            placeholder="标题"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
           <el-button type="default" icon="Search" @click="getArticles">查询</el-button>
-        </div>
-      </div>
+        </el-form-item>
+      </el-form>
       <lin-table
         :tableColumn="tableColumn"
         :tableData="tableData"
         :operate="operate"
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
-        @row-click="rowClick"
         v-loading="loading"
         :pagination="pagination"
         @currentChange="handleCurrentChange"
       ></lin-table>
-    </div>
-    <article-form v-else @editClose="editClose" :id="id"></article-form>
+    </el-card>
+    <!-- <article-form v-else @editClose="editClose" :id="id"></article-form> -->
   </div>
 </template>
 
@@ -77,6 +81,7 @@ export default {
         .getAllArticles({
           count: this.pagination.pageSize,
           page: currentPage,
+          title: this.pagination.title,
         })
         .finally(() => {
           this.loading = false
@@ -85,16 +90,8 @@ export default {
       this.pagination.pageTotal = res.count
     },
     async handleEdit(val) {
-      console.log(val)
-      let selectedData
-
-      if (val.index >= 0) {
-        selectedData = val.row
-      } else {
-        selectedData = val
-      }
       this.showEdit = true
-      this.id = selectedData.id
+      this.id = val.row.id
     },
 
     async handleCurrentChange(val) {
@@ -120,10 +117,6 @@ export default {
         })
         await this.getArticles()
       })
-    },
-    // 双击 table ro
-    rowClick(row) {
-      this.handleEdit(row)
     },
   },
   async created() {

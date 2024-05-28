@@ -1,17 +1,15 @@
 <template>
   <div>
-    <div class="container">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">评论管理</div>
-        </div>
-        <div class="header-right">
+    <el-card>
+      <el-form ref="form" :model="pagination" :inline="true">
+        <el-form-item label="评论内容" prop="channel_name">
           <el-input clearable size="medium" style="margin-right: 10px" v-model="pagination.text" placeholder="评论内容">
           </el-input>
+        </el-form-item>
+        <el-form-item>
           <el-button type="default" icon="Search" @click="getComments">查询</el-button>
-        </div>
-      </div>
-
+        </el-form-item>
+      </el-form>
       <lin-table
         :tableColumn="tableColumn"
         :tableData="tableData"
@@ -33,7 +31,7 @@
           </span>
         </template>
       </lin-table>
-    </div>
+    </el-card>
     <comment-dialog ref="dialogForm" @ok="getComments"></comment-dialog>
   </div>
 </template>

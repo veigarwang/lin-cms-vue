@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-card shadow="never" v-if="!showEdit">
+    <el-card shadow="never">
       <el-form ref="form" :model="pagination" :inline="true">
-        <el-form-item label="类别" prop="typeCode">
+        <el-form-item label="标签名" prop="typeCode">
           <el-input
             size="medium"
             style="margin-right: 30px"
@@ -11,19 +11,18 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
+          <el-button type="default" icon="Search" @click="refresh">查询</el-button>
           <el-button
             type="primary"
             icon="Edit"
             v-permission="'新增标签'"
             @click="
               () => {
-                this.showEdit = true
-                this.id = 0
+                this.$refs.tagFormDialog.show(0)
               }
             "
             >新增标签</el-button
           >
-          <el-button type="default" icon="Search" @click="refresh">查询</el-button>
         </el-form-item>
       </el-form>
       <lin-table
@@ -46,7 +45,7 @@
         </template>
       </lin-table>
     </el-card>
-    <tag-form v-else :id="id" ref="tagForm" @editClose="editClose"></tag-form>
+    <tag-form-dialog ref="tagFormDialog" @success="editClose"></tag-form-dialog>
   </div>
 </template>
 
@@ -54,15 +53,13 @@
 import { getCurrentInstance } from 'vue'
 import LinTable from '@/component/base/table/lin-table'
 import tagApi from '../../model/tag'
-import TagForm from './tag-form'
+import TagFormDialog from './tag-form-dialog'
 
 export default {
   name: 'TagList',
-  components: { LinTable, TagForm },
+  components: { LinTable, TagFormDialog },
   data() {
     return {
-      id: 0,
-      showEdit: false,
       tableData: [],
       tableColumn: [],
       operate: [],
@@ -91,8 +88,7 @@ export default {
       this.pagination.pageTotal = res.count
     },
     async handleEdit(val) {
-      this.showEdit = true
-      this.id = val.row.id
+      this.$refs.tagFormDialog.show(val.row.id)
     },
     async handleCurrentChange(val) {
       this.pagination.currentPage = val
@@ -132,7 +128,6 @@ export default {
       this.loading = false
     },
     async editClose() {
-      this.showEdit = false
       await this.getTags()
     },
     async handleCorrect(val) {
@@ -142,7 +137,7 @@ export default {
   },
   async created() {
     this.tableColumn = [
-      { prop: 'tag_name', label: '名称' },
+      { prop: 'tag_name', label: '标签名' },
       { prop: 'alias', label: '别名' },
       { prop: 'article_count', label: '文章数量', width: '100' },
       {

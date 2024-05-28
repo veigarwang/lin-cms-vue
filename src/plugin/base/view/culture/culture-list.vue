@@ -55,28 +55,21 @@ export default {
       this.$router.push(`/base/culture/form/${val.row.id}`)
     },
     handleDelete(val) {
-      let res
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
         this.loading = true
-        res = await cultureApi.deleteCulture(val.row.id).finally(() => {
+        await cultureApi.deleteCulture(val.row.id).finally(() => {
           this.loading = false
         })
-        if (res.code === 0) {
-          this.loading = false
-          await this.getCultures()
-
-          this.$message({
-            type: 'success',
-            message: `删除成功`,
-          })
-        } else {
-          this.loading = false
-          this.$message.error(`${res.message}`)
-        }
+        this.loading = false
+        await this.getCultures()
+        this.$message({
+          type: 'success',
+          message: `删除成功`,
+        })
       })
     },
     async refresh() {

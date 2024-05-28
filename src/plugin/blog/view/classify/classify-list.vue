@@ -1,21 +1,21 @@
 <template>
   <div>
-    <div class="container" v-if="!showEdit">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">分类专栏列表</div>
-        </div>
-        <div class="header-right">
+    <el-card>
+      <el-form ref="form" :model="pagination" :inline="true">
+        <el-form-item label="分类专栏" prop="channel_name">
           <el-input
+            clearable
             size="medium"
             style="margin-right: 10px"
             v-model="pagination.classify_name"
             placeholder="分类专栏"
-          ></el-input>
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item>
           <el-button type="default" icon="Search" @click="refresh">查询</el-button>
-        </div>
-      </div>
-
+        </el-form-item>
+      </el-form>
       <lin-table
         :tableColumn="tableColumn"
         :tableData="tableData"
@@ -33,8 +33,8 @@
           <span>{{ $filters.filterTimeYmdHms(scope.row.create_time) }}</span>
         </template>
       </lin-table>
-    </div>
-    <classify-form v-else @editClose="editClose" :id="id"></classify-form>
+    </el-card>
+    <!-- <classify-form  @editClose="editClose" :id="id"></classify-form> -->
   </div>
 </template>
 

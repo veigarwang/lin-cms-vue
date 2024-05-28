@@ -2,11 +2,12 @@
   <div>
     <el-card shadow="never" v-if="!showEdit">
       <el-form ref="form" :model="pagination" :inline="true">
-        <el-form-item label="类别" prop="typeCode">
+        <el-form-item label="技术频道" prop="channel_name">
           <el-input size="medium" style="margin-right: 10px" v-model="pagination.channel_name" placeholder="技术频道">
           </el-input>
         </el-form-item>
         <el-form-item>
+          <el-button type="default" icon="Search" @click="refresh">查询</el-button>
           <el-button
             type="primary"
             icon="Edit"
@@ -19,7 +20,6 @@
             "
             >新增技术频道</el-button
           >
-          <el-button type="default" icon="Search" @click="refresh">查询</el-button>
         </el-form-item>
       </el-form>
 
