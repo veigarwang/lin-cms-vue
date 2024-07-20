@@ -11,6 +11,15 @@
             placeholder="标题"
           ></el-input>
         </el-form-item>
+        <el-form-item label="Id" prop="articleId">
+          <el-input
+            size="medium"
+            clearable
+            style="margin-right: 30px"
+            v-model="pagination.articleId"
+            placeholder="Id"
+          ></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button type="default" icon="Search" @click="getArticles">查询</el-button>
         </el-form-item>
@@ -65,6 +74,7 @@ export default {
         pageTotal: 0,
         currentPage: 1,
         title: '',
+        articleId: null,
       },
     }
   },
@@ -82,6 +92,7 @@ export default {
           count: this.pagination.pageSize,
           page: currentPage,
           title: this.pagination.title,
+          articleId: this.pagination.articleId,
         })
         .finally(() => {
           this.loading = false
