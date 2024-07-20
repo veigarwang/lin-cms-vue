@@ -35,7 +35,6 @@
         @currentChange="handleCurrentChange"
       ></lin-table>
     </el-card>
-    <!-- <article-form v-else @editClose="editClose" :id="id"></article-form> -->
   </div>
 </template>
 
@@ -101,8 +100,11 @@ export default {
       this.pagination.pageTotal = res.count
     },
     async handleEdit(val) {
-      this.showEdit = true
-      this.id = val.row.id
+      window.open(`/#/cms/article/form?id=${val.row.id}`)
+      // this.$router.push({
+      //   name: 'ArticleForm',
+      //   query: { id: val.row.id },
+      // })
     },
 
     async handleCurrentChange(val) {

@@ -128,7 +128,6 @@ import classifyApi from '../../model/classify'
 import tagApi from '../../model/tag'
 import Vditor from 'vditor'
 export default {
-  name: 'ArticleForm',
   data() {
     return {
       title: ['添加随笔', '审核随笔'],
@@ -144,16 +143,15 @@ export default {
       VVLOG_URL: process.env.VUE_APP_VVLOG_URL,
     }
   },
-  props: {
-    id: {
-      type: String,
-    },
-  },
   components: {
     UploadImgs,
   },
   async mounted() {
     console.log('begin mounted')
+    var id = this.$route.query.id
+    if (id) {
+      this.id = id
+    }
     await this.setForm()
     console.log('end mounted')
   },
@@ -201,7 +199,7 @@ export default {
       this.$refs['thumbnail'].clear()
     },
     back() {
-      this.$emit('editClose')
+      this.$router.replace('/cms/article/list')
     },
     render(markdown) {
       var that = this

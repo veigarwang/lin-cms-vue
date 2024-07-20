@@ -53,6 +53,16 @@ const blogRouter = {
       permission: ['所有随笔']
     },
     {
+      name: null,
+      title: "随笔详情",
+      type: "view",
+      name: "ArticleForm",
+      route: "/cms/article/form",
+      icon: 'iconfont icon-iconset0103',
+      filePath: "plugin/blog/view/article/article-form.vue",
+      inNav: false
+    },
+    {
       name: "CommentList",
       title: "评论管理",
       type: "view",
