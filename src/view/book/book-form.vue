@@ -204,7 +204,7 @@
 
 <script>
 import book from '@/model/book'
-import baseApi from '@/model/base'
+import baseApi from '@/plugin/base/model/base'
 import UploadImgs from '@/component/base/upload-image'
 
 export default {

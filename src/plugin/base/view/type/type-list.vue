@@ -39,7 +39,7 @@
       </lin-table>
     </div>
     <!-- 编辑页面 -->
-    <type-item v-if="showForm" @editClose="editClose" :typeCode="typeCode" :typeName="typeName"></type-item>
+    <type-item v-if="showForm" @editClose="editClose" :typeCode="typeCode" :typeName="typeName" :baseTypeId="baseTypeId"></type-item>
     <!--表格结束-->
 
     <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
@@ -88,6 +88,7 @@ export default {
     },
     handleSubItem(val) {
       this.showForm = true
+      this.baseTypeId = val.row.id
       this.typeCode = val.row.type_code      
       this.typeName = val.row.full_name
     },
@@ -96,7 +97,7 @@ export default {
       this.getBaseTypes()
     },
     handleDelete(val) {
-      this.$confirm('此操作将永久删除该字典类型, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该字典类别, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',

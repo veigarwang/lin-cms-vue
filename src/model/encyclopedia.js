@@ -37,8 +37,8 @@ class Encyclopedia {
     return res
   }
 
-  async getEncyclopediaTotal(){
-    const res = await get("v1/encyclopedia/getTotal");
+  async getEncyclopediaTotal(params){
+    const res = await get(`v1/encyclopedia/getTotal/${params}`);
     return res
   }
 }

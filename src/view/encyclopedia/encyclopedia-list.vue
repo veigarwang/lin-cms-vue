@@ -75,7 +75,7 @@
 
 <script>
 import encyclopedia from '@/model/encyclopedia'
-import baseApi from '@/model/base'
+import baseApi from '@/plugin/base/model/base'
 import LinTable from '@/component/base/table/lin-table'
 import LinSearch from '@/component/base/search/lin-search'
 import EncyclopediaForm from './encyclopedia-form'

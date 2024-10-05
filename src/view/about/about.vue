@@ -90,9 +90,9 @@
       <div class="quantity-item">
         <div class="quantity-detail">
           <div class="quantity-detail-box">
-            <div class="quantity-title">待定数据1</div>
+            <div class="quantity-title">昨(今)日更新总数</div>
             <div class="quantity-border-line"></div>
-            <div class="quantity">-</div>
+            <div class="quantity">{{ updatedEntryTotal }}</div>
           </div>
         </div>
         <div class="quantity-icon">
@@ -102,7 +102,7 @@
       <div class="quantity-item">
         <div class="quantity-detail">
           <div class="quantity-detail-box">
-            <div class="quantity-title">待定数据2</div>
+            <div class="quantity-title">待定数据1</div>
             <div class="quantity-border-line"></div>
             <div class="quantity">-</div>
           </div>
@@ -220,25 +220,35 @@ export default {
       bookTotal: 0,
       readBookTotal: 0,
       entryTotal: 0,
+      updatedEntryTotal: 0,
       activities: [
         {
-          title: 'v0.97',
+          title: 'v0.98',
           content: [
-            { entry: '新增使用无声调拼音进行模糊查询', label: '新增', color: 'green' },
-            { entry: '完善新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet'  },
-            { entry: '查询字典条目列表时会触发一次查询字典类别列表', label: '待修', color: 'red' },
-            
+            { entry: '增加显示近日更新词条总数', label: '新增', color: 'green' },
+            { entry: '优化新增字典条目时自动选择字典类别', label: '改善', color: 'blueviolet'  },
+            { entry: '修复无法正常删除版本号不为0的词条的问题', label: '修正', color: 'orange' },
+            { entry: '修复从编辑视图返回列表视图后，最后一行的操作按钮显示不完整的问题', label: '修正', color: 'orange' }
+            //{ entry: '从编辑视图返回列表视图后，最后一行的操作按钮显示不完整', label: '待修', color: 'red' }
           ],
-          timestamp: '2023-07-06 11:21',
+          timestamp: '2024-06-20 01:37',
           size: 'large',
           type: 'primary',
           //icon: 'el-icon-more',
         },
         {
+          title: 'v0.97',
+          content: [
+            { entry: '新增使用无声调拼音进行模糊查询', label: '新增', color: 'green' },
+            { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet'  },
+          ],
+          timestamp: '2023-07-06 11:21',
+        },
+        {
           title: 'v0.96',
           content: [
             { entry: '书籍管理和山海百科页面增加类别筛选下拉列表', label: '新增', color: 'green' },
-            { entry: '完善新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet'  },
+            { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet'  },
             { entry: '对集解增加单双引号自动修正功能', label: '改善', color: 'blueviolet'  },
             { entry: '更新部分提示信息以使其更加明确', label: '改善', color: 'blueviolet'  },
             
@@ -260,7 +270,7 @@ export default {
           content: [
             { entry: '增加书籍和百科词条的编辑次数', label: '改善', color: 'blueviolet' },
             { entry: '完善系统日志', label: '改善', color: 'blueviolet' },
-            { entry: '修正编辑字典类型后未正常刷新列表的问题', label: '修复', color: 'orange' }
+            { entry: '修复编辑字典类别后未正常刷新列表的问题', label: '修正', color: 'orange' }
           ],
           timestamp: '2022-06-18 22:50',
           type: '',
@@ -268,7 +278,7 @@ export default {
         {
           title: 'v0.93',
           content: [
-            { entry: '增加更新历史', label: '新增', color: 'green' },
+            { entry: '增加词条更新次数', label: '新增', color: 'green' },
             { entry: '增加显示藏书数量和百科词条总数', label: '新增', color: 'green' },
             { entry: '完善系统日志', label: '改善', color: 'blueviolet' },
           ],
@@ -280,7 +290,7 @@ export default {
           content: [
             { entry: '增加防止重复出处的判断', label: '改善', color: 'blueviolet' },
             { entry: '完善同名词条自动追加的判断条件', label: '改善', color: 'blueviolet' },
-            { entry: '修正编辑词条时读音会被覆盖的问题', label: '修复', color: 'orange' },
+            { entry: '修复编辑词条时读音会被覆盖的问题', label: '修正', color: 'orange' },
           ],
           timestamp: '2022-06-02 23:39',
           type: '',
@@ -292,8 +302,8 @@ export default {
             { entry: '完善书籍管理模块', label: '改善', color: 'blueviolet' },
             { entry: '优化UI显示', label: '改善', color: 'blueviolet' },
             {
-              entry: '修正在非第一页进行表格搜索的情况下，因搜索结果数量不足当前页数而不显示的问题',
-              label: '修复',
+              entry: '修复在非第一页进行表格搜索的情况下，因搜索结果数量不足当前页数而不显示的问题',
+              label: '修正',
               color: 'orange',
             },
           ],
@@ -313,7 +323,8 @@ export default {
   async created() {
     this.bookTotal = await book.getBookTotal(false)
     this.readBookTotal = await book.getBookTotal(true)
-    this.entryTotal = await encyclopedia.getEncyclopediaTotal()
+    this.entryTotal = await encyclopedia.getEncyclopediaTotal(0)
+    this.updatedEntryTotal = await encyclopedia.getEncyclopediaTotal(-1)
   },
   mounted() {
     if (document.body.clientWidth > 1200 && document.body.clientWidth < 1330) {
@@ -508,7 +519,7 @@ export default {
             font-weight: 400;
           }
           .quantity-border-line {
-            width: 96px;
+            width: 108px;
             height: 2px;
             background: rgba(73, 84, 104, 1);
           }

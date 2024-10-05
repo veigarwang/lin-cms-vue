@@ -467,4 +467,7 @@ export default {
 .lin-table .rowClassName {
   cursor: move !important;
 }
+/deep/ .el-table__fixed-right {
+  height: 100% !important; //设置高优先，以覆盖内联样式
+}
 </style>

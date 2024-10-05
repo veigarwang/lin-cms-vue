@@ -13,7 +13,7 @@
               v-permission="'新增条目'"
               @click="
                 () => {
-                  this.$refs['dialogForm'].showSubItem(this.tableData[0].base_type_id, this.tableData.length)
+                  this.$refs['dialogForm'].showSubItem(baseTypeId, this.tableData.length)
                 }
               "
               >新增条目</el-button
@@ -59,6 +59,10 @@ export default {
       default: null,
     },
     typeName: {
+      type: String,
+      default: null,
+    },
+    baseTypeId: {
       type: String,
       default: null,
     },

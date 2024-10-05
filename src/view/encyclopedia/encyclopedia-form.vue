@@ -172,7 +172,7 @@
 
 <script>
 import encyclopedia from '@/model/encyclopedia'
-import baseApi from '@/model/base'
+import baseApi from '@/plugin/base/model/base'
 import UploadImgs from '@/component/base/upload-image'
 import Utils from 'lin/util/util'
 import { pinyinUtil } from 'lin/util/pinyin_withtone.js'

@@ -74,7 +74,7 @@
 
 <script>
 import book from '@/model/book'
-import baseApi from '@/model/base'
+import baseApi from '@/plugin/base/model/base'
 import LinTable from '@/component/base/table/lin-table'
 import LinSearch from '@/component/base/search/lin-search'
 import BookForm from './book-form'
