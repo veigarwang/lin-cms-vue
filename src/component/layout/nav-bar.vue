@@ -16,7 +16,7 @@
           :hidden="hidden"
         >
         </lin-notify>
-        <clear-tab></clear-tab>
+        <!-- <clear-tab></clear-tab> -->
         <screenfull /> <user></user>
       </div>
     </div>

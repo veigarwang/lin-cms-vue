@@ -9,9 +9,8 @@
         <div class="header-right">
           <el-select
             size="small"
-            filterable
-            default-first-option 
             v-model="book_type"
+            filterable 
             placeholder="筛选类别"
             @change="handleChange"
             clearable
@@ -24,7 +23,7 @@
               :value="Number(item.item_code)"
             ></el-option>
           </el-select>
-          <lin-search @query="onQueryChange" placeholder="请输入ISBN/书籍名" size="small" />
+          <lin-search @query="onQueryChange" placeholder="请输入ISBN/书籍名/作者名" size="small" width="180" />
           <el-button
             type="primary"
             icon="el-icon-plus"
@@ -37,7 +36,7 @@
             "
             >新增</el-button
           >
-          <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
+          <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
           <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
         </div>
       </div>
@@ -89,8 +88,8 @@ export default {
   data() {
     return {
       tableColumn: [
-        { prop: 'book_type_name', label: '书籍类别', width: 150, align: 'center' },
-        { prop: 'isbn', label: 'ISBN', width: 180, align: 'center' },
+        { prop: 'book_type_name', label: '书籍类别', width: 100, align: 'center' },
+        { prop: 'isbn', label: 'ISBN', width: 130, align: 'center' },
         {
           prop: 'title, subtitle',
           label: '书名',
@@ -102,6 +101,7 @@ export default {
           label: '作者',
           scope: 'author',
           scopedSlots: { customRender: 'author' },
+          width: 300
         },
         //{ prop: 'author1', label: '作者', width: 175 },
         {
@@ -110,11 +110,12 @@ export default {
           align: 'center',
           scope: 'date_purchased',
           scopedSlots: { customRender: 'date_purchased' },
-          width: 150,
+          width: 100,
         },
       ],
       tableData: [],
       operate: [],
+      loading: false,
       showForm: false,
       edit_book_id: 1,
       book_types: [],
@@ -147,26 +148,32 @@ export default {
       }
     }
     await this.getBooks()
+    this.loading = false
   },
   methods: {
     // 下拉框选择分组
     async handleChange() {
+      this.loading = true
       this.pagination.currentPage = 1
       await this.getBooks()
+      this.loading = false
     },
     // 切换table页
     async handleCurrentPageChange(val) {
+      this.loading = true
       this.pagination.currentPage = val
       await this.getBooks()
+      this.loading = false
     },
     async handlePageSizeChange(val) {
+      this.loading = true
       this.pagination.pageSize = val
       await this.getBooks()
+      this.loading = false
     },
     async getBooks() {
       const currentPage = this.pagination.currentPage - 1
       try {
-        //this.loading = true
         let res = await book.getBooks({          
           keyword: this.searchKeyword,
           itemType: this.book_type,
@@ -175,7 +182,6 @@ export default {
         })
         this.tableData = [...res.items]
         this.pagination.pageTotal = res.count
-        this.loading = false
       } catch (error) {
         if (error.code === 10020) {
           this.tableData = []
@@ -184,44 +190,53 @@ export default {
     },
     // 搜索
     onQueryChange(query) {
-      this.searchKeyword = query.trim()
+      this.loading = true
+      this.searchKeyword = query.trim()      
       if (!query) {
         this.getBooks()
+        this.loading = false
         return
-      }
-      this.loading = true
+      }      
       this.getBooks()
       this.loading = false
     },
     handleEdit(val) {
-      console.log('val', val)
       this.showForm = true
       this.edit_book_id = val.row.id
     },
-    handleDelete(val) {
+    handleDelete(val) {      
       this.$confirm('此操作将永久删除该书籍, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
+        this.loading = true
         const res = await book.deleteBook(val.row.id)
+        this.loading = false
         if (res.code < window.MAX_SUCCESS_CODE) {
-          this.getBooks()
+          await this.getBooks()
           this.$message({
             type: 'success',
             message: `${res.message}`,
           })
         }
       })
+      // .finally(() => {
+      //     this.loading = false
+      //   })
     },
     async refresh() {
+      this.loading = true
       await this.getBooks()
       this.$message.success('刷新成功')
+      this.loading = false
     },
     rowClick() {},
     editClose() {
+      this.loading = true
       this.showForm = false
       this.getBooks()
+      this.loading = false
     },
     // 导出表格
     exprotExcel() {

@@ -20,7 +20,7 @@
         <el-form-item label="类别" prop="base_type_id">
           <el-select
             size="medium"
-            filterable
+            filterable 
             v-model="form.base_type_id"
             :disabled="types.length === 0"
             placeholder="请选择分组"
@@ -33,10 +33,10 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="编码" prop="item_code">
+        <el-form-item label="条目编码" prop="item_code">
           <el-input size="medium" clearable v-model="form.item_code"></el-input>
         </el-form-item>
-        <el-form-item label="名称" prop="item_name">
+        <el-form-item label="条目名称" prop="item_name">
           <el-input size="medium" clearable v-model="form.item_name"></el-input>
         </el-form-item>
         <el-form-item label="明细" prop="sort_code">
@@ -84,8 +84,8 @@ export default {
       rules: {
         // 表单验证规则
         base_type_id: [{ required: true, message: '请选择类别名称', trigger: 'blur' }],
-        item_code: [{ required: true, message: '请输入编码', trigger: 'blur' }],
-        item_name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        item_code: [{ required: true, message: '请输入条目编码', trigger: 'blur' }],
+        item_name: [{ required: true, message: '请输入条目名称', trigger: 'blur' }],
       },
       types: [],
     }

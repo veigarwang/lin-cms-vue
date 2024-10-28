@@ -47,7 +47,7 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column v-if="operate.length > 0" label="操作" fixed="right" width="200">
+      <el-table-column v-if="operate.length > 0" label="操作" fixed="right" :width="operate.length * 65">
         <template slot-scope="scope">
           <el-button
             v-for="(item, index) in operate"

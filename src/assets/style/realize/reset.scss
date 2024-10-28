@@ -73,15 +73,25 @@ time,
 mark,
 audio,
 video,
-input {
+input,
+textarea {
   margin: 0;
   padding: 0;
   border: 0;
   font-size: 100%;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
-    Microsoft YaHei, SimSun, sans-serif;
+    Microsoft YaHei, SimSun, sans-serif, 'KaiXinSongB';
   font-weight: normal;
   vertical-align: baseline;
+}
+
+@font-face {
+  font-family: 'KaiXinSongB';
+  src: local('KaiXinSongB'),
+    local('KaiXinSongB'),
+    url('/src/assets/font/KaiXinSongB.woff') format('woff'),
+    url('/src/assets/font/KaiXinSongB.ttf') format('truetype'),
+    url('/src/assets/font/KaiXinSongB.svg#KaiXinSongB') format('svg');
 }
 
 h1 {

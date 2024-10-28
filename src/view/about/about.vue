@@ -226,9 +226,14 @@ export default {
           title: 'v0.98',
           content: [
             { entry: '增加显示近日更新词条总数', label: '新增', color: 'green' },
-            { entry: '优化新增字典条目时自动选择字典类别', label: '改善', color: 'blueviolet'  },
+            { entry: '优化新增字典条目时自动选择字典类别', label: '改善', color: 'blueviolet' },
+            { entry: '嵌入特定字体以显示部分生僻字', label: '改善', color: 'blueviolet' },
+            { entry: '增加对ISBN的格式校验', label: '改善', color: 'blueviolet' },
             { entry: '修复无法正常删除版本号不为0的词条的问题', label: '修正', color: 'orange' },
-            { entry: '修复从编辑视图返回列表视图后，最后一行的操作按钮显示不完整的问题', label: '修正', color: 'orange' }
+            { entry: '修复从编辑视图返回列表视图后，最后一行的操作按钮显示不完整的问题', label: '修正', color: 'orange' },
+            { entry: '修复在字典类别列表页面先编辑任一项后再新增类别时，弹窗会显示上一次编辑项信息的问题', label: '修正', color: 'orange' },
+            { entry: '修复在修改书籍页面多次保存时，购买日期的格式被错误更新的问题', label: '修正', color: 'orange' },
+            { entry: '修复在修改书籍页面多次保存时，书籍图片会被错误删除的问题', label: '修正', color: 'orange' },
             //{ entry: '从编辑视图返回列表视图后，最后一行的操作按钮显示不完整', label: '待修', color: 'red' }
           ],
           timestamp: '2024-06-20 01:37',
@@ -240,7 +245,7 @@ export default {
           title: 'v0.97',
           content: [
             { entry: '新增使用无声调拼音进行模糊查询', label: '新增', color: 'green' },
-            { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet'  },
+            { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet' },
           ],
           timestamp: '2023-07-06 11:21',
         },
@@ -248,9 +253,9 @@ export default {
           title: 'v0.96',
           content: [
             { entry: '书籍管理和山海百科页面增加类别筛选下拉列表', label: '新增', color: 'green' },
-            { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet'  },
-            { entry: '对集解增加单双引号自动修正功能', label: '改善', color: 'blueviolet'  },
-            { entry: '更新部分提示信息以使其更加明确', label: '改善', color: 'blueviolet'  },
+            { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet' },
+            { entry: '对集解增加单双引号自动修正功能', label: '改善', color: 'blueviolet' },
+            { entry: '更新部分提示信息以使其更加明确', label: '改善', color: 'blueviolet' },
             
           ],
           timestamp: '2023-03-25 13:35',

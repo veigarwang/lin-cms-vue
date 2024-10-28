@@ -16,9 +16,8 @@
                   this.$refs['dialogForm'].showType(this.tableData.length)
                 }
               "
-              >新增类别</el-button
-            >
-            <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
+              >新增类别</el-button>
+            <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
           </div>
         </div>
       </div>
@@ -71,13 +70,12 @@ export default {
   methods: {
     // 根据分组 刷新/获取分组内的用户
     async getBaseTypes() {
-      let res
       try {
         this.loading = true
-        res = await baseApi.getTypes({})
-        // setTimeout(() => {
-        this.loading = false
+        let res = await baseApi.getTypes({})
+        // setTimeout(() => {        
         this.tableData = res
+        this.loading = false
         // }, 500)
       } catch (e) {
         this.loading = false
@@ -93,8 +91,10 @@ export default {
       this.typeName = val.row.full_name
     },
     editClose() {
+      this.loading = true
       this.showForm = false
       this.getBaseTypes()
+      this.loading = false
     },
     handleDelete(val) {
       this.$confirm('此操作将永久删除该字典类别, 是否继续?', '提示', {
@@ -103,13 +103,9 @@ export default {
         type: 'warning',
       }).then(async () => {
         this.loading = true
-
-        let res = await baseApi.deleteType(val.row.id).finally(() => {
-          this.loading = false
-        })
-
+        let res = await baseApi.deleteType(val.row.id)
         await this.getBaseTypes()
-
+        this.loading = false
         this.$message({
           type: 'success',
           message: `${res.message}`,
@@ -117,15 +113,18 @@ export default {
       })
     },
     async refresh() {
+      this.loading = true
       await this.getBaseTypes()
+      this.loading = false
       this.$message.success('刷新成功')
     },
   },
   async created() {
+    this.loading = true
     this.tableColumn = [
       { prop: 'sort_code', label: '序号', align: 'center', width: '150px' },
-      { prop: 'type_code', label: '编码' },
-      { prop: 'full_name', label: '名称' },
+      { prop: 'type_code', label: '类别编码' },
+      { prop: 'full_name', label: '类别名称' },
       {
         prop: 'create_time',
         label: '创建时间',
@@ -150,6 +149,7 @@ export default {
       },
     ]
     await this.getBaseTypes()
+    this.loading = false
   },
   beforeDestroy() {},
 }

@@ -1089,7 +1089,6 @@ export default {
     transition: all 0.1s;
     color: #666666;
     margin-right: 1em;
-    margin-bottom: 1em;
 
     &.disabled {
       color: #ababab;

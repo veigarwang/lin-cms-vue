@@ -9,9 +9,8 @@
         <div class="header-right">
           <el-select
             size="small"
-            filterable
-            default-first-option 
             v-model="item_type"
+            filterable 
             placeholder="筛选类别"
             @change="handleChange"
             clearable
@@ -37,7 +36,7 @@
             "
             >新增</el-button
           >
-          <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
+          <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
           <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
         </div>
       </div>
@@ -100,6 +99,7 @@ export default {
       ],
       tableData: [],
       operate: [],
+      loading: false,
       showForm: false,
       edit_item_id: 1,
       last_provenance: '',
@@ -137,29 +137,33 @@ export default {
   methods: {
     // 下拉框选择分组
     async handleChange() {
+      this.loading = true
       this.pagination.currentPage = 1
       await this.getEncyclopedias()
+      this.loading = false
     },
     // 切换table页
     async handleCurrentPageChange(val) {
+      this.loading = true
       this.pagination.currentPage = val
       await this.getEncyclopedias()
+      this.loading = false
     },
     async handlePageSizeChange(val) {
+      this.loading = true
       this.pagination.pageSize = val
       await this.getEncyclopedias()
+      this.loading = false
     },
     async getEncyclopedias() {
       const currentPage = this.pagination.currentPage - 1
       try {
-        this.loading = true
         let res = await encyclopedia.getEncyclopedias({
           keyword: this.searchKeyword,
           itemType: this.item_type,
           count: this.pagination.pageSize,
           page: currentPage,
         })
-        this.loading = false
         this.tableData = [...res.items]
         this.pagination.pageTotal = res.count
         this.last_provenance = this.tableData[0].provenance
@@ -171,27 +175,29 @@ export default {
     },
     // 搜索
     onQueryChange(query) {
+      this.loading = true
       this.searchKeyword = query.trim()
       if (!query) {
         this.getEncyclopedias()
+        this.loading = false
         return
-      }
-      this.loading = true
+      }      
       this.getEncyclopedias()
       this.loading = false
     },
     handleEdit(val) {
-      console.log('val', val)
       this.showForm = true
       this.edit_item_id = val.row.id
     },
-    handleDelete(val) {
+    handleDelete(val) {      
       this.$confirm('此操作将永久删除该词条, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
+        this.loading = true
         const res = await encyclopedia.deleteEncyclopedia(val.row.id)
+        this.loading = false
         if (res.code < window.MAX_SUCCESS_CODE) {
           this.getEncyclopedias()
           this.$message({
@@ -199,16 +205,20 @@ export default {
             message: `${res.message}`,
           })
         }
-      })
+      })      
     },
     async refresh() {
+      this.loading = true
       await this.getEncyclopedias()
+      this.loading = false
       this.$message.success('刷新成功')
     },
     rowClick() {},
     editClose() {
+      this.loading = true
       this.showForm = false
       this.getEncyclopedias()
+      this.loading = false
     },
     // 导出表格
     exprotExcel() {

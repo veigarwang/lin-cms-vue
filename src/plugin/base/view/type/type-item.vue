@@ -16,9 +16,8 @@
                   this.$refs['dialogForm'].showSubItem(baseTypeId, this.tableData.length)
                 }
               "
-              >新增条目</el-button
-            >
-            <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
+              >新增条目</el-button>
+            <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
             <el-button type="default" icon="el-icon-back" @click="back">返回</el-button>
           </div>
         </div>
@@ -81,10 +80,9 @@ export default {
   methods: {
     // 根据分组 刷新/获取分组内的用户
     async getBaseItems() {
-      let res
       try {
         this.loading = true
-        res = await baseApi.getItems({
+        let res = await baseApi.getItems({
           typeCode: this.typeCode,
         })
         // setTimeout(() => {
@@ -112,9 +110,8 @@ export default {
           this.loading = false
         }
         if (res.code === 0) {
-          this.loading = false
           await this.getBaseItems()
-
+          this.loading = false
           this.$message({
             type: 'success',
             message: `${res.message}`,
@@ -127,7 +124,9 @@ export default {
     },
     async refresh(val) {
       //this.types = await baseApi.getTypes()
+      this.loading = true
       await this.getBaseItems()
+      this.loading = false
       if (val) this.$message.success('刷新成功')
     },
     // 下拉框选择分组
@@ -144,7 +143,7 @@ export default {
   async created() {
     this.tableColumn = [
       { prop: 'sort_code', label: '序号', align: 'center', width: '150px' },
-      { prop: 'item_name', label: '名称' },
+      { prop: 'item_name', label: '条目名称' },
       { prop: 'item_details', label: '明细' },
       // {
       //   prop: 'status',

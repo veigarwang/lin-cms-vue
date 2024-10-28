@@ -4,7 +4,7 @@
       <span v-if="!edit_item_id" class="id">新增词条</span><span v-else class="id">修改词条 - ID: {{ item_id }}</span>
       <span v-if="edit_item_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一条 </span>
       <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一条 </span>
-      <span class="back" @click="back"> <i class="el-icon-refresh-left"></i> 返回 </span>
+      <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       <span v-if="!edit_item_id" class="save" @click="submitForm('form', true)" :loading="loading">
         <i class="el-icon-finished"></i> 连续新增
       </span>
@@ -64,7 +64,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="所属类别" prop="item_type">
-                <el-select v-model="form.item_type" filterable default-first-option placeholder="请选择所属类别">
+                <el-select v-model="form.item_type" filterable placeholder="请选择所属类别">
                   <el-option
                     v-for="item in item_types"
                     :key="Number(item.item_code)"
@@ -99,7 +99,7 @@
                 <el-input
                   size="medium"
                   type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 4 }"
+                  :autosize="{ minRows: 2, maxRows: 3 }"
                   placeholder="请输入经文"
                   v-model="form.original_text"
                 >
@@ -135,7 +135,7 @@
                 <el-input
                   size="medium"
                   type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 4 }"
+                  :autosize="{ minRows: 2, maxRows: 3 }"
                   placeholder="请输入集解"
                   v-model="form.jijie"
                 >
@@ -257,7 +257,8 @@ export default {
           this.form.name.endsWith('海')
         )
           this.form.item_type = Number(this.item_types[1].item_code)
-        else if (this.form.name.endsWith('草')) this.form.item_type = Number(this.item_types[2].item_code)
+        else if (this.form.name.endsWith('草'))
+          this.form.item_type = Number(this.item_types[2].item_code)
         else if (this.form.name.endsWith('木') || this.form.name.endsWith('林') || this.form.name.endsWith('樹'))
           this.form.item_type = Number(this.item_types[3].item_code)
         else if (this.form.name.endsWith('虫') || this.form.name.endsWith('蟲') || this.form.name.endsWith('蛇'))
@@ -286,10 +287,11 @@ export default {
           this.form.name.endsWith('鹿')
         )
           this.form.item_type = Number(this.item_types[7].item_code)
-        else if (this.form.name.endsWith('神')) this.form.item_type = Number(this.item_types[8].item_code)
-        else if (this.form.name.endsWith('人') || this.form.name.endsWith('民'))
+        else if (this.form.name.endsWith('神'))
+          this.form.item_type = Number(this.item_types[8].item_code)
+        else if (this.form.name.endsWith('人'))
           this.form.item_type = Number(this.item_types[9].item_code)
-        else if (this.form.name.endsWith('國') || this.form.name.endsWith('城'))
+        else if (this.form.name.endsWith('國') || this.form.name.endsWith('民'))
           this.form.item_type = Number(this.item_types[10].item_code)
         else if (this.form.name.endsWith('玉') || this.form.name.endsWith('碧'))
           this.form.item_type = Number(this.item_types[12].item_code)
@@ -418,7 +420,7 @@ export default {
               }
             } catch (error) {
               this.loading = false
-              this.$message.error('词条更新失败，请检测输入信息')
+              this.$message.error('词条更新失败，请检查输入信息')
               console.log(error)
             }
           } else {
@@ -432,7 +434,7 @@ export default {
               }
             } catch (error) {
               this.loading = false
-              this.$message.error('词条新增失败，请检测输入信息')
+              this.$message.error('词条新增失败，请检查输入信息')
               console.log(error)
             }
           }

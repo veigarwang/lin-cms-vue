@@ -48,7 +48,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="书籍类别" prop="book_type">
-                <el-select v-model="form.book_type" filterable default-first-option placeholder="请选择书籍类别">
+                <el-select v-model="form.book_type" filterable placeholder="请选择书籍类别">
                   <el-option
                     v-for="item in book_types"
                     :key="Number(item.item_code)"
@@ -116,7 +116,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="字数" prop="word_count">
+              <el-form-item label="字数(千字)" prop="word_count">
                 <el-input size="medium" v-model="form.word_count" placeholder="请输入字数"></el-input>
               </el-form-item>
             </el-col>
@@ -177,7 +177,7 @@
                 <div>{{ form.update_time | dateTimeFormatter }}</div>
               </el-form-item>
             </el-col>
-            <el-col :span="24">
+            <el-col :span="24" v-show="form.is_read">
               <el-form-item label="读后感" prop="summary">
                 <el-input
                   size="medium"
@@ -305,15 +305,9 @@ export default {
           this.loading = true
           if (!this.form.author_type2) this.form.author_type2 = 0
           if (!this.form.author_type3) this.form.author_type3 = 0
-          // if (!this.form.date_purchased) {
-          //   let t = new Date()
-          //   t.setHours(0, 0, 0, 0)
-          //   this.form.date_purchased = t.toLocaleDateString()
-          // }
           let t = new Date()
           t.setTime(this.form.date_purchased + 1000 * 60 * 60 * 8)
           this.form.date_purchased = t
-          //console.log(this.form.date_purchased)
           let cover = await this.$refs['uploadEle1'].getValue()
           if (cover.length > 0) {
             this.form.cover = cover[0].src
@@ -327,11 +321,12 @@ export default {
               if (res.code < window.MAX_SUCCESS_CODE) {
                 this.loading = false
                 this.$message.success(`${res.message}`)
+                this.form = await book.getBook(this.book_id)
                 //this.$emit('editClose')
               }
             } catch (error) {
               this.loading = false
-              this.$message.error('书籍更新失败，请检测输入信息')
+              this.$message.error('书籍更新失败，请检查输入信息')
               console.log(error)
             }
           } else {
@@ -344,7 +339,7 @@ export default {
               }
             } catch (error) {
               this.loading = false
-              this.$message.error('书籍新增失败，请检测输入信息')
+              this.$message.error('书籍新增失败，请检查输入信息')
               console.log(error)
             }
           }
@@ -361,7 +356,7 @@ export default {
       this.form.author_type1 = Number(this.author_types[0].item_code)
       this.form.author_type2 = ''
       this.form.author_type3 = ''
-      this.form.is_read = 'false'
+      this.form.is_read = false
     },
     async previous() {
       try {

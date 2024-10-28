@@ -50,6 +50,7 @@ export default {
   border: 1px solid $theme;
   .el-icon-search {
     font-size: 16px;
+    margin-top: 3px;
   }
 }
 .lin-search /deep/ .el-input__inner {
@@ -57,7 +58,7 @@ export default {
   //border-bottom-left-radius: 20px;
   padding-right: 0;
   border-right: none;
-  width: 150px;
+  width: 180px;
   height: 32px;
   transition: all 0.2s linear;
 
