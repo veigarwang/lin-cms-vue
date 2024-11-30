@@ -1,40 +1,29 @@
 <template>
   <div class="container">
-    <div class="title">
-      <span v-if="!edit_item_id" class="id">新增词条</span><span v-else class="id">修改词条 - ID: {{ item_id }}</span>
-      <span v-if="edit_item_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一条 </span>
-      <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一条 </span>
-      <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
-      <span v-if="!edit_item_id" class="save" @click="submitForm('form', true)" :loading="loading">
-        <i class="el-icon-finished"></i> 连续新增
-      </span>
-      <span class="save" @click="submitForm('form', false)" :loading="loading">
-        <i class="el-icon-check"></i> 保存
-      </span>
-    </div>
+    <sticky-top>
+      <div class="title">
+        <span v-if="!edit_item_id" class="id">新增词条</span><span v-else class="id">修改词条 - ID: {{ item_id }}</span>
+        <span v-if="edit_item_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一条 </span>
+        <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一条 </span>
+        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
+        <span v-if="!edit_item_id" class="save" @click="submitForm('form', true)" :loading="loading">
+          <i class="el-icon-finished"></i> 连续新增
+        </span>
+        <span class="save" @click="submitForm('form', false)" :loading="loading">
+          <i class="el-icon-check"></i> 保存
+        </span>
+      </div>
+    </sticky-top>
     <el-divider></el-divider>
     <div class="wrap">
       <el-row>
         <el-col>
-          <el-form
-            :model="form"
-            status-icon
-            ref="form"
-            label-width="100px"
-            v-loading="loading"
-            :rules="rules"
-            @submit.native.prevent
-          >
+          <el-form :model="form" status-icon ref="form" label-width="100px" v-loading="loading" :rules="rules"
+            @submit.native.prevent>
             <el-col :span="6">
               <el-form-item label="词条图片" prop="picture">
-                <upload-imgs
-                  ref="uploadEle1"
-                  :rules="rules"
-                  :multiple="false"
-                  :value="picturePreview"
-                  :max-num="1"
-                  accept="image/png,image/jpeg,image/gif,image/jpg"
-                />
+                <upload-imgs ref="uploadEle1" :rules="rules" :multiple="false" :value="picturePreview" :max-num="1"
+                  accept="image/png,image/jpeg,image/gif,image/jpg" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -65,12 +54,8 @@
             <el-col :span="6">
               <el-form-item label="所属类别" prop="item_type">
                 <el-select v-model="form.item_type" filterable placeholder="请选择所属类别">
-                  <el-option
-                    v-for="item in item_types"
-                    :key="Number(item.item_code)"
-                    :label="item.item_name"
-                    :value="Number(item.item_code)"
-                  ></el-option>
+                  <el-option v-for="item in item_types" :key="Number(item.item_code)" :label="item.item_name"
+                    :value="Number(item.item_code)"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -96,70 +81,44 @@
             </el-col>
             <el-col :span="24">
               <el-form-item label="经文" prop="original_text">
-                <el-input
-                  size="medium"
-                  type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 3 }"
-                  placeholder="请输入经文"
-                  v-model="form.original_text"
-                >
+                <el-input size="medium" type="textarea" :autosize="{ minRows: 2, maxRows: 3 }" placeholder="请输入经文"
+                  v-model="form.original_text">
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="郭注" prop="guozhu">
-                <el-input
-                  size="medium"
-                  type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 4 }"
-                  placeholder="请输入郭注"
-                  v-model="form.guozhu"
-                >
+                <el-input size="medium" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" placeholder="请输入郭注"
+                  v-model="form.guozhu">
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="图赞" prop="tuzan">
-                <el-input
-                  size="medium"
-                  type="textarea"
-                  :autosize="{ minRows: 1, maxRows: 2 }"
-                  placeholder="请输入图赞"
-                  v-model="form.tuzan"
-                >
+                <el-input size="medium" type="textarea" :autosize="{ minRows: 1, maxRows: 2 }" placeholder="请输入图赞"
+                  v-model="form.tuzan">
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="集解" prop="jijie">
-                <el-input
-                  size="medium"
-                  type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 3 }"
-                  placeholder="请输入集解"
-                  v-model="form.jijie"
-                >
+                <el-input size="medium" type="textarea" :autosize="{ minRows: 2, maxRows: 3 }" placeholder="请输入集解"
+                  v-model="form.jijie">
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="聖解" prop="remarks">
-                <el-input
-                  size="medium"
-                  type="textarea"
-                  :autosize="{ minRows: 1, maxRows: 2 }"
-                  placeholder="请输入聖解"
-                  v-model="form.remarks"
-                >
+                <el-input size="medium" type="textarea" :autosize="{ minRows: 1, maxRows: 2 }" placeholder="请输入聖解"
+                  v-model="form.remarks">
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item class="submit">
                 <el-button type="primary" @click="submitForm('form', false)" :loading="loading">保 存</el-button>
-                <el-button type="primary" v-if="!edit_item_id" @click="submitForm('form', true)" :loading="loading"
-                  >连续新增</el-button
-                >
+                <el-button type="primary" v-if="!edit_item_id" @click="submitForm('form', true)"
+                  :loading="loading">连续新增</el-button>
                 <el-button v-if="!edit_item_id" @click="resetForm('form')">重 置</el-button>
               </el-form-item>
             </el-col>
@@ -306,49 +265,49 @@ export default {
           this.form.item_type = Number(this.item_types[14].item_code)
       }, 1000),
     ),
-    this.$watch(
-      'form.original_text',
-      Utils.debounce(func => {
-        while (this.form.original_text.indexOf(' ') > -1)
-          this.form.original_text = this.form.original_text.replace(' ', '')
-        var reg = /山海經·(.*?)經/gms
-        if (this.form.original_text.search(reg) !== -1) {
-          var array = this.form.original_text.match(reg)
-          var res = []
-          array.forEach(element => {
-            var item = element.replace(/山海經·/, '')
-            if (res.indexOf(item) == -1) res.push(element.replace(/山海經·/, ''))
-          })
-          this.form.provenance = res.toString()
+      this.$watch(
+        'form.original_text',
+        Utils.debounce(func => {
+          while (this.form.original_text.indexOf(' ') > -1)
+            this.form.original_text = this.form.original_text.replace(' ', '')
+          var reg = /山海經·(.*?)經/gms
+          if (this.form.original_text.search(reg) !== -1) {
+            var array = this.form.original_text.match(reg)
+            var res = []
+            array.forEach(element => {
+              var item = element.replace(/山海經·/, '')
+              if (res.indexOf(item) == -1) res.push(element.replace(/山海經·/, ''))
+            })
+            this.form.provenance = res.toString()
+            //reg.exec(this.form.original_text).toString()
+          }
+        }, 1000),
+      ),
+      this.$watch(
+        'form.guozhu',
+        Utils.debounce(func => {
+          if (
+            this.form.guozhu.indexOf('，郭璞注：『') > -1 ||
+            this.form.guozhu.indexOf('。郭璞注：『') > -1 ||
+            this.form.guozhu.indexOf('、郭璞注：『') > -1 ||
+            this.form.guozhu.indexOf('郭璞注：『') > -1 ||
+            this.form.guozhu.indexOf('』』') > -1 ||
+            this.form.guozhu.indexOf(' ') > -1
+          ) {
+            this.form.guozhu =
+              this.form.guozhu
+                .replace('，郭璞注：『', '：')
+                .replace('。郭璞注：『', '：')
+                .replace('、郭璞注：『', '：')
+                .replace('郭璞注：『', '：')
+                .replace('「', '『')
+                .replace('」', '』')
+                .replace('』』', '』')
+                .replace(' ', '') + '\n'
+          }
           //reg.exec(this.form.original_text).toString()
-        }
-      }, 1000),
-    ),
-    this.$watch(
-      'form.guozhu',
-      Utils.debounce(func => {
-        if (
-          this.form.guozhu.indexOf('，郭璞注：『') > -1 ||
-          this.form.guozhu.indexOf('。郭璞注：『') > -1 ||
-          this.form.guozhu.indexOf('、郭璞注：『') > -1 ||
-          this.form.guozhu.indexOf('郭璞注：『') > -1 ||
-          this.form.guozhu.indexOf('』』') > -1 ||
-          this.form.guozhu.indexOf(' ') > -1
-        ) {
-          this.form.guozhu =
-            this.form.guozhu
-              .replace('，郭璞注：『', '：')
-              .replace('。郭璞注：『', '：')
-              .replace('、郭璞注：『', '：')
-              .replace('郭璞注：『', '：')
-              .replace('「', '『')
-              .replace('」', '』')
-              .replace('』』', '』')
-              .replace(' ', '') + '\n'
-        }
-        //reg.exec(this.form.original_text).toString()
-      }, 1000),
-    )
+        }, 1000),
+      )
     this.$watch(
       'form.alias',
       Utils.debounce(func => {
@@ -459,7 +418,9 @@ export default {
           this.form = await encyclopedia.getEncyclopedia(this.item_id)
           this.item_id = this.form.id
           break
-        } catch (error) {}
+        } catch (error) {
+          this.item_id = this.item_id + 1
+        }
       }
     },
     async next() {
@@ -468,8 +429,13 @@ export default {
         this.firstLoad = true
         this.form = await encyclopedia.getEncyclopedia(this.item_id)
       } catch (error) {
-        this.item_id = this.item_id + 1
-        this.form = await encyclopedia.getEncyclopedia(this.item_id)
+        try {
+          this.item_id = this.item_id + 1
+          this.form = await encyclopedia.getEncyclopedia(this.item_id)
+        }
+        catch (error) {
+          this.item_id = this.item_id - 2
+        }
       }
       this.item_id = this.form.id
     },
@@ -482,22 +448,27 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/style/form.scss';
+
 .el-divider--horizontal {
   margin: 0;
 }
 
 .container {
   .title {
+    padding: 0 20px;
+
     .id {
       float: left;
       margin-left: 10px;
     }
+
     .previous {
       //float: left;
       margin-left: 30px;
       cursor: pointer;
       z-index: 100;
     }
+
     .next {
       //float: left;
       margin-left: 30px;
@@ -510,6 +481,7 @@ export default {
       margin-right: 40px;
       cursor: pointer;
     }
+
     .back {
       float: right;
       margin-right: 10px;
@@ -518,7 +490,7 @@ export default {
   }
 
   .wrap {
-    padding: 20px;
+    padding: 30px 60px;
   }
 
   .submit {
@@ -529,11 +501,13 @@ export default {
 .el-rate {
   display: inline-block;
 }
+
 .el-date-editor.el-input,
 .el-date-editor.el-input__inner,
-.el-form-item__content > .el-select {
+.el-form-item__content>.el-select {
   width: 100%;
 }
+
 .input-with-select /deep/ .el-input-group__prepend {
   background-color: #fff;
   width: 50px;

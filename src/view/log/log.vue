@@ -7,25 +7,15 @@
         </div>
         <div class="header-right" v-permission="'搜索日志'">
           <lin-search @query="onQueryChange" ref="searchKeyword" />
-          <el-dropdown
-            size="medium"
-            style="margin: 0 10px"
-            @command="handleCommand"
-            v-permission="'查询日志记录的用户'"
-          >
+          <el-dropdown size="medium" style="margin: 0 10px" @command="handleCommand" v-permission="'查询日志记录的用户'">
             <el-button size="medium">
               {{ searchUser ? searchUser : '全部人员' }}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
-              <el-dropdown-item
-                icon="el-icon-user-solid"
-                v-for="(user, index) in users"
-                :key="index"
-                :command="[user]"
-                >{{ user }}</el-dropdown-item
-              >
+              <el-dropdown-item icon="el-icon-user-solid" v-for="(user, index) in users" :key="index"
+                :command="[user]">{{ user }}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
@@ -37,8 +27,7 @@
       <div class="search" v-if="keyword">
         <p class="search-tip">
           搜索“
-          <span class="search-keyword">{{ keyword }}</span
-          >”， 找到 <span class="search-num">{{ totalCount }}</span> 条日志信息
+          <span class="search-keyword">{{ keyword }}</span>”， 找到 <span class="search-num">{{ totalCount }}</span> 条日志信息
         </p>
         <button class="search-back" @click="backInit">返回全部日志</button>
       </div>
@@ -48,11 +37,19 @@
         <section v-for="log in logs" :key="log.id">
           <span class="point-time"></span>
           <aside>
-            <p class="things">{{ log.username }}{{ log.message }}</p>
-            <p class="brief">
-              <span class="text-yellow"></span>
-              {{ log.create_time | dateTimeFormatter }}
-            </p>
+            <el-card style="margin-bottom:50px;">
+              <el-collapse>
+                <div class="things">{{ log.username }}{{ log.message }}
+                  <el-collapse-item style="display: block; float: right" v-if="log.execute_param" title="查看参数" name="2">
+                    {{ log.execute_param }}
+                  </el-collapse-item>
+                </div>
+              </el-collapse>
+              <p class="brief">
+                <span class="text-yellow"></span>
+                {{ log.create_time | dateTimeFormatter }}
+              </p>
+            </el-card>
           </aside>
         </section>
       </article>
@@ -280,6 +277,7 @@ export default {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
 .log {
   .log-header {
     display: flex;
@@ -399,6 +397,7 @@ export default {
           margin-left: 30px;
 
           .things {
+            display: block;
             font-size: 14px;
             color: #45526b;
             margin-bottom: 15px;
@@ -430,6 +429,7 @@ export default {
     font-size: 14px;
     margin-left: 28px;
     cursor: pointer;
+
     &.nothing {
       cursor: text;
     }
@@ -447,9 +447,30 @@ export default {
     }
   }
 }
+
 .nothing {
   color: #45526b;
   font-size: 14px;
+}
+
+.content /deep/ .el-collapse {
+  border-top: none;
+  border-bottom: none;
+  cursor: pointer;
+
+  .el-collapse-item__header {
+    border-bottom: none;
+    color: #2f4e8c;
+    //padding-left: calc(100% - 77px);
+  }
+
+  .el-collapse-item__content {
+    background: #e9f0f8;
+    color: #2f4e8c;
+    border-radius: 4px;
+    padding: 20px 20px 20px 20px;
+    margin-bottom: 20px;
+  }
 }
 
 @keyframes spin {

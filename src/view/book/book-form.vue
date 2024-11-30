@@ -1,34 +1,23 @@
 <template>
   <div class="container">
-    <div class="title">
-      <span v-if="!edit_book_id">新增书籍</span><span v-else>修改书籍 - ID: {{ book_id }}</span>
-      <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
-      <span v-if="edit_book_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一本 </span>
-      <span v-if="edit_book_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一本 </span>
-    </div>
+    <sticky-top>
+      <div class="title">
+        <span v-if="!edit_book_id">新增书籍</span><span v-else>修改书籍 - ID: {{ book_id }}</span>
+        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
+        <span v-if="edit_book_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一本 </span>
+        <span v-if="edit_book_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一本 </span>
+      </div>
+    </sticky-top>
     <el-divider></el-divider>
     <div class="wrap">
       <el-row>
         <el-col>
-          <el-form
-            :model="form"
-            status-icon
-            ref="form"
-            label-width="100px"
-            v-loading="loading"
-            :rules="rules"
-            @submit.native.prevent
-          >
+          <el-form :model="form" status-icon ref="form" label-width="100px" v-loading="loading" :rules="rules"
+            @submit.native.prevent>
             <el-col :span="6">
               <el-form-item label="书籍图片" prop="cover">
-                <upload-imgs
-                  ref="uploadEle1"
-                  :rules="rules"
-                  :multiple="false"
-                  :value="coverPreview"
-                  :max-num="1"
-                  accept="image/png,image/jpeg,image/gif,image/jpg"
-                />
+                <upload-imgs ref="uploadEle1" :rules="rules" :multiple="false" :value="coverPreview" :max-num="1"
+                  accept="image/png,image/jpeg,image/gif,image/jpg" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -49,12 +38,8 @@
             <el-col :span="6">
               <el-form-item label="书籍类别" prop="book_type">
                 <el-select v-model="form.book_type" filterable placeholder="请选择书籍类别">
-                  <el-option
-                    v-for="item in book_types"
-                    :key="Number(item.item_code)"
-                    :label="item.item_name"
-                    :value="Number(item.item_code)"
-                  ></el-option>
+                  <el-option v-for="item in book_types" :key="Number(item.item_code)" :label="item.item_name"
+                    :value="Number(item.item_code)"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -62,12 +47,8 @@
               <el-form-item label="类型/作者" prop="author1">
                 <el-input v-model="form.author1" size="medium" class="input-with-select">
                   <el-select v-model="form.author_type1" slot="prepend" placeholder="请选择">
-                    <el-option
-                      v-for="item in author_types"
-                      :key="Number(item.item_code)"
-                      :label="item.item_name"
-                      :value="Number(item.item_code)"
-                    ></el-option>
+                    <el-option v-for="item in author_types" :key="Number(item.item_code)" :label="item.item_name"
+                      :value="Number(item.item_code)"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -76,12 +57,8 @@
               <el-form-item label="类型/作者" prop="author2">
                 <el-input v-model="form.author2" size="medium" class="input-with-select">
                   <el-select v-model="form.author_type2" slot="prepend" placeholder="请选择">
-                    <el-option
-                      v-for="item in author_types"
-                      :key="Number(item.item_code)"
-                      :label="item.item_name"
-                      :value="Number(item.item_code)"
-                    ></el-option>
+                    <el-option v-for="item in author_types" :key="Number(item.item_code)" :label="item.item_name"
+                      :value="Number(item.item_code)"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -90,12 +67,8 @@
               <el-form-item label="类型/作者" prop="author3">
                 <el-input v-model="form.author3" size="medium" class="input-with-select">
                   <el-select v-model="form.author_type3" slot="prepend" placeholder="请选择">
-                    <el-option
-                      v-for="item in author_types"
-                      :key="Number(item.item_code)"
-                      :label="item.item_name"
-                      :value="Number(item.item_code)"
-                    ></el-option>
+                    <el-option v-for="item in author_types" :key="Number(item.item_code)" :label="item.item_name"
+                      :value="Number(item.item_code)"></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -147,13 +120,8 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="购买日期" prop="date_purchased">
-                <el-date-picker
-                  v-model="form.date_purchased"
-                  type="date"
-                  placeholder="选择购买日期"
-                  value-format="timestamp"
-                  :picker-options="pickerOptions"
-                >
+                <el-date-picker v-model="form.date_purchased" type="date" placeholder="选择购买日期" value-format="timestamp"
+                  :picker-options="pickerOptions">
                 </el-date-picker>
               </el-form-item>
             </el-col>
@@ -179,13 +147,8 @@
             </el-col>
             <el-col :span="24" v-show="form.is_read">
               <el-form-item label="读后感" prop="summary">
-                <el-input
-                  size="medium"
-                  type="textarea"
-                  :autosize="{ minRows: 4, maxRows: 8 }"
-                  placeholder="请输入读后感"
-                  v-model="form.summary"
-                >
+                <el-input size="medium" type="textarea" :autosize="{ minRows: 4, maxRows: 8 }" placeholder="请输入读后感"
+                  v-model="form.summary">
                 </el-input>
               </el-form-item>
             </el-col>
@@ -360,16 +323,19 @@ export default {
     },
     async previous() {
       try {
-        this.book_id = this.book_id - 1
-        this.form = await book.getBook(this.book_id)
-        this.coverPreview.length = 0
-        if (this.form.cover) {
-          this.coverPreview.push({
-            id: this.form.id,
-            display: this.form.cover,
-            src: this.form.cover,
-            imgId: this.form.id,
-          })
+        while (this.item_id > 1) {
+          this.book_id = this.book_id - 1
+          this.form = await book.getBook(this.book_id)
+          this.coverPreview.length = 0
+          if (this.form.cover) {
+            this.coverPreview.push({
+              id: this.form.id,
+              display: this.form.cover,
+              src: this.form.cover,
+              imgId: this.form.id,
+            })
+            break;
+          }
         }
       } catch (error) {
         this.book_id = this.book_id + 1
@@ -401,24 +367,29 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/style/form.scss';
+
 .el-divider--horizontal {
   margin: 0;
 }
 
 .container {
   .title {
+    padding: 0 20px;
+
     .previous {
       float: right;
       margin-right: 30px;
       cursor: pointer;
       z-index: 100;
     }
+
     .next {
       float: right;
       margin-right: 30px;
       cursor: pointer;
       z-index: -100;
     }
+
     .back {
       float: right;
       margin-right: 40px;
@@ -427,7 +398,7 @@ export default {
   }
 
   .wrap {
-    padding: 20px;
+    padding: 30px 60px;
   }
 
   .submit {
@@ -438,11 +409,13 @@ export default {
 .el-rate {
   display: inline-block;
 }
+
 .el-date-editor.el-input,
 .el-date-editor.el-input__inner,
-.el-form-item__content > .el-select {
+.el-form-item__content>.el-select {
   width: 100%;
 }
+
 .input-with-select /deep/ .el-input-group__prepend {
   background-color: #fff;
   width: 50px;

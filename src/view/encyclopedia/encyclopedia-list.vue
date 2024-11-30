@@ -2,73 +2,41 @@
   <div>
     <!-- 列表页面 -->
     <div class="container" v-show="!showForm">
-      <div class="header">
-        <div class="header-left">
-          <p class="title">词条列表</p>
+      <sticky-top>
+        <div class="header">
+          <div class="header-left">
+            <p class="title">词条列表</p>
+          </div>
+          <div class="header-right">
+            <el-select size="small" v-model="item_type" filterable placeholder="筛选类别" @change="handleChange" clearable
+              style="width: 100px ;margin-right: 10px">
+              <el-option v-for="item in item_types" :key="Number(item.item_code)" :label="item.item_name"
+                :value="Number(item.item_code)"></el-option>
+            </el-select>
+            <lin-search @query="onQueryChange" placeholder="请输入词条名" size="small" />
+            <el-button type="primary" icon="el-icon-plus" v-permission="'新增词条'" style="margin-left: 10px" @click="() => {
+              ; (showForm = true), (this.edit_item_id = null)
+            }
+              ">新增</el-button>
+            <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
+            <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
+          </div>
         </div>
-        <div class="header-right">
-          <el-select
-            size="small"
-            v-model="item_type"
-            filterable 
-            placeholder="筛选类别"
-            @change="handleChange"
-            clearable
-            style="width: 100px ;margin-right: 10px"
-          >
-            <el-option
-              v-for="item in item_types"
-              :key="Number(item.item_code)"
-              :label="item.item_name"
-              :value="Number(item.item_code)"
-            ></el-option>
-          </el-select>
-          <lin-search @query="onQueryChange" placeholder="请输入词条名" size="small" />
-          <el-button
-            type="primary"
-            icon="el-icon-plus"
-            v-permission="'新增词条'"
-            style="margin-left: 10px"
-            @click="
-              () => {
-                ;(showForm = true), (this.edit_item_id = null)
-              }
-            "
-            >新增</el-button
-          >
-          <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
-          <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
-        </div>
-      </div>
+      </sticky-top>
       <!-- 表格 -->
-      <lin-table
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        :pagination="pagination"
-        @handleEdit="handleEdit"
-        @handleDelete="handleDelete"
-        @currentChange="handleCurrentPageChange"
-        @sizeChange="handlePageSizeChange"
-        @row-click="rowClick"
-        v-loading="loading"
-      >
+      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :pagination="pagination"
+        @handleEdit="handleEdit" @handleDelete="handleDelete" @currentChange="handleCurrentPageChange"
+        @sizeChange="handlePageSizeChange" @row-click="rowClick" v-loading="loading">
         <template v-slot:name="scope">
-          <span
-            >{{ scope.row.name
-            }}{{ scope.row.alias !== null && scope.row.alias !== '' ? '（' + scope.row.alias + '）' : '' }}</span
-          >
+          <span>{{ scope.row.name
+            }}{{ scope.row.alias !== null && scope.row.alias !== '' ? '（' + scope.row.alias + '）' : '' }}</span>
         </template>
       </lin-table>
     </div>
 
     <!-- 编辑页面 -->
-    <encyclopedia-form
-      v-if="showForm"
-      @editClose="editClose"
-      :edit_item_id="edit_item_id"
-      :last_provenance="last_provenance"
-    ></encyclopedia-form>
+    <encyclopedia-form v-if="showForm" @editClose="editClose" :edit_item_id="edit_item_id"
+      :last_provenance="last_provenance"></encyclopedia-form>
   </div>
 </template>
 
@@ -181,7 +149,7 @@ export default {
         this.getEncyclopedias()
         this.loading = false
         return
-      }      
+      }
       this.getEncyclopedias()
       this.loading = false
     },
@@ -189,7 +157,7 @@ export default {
       this.showForm = true
       this.edit_item_id = val.row.id
     },
-    handleDelete(val) {      
+    handleDelete(val) {
       this.$confirm('此操作将永久删除该词条, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -205,7 +173,7 @@ export default {
             message: `${res.message}`,
           })
         }
-      })      
+      })
     },
     async refresh() {
       this.loading = true
@@ -213,7 +181,7 @@ export default {
       this.loading = false
       this.$message.success('刷新成功')
     },
-    rowClick() {},
+    rowClick() { },
     editClose() {
       this.loading = true
       this.showForm = false
@@ -251,9 +219,8 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  padding: 0 30px;
-
   .header {
+    padding: 0 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -278,6 +245,11 @@ export default {
       align-items: center;
     }
   }
+
+  .lin-table {
+    padding: 30px 60px;
+  }
+
   .pagination {
     display: flex;
     justify-content: flex-end;

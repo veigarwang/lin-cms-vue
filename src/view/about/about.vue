@@ -143,13 +143,8 @@
         <div class="article-title">更新历史</div>
         <div class="article-list">
           <el-timeline>
-            <el-timeline-item
-              v-for="(activity, index) in activities"
-              :key="index"
-              :type="activity.type"
-              :timestamp="activity.timestamp"
-              placement="top"
-            >
+            <el-timeline-item v-for="(activity, index) in activities" :key="index" :type="activity.type"
+              :timestamp="activity.timestamp" placement="top">
               <el-card>
                 <h4>{{ activity.title }}</h4>
                 <div style="line-height: 2" v-for="(content, index) in activity.content" :key="index">
@@ -223,6 +218,17 @@ export default {
       updatedEntryTotal: 0,
       activities: [
         {
+          title: 'v0.99',
+          content: [
+            { entry: '增加显示系统日志的详细参数', label: '新增', color: 'green' },
+            { entry: '修复系统日志未能正确记录时间的问题', label: '修正', color: 'orange' },
+            { entry: '固定编辑页面的操作栏', label: '改善', color: 'blueviolet' },
+          ],
+          timestamp: '2024-11-27 14:20',
+          size: 'large',
+          type: 'primary',
+          //icon: 'el-icon-more',
+        }, {
           title: 'v0.98',
           content: [
             { entry: '增加显示近日更新词条总数', label: '新增', color: 'green' },
@@ -234,12 +240,8 @@ export default {
             { entry: '修复在字典类别列表页面先编辑任一项后再新增类别时，弹窗会显示上一次编辑项信息的问题', label: '修正', color: 'orange' },
             { entry: '修复在修改书籍页面多次保存时，购买日期的格式被错误更新的问题', label: '修正', color: 'orange' },
             { entry: '修复在修改书籍页面多次保存时，书籍图片会被错误删除的问题', label: '修正', color: 'orange' },
-            //{ entry: '从编辑视图返回列表视图后，最后一行的操作按钮显示不完整', label: '待修', color: 'red' }
           ],
           timestamp: '2024-06-20 01:37',
-          size: 'large',
-          type: 'primary',
-          //icon: 'el-icon-more',
         },
         {
           title: 'v0.97',
@@ -256,7 +258,7 @@ export default {
             { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet' },
             { entry: '对集解增加单双引号自动修正功能', label: '改善', color: 'blueviolet' },
             { entry: '更新部分提示信息以使其更加明确', label: '改善', color: 'blueviolet' },
-            
+
           ],
           timestamp: '2023-03-25 13:35',
         },
@@ -345,7 +347,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.el-card__body > h4 {
+.el-card__body>h4 {
   margin-block-start: 0;
   margin-block-end: 0.75em;
 }
@@ -360,11 +362,13 @@ export default {
 
 .container {
   padding: 20px;
+
   .lin-info {
     display: flex;
     flex: 1;
     height: 160px;
     width: 100%;
+
     .lin-info-left {
       position: relative;
       width: 690px;
@@ -372,23 +376,28 @@ export default {
       background: rgba(69, 119, 255, 1);
       box-shadow: 0px 2px 14px 0px rgba(243, 243, 243, 1);
       border-radius: 8px;
+
       .welcome {
         margin: 28px 0 0 30px;
+
         .welcome-title {
           width: 366px;
           height: 31px;
         }
+
         .subtitle {
           display: flex;
           flex-direction: column;
           margin-top: 16px;
           color: #fff;
+
           .guide {
             margin-right: 20px;
             font-size: 14px;
             font-weight: 400;
             line-height: 20px;
           }
+
           .link {
             margin-top: 6px;
             width: 160px;
@@ -401,6 +410,7 @@ export default {
           }
         }
       }
+
       .welcome-bg {
         position: absolute;
         bottom: 0;
@@ -409,27 +419,33 @@ export default {
         height: 121px;
       }
     }
+
     .lin-info-right {
       flex: 1;
       margin-left: 20px;
       height: 100%;
       display: flex;
       flex-direction: column;
+
       .team-detail {
         position: relative;
         height: 160px;
         background: rgba(255, 176, 139, 1);
         box-shadow: 0px 2px 14px 0px rgba(243, 243, 243, 1);
         border-radius: 8px;
+
         .team-box {
           margin: 20px 0 0 22px;
+
           .team-ul {
             margin-top: 15px;
+
             li {
               height: 20px;
               line-height: 20px;
               margin-bottom: 15px;
               font-size: 14px;
+
               .shadow-box {
                 position: relative;
                 display: inline-block;
@@ -439,6 +455,7 @@ export default {
                 border-radius: 14px;
                 background-color: #fff;
                 transform: translateY(2px);
+
                 .team-shadow {
                   position: absolute;
                   top: 25%;
@@ -450,6 +467,7 @@ export default {
                   background-color: #ffb9a4;
                 }
               }
+
               .team-role {
                 display: inline-block;
                 width: 30px;
@@ -457,11 +475,14 @@ export default {
                 font-weight: 400;
                 color: #45526b;
               }
+
               .team-name {
                 font-weight: 400;
                 color: #fff;
+
                 ul {
                   display: inline;
+
                   li {
                     display: inline;
                     margin-right: 15px;
@@ -471,6 +492,7 @@ export default {
             }
           }
         }
+
         .team-icon {
           position: absolute;
           top: 25%;
@@ -482,11 +504,13 @@ export default {
           align-items: center;
           background-color: #fff;
           box-shadow: 0 0 10px 0 #cfd5e3;
+
           img {
             width: 62px;
             height: 62px;
           }
         }
+
         .team-label {
           position: absolute;
           top: 73%;
@@ -499,11 +523,13 @@ export default {
       }
     }
   }
+
   .quantity-statistics {
     display: flex;
     justify-content: space-between;
     //margin-top: 20px;
     height: 90px;
+
     .quantity-item {
       display: flex;
       width: 24%;
@@ -511,10 +537,13 @@ export default {
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 2px 14px 0px rgba(243, 243, 243, 1);
       border-radius: 8px;
+
       .quantity-detail {
         flex: 1;
+
         .quantity-detail-box {
           margin: 12px 0 0 30px;
+
           .quantity-title {
             margin-bottom: 2px;
             height: 20px;
@@ -523,11 +552,13 @@ export default {
             font-size: 14px;
             font-weight: 400;
           }
+
           .quantity-border-line {
             width: 108px;
             height: 2px;
             background: rgba(73, 84, 104, 1);
           }
+
           .quantity {
             margin-top: 7px;
             height: 48px;
@@ -538,6 +569,7 @@ export default {
           }
         }
       }
+
       .quantity-icon {
         display: flex;
         justify-content: center;
@@ -547,6 +579,7 @@ export default {
         background: rgba(69, 119, 255, 0.1);
         border-top-right-radius: 8px;
         border-bottom-right-radius: 8px;
+
         img {
           width: 28px;
           height: 33px;
@@ -554,9 +587,11 @@ export default {
       }
     }
   }
+
   .information {
     margin-top: 20px;
     display: flex;
+
     .personal {
       width: 320px;
       height: 100%;
@@ -564,6 +599,7 @@ export default {
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 2px 14px 0px rgba(243, 243, 243, 1);
       border-radius: 8px;
+
       .personal-title {
         margin: 20px 0 10px 20px;
         height: 22px;
@@ -572,6 +608,7 @@ export default {
         color: #596c8e;
         font-size: 16px;
       }
+
       .personal-avatar {
         width: 140px;
         height: 140px;
@@ -579,27 +616,34 @@ export default {
         border-radius: 75px;
         box-shadow: 0 0 30px 0 #cfd5e3;
       }
+
       .personal-influence {
         display: flex;
         justify-content: space-between;
         padding: 0 30px 40px;
+
         .personal-influence-item {
           display: flex;
           flex-direction: column;
           align-items: center;
+
           .personal-influence-num {
             font-size: 28px;
             line-height: 34px;
+
             &.color1 {
               color: #00c292;
             }
+
             &.color2 {
               color: #fec108;
             }
+
             &.color3 {
               color: #03a9f3;
             }
           }
+
           .personal-influece-label {
             font-size: 12px;
             font-weight: 400;
@@ -608,18 +652,22 @@ export default {
           }
         }
       }
+
       .personal-tabs {
         margin-bottom: 20px;
       }
+
       .personal-tabs /deep/ .is-top {
         width: 320px;
         display: flex;
         justify-content: space-around;
       }
+
       .personal-tabs /deep/ .el-tabs__content {
         text-indent: 20px;
       }
     }
+
     .article {
       flex: 1;
       height: 100%;
@@ -627,6 +675,7 @@ export default {
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 2px 14px 0px rgba(243, 243, 243, 1);
       border-radius: 8px;
+
       .article-title {
         height: 22px;
         line-height: 22px;
@@ -635,29 +684,36 @@ export default {
         font-size: 16px;
         margin-bottom: 20px;
       }
+
       .article-list {
+
         //cursor: pointer;
-        .el-tag + .el-tag {
+        .el-tag+.el-tag {
           margin-left: 10px;
         }
+
         .article-item {
           display: flex;
           flex-direction: row;
           justify-content: flex-start;
+
           .article-thumb {
             width: 120px;
             height: 120px;
             border-radius: 8px;
             margin-right: 30px;
           }
+
           .article-detail {
             flex: 1;
             border-bottom: 1px #ecedef solid;
             margin-bottom: 20px;
+
             &.article-last {
               border-bottom: none;
               margin-bottom: 0;
             }
+
             .article-detail-title {
               height: 22px;
               font-size: 16px;
@@ -665,6 +721,7 @@ export default {
               color: rgba(69, 82, 107, 1);
               line-height: 22px;
             }
+
             .article-detail-content {
               margin-top: 10px;
               font-size: 14px;
@@ -673,6 +730,7 @@ export default {
               line-height: 22px;
             }
           }
+
           .article-tool {
             display: flex;
             flex-direction: row;
@@ -682,6 +740,7 @@ export default {
             line-height: 17px;
             font-weight: 400;
             color: #808da3;
+
             .article-about {
               .iconfont {
                 line-height: 17px;
@@ -695,23 +754,29 @@ export default {
     }
   }
 }
+
 @media screen and (max-width: 1200px) {
   .container .lin-info .lin-info-right {
     display: none;
   }
+
   .container .lin-info .lin-info-left {
     width: 100%;
   }
+
   .container .quantity-statistics .quantity-item {
     width: 32%;
+
     &:last-child {
       display: none;
     }
   }
+
   .container .information .personal {
     display: none;
   }
 }
+
 @media screen and (max-width: 1200px) {
   .container .lin-info .lin-info-left {
     width: 100%;
