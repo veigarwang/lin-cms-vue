@@ -7,15 +7,25 @@
         </div>
         <div class="header-right" v-permission="'搜索日志'">
           <lin-search @query="onQueryChange" ref="searchKeyword" />
-          <el-dropdown size="medium" style="margin: 0 10px" @command="handleCommand" v-permission="'查询日志记录的用户'">
+          <el-dropdown
+            size="medium"
+            style="margin: 0 10px"
+            @command="handleCommand"
+            v-permission="'查询日志记录的用户'"
+          >
             <el-button size="medium">
               {{ searchUser ? searchUser : '全部人员' }}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="['全部人员']">全部人员</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-user-solid" v-for="(user, index) in users" :key="index"
-                :command="[user]">{{ user }}</el-dropdown-item>
+              <el-dropdown-item
+                icon="el-icon-user-solid"
+                v-for="(user, index) in users"
+                :key="index"
+                :command="[user]"
+                >{{ user }}</el-dropdown-item
+              >
             </el-dropdown-menu>
           </el-dropdown>
           <lin-date-picker @dateChange="handleDateChange" ref="searchDate" class="date"></lin-date-picker>
@@ -27,7 +37,8 @@
       <div class="search" v-if="keyword">
         <p class="search-tip">
           搜索“
-          <span class="search-keyword">{{ keyword }}</span>”， 找到 <span class="search-num">{{ totalCount }}</span> 条日志信息
+          <span class="search-keyword">{{ keyword }}</span
+          >”， 找到 <span class="search-num">{{ totalCount }}</span> 条日志信息
         </p>
         <button class="search-back" @click="backInit">返回全部日志</button>
       </div>
@@ -37,10 +48,16 @@
         <section v-for="log in logs" :key="log.id">
           <span class="point-time"></span>
           <aside>
-            <el-card style="margin-bottom:50px;">
+            <el-card style="margin-bottom: 50px">
               <el-collapse>
-                <div class="things">{{ log.username }}{{ log.message }}
-                  <el-collapse-item style="display: block; float: right" v-if="log.execute_param" title="查看参数" name="2">
+                <div class="things">
+                  {{ log.username }}{{ log.message }}
+                  <el-collapse-item
+                    style="display: block; float: right"
+                    v-if="log.execute_param"
+                    title="查看参数"
+                    name="2"
+                  >
                     {{ log.execute_param }}
                   </el-collapse-item>
                 </div>
@@ -290,8 +307,8 @@ export default {
       float: left;
 
       .title {
-        height: 59px;
-        line-height: 59px;
+        height: 50px;
+        line-height: 50px;
         color: #4c76af;
         font-size: 16px;
         font-weight: 500;

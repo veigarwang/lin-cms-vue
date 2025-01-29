@@ -41,7 +41,7 @@
     </div>
     <!--表格结束-->
 
-    <item-dialog ref="dialogForm" @ok="refresh"></item-dialog>
+    <item-dialog ref="dialogForm" @ok="editClose"></item-dialog>
   </div>
 </template>
 
@@ -96,6 +96,12 @@ export default {
     async handleEdit(val) {
       this.$refs['dialogForm'].show(val.row)
     },
+    editClose() {
+      this.loading = true
+      this.showForm = false
+      this.getBaseItems()
+      this.loading = false
+    },
     handleDelete(val) {
       let res
       this.$confirm('此操作将永久删除该字典条目, 是否继续?', '提示', {
@@ -122,12 +128,12 @@ export default {
         }
       })
     },
-    async refresh(val) {
+    async refresh() {
       //this.types = await baseApi.getTypes()
       this.loading = true
       await this.getBaseItems()
       this.loading = false
-      if (val) this.$message.success('刷新成功')
+      this.$message.success('刷新成功')
     },
     // 下拉框选择分组
     // async handleChange() {

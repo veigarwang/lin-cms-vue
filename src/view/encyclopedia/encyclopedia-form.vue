@@ -2,7 +2,7 @@
   <div class="container">
     <sticky-top>
       <div class="title">
-        <span v-if="!edit_item_id" class="id">新增词条</span><span v-else class="id">修改词条 - ID: {{ item_id }}</span>
+        <span v-if="!edit_item_id">新增词条</span><span v-else>修改词条 - ID: {{ item_id }}</span>
         <span v-if="edit_item_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一条 </span>
         <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一条 </span>
         <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
@@ -18,12 +18,25 @@
     <div class="wrap">
       <el-row>
         <el-col>
-          <el-form :model="form" status-icon ref="form" label-width="100px" v-loading="loading" :rules="rules"
-            @submit.native.prevent>
+          <el-form
+            :model="form"
+            status-icon
+            ref="form"
+            label-width="100px"
+            v-loading="loading"
+            :rules="rules"
+            @submit.native.prevent
+          >
             <el-col :span="6">
               <el-form-item label="词条图片" prop="picture">
-                <upload-imgs ref="uploadEle1" :rules="rules" :multiple="false" :value="picturePreview" :max-num="1"
-                  accept="image/png,image/jpeg,image/gif,image/jpg" />
+                <upload-imgs
+                  ref="uploadEle1"
+                  :rules="rules"
+                  :multiple="false"
+                  :value="picturePreview"
+                  :max-num="1"
+                  accept="image/png,image/jpeg,image/gif,image/jpg"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -54,8 +67,12 @@
             <el-col :span="6">
               <el-form-item label="所属类别" prop="item_type">
                 <el-select v-model="form.item_type" filterable placeholder="请选择所属类别">
-                  <el-option v-for="item in item_types" :key="Number(item.item_code)" :label="item.item_name"
-                    :value="Number(item.item_code)"></el-option>
+                  <el-option
+                    v-for="item in item_types"
+                    :key="Number(item.item_code)"
+                    :label="item.item_name"
+                    :value="Number(item.item_code)"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -81,44 +98,70 @@
             </el-col>
             <el-col :span="24">
               <el-form-item label="经文" prop="original_text">
-                <el-input size="medium" type="textarea" :autosize="{ minRows: 2, maxRows: 3 }" placeholder="请输入经文"
-                  v-model="form.original_text">
+                <el-input
+                  size="medium"
+                  type="textarea"
+                  :autosize="{ minRows: 2, maxRows: 3 }"
+                  placeholder="请输入经文"
+                  v-model="form.original_text"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="郭注" prop="guozhu">
-                <el-input size="medium" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" placeholder="请输入郭注"
-                  v-model="form.guozhu">
+                <el-input
+                  size="medium"
+                  type="textarea"
+                  :autosize="{ minRows: 2, maxRows: 3 }"
+                  placeholder="请输入郭注"
+                  v-model="form.guozhu"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="图赞" prop="tuzan">
-                <el-input size="medium" type="textarea" :autosize="{ minRows: 1, maxRows: 2 }" placeholder="请输入图赞"
-                  v-model="form.tuzan">
+                <el-input
+                  size="medium"
+                  type="textarea"
+                  :autosize="{ minRows: 1, maxRows: 2 }"
+                  placeholder="请输入图赞"
+                  v-model="form.tuzan"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="集解" prop="jijie">
-                <el-input size="medium" type="textarea" :autosize="{ minRows: 2, maxRows: 3 }" placeholder="请输入集解"
-                  v-model="form.jijie">
+                <el-input
+                  size="medium"
+                  type="textarea"
+                  :autosize="{ minRows: 2, maxRows: 3 }"
+                  placeholder="请输入集解"
+                  v-model="form.jijie"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="聖解" prop="remarks">
-                <el-input size="medium" type="textarea" :autosize="{ minRows: 1, maxRows: 2 }" placeholder="请输入聖解"
-                  v-model="form.remarks">
+                <el-input
+                  size="medium"
+                  type="textarea"
+                  :autosize="{ minRows: 1, maxRows: 2 }"
+                  placeholder="请输入聖解"
+                  v-model="form.remarks"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item class="submit">
                 <el-button type="primary" @click="submitForm('form', false)" :loading="loading">保 存</el-button>
-                <el-button type="primary" v-if="!edit_item_id" @click="submitForm('form', true)"
-                  :loading="loading">连续新增</el-button>
+                <el-button type="primary" v-if="!edit_item_id" @click="submitForm('form', true)" :loading="loading"
+                  >连续新增</el-button
+                >
                 <el-button v-if="!edit_item_id" @click="resetForm('form')">重 置</el-button>
               </el-form-item>
             </el-col>
@@ -199,10 +242,10 @@ export default {
         this.form.name = this.form.name.replace('之水', '水')
         this.form.name = this.form.name.replace('之玉', '玉')
         this.form.name = this.form.name.replace('之國', '國')
-        var res = pinyinUtil.getPinyin(this.form.name, ' ', true, false)
         if (!this.firstLoad || !this.item_id) {
-          this.form.pronunciation = res
+          this.form.pronunciation = pinyinUtil.getPinyin(this.form.name, ' ', true, false)
         } else {
+          console.log('watch: set firstLoad to false')
           this.firstLoad = false
         }
         if (this.form.name.endsWith('山') || this.form.name.endsWith('丘'))
@@ -216,8 +259,7 @@ export default {
           this.form.name.endsWith('海')
         )
           this.form.item_type = Number(this.item_types[1].item_code)
-        else if (this.form.name.endsWith('草'))
-          this.form.item_type = Number(this.item_types[2].item_code)
+        else if (this.form.name.endsWith('草')) this.form.item_type = Number(this.item_types[2].item_code)
         else if (this.form.name.endsWith('木') || this.form.name.endsWith('林') || this.form.name.endsWith('樹'))
           this.form.item_type = Number(this.item_types[3].item_code)
         else if (this.form.name.endsWith('虫') || this.form.name.endsWith('蟲') || this.form.name.endsWith('蛇'))
@@ -246,10 +288,8 @@ export default {
           this.form.name.endsWith('鹿')
         )
           this.form.item_type = Number(this.item_types[7].item_code)
-        else if (this.form.name.endsWith('神'))
-          this.form.item_type = Number(this.item_types[8].item_code)
-        else if (this.form.name.endsWith('人'))
-          this.form.item_type = Number(this.item_types[9].item_code)
+        else if (this.form.name.endsWith('神')) this.form.item_type = Number(this.item_types[8].item_code)
+        else if (this.form.name.endsWith('人')) this.form.item_type = Number(this.item_types[9].item_code)
         else if (this.form.name.endsWith('國') || this.form.name.endsWith('民'))
           this.form.item_type = Number(this.item_types[10].item_code)
         else if (this.form.name.endsWith('玉') || this.form.name.endsWith('碧'))
@@ -411,15 +451,19 @@ export default {
         this.form.original_text = '《山海經·' + this.last_provenance + '》：'
     },
     async previous() {
-      while (this.item_id > 1) {
+      if (this.item_id > 1) {
         try {
           this.item_id = this.item_id - 1
           this.firstLoad = true
           this.form = await encyclopedia.getEncyclopedia(this.item_id)
           this.item_id = this.form.id
-          break
         } catch (error) {
-          this.item_id = this.item_id + 1
+          try {
+            this.item_id = this.item_id - 1
+            this.form = await encyclopedia.getEncyclopedia(this.item_id)
+          } catch (error) {
+            this.item_id = this.item_id + 2
+          }
         }
       }
     },
@@ -432,8 +476,7 @@ export default {
         try {
           this.item_id = this.item_id + 1
           this.form = await encyclopedia.getEncyclopedia(this.item_id)
-        }
-        catch (error) {
+        } catch (error) {
           this.item_id = this.item_id - 2
         }
       }
@@ -455,12 +498,7 @@ export default {
 
 .container {
   .title {
-    padding: 0 20px;
-
-    .id {
-      float: left;
-      margin-left: 10px;
-    }
+    padding: 0 30px;
 
     .previous {
       //float: left;
@@ -478,19 +516,19 @@ export default {
 
     .save {
       float: right;
-      margin-right: 40px;
+      margin-right: 30px;
       cursor: pointer;
     }
 
     .back {
       float: right;
-      margin-right: 10px;
+      margin-right: 0px;
       cursor: pointer;
     }
   }
 
   .wrap {
-    padding: 30px 60px;
+    padding: 20px 30px 0px 10px;
   }
 
   .submit {
@@ -504,7 +542,7 @@ export default {
 
 .el-date-editor.el-input,
 .el-date-editor.el-input__inner,
-.el-form-item__content>.el-select {
+.el-form-item__content > .el-select {
   width: 100%;
 }
 

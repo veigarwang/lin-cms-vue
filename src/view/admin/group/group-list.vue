@@ -23,7 +23,7 @@
       :close-on-click-modal="false"
       class="groupListInfoDialog"
     >
-      <div style="margin-top:-25px;">
+      <div style="margin-top: -25px">
         <el-form
           status-icon
           v-if="dialogFormVisible"
@@ -32,7 +32,7 @@
           :model="form"
           label-position="labelPosition"
           :rules="rules"
-          style="margin-left:-35px;margin-bottom:-35px;margin-top:15px;"
+          style="margin-left: -35px; margin-bottom: -35px; margin-top: 15px"
         >
           <el-form-item label="分组名称" prop="name">
             <el-input size="medium" clearable v-model="form.name"></el-input>
@@ -205,8 +205,8 @@ export default {
   padding: 0 30px;
 
   .title {
-    height: 59px;
-    line-height: 59px;
+    height: 50px;
+    line-height: 50px;
     color: $parent-title-color;
     font-size: 16px;
     font-weight: 500;

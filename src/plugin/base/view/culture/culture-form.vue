@@ -2,10 +2,8 @@
   <div class="container">
     <sticky-top>
       <div class="title">
-        <span>{{$route.params.id==undefined?'新建本地化':'编辑本地化'}}</span>
-        <span class="back" @click="back">
-          <i class="iconfont icon-fanhui"></i> 返回
-        </span>
+        <span>{{ $route.params.id == undefined ? '新建本地化' : '编辑本地化' }}</span>
+        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
       </div>
     </sticky-top>
     <div class="wrap">
@@ -36,24 +34,24 @@
     </div>
     <div>
       <el-col>
-        <div v-if="this.id!=undefined">
+        <div v-if="this.id != undefined">
           <div class="header">
             <div class="header-left">
               <div class="title">
                 <el-button
                   type="primary"
                   plain
-                  @click="()=>{this.$refs['dialogForm'].show({culture_id:this.form.id});}"
-                >添加本地化资源</el-button>
+                  @click="
+                    () => {
+                      this.$refs['dialogForm'].show({ culture_id: this.form.id })
+                    }
+                  "
+                  >添加本地化资源</el-button
+                >
               </div>
             </div>
             <div class="header-right">
-              <el-input
-                size="medium"
-                style="margin-right:10px;"
-                v-model="pagination.key"
-                placeholder="编码"
-              ></el-input>
+              <el-input size="medium" style="margin-right: 10px" v-model="pagination.key" placeholder="编码"></el-input>
               <el-button type="default" icon="el-icon-refresh" @click="getResources">刷新</el-button>
             </div>
           </div>
@@ -203,8 +201,8 @@ export default {
 @import '@/assets/style/list.scss';
 .container {
   .title {
-    height: 59px;
-    line-height: 59px;
+    height: 50px;
+    line-height: 50px;
     color: $parent-title-color;
     font-size: 16px;
     font-weight: 500;

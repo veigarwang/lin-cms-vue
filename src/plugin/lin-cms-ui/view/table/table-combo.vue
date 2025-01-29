@@ -7,7 +7,7 @@
       </div>
       <div class="header-right">
         <lin-search @query="onQueryChange" placeholder="请输入电影名" />
-        <div style="margin-left:30px">
+        <div style="margin-left: 30px">
           <el-button type="primary" @click="dialogTableVisible = !dialogTableVisible">列操作</el-button>
         </div>
       </div>
@@ -153,7 +153,8 @@
               size="mini"
               :key="index"
               @click.native.prevent.stop="buttonMethods(item.func, scope.$index, scope.row)"
-            >{{ item.name }}</el-button>
+              >{{ item.name }}</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -410,8 +411,8 @@ export default {
       float: left;
 
       .title {
-        height: 59px;
-        line-height: 59px;
+        height: 50px;
+        line-height: 50px;
         color: $parent-title-color;
         font-size: 16px;
         font-weight: 500;

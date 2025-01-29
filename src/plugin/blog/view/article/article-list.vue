@@ -6,12 +6,7 @@
           <div class="title">随笔列表管理</div>
         </div>
         <div class="header-right">
-          <el-input
-            size="medium"
-            style="margin-right:10px;"
-            v-model="pagination.title"
-            placeholder="标题"
-          ></el-input>
+          <el-input size="medium" style="margin-right: 10px" v-model="pagination.title" placeholder="标题"></el-input>
           <el-button type="default" icon="el-icon-search" @click="getArticles">查询</el-button>
         </div>
       </div>
@@ -147,7 +142,7 @@ export default {
       {
         prop: 'id',
         label: '状态',
-        customRender: function(row, column) {
+        customRender: function (row, column) {
           let isaudit = format_str(
             '<i title="{0}" class="el-icon-{1}"></i>',
             row.is_audit ? '已审核' : '拉黑',
@@ -171,7 +166,7 @@ export default {
       {
         prop: 'is_audit',
         label: '关键字/来源/摘要/缩略图',
-        customRender: function(row, column) {
+        customRender: function (row, column) {
           let d = format_str(
             '<i class="el-icon-{0}"></i><i class="el-icon-{1}" style="margin-left:10px;"></i><i class="el-icon-{2}" style="margin-left:10px;"></i>',
             row.keywords ? 'check' : 'close',
@@ -188,8 +183,8 @@ export default {
     ] // 设置表头信息
 
     this.operate = [
-      { name: '审核', func: 'handleEdit', type: 'primary',permission:'审核随笔' },
-      { name: '删除', func: 'handleDelete', type: 'danger',permission:'删除随笔'},
+      { name: '审核', func: 'handleEdit', type: 'primary', permission: '审核随笔' },
+      { name: '删除', func: 'handleDelete', type: 'danger', permission: '删除随笔' },
     ]
   },
   beforeDestroy() {},
@@ -209,8 +204,8 @@ export default {
       float: left;
 
       .title {
-        height: 59px;
-        line-height: 59px;
+        height: 50px;
+        line-height: 50px;
         color: #4c76af;
         font-size: 16px;
         font-weight: 500;

@@ -11,12 +11,7 @@ todo: 文件判断使用 serveWorker 优化性能
     <template v-for="(item, i) in itemList">
       <template v-if="item.display">
         <div class="thumb-item" :key="item.id" :style="boxStyle" v-loading="item.loading">
-          <el-image
-            class="thumb-item-img"
-            :src="item.display"
-            :fit="fit"
-            style="width: 100%; height: 100%;"
-          ></el-image>
+          <el-image class="thumb-item-img" :src="item.display" :fit="fit" style="width: 100%; height: 100%"></el-image>
           <div class="info">
             <i
               v-if="item.file"
@@ -26,18 +21,8 @@ todo: 文件判断使用 serveWorker 优化性能
             ></i>
           </div>
           <div class="control">
-            <i
-              v-if="!disabled"
-              class="el-icon-close del"
-              @click.prevent.stop="delItem(item.id)"
-              title="删除"
-            ></i>
-            <div
-              v-if="!disabled"
-              class="preview"
-              title="更换图片"
-              @click.prevent.stop="handleClick(item.id)"
-            >
+            <i v-if="!disabled" class="el-icon-close del" @click.prevent.stop="delItem(item.id)" title="删除"></i>
+            <div v-if="!disabled" class="preview" title="更换图片" @click.prevent.stop="handleClick(item.id)">
               <i class="el-icon-edit"></i>
             </div>
             <div class="control-bottom" v-if="sortable || preview">
@@ -52,7 +37,7 @@ todo: 文件判断使用 serveWorker 优化性能
                 v-if="preview"
                 class="control-bottom-btn el-icon-view"
                 title="预览"
-                style="cursor: pointer;"
+                style="cursor: pointer"
                 @click.stop="previewImg(item, i)"
               ></i>
               <i
@@ -75,8 +60,8 @@ todo: 文件判断使用 serveWorker 优化性能
           @click="handleClick(item.id)"
           @keydown="handleKeydown($event, item.id)"
         >
-          <i class="el-icon-plus" style="font-size: 3em;"></i>
-          <div v-html="rulesTip.join('<br>')" style="margin-top: 1em;"></div>
+          <i class="el-icon-plus" style="font-size: 3em"></i>
+          <div v-html="rulesTip.join('<br>')" style="margin-top: 1em"></div>
         </div>
       </template>
     </template>
@@ -245,12 +230,12 @@ export default {
     /** 每一项宽度 */
     width: {
       type: [Number, String],
-      default: 200,
+      default: 180,
     },
     /** 每一项高度 */
     height: {
       type: [Number, String],
-      default: 200,
+      default: 180,
     },
     /** 是否开启自动上传 */
     autoUpload: {

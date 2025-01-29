@@ -8,35 +8,69 @@
             <p class="title">词条列表</p>
           </div>
           <div class="header-right">
-            <el-select size="small" v-model="item_type" filterable placeholder="筛选类别" @change="handleChange" clearable
-              style="width: 100px ;margin-right: 10px">
-              <el-option v-for="item in item_types" :key="Number(item.item_code)" :label="item.item_name"
-                :value="Number(item.item_code)"></el-option>
+            <el-select
+              size="small"
+              v-model="item_type"
+              filterable
+              placeholder="筛选类别"
+              @change="handleChange"
+              clearable
+              style="width: 100px; margin-right: 10px"
+            >
+              <el-option
+                v-for="item in item_types"
+                :key="Number(item.item_code)"
+                :label="item.item_name"
+                :value="Number(item.item_code)"
+              ></el-option>
             </el-select>
             <lin-search @query="onQueryChange" placeholder="请输入词条名" size="small" />
-            <el-button type="primary" icon="el-icon-plus" v-permission="'新增词条'" style="margin-left: 10px" @click="() => {
-              ; (showForm = true), (this.edit_item_id = null)
-            }
-              ">新增</el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-plus"
+              v-permission="'新增词条'"
+              style="margin-left: 10px"
+              @click="
+                () => {
+                  ;(showForm = true), (this.edit_item_id = null)
+                }
+              "
+              >新增</el-button
+            >
             <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
             <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
           </div>
         </div>
       </sticky-top>
       <!-- 表格 -->
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :pagination="pagination"
-        @handleEdit="handleEdit" @handleDelete="handleDelete" @currentChange="handleCurrentPageChange"
-        @sizeChange="handlePageSizeChange" @row-click="rowClick" v-loading="loading">
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        :pagination="pagination"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        @currentChange="handleCurrentPageChange"
+        @sizeChange="handlePageSizeChange"
+        @row-click="rowClick"
+        v-loading="loading"
+      >
         <template v-slot:name="scope">
-          <span>{{ scope.row.name
-            }}{{ scope.row.alias !== null && scope.row.alias !== '' ? '（' + scope.row.alias + '）' : '' }}</span>
+          <span
+            >{{ scope.row.name
+            }}{{ scope.row.alias !== null && scope.row.alias !== '' ? '（' + scope.row.alias + '）' : '' }}</span
+          >
         </template>
       </lin-table>
     </div>
 
     <!-- 编辑页面 -->
-    <encyclopedia-form v-if="showForm" @editClose="editClose" :edit_item_id="edit_item_id"
-      :last_provenance="last_provenance"></encyclopedia-form>
+    <encyclopedia-form
+      v-if="showForm"
+      @editClose="editClose"
+      :edit_item_id="edit_item_id"
+      :last_provenance="last_provenance"
+    ></encyclopedia-form>
   </div>
 </template>
 
@@ -144,12 +178,7 @@ export default {
     // 搜索
     onQueryChange(query) {
       this.loading = true
-      this.searchKeyword = query.trim()
-      if (!query) {
-        this.getEncyclopedias()
-        this.loading = false
-        return
-      }
+      this.searchKeyword = query.replace(' ', '').trim()
       this.getEncyclopedias()
       this.loading = false
     },
@@ -181,7 +210,7 @@ export default {
       this.loading = false
       this.$message.success('刷新成功')
     },
-    rowClick() { },
+    rowClick() {},
     editClose() {
       this.loading = true
       this.showForm = false
@@ -230,8 +259,8 @@ export default {
       float: left;
 
       .title {
-        height: 59px;
-        line-height: 59px;
+        height: 50px;
+        line-height: 50px;
         color: $parent-title-color;
         font-size: 16px;
         font-weight: 500;
@@ -247,7 +276,7 @@ export default {
   }
 
   .lin-table {
-    padding: 30px 60px;
+    padding: 20px 30px 0px 30px;
   }
 
   .pagination {

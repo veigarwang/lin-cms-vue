@@ -143,8 +143,13 @@
         <div class="article-title">更新历史</div>
         <div class="article-list">
           <el-timeline>
-            <el-timeline-item v-for="(activity, index) in activities" :key="index" :type="activity.type"
-              :timestamp="activity.timestamp" placement="top">
+            <el-timeline-item
+              v-for="(activity, index) in activities"
+              :key="index"
+              :type="activity.type"
+              :timestamp="activity.timestamp"
+              placement="top"
+            >
               <el-card>
                 <h4>{{ activity.title }}</h4>
                 <div style="line-height: 2" v-for="(content, index) in activity.content" :key="index">
@@ -220,15 +225,27 @@ export default {
         {
           title: 'v0.99',
           content: [
+            { entry: '增加书籍管理书架位置字段', label: '新增', color: 'green' },
             { entry: '增加显示系统日志的详细参数', label: '新增', color: 'green' },
             { entry: '修复系统日志未能正确记录时间的问题', label: '修正', color: 'orange' },
+            {
+              entry: '修复在字典类别列表和字典条目列表页面先编辑任一项后再新增类别时，会更新上一次编辑项信息的问题',
+              label: '修正',
+              color: 'orange',
+            },
+            {
+              entry: '移除在字典类别列表和字典条目列表页面新增和编辑完成后的非必要提示信息',
+              label: '改善',
+              color: 'blueviolet',
+            },
             { entry: '固定编辑页面的操作栏', label: '改善', color: 'blueviolet' },
           ],
           timestamp: '2024-11-27 14:20',
           size: 'large',
           type: 'primary',
           //icon: 'el-icon-more',
-        }, {
+        },
+        {
           title: 'v0.98',
           content: [
             { entry: '增加显示近日更新词条总数', label: '新增', color: 'green' },
@@ -236,8 +253,16 @@ export default {
             { entry: '嵌入特定字体以显示部分生僻字', label: '改善', color: 'blueviolet' },
             { entry: '增加对ISBN的格式校验', label: '改善', color: 'blueviolet' },
             { entry: '修复无法正常删除版本号不为0的词条的问题', label: '修正', color: 'orange' },
-            { entry: '修复从编辑视图返回列表视图后，最后一行的操作按钮显示不完整的问题', label: '修正', color: 'orange' },
-            { entry: '修复在字典类别列表页面先编辑任一项后再新增类别时，弹窗会显示上一次编辑项信息的问题', label: '修正', color: 'orange' },
+            {
+              entry: '修复从编辑视图返回列表视图后，最后一行的操作按钮显示不完整的问题',
+              label: '修正',
+              color: 'orange',
+            },
+            {
+              entry: '修复在字典类别列表页面先编辑任一项后再新增类别时，弹窗会显示上一次编辑项信息的问题',
+              label: '修正',
+              color: 'orange',
+            },
             { entry: '修复在修改书籍页面多次保存时，购买日期的格式被错误更新的问题', label: '修正', color: 'orange' },
             { entry: '修复在修改书籍页面多次保存时，书籍图片会被错误删除的问题', label: '修正', color: 'orange' },
           ],
@@ -258,7 +283,6 @@ export default {
             { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet' },
             { entry: '对集解增加单双引号自动修正功能', label: '改善', color: 'blueviolet' },
             { entry: '更新部分提示信息以使其更加明确', label: '改善', color: 'blueviolet' },
-
           ],
           timestamp: '2023-03-25 13:35',
         },
@@ -277,7 +301,7 @@ export default {
           content: [
             { entry: '增加书籍和百科词条的编辑次数', label: '改善', color: 'blueviolet' },
             { entry: '完善系统日志', label: '改善', color: 'blueviolet' },
-            { entry: '修复编辑字典类别后未正常刷新列表的问题', label: '修正', color: 'orange' }
+            { entry: '修复编辑字典类别后未正常刷新列表的问题', label: '修正', color: 'orange' },
           ],
           timestamp: '2022-06-18 22:50',
           type: '',
@@ -347,7 +371,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.el-card__body>h4 {
+.el-card__body > h4 {
   margin-block-start: 0;
   margin-block-end: 0.75em;
 }
@@ -686,9 +710,8 @@ export default {
       }
 
       .article-list {
-
         //cursor: pointer;
-        .el-tag+.el-tag {
+        .el-tag + .el-tag {
           margin-left: 10px;
         }
 

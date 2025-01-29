@@ -11,11 +11,11 @@ aa<template>
               @updatePermissions="updatePermissions"
               @getCacheAuthIds="getCacheAuthIds"
               @updateAllPermissions="updateAllPermissions"
-              style="margin-right:-30px;margin-left:-25px;margin-bottom:-10px;"
+              style="margin-right: -30px; margin-left: -25px; margin-bottom: -10px"
             >
             </group-permissions>
           </div>
-          <div style="padding-left:5px;margin-top: 30px;">
+          <div style="padding-left: 5px; margin-top: 30px">
             <el-button type="primary" @click="confirmEdit">确 定</el-button>
             <el-button @click="goBack">返回</el-button>
           </div>
@@ -86,8 +86,8 @@ export default {
 <style lang="scss" scoped>
 .container {
   .title {
-    height: 59px;
-    line-height: 59px;
+    height: 50px;
+    line-height: 50px;
     color: $parent-title-color;
     font-size: 16px;
     font-weight: 500;

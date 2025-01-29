@@ -2,7 +2,7 @@
   <div class="container">
     <sticky-top>
       <div class="title">
-        <span v-if="!edit_book_id">新增书籍</span><span v-else>修改书籍 - ID: {{ book_id }}</span>
+        <span v-if="!edit_book_id">新增书籍</span><span v-else>修改书籍 - ID: {{ book_id }} </span>
         <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
         <span v-if="edit_book_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一本 </span>
         <span v-if="edit_book_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一本 </span>
@@ -12,12 +12,25 @@
     <div class="wrap">
       <el-row>
         <el-col>
-          <el-form :model="form" status-icon ref="form" label-width="100px" v-loading="loading" :rules="rules"
-            @submit.native.prevent>
+          <el-form
+            :model="form"
+            status-icon
+            ref="form"
+            label-width="100px"
+            v-loading="loading"
+            :rules="rules"
+            @submit.native.prevent
+          >
             <el-col :span="6">
               <el-form-item label="书籍图片" prop="cover">
-                <upload-imgs ref="uploadEle1" :rules="rules" :multiple="false" :value="coverPreview" :max-num="1"
-                  accept="image/png,image/jpeg,image/gif,image/jpg" />
+                <upload-imgs
+                  ref="uploadEle1"
+                  :rules="rules"
+                  :multiple="false"
+                  :value="coverPreview"
+                  :max-num="1"
+                  accept="image/png,image/jpeg,image/gif,image/jpg"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -38,8 +51,12 @@
             <el-col :span="6">
               <el-form-item label="书籍类别" prop="book_type">
                 <el-select v-model="form.book_type" filterable placeholder="请选择书籍类别">
-                  <el-option v-for="item in book_types" :key="Number(item.item_code)" :label="item.item_name"
-                    :value="Number(item.item_code)"></el-option>
+                  <el-option
+                    v-for="item in book_types"
+                    :key="Number(item.item_code)"
+                    :label="item.item_name"
+                    :value="Number(item.item_code)"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -47,8 +64,12 @@
               <el-form-item label="类型/作者" prop="author1">
                 <el-input v-model="form.author1" size="medium" class="input-with-select">
                   <el-select v-model="form.author_type1" slot="prepend" placeholder="请选择">
-                    <el-option v-for="item in author_types" :key="Number(item.item_code)" :label="item.item_name"
-                      :value="Number(item.item_code)"></el-option>
+                    <el-option
+                      v-for="item in author_types"
+                      :key="Number(item.item_code)"
+                      :label="item.item_name"
+                      :value="Number(item.item_code)"
+                    ></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -57,8 +78,12 @@
               <el-form-item label="类型/作者" prop="author2">
                 <el-input v-model="form.author2" size="medium" class="input-with-select">
                   <el-select v-model="form.author_type2" slot="prepend" placeholder="请选择">
-                    <el-option v-for="item in author_types" :key="Number(item.item_code)" :label="item.item_name"
-                      :value="Number(item.item_code)"></el-option>
+                    <el-option
+                      v-for="item in author_types"
+                      :key="Number(item.item_code)"
+                      :label="item.item_name"
+                      :value="Number(item.item_code)"
+                    ></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -66,9 +91,13 @@
             <el-col :span="6">
               <el-form-item label="类型/作者" prop="author3">
                 <el-input v-model="form.author3" size="medium" class="input-with-select">
-                  <el-select v-model="form.author_type3" slot="prepend" placeholder="请选择">
-                    <el-option v-for="item in author_types" :key="Number(item.item_code)" :label="item.item_name"
-                      :value="Number(item.item_code)"></el-option>
+                  <el-select v-model="form.author_type3" slot="prepend" placeholder="请选择" clearable>
+                    <el-option
+                      v-for="item in author_types"
+                      :key="Number(item.item_code)"
+                      :label="item.item_name"
+                      :value="Number(item.item_code)"
+                    ></el-option>
                   </el-select>
                 </el-input>
               </el-form-item>
@@ -120,9 +149,25 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="购买日期" prop="date_purchased">
-                <el-date-picker v-model="form.date_purchased" type="date" placeholder="选择购买日期" value-format="timestamp"
-                  :picker-options="pickerOptions">
+                <el-date-picker
+                  v-model="form.date_purchased"
+                  type="date"
+                  placeholder="选择购买日期"
+                  value-format="timestamp"
+                  :picker-options="pickerOptions"
+                >
                 </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="书架位置" prop="shelf_location">
+                <el-cascader
+                  expand-trigger="hover"
+                  v-model="form.shelf_location"
+                  placeholder="请选择书架位置"
+                  :options="location_options"
+                  clearable
+                ></el-cascader>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -132,7 +177,7 @@
             </el-col>
             <el-col :span="6" v-show="form.is_read">
               <el-form-item label="评分" prop="rate">
-                <el-rate v-model="form.rate" show-text :texts="texts" :colors="colors3"></el-rate>
+                <el-rate v-model="form.rate" show-text :texts="rateLabel" :colors="rateColors"></el-rate>
               </el-form-item>
             </el-col>
             <el-col :span="6" v-if="edit_book_id">
@@ -147,8 +192,13 @@
             </el-col>
             <el-col :span="24" v-show="form.is_read">
               <el-form-item label="读后感" prop="summary">
-                <el-input size="medium" type="textarea" :autosize="{ minRows: 4, maxRows: 8 }" placeholder="请输入读后感"
-                  v-model="form.summary">
+                <el-input
+                  size="medium"
+                  type="textarea"
+                  :autosize="{ minRows: 4, maxRows: 8 }"
+                  placeholder="请输入读后感"
+                  v-model="form.summary"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
@@ -185,14 +235,16 @@ export default {
     return {
       form: {
         isbn: '',
-        date_purchased: new Date(),
+        date_purchased: 0,
         volumes: '1',
         is_read: false,
+        shelf_location: [],
         summary: '',
       },
       book_id: '',
       book_types: [],
       author_types: [],
+      location_options: [],
       loading: false,
       fit: 'cover',
       rules: {
@@ -209,8 +261,8 @@ export default {
         //date_purchased: [{ required: true, message: '请选择购买日期', trigger: 'change' }],
       },
       coverPreview: [],
-      colors3: { 5: '#FFDD55' },
-      texts: ['极差', '失望', '一般', '满意', '惊喜'],
+      rateColors: { 5: '#FFDD55' },
+      rateLabel: ['极差', '失望', '一般', '满意', '惊喜'],
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now()
@@ -239,6 +291,25 @@ export default {
       }
     }
     //this.form.author_type1 = Number(this.author_types[0].item_code)
+
+    try {
+      let cityArr = await baseApi.getItems({ typeCode: 'City' })
+      const cities = cityArr.filter(city => city.status)
+      let shelfArr = await baseApi.getItems({ typeCode: 'Shelf.Location' })
+      const shelves = shelfArr.filter(shelf => shelf.status)
+      this.location_options = cities.map(city => ({
+        value: city.item_code,
+        label: city.item_name,
+        children: shelves
+          .filter(shelf => shelf.item_name.includes(city.item_name))
+          .map(shelf => ({
+            value: shelf.item_code,
+            label: shelf.item_name.split('|')[1],
+          })),
+      }))
+    } catch (error) {
+      this.$message.error('加载书架位置失败：', error)
+    }
   },
   async mounted() {
     this.loading = true
@@ -246,18 +317,7 @@ export default {
       this.book_id = this.edit_book_id
     }
     if (this.book_id) {
-      this.form = await book.getBook(this.book_id)
-      this.coverPreview.length = 0
-      if (this.form.author_type2 === 0) this.form.author_type2 = ''
-      if (this.form.author_type3 === 0) this.form.author_type3 = ''
-      if (this.form.cover) {
-        this.coverPreview.push({
-          id: this.form.id,
-          display: this.form.cover,
-          src: this.form.cover,
-          imgId: this.form.id,
-        })
-      }
+      await this.getBook()
     }
     this.loading = false
   },
@@ -268,14 +328,27 @@ export default {
           this.loading = true
           if (!this.form.author_type2) this.form.author_type2 = 0
           if (!this.form.author_type3) this.form.author_type3 = 0
-          let t = new Date()
-          t.setTime(this.form.date_purchased + 1000 * 60 * 60 * 8)
-          this.form.date_purchased = t
+
+          if (typeof this.form.date_purchased === 'number') {
+            let t = new Date()
+            t.setTime(this.form.date_purchased + 1000 * 60 * 60 * 8) // UTC+8
+            this.form.date_purchased = t
+          } else if (this.form.date_purchased instanceof Date) {
+            this.form.date_purchased = new Date(this.form.date_purchased.getTime() + 1000 * 60 * 60 * 8)
+          } else {
+            console.error('Invalid date_purchased type:', this.form.date_purchased)
+            this.$message.error('日期格式无效，请重新选择日期')
+            return
+          }
+
           let cover = await this.$refs['uploadEle1'].getValue()
           if (cover.length > 0) {
             this.form.cover = cover[0].src
           } else {
             this.form.cover = ''
+          }
+          if (this.form.shelf_location) {
+            this.form.shelf_location = JSON.stringify(this.form.shelf_location)
           }
           let res
           if (this.book_id) {
@@ -284,13 +357,12 @@ export default {
               if (res.code < window.MAX_SUCCESS_CODE) {
                 this.loading = false
                 this.$message.success(`${res.message}`)
-                this.form = await book.getBook(this.book_id)
+                await this.getBook()
                 //this.$emit('editClose')
               }
             } catch (error) {
               this.loading = false
               this.$message.error('书籍更新失败，请检查输入信息')
-              console.log(error)
             }
           } else {
             try {
@@ -303,7 +375,6 @@ export default {
             } catch (error) {
               this.loading = false
               this.$message.error('书籍新增失败，请检查输入信息')
-              console.log(error)
             }
           }
         } else {
@@ -319,43 +390,59 @@ export default {
       this.form.author_type1 = Number(this.author_types[0].item_code)
       this.form.author_type2 = ''
       this.form.author_type3 = ''
+      this.form.date_purchased = 0
       this.form.is_read = false
+      this.shelf_location = []
+    },
+    async getBook() {
+      this.form = await book.getBook(this.book_id)
+      if (this.form.author_type2 === 0 && (!this.form.author2 || this.form.author2 === '')) {
+        this.form.author_type2 = ''
+      }
+      if (this.form.author_type3 === 0 && (!this.form.author3 || this.form.author3 === '')) {
+        this.form.author_type3 = ''
+      }
+      this.coverPreview.length = 0
+      if (this.form.cover) {
+        this.coverPreview.push({
+          id: this.form.id,
+          display: this.form.cover,
+          src: this.form.cover,
+          imgId: this.form.id,
+        })
+      }
+      if (this.form.shelf_location) {
+        this.form.shelf_location = Array.isArray(this.form.shelf_location)
+          ? this.form.shelf_location
+          : JSON.parse(this.form.shelf_location)
+      }
     },
     async previous() {
       try {
-        while (this.item_id > 1) {
+        if (this.book_id > 1) {
           this.book_id = this.book_id - 1
-          this.form = await book.getBook(this.book_id)
-          this.coverPreview.length = 0
-          if (this.form.cover) {
-            this.coverPreview.push({
-              id: this.form.id,
-              display: this.form.cover,
-              src: this.form.cover,
-              imgId: this.form.id,
-            })
-            break;
-          }
+          await this.getBook()
         }
       } catch (error) {
-        this.book_id = this.book_id + 1
+        try {
+          this.book_id = this.book_id - 1
+          await this.getBook()
+        } catch (error) {
+          this.book_id = this.book_id + 2
+        }
       }
     },
     async next() {
       try {
         this.book_id = this.book_id + 1
-        this.form = await book.getBook(this.book_id)
-        this.coverPreview.length = 0
-        if (this.form.cover) {
-          this.coverPreview.push({
-            id: this.form.id,
-            display: this.form.cover,
-            src: this.form.cover,
-            imgId: this.form.id,
-          })
-        }
+        await this.getBook()
       } catch (error) {
-        this.book_id = this.book_id - 1
+        try {
+          this.book_id = this.book_id + 1
+          await this.getBook()
+        } catch (error) {
+          this.book_id = this.book_id - 2
+        }
       }
     },
     back() {
@@ -374,7 +461,7 @@ export default {
 
 .container {
   .title {
-    padding: 0 20px;
+    padding: 0 30px;
 
     .previous {
       float: right;
@@ -392,13 +479,13 @@ export default {
 
     .back {
       float: right;
-      margin-right: 40px;
+      margin-right: 0px;
       cursor: pointer;
     }
   }
 
   .wrap {
-    padding: 30px 60px;
+    padding: 20px 30px 0px 10px;
   }
 
   .submit {
@@ -412,7 +499,7 @@ export default {
 
 .el-date-editor.el-input,
 .el-date-editor.el-input__inner,
-.el-form-item__content>.el-select {
+.el-form-item__content > .el-select {
   width: 100%;
 }
 

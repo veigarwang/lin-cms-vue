@@ -41,7 +41,7 @@
     <type-item v-if="showForm" @editClose="editClose" :typeCode="typeCode" :typeName="typeName" :baseTypeId="baseTypeId"></type-item>
     <!--表格结束-->
 
-    <type-dialog ref="dialogForm" @ok="refresh"></type-dialog>
+    <type-dialog ref="dialogForm" @ok="editClose"></type-dialog>
   </div>
 </template>
 

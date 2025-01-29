@@ -23,7 +23,7 @@
               <div class="avatar" title="点击修改头像">
                 <img :src="user.avatar || defaultAvatar" alt="头像" />
                 <label class="mask">
-                  <i class="iconfont icon-icon-test" style="font-size: 20px;"></i>
+                  <i class="iconfont icon-icon-test" style="font-size: 20px"></i>
                   <input ref="avatarInput" type="file" accept="image/*" @change="fileChange" />
                 </label>
               </div>
@@ -68,7 +68,7 @@
       custom-class="croppa-dialog"
       center
     >
-      <div style="text-align: center;">
+      <div style="text-align: center">
         <div class="avatar-croppa-container">
           <croppa
             ref="croppa"
@@ -86,7 +86,7 @@
             :initial-image="cropImg"
           ></croppa>
         </div>
-        <div style="margin-top: 1em;">通过鼠标滚轮调节头像大小</div>
+        <div style="margin-top: 1em">通过鼠标滚轮调节头像大小</div>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cropVisible = false" size="small">取 消</el-button>
@@ -371,8 +371,8 @@ export default {
 <style lang="scss" scoped>
 .container {
   .title {
-    height: 59px;
-    line-height: 59px;
+    height: 50px;
+    line-height: 50px;
     color: $parent-title-color;
     font-size: 16px;
     font-weight: 500;

@@ -95,19 +95,14 @@ export default {
       if (record) {
         Object.assign(this.form, record)
         this.id = record.id
-      } else {
-        Object.assign(this.form, {
-          item_code: '',
-          item_name: '',
-          sort_code: 0,
-          base_type_id: '',
-          status: true,
-        })
+      } else {        
         this.id = 0
+        this.$message.error('行信息为空')
       }
       this.dialogFormVisible = true
     },
-    showSubItem(typeId, count) {      
+    showSubItem(typeId, count) {   
+      this.id = 0   
       Object.assign(this.form, {
         item_code: count,
         item_name: '',

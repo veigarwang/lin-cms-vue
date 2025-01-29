@@ -8,37 +8,69 @@
             <p class="title">书籍列表</p>
           </div>
           <div class="header-right">
-            <el-select size="small" v-model="book_type" filterable placeholder="筛选类别" @change="handleChange" clearable
-              style="width: 100px ;margin-right: 10px">
-              <el-option v-for="item in book_types" :key="Number(item.item_code)" :label="item.item_name"
-                :value="Number(item.item_code)"></el-option>
+            <el-select
+              size="small"
+              v-model="book_type"
+              filterable
+              placeholder="筛选类别"
+              @change="handleChange"
+              clearable
+              style="width: 100px; margin-right: 10px"
+            >
+              <el-option
+                v-for="item in book_types"
+                :key="Number(item.item_code)"
+                :label="item.item_name"
+                :value="Number(item.item_code)"
+              ></el-option>
             </el-select>
             <lin-search @query="onQueryChange" placeholder="请输入ISBN/书籍名/作者名" size="small" width="180" />
-            <el-button type="primary" icon="el-icon-plus" v-permission="'新增书籍'" style="margin-left: 10px" @click="() => {
-              ; (showForm = true), (this.edit_book_id = null)
-            }
-              ">新增</el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-plus"
+              v-permission="'新增书籍'"
+              style="margin-left: 10px"
+              @click="
+                () => {
+                  ;(showForm = true), (this.edit_book_id = null)
+                }
+              "
+              >新增</el-button
+            >
             <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
             <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
           </div>
         </div>
       </sticky-top>
       <!-- 表格 -->
-      <lin-table :tableColumn="tableColumn" :tableData="tableData" :operate="operate" :pagination="pagination"
-        @handleEdit="handleEdit" @handleDelete="handleDelete" @currentChange="handleCurrentPageChange"
-        @sizeChange="handlePageSizeChange" @row-click="rowClick" v-loading="loading">
+      <lin-table
+        :tableColumn="tableColumn"
+        :tableData="tableData"
+        :operate="operate"
+        :pagination="pagination"
+        @handleEdit="handleEdit"
+        @handleDelete="handleDelete"
+        @currentChange="handleCurrentPageChange"
+        @sizeChange="handlePageSizeChange"
+        @row-click="rowClick"
+        v-loading="loading"
+      >
         <template v-slot:title="scope">
           <span>{{ '《' + scope.row.title + '》' }}{{ scope.row.subtitle }}</span>
         </template>
         <template v-slot:author="scope">
-          <span>{{ scope.row.author1 }} {{ scope.row.author_type_name1.replace('者', '') }}</span><span
-            v-show="scope.row.author2">{{ '，' + scope.row.author2 }} {{ scope.row.author_type_name2.replace('者', '')
-            }}</span><span v-show="scope.row.author3">{{ '，' + scope.row.author3 }} {{
-              scope.row.author_type_name3.replace('者', '') }}</span>
+          <span>{{ scope.row.author1 }} {{ scope.row.author_type_name1.replace('者', '') }}</span
+          ><span v-show="scope.row.author2"
+            >{{ '，' + scope.row.author2 }} {{ scope.row.author_type_name2.replace('者', '') }}</span
+          ><span v-show="scope.row.author3"
+            >{{ '，' + scope.row.author3 }} {{ scope.row.author_type_name3.replace('者', '') }}</span
+          >
         </template>
         <template v-slot:date_purchased="scope">
           <span>{{ scope.row.date_purchased | filterTime }}</span>
-        </template></lin-table>
+        </template>
+        <template v-slot:is_read="scope"> <el-checkbox v-model="scope.row.is_read" disabled></el-checkbox> </template
+      ></lin-table>
     </div>
 
     <!-- 编辑页面 -->
@@ -77,7 +109,7 @@ export default {
           label: '作者',
           scope: 'author',
           scopedSlots: { customRender: 'author' },
-          width: 300
+          width: 300,
         },
         //{ prop: 'author1', label: '作者', width: 175 },
         {
@@ -87,6 +119,14 @@ export default {
           scope: 'date_purchased',
           scopedSlots: { customRender: 'date_purchased' },
           width: 100,
+        },
+        {
+          prop: 'is_read',
+          label: '已读',
+          align: 'center',
+          scope: 'is_read',
+          scopedSlots: { customRender: 'is_read' },
+          width: 50,
         },
       ],
       tableData: [],
@@ -167,12 +207,7 @@ export default {
     // 搜索
     onQueryChange(query) {
       this.loading = true
-      this.searchKeyword = query.trim()
-      if (!query) {
-        this.getBooks()
-        this.loading = false
-        return
-      }
+      this.searchKeyword = query.replace(' ', '').trim()
       this.getBooks()
       this.loading = false
     },
@@ -207,7 +242,7 @@ export default {
       this.$message.success('刷新成功')
       this.loading = false
     },
-    rowClick() { },
+    rowClick() {},
     editClose() {
       this.loading = true
       this.showForm = false
@@ -256,8 +291,8 @@ export default {
       float: left;
 
       .title {
-        height: 59px;
-        line-height: 59px;
+        height: 50px;
+        line-height: 50px;
         color: $parent-title-color;
         font-size: 16px;
         font-weight: 500;
@@ -273,7 +308,15 @@ export default {
   }
 
   .lin-table {
-    padding: 30px 60px;
+    padding: 20px 30px 0px 30px;
+    /deep/ .el-checkbox__input.is-disabled .el-checkbox__inner {
+      background-color: white;
+      border: 1px solid rgb(196, 192, 210);
+    }
+    /deep/ .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
+      background: #3963bc;
+      border: 1px solid #3963bc;
+    }
   }
 
   .pagination {

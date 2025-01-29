@@ -63,15 +63,12 @@ export default {
         this.id = record.id
       } else {
         this.id = 0
-        Object.assign(this.form, {
-          type_code: '',
-          full_name: '',
-          sort_code: 0,
-        })
+        this.$message.error('行信息为空')
       }
       this.dialogFormVisible = true
     },
     showType(count) {
+      this.id = 0
       Object.assign(this.form, {
         type_code: '',
         full_name: '',

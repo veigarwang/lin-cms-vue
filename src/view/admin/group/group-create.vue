@@ -118,8 +118,8 @@ export default {
 <style lang="scss" scoped>
 .container {
   .title {
-    height: 59px;
-    line-height: 59px;
+    height: 50px;
+    line-height: 50px;
     color: $parent-title-color;
     font-size: 16px;
     font-weight: 500;
