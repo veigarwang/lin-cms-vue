@@ -15,7 +15,7 @@
               placeholder="筛选类别"
               @change="handleChange"
               clearable
-              style="width: 100px; margin-right: 10px"
+              style="width: 100px; margin-left: 10px"
             >
               <el-option
                 v-for="item in book_types"
@@ -24,7 +24,21 @@
                 :value="Number(item.item_code)"
               ></el-option>
             </el-select>
-            <lin-search @query="onQueryChange" placeholder="请输入ISBN/书籍名/作者名" size="small" width="180" />
+            <lin-search
+              @query="onQueryChange"
+              placeholder="请输入ISBN/书籍名/作者名"
+              size="small"
+              width="180"
+              style="margin-left: 10px"
+            />
+            <el-switch
+              v-model="exactMatch"
+              @change="onQueryChange"
+              active-color="#3963bc"
+              active-text="精确查询"
+              inactive-text="模糊查询"
+              style="margin-left: 10px"
+            />
             <el-button
               type="primary"
               icon="el-icon-plus"
@@ -37,7 +51,7 @@
               "
               >新增</el-button
             >
-            <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
+            <!-- <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button> -->
             <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
           </div>
         </div>
@@ -56,7 +70,7 @@
         v-loading="loading"
       >
         <template v-slot:title="scope">
-          <span>{{ '《' + scope.row.title + '》' }}{{ scope.row.subtitle }}</span>
+          <span>{{ scope.row.title }}{{ scope.row.subtitle }}</span>
         </template>
         <template v-slot:author="scope">
           <span>{{ scope.row.author1 }} {{ scope.row.author_type_name1.replace('者', '') }}</span
@@ -66,8 +80,8 @@
             >{{ '，' + scope.row.author3 }} {{ scope.row.author_type_name3.replace('者', '') }}</span
           >
         </template>
-        <template v-slot:date_purchased="scope">
-          <span>{{ scope.row.date_purchased | filterTime }}</span>
+        <template v-slot:shelf_location="scope">
+          <span>{{ scope.row.shelf_location }}</span>
         </template>
         <template v-slot:is_read="scope"> <el-checkbox v-model="scope.row.is_read" disabled></el-checkbox> </template
       ></lin-table>
@@ -96,8 +110,8 @@ export default {
   data() {
     return {
       tableColumn: [
-        { prop: 'book_type_name', label: '书籍类别', width: 100, align: 'center' },
-        { prop: 'isbn', label: 'ISBN', width: 130, align: 'center' },
+        { prop: 'book_type_name', label: '书籍类别', width: 90, align: 'center' },
+        { prop: 'isbn', label: 'ISBN', width: 140, align: 'center' },
         {
           prop: 'title, subtitle',
           label: '书名',
@@ -111,13 +125,12 @@ export default {
           scopedSlots: { customRender: 'author' },
           width: 300,
         },
-        //{ prop: 'author1', label: '作者', width: 175 },
         {
-          prop: 'date_purchased',
-          label: '购买日期',
+          prop: 'shelf_location',
+          label: '书架位置',
           align: 'center',
-          scope: 'date_purchased',
-          scopedSlots: { customRender: 'date_purchased' },
+          scope: 'shelf_location',
+          scopedSlots: { customRender: 'shelf_location' },
           width: 100,
         },
         {
@@ -135,6 +148,7 @@ export default {
       showForm: false,
       edit_book_id: 1,
       book_types: [],
+      location_options: [],
       pagination: {
         pageSize: 10,
         pageTotal: 0,
@@ -142,12 +156,13 @@ export default {
       },
       book_type: '',
       searchKeyword: '',
+      exactMatch: false,
     }
   },
   async created() {
     this.loading = true
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary' },
+      { name: '编辑', func: 'handleEdit', type: 'primary', permission: '更新书籍' },
       {
         name: '删除',
         func: 'handleDelete',
@@ -193,6 +208,7 @@ export default {
         let res = await book.getBooks({
           keyword: this.searchKeyword,
           itemType: this.book_type,
+          exactMatch: this.exactMatch,
           count: this.pagination.pageSize,
           page: currentPage,
         })
@@ -207,7 +223,7 @@ export default {
     // 搜索
     onQueryChange(query) {
       this.loading = true
-      this.searchKeyword = query.replace(' ', '').trim()
+      if (typeof query === 'string') this.searchKeyword = query.replace(' ', '').trim()
       this.getBooks()
       this.loading = false
     },
@@ -309,6 +325,14 @@ export default {
 
   .lin-table {
     padding: 20px 30px 0px 30px;
+    /deep/ .el-checkbox,
+    /deep/ .el-checkbox.is-disabled,
+    /deep/ .el-checkbox__input,
+    /deep/ .el-checkbox__input.is-disabled,
+    /deep/ .el-checkbox__inner,
+    /deep/ .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
+      cursor: default;
+    }
     /deep/ .el-checkbox__input.is-disabled .el-checkbox__inner {
       background-color: white;
       border: 1px solid rgb(196, 192, 210);

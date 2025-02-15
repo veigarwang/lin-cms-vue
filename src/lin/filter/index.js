@@ -3,8 +3,8 @@ import Utils from '../util/util'
 /*
  * 全局的过滤函数
  * */
-function checkAddZone(num) {
-  return num < 10 ? `0${num.toString()}` : num;
+function checkAddZone(num, isTime) {
+  return num < 10 && isTime ? `0${num.toString()}` : num;
 }
 
 const globalFilter = {
@@ -91,21 +91,21 @@ const globalFilter = {
     t = new Date(t); // eslint-disable-line
     const year = t.getFullYear();
     let month = t.getMonth() + 1;
-    month = checkAddZone(month);
+    month = checkAddZone(month, false);
 
-    let date = t.getDate();
-    date = checkAddZone(date);
+    let day = t.getDate();
+    day = checkAddZone(day, false);
 
     let hour = t.getHours();
-    hour = checkAddZone(hour);
+    hour = checkAddZone(hour, true);
 
     let min = t.getMinutes();
-    min = checkAddZone(min);
+    min = checkAddZone(min, true);
 
-    let se = t.getSeconds();
-    se = checkAddZone(se);
+    let sec = t.getSeconds();
+    sec = checkAddZone(sec, true);
 
-    return `${year}-${month}-${date} ${hour}:${min}:${se}`;
+    return `${year}年${month}月${day}日 ${hour}:${min}:${sec}`;
   },
 
   filterTitle(value, len = 10) {

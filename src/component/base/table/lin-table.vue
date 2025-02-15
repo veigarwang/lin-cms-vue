@@ -47,7 +47,13 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column v-if="operate.length > 0" label="操作" fixed="right" :width="operate.length * 65">
+      <el-table-column
+        v-if="operate.length > 0"
+        label="操作"
+        fixed="right"
+        :align="'center'"
+        :width="operate.length * 65"
+      >
         <template slot-scope="scope">
           <el-button
             v-for="(item, index) in operate"
@@ -185,7 +191,7 @@ export default {
     }
   },
   created() {
-    console.log('lin-table-created')
+    //console.log('lin-table-created')
   },
   activated() {
     console.log('lin-table-activated')

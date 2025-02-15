@@ -68,7 +68,7 @@
           <div class="quantity-detail-box">
             <div class="quantity-title">已读 / 藏书总数</div>
             <div class="quantity-border-line"></div>
-            <div class="quantity">{{ readBookTotal }}/{{ bookTotal }}</div>
+            <div class="quantity">{{ readBookTotal }} / {{ bookTotal }}</div>
           </div>
         </div>
         <div class="quantity-icon">
@@ -90,7 +90,7 @@
       <div class="quantity-item">
         <div class="quantity-detail">
           <div class="quantity-detail-box">
-            <div class="quantity-title">昨(今)日更新总数</div>
+            <div class="quantity-title">昨(今)日更新词条总数</div>
             <div class="quantity-border-line"></div>
             <div class="quantity">{{ updatedEntryTotal }}</div>
           </div>
@@ -225,7 +225,8 @@ export default {
         {
           title: 'v0.99',
           content: [
-            { entry: '增加书籍管理书架位置字段', label: '新增', color: 'green' },
+            { entry: '增加书籍和百科词条的精确查询功能', label: '新增', color: 'green' },
+            { entry: '增加书籍的书架位置字段', label: '新增', color: 'green' },
             { entry: '增加显示系统日志的详细参数', label: '新增', color: 'green' },
             { entry: '修复系统日志未能正确记录时间的问题', label: '修正', color: 'orange' },
             {
@@ -271,7 +272,7 @@ export default {
         {
           title: 'v0.97',
           content: [
-            { entry: '新增使用无声调拼音进行模糊查询', label: '新增', color: 'green' },
+            { entry: '新增山海百科使用无声调拼音进行模糊查询', label: '新增', color: 'green' },
             { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet' },
           ],
           timestamp: '2023-07-06 11:21',
@@ -578,7 +579,7 @@ export default {
           }
 
           .quantity-border-line {
-            width: 108px;
+            width: 150px;
             height: 2px;
             background: rgba(73, 84, 104, 1);
           }
@@ -589,7 +590,7 @@ export default {
             font-size: 32px;
             color: rgba(73, 84, 104, 1);
             line-height: 38px;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
           }
         }
       }

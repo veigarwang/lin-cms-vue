@@ -2,16 +2,17 @@
   <div class="container">
     <sticky-top>
       <div class="title">
-        <span v-if="!edit_item_id">新增词条</span><span v-else>修改词条 - ID: {{ item_id }}</span>
-        <span v-if="edit_item_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一条 </span>
-        <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一条 </span>
-        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
+        <span v-if="!edit_item_id">新增词条</span><span v-else>编辑词条 - {{ form.name }} - ID: {{ item_id }}</span>
+
+        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回</span>
         <span v-if="!edit_item_id" class="save" @click="submitForm('form', true)" :loading="loading">
-          <i class="el-icon-finished"></i> 连续新增
+          <i class="el-icon-finished"></i>连续新增
         </span>
         <span class="save" @click="submitForm('form', false)" :loading="loading">
           <i class="el-icon-check"></i> 保存
         </span>
+        <span v-if="edit_item_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i>下一条</span>
+        <span v-if="edit_item_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i>上一条</span>
       </div>
     </sticky-top>
     <el-divider></el-divider>
@@ -87,13 +88,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" v-if="edit_item_id">
-              <el-form-item label="编辑次数" prop="version">
-                <div>{{ form.version }}</div>
+              <el-form-item label="创建于" prop="create_time">
+                <div>{{ form.create_time | dateTimeFormatter }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="6" v-if="edit_item_id && form.version > 0">
-              <el-form-item label="上次修改于" prop="update_time">
-                <div>{{ form.update_time | dateTimeFormatter }}</div>
+              <el-form-item label="最近编辑" prop="update_time">
+                <div>{{ form.update_time | dateTimeFormatter }}{{ ' - 共' + form.version + '次' }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -156,9 +157,8 @@
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="24">
+            <el-col :span="24" v-if="!edit_item_id">
               <el-form-item class="submit">
-                <el-button type="primary" @click="submitForm('form', false)" :loading="loading">保 存</el-button>
                 <el-button type="primary" v-if="!edit_item_id" @click="submitForm('form', true)" :loading="loading"
                   >连续新增</el-button
                 >
@@ -202,6 +202,7 @@ export default {
         provenance: '',
         original_text: '',
         item_type: '',
+        create_time: '',
       },
       item_id: '',
       item_types: [],
@@ -245,7 +246,6 @@ export default {
         if (!this.firstLoad || !this.item_id) {
           this.form.pronunciation = pinyinUtil.getPinyin(this.form.name, ' ', true, false)
         } else {
-          console.log('watch: set firstLoad to false')
           this.firstLoad = false
         }
         if (this.form.name.endsWith('山') || this.form.name.endsWith('丘'))
@@ -303,6 +303,7 @@ export default {
           this.form.item_type = Number(this.item_types[13].item_code)
         else if (this.form.name.endsWith('金') || this.form.name.endsWith('石') || this.form.name.endsWith('銅'))
           this.form.item_type = Number(this.item_types[14].item_code)
+        else if (this.form.name.endsWith('疾')) this.form.item_type = Number(this.item_types[15].item_code)
       }, 1000),
     ),
       this.$watch(
@@ -420,7 +421,6 @@ export default {
             } catch (error) {
               this.loading = false
               this.$message.error('词条更新失败，请检查输入信息')
-              console.log(error)
             }
           } else {
             try {
@@ -434,7 +434,6 @@ export default {
             } catch (error) {
               this.loading = false
               this.$message.error('词条新增失败，请检查输入信息')
-              console.log(error)
             }
           }
         } else {
@@ -465,6 +464,8 @@ export default {
             this.item_id = this.item_id + 2
           }
         }
+      } else {
+        this.$message('已是第一条')
       }
     },
     async next() {
@@ -501,15 +502,15 @@ export default {
     padding: 0 30px;
 
     .previous {
-      //float: left;
-      margin-left: 30px;
+      float: right;
+      margin-right: 30px;
       cursor: pointer;
       z-index: 100;
     }
 
     .next {
-      //float: left;
-      margin-left: 30px;
+      float: right;
+      margin-right: 30px;
       cursor: pointer;
       z-index: -100;
     }

@@ -15,7 +15,7 @@
               placeholder="筛选类别"
               @change="handleChange"
               clearable
-              style="width: 100px; margin-right: 10px"
+              style="width: 100px; margin-left: 10px"
             >
               <el-option
                 v-for="item in item_types"
@@ -24,7 +24,15 @@
                 :value="Number(item.item_code)"
               ></el-option>
             </el-select>
-            <lin-search @query="onQueryChange" placeholder="请输入词条名" size="small" />
+            <lin-search @query="onQueryChange" placeholder="请输入词条名/拼音" size="small" style="margin-left: 10px" />
+            <el-switch
+              v-model="exactMatch"
+              @change="onQueryChange"
+              active-color="#3963bc"
+              active-text="精确查询"
+              inactive-text="模糊查询"
+              style="margin-left: 10px"
+            />
             <el-button
               type="primary"
               icon="el-icon-plus"
@@ -37,7 +45,7 @@
               "
               >新增</el-button
             >
-            <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
+            <!-- <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button> -->
             <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
           </div>
         </div>
@@ -112,12 +120,13 @@ export default {
       },
       item_type: '',
       searchKeyword: '',
+      exactMatch: false,
     }
   },
   async created() {
     this.loading = true
     this.operate = [
-      { name: '编辑', func: 'handleEdit', type: 'primary' },
+      { name: '编辑', func: 'handleEdit', type: 'primary', permission: '更新词条' },
       {
         name: '删除',
         func: 'handleDelete',
@@ -163,6 +172,7 @@ export default {
         let res = await encyclopedia.getEncyclopedias({
           keyword: this.searchKeyword,
           itemType: this.item_type,
+          exactMatch: this.exactMatch,
           count: this.pagination.pageSize,
           page: currentPage,
         })
@@ -178,7 +188,7 @@ export default {
     // 搜索
     onQueryChange(query) {
       this.loading = true
-      this.searchKeyword = query.replace(' ', '').trim()
+      if (typeof query === 'string') this.searchKeyword = query.replace(' ', '').trim()
       this.getEncyclopedias()
       this.loading = false
     },

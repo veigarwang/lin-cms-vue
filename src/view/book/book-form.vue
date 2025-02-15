@@ -2,10 +2,11 @@
   <div class="container">
     <sticky-top>
       <div class="title">
-        <span v-if="!edit_book_id">新增书籍</span><span v-else>修改书籍 - ID: {{ book_id }} </span>
-        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回 </span>
-        <span v-if="edit_book_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i> 下一本 </span>
-        <span v-if="edit_book_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i> 上一本 </span>
+        <span v-if="!edit_book_id">新增书籍</span
+        ><span v-else>编辑书籍 - {{ form.title }}{{ form.subtitle }} - ID: {{ book_id }} </span>
+        <span class="back" @click="back"> <i class="iconfont icon-fanhui"></i> 返回</span>
+        <span v-if="edit_book_id" class="next" @click="next"> <i class="el-icon-arrow-right"></i>下一本</span>
+        <span v-if="edit_book_id" class="previous" @click="previous"> <i class="el-icon-arrow-left"></i>上一本</span>
       </div>
     </sticky-top>
     <el-divider></el-divider>
@@ -181,13 +182,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" v-if="edit_book_id">
-              <el-form-item label="编辑次数" prop="version">
-                <div>{{ form.version }}</div>
+              <el-form-item label="创建于" prop="create_time">
+                <div>{{ form.create_time | dateTimeFormatter }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="6" v-if="edit_book_id && form.version > 0">
-              <el-form-item label="上次修改于" prop="update_time">
-                <div>{{ form.update_time | dateTimeFormatter }}</div>
+              <el-form-item label="最近编辑" prop="update_time">
+                <div>{{ form.update_time | dateTimeFormatter }}{{ ' - 共' + form.version + '次' }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="24" v-show="form.is_read">
@@ -205,7 +206,7 @@
             <el-col :span="24">
               <el-form-item class="submit">
                 <el-button type="primary" @click="submitForm('form')" :loading="loading">保 存</el-button>
-                <el-button @click="resetForm('form')">重 置</el-button>
+                <el-button v-if="!edit_book_id" @click="resetForm('form')">重 置</el-button>
               </el-form-item>
             </el-col>
           </el-form>
@@ -258,7 +259,8 @@ export default {
         book_type: [{ required: true, message: '请选择书籍类型', trigger: 'change' }],
         author1: [{ required: true, message: '请输入作者', trigger: 'blur' }],
         press: [{ required: true, message: '请输入出版公司', trigger: 'change' }],
-        //date_purchased: [{ required: true, message: '请选择购买日期', trigger: 'change' }],
+        date_purchased: [{ required: true, message: '请选择购买日期', trigger: 'change' }],
+        //shelf_location: [{ required: true, message: '请选择书架位置', trigger: 'blur' }],
       },
       coverPreview: [],
       rateColors: { 5: '#FFDD55' },
@@ -336,7 +338,6 @@ export default {
           } else if (this.form.date_purchased instanceof Date) {
             this.form.date_purchased = new Date(this.form.date_purchased.getTime() + 1000 * 60 * 60 * 8)
           } else {
-            console.error('Invalid date_purchased type:', this.form.date_purchased)
             this.$message.error('日期格式无效，请重新选择日期')
             return
           }
@@ -418,18 +419,20 @@ export default {
       }
     },
     async previous() {
-      try {
-        if (this.book_id > 1) {
-          this.book_id = this.book_id - 1
-          await this.getBook()
-        }
-      } catch (error) {
+      if (this.book_id > 1) {
         try {
           this.book_id = this.book_id - 1
           await this.getBook()
         } catch (error) {
-          this.book_id = this.book_id + 2
+          try {
+            this.book_id = this.book_id - 1
+            await this.getBook()
+          } catch (error) {
+            this.book_id = this.book_id + 2
+          }
         }
+      } else {
+        this.$message('已是第一本')
       }
     },
     async next() {
@@ -495,6 +498,10 @@ export default {
 
 .el-rate {
   display: inline-block;
+}
+
+.el-cascader {
+  width: 100%;
 }
 
 .el-date-editor.el-input,
