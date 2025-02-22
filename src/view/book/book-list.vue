@@ -123,7 +123,6 @@ export default {
           label: '作者',
           scope: 'author',
           scopedSlots: { customRender: 'author' },
-          width: 300,
         },
         {
           prop: 'shelf_location',
@@ -131,7 +130,7 @@ export default {
           align: 'center',
           scope: 'shelf_location',
           scopedSlots: { customRender: 'shelf_location' },
-          width: 100,
+          width: 80,
         },
         {
           prop: 'is_read',
@@ -221,10 +220,11 @@ export default {
       }
     },
     // 搜索
-    onQueryChange(query) {
+    async onQueryChange(query) {
       this.loading = true
       if (typeof query === 'string') this.searchKeyword = query.replace(' ', '').trim()
-      this.getBooks()
+      this.pagination.currentPage = 1
+      await this.getBooks()
       this.loading = false
     },
     handleEdit(val) {
@@ -232,11 +232,15 @@ export default {
       this.edit_book_id = val.row.id
     },
     handleDelete(val) {
-      this.$confirm('此操作将永久删除该书籍, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
+      this.$confirm(
+        '此操作将永久删除书籍：《' + val.row.title + (val.row.subtitle ? val.row.subtitle : '') + '》，是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        },
+      ).then(async () => {
         this.loading = true
         const res = await book.deleteBook(val.row.id)
         this.loading = false
@@ -259,10 +263,10 @@ export default {
       this.loading = false
     },
     rowClick() {},
-    editClose() {
+    async editClose() {
       this.loading = true
       this.showForm = false
-      this.getBooks()
+      await this.getBooks()
       this.loading = false
     },
     // 导出表格
@@ -295,58 +299,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  .header {
-    padding: 0 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #dae1ed;
-
-    .header-left {
-      float: left;
-
-      .title {
-        height: 50px;
-        line-height: 50px;
-        color: $parent-title-color;
-        font-size: 16px;
-        font-weight: 500;
-      }
-    }
-
-    .header-right {
-      float: right;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+@import '@/assets/style/list.scss';
+.lin-table {
+  /deep/ .el-checkbox,
+  /deep/ .el-checkbox.is-disabled,
+  /deep/ .el-checkbox__input,
+  /deep/ .el-checkbox__input.is-disabled,
+  /deep/ .el-checkbox__inner,
+  /deep/ .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
+    cursor: default;
   }
-
-  .lin-table {
-    padding: 20px 30px 0px 30px;
-    /deep/ .el-checkbox,
-    /deep/ .el-checkbox.is-disabled,
-    /deep/ .el-checkbox__input,
-    /deep/ .el-checkbox__input.is-disabled,
-    /deep/ .el-checkbox__inner,
-    /deep/ .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
-      cursor: default;
-    }
-    /deep/ .el-checkbox__input.is-disabled .el-checkbox__inner {
-      background-color: white;
-      border: 1px solid rgb(196, 192, 210);
-    }
-    /deep/ .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
-      background: #3963bc;
-      border: 1px solid #3963bc;
-    }
+  /deep/ .el-checkbox__input.is-disabled .el-checkbox__inner {
+    background-color: white;
+    border: 1px solid rgb(196, 192, 210);
   }
-
-  .pagination {
-    display: flex;
-    justify-content: flex-end;
-    margin: 20px;
+  /deep/ .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
+    background: #3963bc;
+    border: 1px solid #3963bc;
   }
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px;
 }
 </style>

@@ -1,7 +1,8 @@
-.container {
+.container {    
     //margin-bottom: 20px;
     
     .title {
+        padding: 0 30px;
         height: 50px;
         line-height: 50px;
         color: $parent-title-color;
@@ -12,7 +13,6 @@
 
         .back {
             float: right;
-            margin-right: 40px;
             cursor: pointer;
         }
     }

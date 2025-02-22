@@ -24,7 +24,7 @@
         :key="item.id"
         :prop="item.prop"
         :label="item.label"
-        :show-overflow-tooltip="true"
+        :show-overflow-tooltip="false"
         :filters="item.filters ? item.filters : null"
         :filter-method="item.filterMethod ? item.filterMethod : null"
         :column-key="item.filterMethod ? item.prop : null"
@@ -73,6 +73,7 @@
       v-if="pagination"
       background
       layout="total, sizes, prev, pager, next, jumper"
+      :hide-on-single-page="true"
       :page-size="pagination.pageSize ? pagination.pageSize : 10"
       :total="pagination.pageTotal ? pagination.pageTotal : null"
       :current-page="pagination.currentPage ? pagination.currentPage : 1"
@@ -191,7 +192,7 @@ export default {
     }
   },
   created() {
-    //console.log('lin-table-created')
+    console.log('lin-table-created')
   },
   activated() {
     console.log('lin-table-activated')
@@ -437,6 +438,7 @@ export default {
 
 <style lang="scss" scoped>
 .lin-table {
+  padding: 20px 30px 0px 30px;
   position: relative;
 }
 

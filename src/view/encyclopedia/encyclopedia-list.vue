@@ -105,7 +105,7 @@ export default {
         { prop: 'pronunciation', label: '读音' },
         { prop: 'explanation', label: '释名' },
         { prop: 'provenance', label: '出处' },
-        { prop: 'effect', label: '作用' },
+        { prop: 'effect', label: '作用', width: '120px' },
       ],
       tableData: [],
       operate: [],
@@ -156,6 +156,7 @@ export default {
     // 切换table页
     async handleCurrentPageChange(val) {
       this.loading = true
+      console.log('handleCurrentPageChange: ' + val)
       this.pagination.currentPage = val
       await this.getEncyclopedias()
       this.loading = false
@@ -186,10 +187,11 @@ export default {
       }
     },
     // 搜索
-    onQueryChange(query) {
+    async onQueryChange(query) {
       this.loading = true
       if (typeof query === 'string') this.searchKeyword = query.replace(' ', '').trim()
-      this.getEncyclopedias()
+      this.pagination.currentPage = 1
+      await this.getEncyclopedias()
       this.loading = false
     },
     handleEdit(val) {
@@ -197,7 +199,7 @@ export default {
       this.edit_item_id = val.row.id
     },
     handleDelete(val) {
-      this.$confirm('此操作将永久删除该词条, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除词条：' + val.row.name + '，是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -206,7 +208,7 @@ export default {
         const res = await encyclopedia.deleteEncyclopedia(val.row.id)
         this.loading = false
         if (res.code < window.MAX_SUCCESS_CODE) {
-          this.getEncyclopedias()
+          await this.getEncyclopedias()
           this.$message({
             type: 'success',
             message: `${res.message}`,
@@ -221,10 +223,10 @@ export default {
       this.$message.success('刷新成功')
     },
     rowClick() {},
-    editClose() {
+    async editClose() {
       this.loading = true
       this.showForm = false
-      this.getEncyclopedias()
+      await this.getEncyclopedias()
       this.loading = false
     },
     // 导出表格
@@ -257,42 +259,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  .header {
-    padding: 0 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #dae1ed;
-
-    .header-left {
-      float: left;
-
-      .title {
-        height: 50px;
-        line-height: 50px;
-        color: $parent-title-color;
-        font-size: 16px;
-        font-weight: 500;
-      }
-    }
-
-    .header-right {
-      float: right;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-
-  .lin-table {
-    padding: 20px 30px 0px 30px;
-  }
-
-  .pagination {
-    display: flex;
-    justify-content: flex-end;
-    margin: 20px;
-  }
-}
+@import '@/assets/style/list.scss';
 </style>

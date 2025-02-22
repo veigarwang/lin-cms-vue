@@ -1,15 +1,16 @@
 .container {
-  padding: 0 30px;
+  //margin-bottom: 20px;
 
-  .header {
+  .header {    
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    border-bottom: 1px solid #dae1ed;
     .header-left {
       float: left;
 
       .title {
+        padding-left: 30px;
         height: 50px;
         line-height: 50px;
         color: $parent-title-color;
@@ -25,6 +26,7 @@
     }
 
     .header-right {
+      padding-right: 30px;
       float: right;
       display: flex;
       justify-content: space-between;
