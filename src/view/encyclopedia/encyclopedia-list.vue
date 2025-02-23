@@ -100,12 +100,12 @@ export default {
     return {
       item_types: [],
       tableColumn: [
-        { prop: 'item_type_name', label: '所属类别', align: 'center', width: '100px' },
+        { prop: 'item_type_name', label: '所属类别', align: 'center', width: 100 },
         { prop: 'name, alias', label: '词条名称', scope: 'name', scopedSlots: { customRender: 'name' } },
         { prop: 'pronunciation', label: '读音' },
-        { prop: 'explanation', label: '释名' },
-        { prop: 'provenance', label: '出处' },
-        { prop: 'effect', label: '作用', width: '120px' },
+        { prop: 'explanation', label: '释名', width: 150 },
+        { prop: 'provenance', label: '出处', width: 270 },
+        { prop: 'effect', label: '作用', width: 150 },
       ],
       tableData: [],
       operate: [],
