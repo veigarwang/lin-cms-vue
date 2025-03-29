@@ -220,6 +220,7 @@
 import book from '@/model/book'
 import baseApi from '@/plugin/base/model/base'
 import UploadImgs from '@/component/base/upload-image'
+import { compareTable } from 'lin/util/compareTable'
 
 export default {
   props: {
@@ -263,6 +264,7 @@ export default {
         //shelf_location: [{ required: true, message: '请选择书架位置', trigger: 'blur' }],
       },
       coverPreview: [],
+      originalData: [],
       rateColors: { 5: '#FFDD55' },
       rateLabel: ['极差', '失望', '一般', '满意', '惊喜'],
       pickerOptions: {
@@ -336,7 +338,7 @@ export default {
             t.setTime(this.form.date_purchased + 1000 * 60 * 60 * 8) // UTC+8
             this.form.date_purchased = t
           } else if (this.form.date_purchased instanceof Date) {
-            this.form.date_purchased = new Date(this.form.date_purchased.getTime() + 1000 * 60 * 60 * 8)
+            this.form.date_purchased = new Date(this.form.date_purchased.getTime())
           } else {
             this.$message.error('日期格式无效，请重新选择日期')
             return
@@ -354,16 +356,24 @@ export default {
           let res
           if (this.book_id) {
             try {
-              res = await book.editBook(this.book_id, this.form)
-              if (res.code < window.MAX_SUCCESS_CODE) {
+              if (compareTable(this.form, this.originalData)) {
+                res = await book.editBook(this.book_id, this.form)
+                if (res.code < window.MAX_SUCCESS_CODE) {
+                  this.loading = false
+                  this.$message.success(`${res.message}`)
+                  await this.getBook()
+                  //this.$emit('editClose')
+                }
+              } else {
                 this.loading = false
-                this.$message.success(`${res.message}`)
-                await this.getBook()
-                //this.$emit('editClose')
+                this.$message.info('没有修改内容，无需保存')
               }
             } catch (error) {
               this.loading = false
               this.$message.error('书籍更新失败，请检查输入信息')
+            } finally {
+              if (this.form.author_type2 === 0) this.form.author_type2 = undefined
+              if (this.form.author_type3 === 0) this.form.author_type3 = undefined
             }
           } else {
             try {
@@ -387,16 +397,17 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
       this.$refs['uploadEle1'].clear()
-      this.form.book_type = Number(this.book_types[0].item_code)
-      this.form.author_type1 = Number(this.author_types[0].item_code)
-      this.form.author_type2 = ''
-      this.form.author_type3 = ''
+      this.form.book_type = ''
+      this.form.author_type1 = ''
+      this.form.author_type2 = undefined
+      this.form.author_type3 = undefined
       this.form.date_purchased = 0
       this.form.is_read = false
       this.shelf_location = []
     },
     async getBook() {
-      this.form = await book.getBook(this.book_id)
+      this.originalData = JSON.parse(JSON.stringify(await book.getBook(this.book_id)))
+      this.form = JSON.parse(JSON.stringify(this.originalData))
       if (this.form.author_type2 === 0 && (!this.form.author2 || this.form.author2 === '')) {
         this.form.author_type2 = ''
       }

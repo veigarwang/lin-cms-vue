@@ -51,7 +51,7 @@
               "
               >新增</el-button
             >
-            <!-- <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button> -->
+            <el-button type="default" icon="el-icon-refresh" @click="refresh">刷新</el-button>
             <!-- <el-button icon="el-icon-download" @click="exprotExcel">导出</el-button> -->
           </div>
         </div>
@@ -74,9 +74,9 @@
         </template>
         <template v-slot:author="scope">
           <span>{{ scope.row.author1 }} {{ scope.row.author_type_name1.replace('者', '') }}</span
-          ><span v-show="scope.row.author2"
+          ><span v-if="scope.row.author2"
             >{{ '，' + scope.row.author2 }} {{ scope.row.author_type_name2.replace('者', '') }}</span
-          ><span v-show="scope.row.author3"
+          ><span v-if="scope.row.author3"
             >{{ '，' + scope.row.author3 }} {{ scope.row.author_type_name3.replace('者', '') }}</span
           >
         </template>

@@ -1,27 +1,30 @@
 <template>
   <div>
     <div class="container">
-      <div class="header">
-        <div class="header-left">
-          <div class="title">字典条目列表 - {{typeName}}</div>
-        </div>
-        <div class="header-right">
-          <div style="margin-left: 30px">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              v-permission="'新增条目'"
-              @click="
-                () => {
-                  this.$refs['dialogForm'].showSubItem(baseTypeId, this.tableData.length)
-                }
-              "
-              >新增条目</el-button>
-            <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
-            <el-button type="default" icon="el-icon-back" @click="back">返回</el-button>
+      <sticky-top>
+        <div class="header">
+          <div class="header-left">
+            <div class="title">字典条目列表 - {{ typeName }}</div>
+          </div>
+          <div class="header-right">
+            <div style="margin-left: 30px">
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                v-permission="'新增条目'"
+                @click="
+                  () => {
+                    this.$refs['dialogForm'].showSubItem(baseTypeId, this.tableData.length)
+                  }
+                "
+                >新增条目</el-button
+              >
+              <el-button type="default" icon="el-icon-refresh" @click="refresh" :loading="loading">刷新</el-button>
+              <el-button type="default" icon="el-icon-back" @click="back">返回</el-button>
+            </div>
           </div>
         </div>
-      </div>
+      </sticky-top>
       <!-- 表格 -->
       <lin-table
         :tableColumn="tableColumn"

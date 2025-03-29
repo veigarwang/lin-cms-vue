@@ -177,7 +177,8 @@ import encyclopedia from '@/model/encyclopedia'
 import baseApi from '@/plugin/base/model/base'
 import UploadImgs from '@/component/base/upload-image'
 import Utils from 'lin/util/util'
-import { pinyinUtil } from 'lin/util/pinyin_withtone.js'
+import { pinyinUtil } from 'lin/util/pinyin_withtone'
+import { compareTable } from 'lin/util/compareTable'
 
 export default {
   props: {
@@ -220,6 +221,7 @@ export default {
         item_type: [{ required: true, message: '请选择词条类型', trigger: 'change' }],
       },
       picturePreview: [],
+      originalData: [],
     }
   },
   async created() {
@@ -383,7 +385,9 @@ export default {
       this.item_id = this.edit_item_id
     }
     if (this.item_id) {
-      this.form = await encyclopedia.getEncyclopedia(this.item_id)
+      this.originalData = JSON.parse(JSON.stringify(await encyclopedia.getEncyclopedia(this.item_id)))
+      this.form = JSON.parse(JSON.stringify(this.originalData)) // 赋值新对象
+
       this.picturePreview.length = 0
       if (this.form.picture) {
         this.picturePreview.push({
@@ -410,13 +414,18 @@ export default {
           let res
           if (this.item_id) {
             try {
-              res = await encyclopedia.editEncyclopedia(this.item_id, this.form)
-              if (res.code < window.MAX_SUCCESS_CODE) {
+              if (compareTable(this.form, this.originalData)) {
+                res = await encyclopedia.editEncyclopedia(this.item_id, this.form)
+                if (res.code < window.MAX_SUCCESS_CODE) {
+                  this.loading = false
+                  this.$message.success(`${res.message}`)
+                  this.form = await encyclopedia.getEncyclopedia(this.item_id)
+                  this.firstLoad = true
+                  //this.$emit('editClose')
+                }
+              } else {
                 this.loading = false
-                this.$message.success(`${res.message}`)
-                this.form = await encyclopedia.getEncyclopedia(this.item_id)
-                this.firstLoad = true
-                //this.$emit('editClose')
+                this.$message.info('没有修改内容，无需保存')
               }
             } catch (error) {
               this.loading = false
@@ -445,7 +454,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
       this.$refs['uploadEle1'].clear()
-      this.form.item_type = Number(this.item_types[0].item_code)
+      this.form.item_type = ''
       if (!this.edit_item_id && this.last_provenance)
         this.form.original_text = '《山海經·' + this.last_provenance + '》：'
     },

@@ -5,7 +5,7 @@
         <div class="title">权限列表</div>
       </div>
       <div class="header-right">
-        <div style="margin-left:30px">
+        <div style="margin-left: 30px">
           <el-button type="default" icon="el-icon-refresh" @click="getTreePermissionsList">刷新</el-button>
         </div>
       </div>
@@ -21,15 +21,15 @@
       :border="true"
       :data="tableData"
       :default-expand-all="false"
-      style="width: 100%;"
+      style="width: auto; margin: 20px 30px"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column type="index" width="50" label="#" />
-      <el-table-column prop="name" label="权限名" width="180" />
-      <el-table-column prop="router" label="接口地址" width="400" />
+      <el-table-column prop="name" label="权限名" width="250" />
+      <el-table-column prop="router" label="接口地址" />
       <el-table-column prop="create_time" label="创建时间" width="180">
         <template slot-scope="scope">
-          <span>{{ scope.row.create_time |filterTimeYmdHms}}</span>
+          <span>{{ scope.row.create_time | filterTimeYmdHms }}</span>
         </template>
       </el-table-column>
     </el-table>

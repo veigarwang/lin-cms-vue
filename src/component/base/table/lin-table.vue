@@ -73,7 +73,6 @@
       v-if="pagination"
       background
       layout="total, sizes, prev, pager, next, jumper"
-      :hide-on-single-page="true"
       :page-size="pagination.pageSize ? pagination.pageSize : 10"
       :total="pagination.pageTotal ? pagination.pageTotal : null"
       :current-page="pagination.currentPage ? pagination.currentPage : 1"
