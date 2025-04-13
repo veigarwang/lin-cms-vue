@@ -15,8 +15,9 @@
               placeholder="筛选出处"
               v-model="selected_provenance_value"
               @change="handleChange"
+              expand-trigger="hover"
               size="small"
-              style="width: 230px"
+              style="width: 225px"
             ></el-cascader>
             <el-select
               size="small"
@@ -40,7 +41,7 @@
               @change="onQueryChange"
               active-color="#3963bc"
               active-text="精确查询"
-              inactive-text="模糊查询"
+              inactive-text=""
               style="margin-left: 10px"
             />
             <el-button

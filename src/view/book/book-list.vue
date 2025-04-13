@@ -36,7 +36,7 @@
               @change="onQueryChange"
               active-color="#3963bc"
               active-text="精确查询"
-              inactive-text="模糊查询"
+              inactive-text=""
               style="margin-left: 10px"
             />
             <el-button
