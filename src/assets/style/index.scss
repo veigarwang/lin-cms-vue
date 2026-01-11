@@ -5,8 +5,9 @@
 
 .lin-container {
   .el-divider--horizontal {
-    margin:0px;
+    margin: 0px;
   }
+
   .lin-title {
     height: 50px;
     line-height: 50px;
@@ -26,6 +27,10 @@
 .el-cascader-menu {
   min-width: 110px !important;
   width: fit-content;
+
+  .el-cascader-node.in-checked-path .el-cascader-node__label {
+    font-weight: bold;
+  }
 }
 
 .el-message {

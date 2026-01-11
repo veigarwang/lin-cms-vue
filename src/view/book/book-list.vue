@@ -169,14 +169,7 @@ export default {
         permission: '删除书籍',
       },
     ]
-    let arr = await baseApi.getItems({
-      typeCode: 'Book.Type',
-    })
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].status == 1) {
-        this.book_types.push(arr[i])
-      }
-    }
+    await this.getBookTypes()
     await this.getBooks()
     this.loading = false
   },
@@ -200,6 +193,16 @@ export default {
       this.pagination.pageSize = val
       await this.getBooks()
       this.loading = false
+    },
+    async getBookTypes() {
+      const arr = await baseApi.getItems({
+        typeCode: 'Book.Type',
+      })
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].status == 1) {
+          this.book_types.push(arr[i])
+        }
+      }
     },
     async getBooks() {
       const currentPage = this.pagination.currentPage - 1
@@ -258,6 +261,7 @@ export default {
     },
     async refresh() {
       this.loading = true
+      await this.getBookTypes()
       await this.getBooks()
       this.$message.success('刷新成功')
       this.loading = false

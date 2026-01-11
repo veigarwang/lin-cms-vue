@@ -146,14 +146,7 @@ export default {
         permission: '删除词条',
       },
     ]
-    let arr = await baseApi.getItems({
-      typeCode: 'Encyclopedia.Type',
-    })
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].status == 1) {
-        this.item_types.push(arr[i])
-      }
-    }
+    await this.getEncyclopediaTypes()
     await this.getProvenances()
     await this.getEncyclopedias()
     this.loading = false
@@ -180,8 +173,18 @@ export default {
       await this.getEncyclopedias()
       this.loading = false
     },
+    async getEncyclopediaTypes() {
+      const arr = await baseApi.getItems({
+        typeCode: 'Encyclopedia.Type',
+      })
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].status == 1) {
+          this.item_types.push(arr[i])
+        }
+      }
+    },
     async getProvenances() {
-      let arr = await baseApi.getItems({ typeCode: 'Provenance.Type' })
+      const arr = await baseApi.getItems({ typeCode: 'Provenance.Type' })
       const filteredArr = arr.filter(item => item.status)
       const firstLevelNames = ['山經', '海經'] // 一级分类
       const secondLevelNames = ['南山經', '西山經', '北山經', '東山經', '中山經', '海外經', '海内經', '大荒經'] // 二级分类
@@ -307,6 +310,8 @@ export default {
     },
     async refresh() {
       this.loading = true
+      await this.getEncyclopediaTypes()
+      await this.getProvenances()
       await this.getEncyclopedias()
       this.loading = false
       this.$message.success('刷新成功')

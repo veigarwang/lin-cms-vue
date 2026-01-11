@@ -146,7 +146,9 @@
             <el-timeline-item
               v-for="(activity, index) in activities"
               :key="index"
+              :icon="activity.icon"
               :type="activity.type"
+              :size="activity.size"
               :timestamp="activity.timestamp"
               placement="top"
             >
@@ -226,10 +228,21 @@ export default {
           title: 'v0.99',
           content: [
             { entry: '增加百科词条按出处查询的功能', label: '新增', color: 'green' },
+            { entry: '增加保存时判断是否有字段修改的功能', label: '新增', color: 'green' },
+            { entry: '系统日志参数仅存储新修改的字段', label: '改善', color: 'blueviolet' },
+            { entry: '修复刷新按钮未能重新加载下拉列表的问题', label: '修正', color: 'orange' },
+          ],
+          timestamp: '2025-06-04 21:14',
+          size: 'large',
+          type: 'primary',
+          icon: 'el-icon-more',
+        },
+        {
+          title: 'v0.98',
+          content: [
             { entry: '增加书籍和百科词条的精确查询功能', label: '新增', color: 'green' },
             { entry: '增加书籍的书架位置字段', label: '新增', color: 'green' },
             { entry: '增加显示系统日志的详细参数', label: '新增', color: 'green' },
-            { entry: '增加保存时判断是否有字段修改的功能', label: '新增', color: 'green' },
             { entry: '修复系统日志未能正确记录时间的问题', label: '修正', color: 'orange' },
             {
               entry: '修复在字典类别列表和字典条目列表页面先编辑任一项后再新增类别时，会更新上一次编辑项信息的问题',
@@ -242,15 +255,11 @@ export default {
               color: 'blueviolet',
             },
             { entry: '固定编辑页面的操作栏', label: '改善', color: 'blueviolet' },
-            { entry: '系统日志参数仅存储新修改的字段', label: '改善', color: 'blueviolet' },
           ],
           timestamp: '2024-11-27 14:20',
-          size: 'large',
-          type: 'primary',
-          //icon: 'el-icon-more',
         },
         {
-          title: 'v0.98',
+          title: 'v0.97',
           content: [
             { entry: '增加显示近日更新词条总数', label: '新增', color: 'green' },
             { entry: '优化新增字典条目时自动选择字典类别', label: '改善', color: 'blueviolet' },
@@ -273,7 +282,7 @@ export default {
           timestamp: '2024-06-20 01:37',
         },
         {
-          title: 'v0.97',
+          title: 'v0.96',
           content: [
             { entry: '新增山海百科使用无声调拼音进行模糊查询', label: '新增', color: 'green' },
             { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet' },
@@ -281,7 +290,7 @@ export default {
           timestamp: '2023-07-06 11:21',
         },
         {
-          title: 'v0.96',
+          title: 'v0.95',
           content: [
             { entry: '书籍管理和山海百科页面增加类别筛选下拉列表', label: '新增', color: 'green' },
             { entry: '新增词条时比对现有词条别名的逻辑', label: '改善', color: 'blueviolet' },
@@ -291,7 +300,7 @@ export default {
           timestamp: '2023-03-25 13:35',
         },
         {
-          title: 'v0.95',
+          title: 'v0.94',
           content: [
             { entry: '词条新增页面增加右上角新增及连续新增按钮', label: '新增', color: 'green' },
             { entry: '调整词条新增页面样式，优化部分提示信息', label: '改善', color: 'blueviolet' },
@@ -301,7 +310,7 @@ export default {
           timestamp: '2023-03-08 23:27',
         },
         {
-          title: 'v0.94',
+          title: 'v0.93',
           content: [
             { entry: '增加书籍和百科词条的编辑次数', label: '改善', color: 'blueviolet' },
             { entry: '完善系统日志', label: '改善', color: 'blueviolet' },
@@ -311,7 +320,7 @@ export default {
           type: '',
         },
         {
-          title: 'v0.93',
+          title: 'v0.92',
           content: [
             { entry: '增加词条更新次数', label: '新增', color: 'green' },
             { entry: '增加显示藏书数量和百科词条总数', label: '新增', color: 'green' },
